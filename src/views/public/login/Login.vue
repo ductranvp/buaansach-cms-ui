@@ -123,8 +123,7 @@ export default {
           this.loading = true;
           this.$store
             .dispatch("user/login", this.loginForm)
-            .then(response => {
-              console.log(response);
+            .then(() => {
               if (sessionStorage.getItem("requested-url")) {
                 const item = sessionStorage.getItem("requested-url");
                 sessionStorage.removeItem("requested-url");

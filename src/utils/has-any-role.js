@@ -16,7 +16,7 @@ export default function hasAnyRole(value) {
 
     return hasPermission;
   } else {
-    console.error(`Need roles! Like ['ROLE_ADMIN','ROLE_USER']"`);
+    console.error(`need roles! Like v-permission="['admin','editor']"`);
     return false;
   }
 }

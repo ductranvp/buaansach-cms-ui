@@ -1,6 +1,7 @@
 import { MessageBox } from "element-ui";
 
 const MessageBoxUtils = {
+  // eslint-disable-next-line no-unused-vars
   prompt(title, message, callback) {
     MessageBox.prompt(message, title, {
       confirmButtonText: "OK",
@@ -8,7 +9,7 @@ const MessageBoxUtils = {
       type: "info"
     })
       .then(val => {
-        if (callback) callback(val);
+        console.log(val);
       })
       .catch(() => {});
   },

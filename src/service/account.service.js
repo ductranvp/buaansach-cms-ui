@@ -1,4 +1,4 @@
-import request from "@/config/request";
+import request from "@/utils/request";
 
 const baseUrl = "api/account";
 const AccountService = {
