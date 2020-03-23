@@ -1,5 +1,5 @@
 import EmployeeDashboard from "@/views/private/employee/EmployeeDashboard";
-import Roles from "@/security/roles";
+import Roles from "@/config/security/roles";
 
 const EmployeeRoutes = [
   {

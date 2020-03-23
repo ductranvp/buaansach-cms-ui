@@ -1,5 +1,5 @@
 import store from "@/store";
-import Roles from "@/security/roles";
+import Roles from "@/config/security/roles";
 import Constants from "@/utils/constants";
 
 function redirectBasedOnRole() {

@@ -1,5 +1,5 @@
 import ManagerDashboard from "@/views/private/manager/ManagerDashboard";
-import Roles from "@/security/roles";
+import Roles from "@/config/security/roles";
 
 const ManagerRoutes = [
   {

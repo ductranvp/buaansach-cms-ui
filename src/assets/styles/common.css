@@ -1,0 +1,41 @@
+.full-size{
+    height: 100%;
+    width: 100%;
+}
+
+.full-height {
+    height: 100%;
+}
+
+.full-width {
+    width: 100%;
+}
+
+.block {
+    display: block;
+}
+
+.flex {
+    display: flex;
+}
+
+.transparent-btn {
+    border: none !important;
+    background: transparent !important;
+}
+
+.pr-10{
+    padding-right: 10px;
+}
+
+.pr-20{
+    padding-right: 20px;
+}
+
+.pl-10{
+  padding-left: 10px;
+}
+
+.pl-20{
+    padding-left: 20px;
+}

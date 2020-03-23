@@ -1,5 +1,5 @@
 import AdminDashboard from "@/views/private/admin/AdminDashboard";
-import Roles from "@/security/roles";
+import Roles from "@/config/security/roles";
 import AdminStore from "@/views/private/admin/management/AdminStore";
 import AdminProduct from "@/views/private/admin/management/AdminProduct";
 import AdminUser from "@/views/private/admin/management/AdminUser";

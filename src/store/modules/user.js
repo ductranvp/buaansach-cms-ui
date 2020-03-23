@@ -1,10 +1,10 @@
 import AuthUtils from "@/utils/auth.util";
 import AccountService from "@/service/account.service";
+import i18n from "@/i18n";
 
 const state = {
   info: {},
   roles: [],
-  langKey: "vi",
   isAuthenticated: false
 };
 
@@ -14,9 +14,6 @@ const mutations = {
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles;
-  },
-  SET_LANG_KEY: (state, langKey) => {
-    state.langKey = langKey;
   },
   SET_AUTHENTICATED: (state, isAuthenticated) => {
     state.isAuthenticated = isAuthenticated;
@@ -35,12 +32,17 @@ const actions = {
           AuthUtils.setToken(data.accessToken, loginVM.rememberMe);
           /* Then get user info */
           dispatch("getAccount")
-            .then(() => {
-              resolve(response);
+            .then(anotherResponse => {
+              /* response of getAccount action */
+              const { langKey } = anotherResponse;
+              // When user login success => set app language to user language
+              i18n.changeLanguage(langKey);
+              resolve(anotherResponse);
             })
-            .catch(error => {
+            .catch(anotherError => {
               dispatch("logout");
-              reject(error);
+              /* error of getAccount action */
+              reject(anotherError);
             });
         })
         .catch(error => {
@@ -57,12 +59,12 @@ const actions = {
         .then(response => {
           const { data } = response;
           if (!data) reject("Get account info failed, please login again.");
+          const { authorities } = data;
           commit("SET_INFO", data);
-          commit("SET_ROLES", data.authorities);
-          commit("SET_LANG_KEY", data.langKey);
+          commit("SET_ROLES", authorities);
           commit("SET_AUTHENTICATED", true);
           /* Resolve when no error */
-          resolve();
+          resolve(data);
         })
         .catch(error => {
           reject(error);
@@ -74,7 +76,6 @@ const actions = {
   logout({ commit }) {
     commit("SET_INFO", {});
     commit("SET_ROLES", []);
-    commit("SET_LANG_KEY", "vi");
     commit("SET_AUTHENTICATED", false);
     AuthUtils.removeToken();
   }

@@ -7,10 +7,10 @@ import "element-ui/lib/theme-chalk/display.css";
 import App from "@/App.vue";
 import router from "@/router";
 import store from "@/store";
+import i18n from "@/i18n";
 
 import "@/assets/styles/index.scss";
-import "@/security/permission"; // permission control
-import "@/directive";
+import "@/config/security/permission"; // permission control
 
 import * as filters from "./filters"; // global filters
 // register global utility filters
@@ -24,6 +24,7 @@ Vue.config.productionTip = false;
 
 new Vue({
   router,
+  i18n,
   store,
   render: h => h(App)
 }).$mount("#app");

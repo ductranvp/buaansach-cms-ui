@@ -25,14 +25,32 @@
       <el-col :span="8">
         <el-row type="flex" justify="end" class="pr-20" align="middle">
           <div
-            class="pr-20 transparent-btn"
+            class="pr-20"
             @click="
               () => {
                 this.$router.push('/order');
               }
             "
           >
-            <el-button>Order</el-button>
+            <el-button class="transparent-btn">Order</el-button>
+          </div>
+          <div class="pr-20">
+            <el-dropdown @command="changeLanguage">
+              <span class="el-dropdown-link">
+                Language<i class="el-icon-arrow-down el-icon--right" />
+              </span>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item
+                  :command="lang.value"
+                  v-for="lang in languages"
+                  :key="lang.name"
+                  :class="
+                    currentLanguage === lang.value ? 'active-language' : ''
+                  "
+                  >{{ lang.name }}</el-dropdown-item
+                >
+              </el-dropdown-menu>
+            </el-dropdown>
           </div>
           <div>
             <el-dropdown @command="handleCommand">
@@ -60,17 +78,17 @@
                   v-if="hasAnyRole(['ROLE_ADMIN'])"
                   command="AdminDashboardPage"
                   divided
-                  >Admin Page</el-dropdown-item
+                  >{{ $t("admin.title") }}</el-dropdown-item
                 >
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_MANAGER'])"
                   command="ManagerDashboardPage"
-                  >Manager Page</el-dropdown-item
+                  >{{ $t("manager.title") }}</el-dropdown-item
                 >
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_EMPLOYEE'])"
                   command="EmployeeDashboardPage"
-                  >Employee Page</el-dropdown-item
+                  >{{ $t("employee.title") }}</el-dropdown-item
                 >
                 <el-dropdown-item
                   v-if="isAuthenticated"
@@ -91,12 +109,15 @@
 import AuthUtils from "@/utils/auth.util";
 import { mapState } from "vuex";
 import hasAnyRole from "@/utils/has-any-role";
+import i18n from "@/i18n";
 
 export default {
   name: "PublicHeader",
   computed: {
     ...mapState({
-      isAuthenticated: state => state.user.isAuthenticated
+      isAuthenticated: state => state.user.isAuthenticated,
+      currentLanguage: state => state.translation.currentLanguage,
+      languages: state => state.translation.languages
     })
   },
   methods: {
@@ -107,6 +128,9 @@ export default {
       } else {
         this.$router.push({ name: value });
       }
+    },
+    changeLanguage(lang) {
+      i18n.changeLanguage(lang);
     }
   }
 };
@@ -119,5 +143,8 @@ export default {
 }
 .el-icon-arrow-down {
   font-size: 12px;
+}
+.active-language {
+  background: #3a71a8;
 }
 </style>
