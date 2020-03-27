@@ -1,10 +1,10 @@
 <template>
-  <p>User</p>
+  <p>ResetPasswordFinish</p>
 </template>
 
 <script>
 export default {
-  name: "User"
+  name: "ResetPasswordFinish"
 };
 </script>
 

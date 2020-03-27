@@ -8,7 +8,11 @@
           :model="loginForm"
           :rules="loginRules"
         >
-          <el-form-item prop="login" label="Username">
+          <el-form-item prop="login">
+            <InputLabel
+              :label="$t('public.loginPage.loginForm.username')"
+              required
+            />
             <el-input
               ref="login"
               v-model="loginForm.login"
@@ -16,7 +20,11 @@
               type="text"
             />
           </el-form-item>
-          <el-form-item prop="password" label="Password">
+          <el-form-item prop="password">
+            <InputLabel
+              :label="$t('public.loginPage.loginForm.password')"
+              required
+            />
             <el-input
               ref="password"
               v-model="loginForm.password"
@@ -24,24 +32,24 @@
               :type="passwordType"
               @keyup.enter.native="handleLogin"
             >
-              <el-button
+              <el-tooltip
                 slot="append"
-                :class="passwordType === '' ? 'show-password-btn' : ''"
-                icon="el-icon-view"
-                @click="showPassword"
-              />
+                effect="dark"
+                :content="showPasswordTooltip"
+                placement="bottom-end"
+              >
+                <el-button
+                  :class="passwordType === '' ? 'show-password-btn' : ''"
+                  icon="el-icon-view"
+                  @click="showPassword"
+                />
+              </el-tooltip>
             </el-input>
           </el-form-item>
           <el-form-item prop="rememberMe">
             <el-checkbox v-model="loginForm.rememberMe" class="full-width">
-              Remember Me
+              <span>{{ $t("public.loginPage.loginForm.rememberMe") }}</span>
             </el-checkbox>
-            <!--            <el-switch-->
-            <!--              v-model="loginForm.rememberMe"-->
-            <!--              style="display: block"-->
-            <!--              active-color="#13ce66"-->
-            <!--              active-text="Remember Me"-->
-            <!--            />-->
           </el-form-item>
           <el-form-item>
             <div>
@@ -51,14 +59,18 @@
                 style="width: 100%"
                 @click="handleLogin"
               >
-                Login
+                <span>{{ $t("public.loginPage.loginForm.loginBtn") }}</span>
               </el-button>
             </div>
           </el-form-item>
           <el-form-item>
             <div>
-              <el-button type="info" style="width: 100%" @click="goToHomepage">
-                Go to Homepage
+              <el-button
+                type="info"
+                style="width: 100%"
+                @click="forgotPassword"
+              >
+                <span>{{ $t("public.loginPage.loginForm.forgotBtn") }}</span>
               </el-button>
             </div>
           </el-form-item>
@@ -85,14 +97,14 @@ export default {
         login: [
           {
             required: true,
-            message: "Please enter username",
+            message: this.$t("public.loginPage.loginForm.validateUsername"),
             trigger: "blur"
           }
         ],
         password: [
           {
             required: true,
-            message: "Please enter password",
+            message: this.$t("public.loginPage.loginForm.validatePassword"),
             trigger: "blur"
           }
         ]
@@ -100,6 +112,15 @@ export default {
       loading: false,
       passwordType: "password"
     };
+  },
+  computed: {
+    showPasswordTooltip() {
+      if (this.passwordType === "password") {
+        return this.$t("public.loginPage.loginForm.showPassword");
+      } else {
+        return this.$t("public.loginPage.loginForm.hidePassword");
+      }
+    }
   },
   mounted() {
     if (this.loginForm.login === "") {
@@ -114,8 +135,8 @@ export default {
         ? (this.passwordType = "password")
         : (this.passwordType = "");
     },
-    goToHomepage() {
-      this.$router.push({ name: "HomePage" });
+    forgotPassword() {
+      this.$router.push({ name: "ResetPasswordInitPage" });
     },
     handleLogin() {
       this.$refs.loginForm.validate(valid => {

@@ -12,6 +12,8 @@ import i18n from "@/i18n";
 import "@/assets/styles/index.scss";
 import "@/config/security/permission"; // permission control
 
+import "@/components"; // import registered components
+
 import * as filters from "./filters"; // global filters
 // register global utility filters
 Object.keys(filters).forEach(key => {

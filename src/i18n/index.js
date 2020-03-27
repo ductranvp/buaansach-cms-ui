@@ -1,7 +1,7 @@
 import Vue from "vue";
 import VueI18n from "vue-i18n";
-import enMessage from "@/i18n/en";
-import viMessage from "@/i18n/vi";
+import enMessage from "@/i18n/en/en";
+import viMessage from "@/i18n/vi/vi";
 import store from "@/store";
 import Constants from "@/utils/constants";
 

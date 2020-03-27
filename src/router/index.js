@@ -8,6 +8,7 @@ import ManagerLayout from "@/views/layout/manager/ManagerLayout";
 import AdminRoutes from "@/router/private-routes/admin-routes";
 import ManagerRoutes from "@/router/private-routes/manager-routes";
 import EmployeeRoutes from "@/router/private-routes/employee-routes";
+import UserRoutes from "@/router/private-routes/user-routes";
 
 Vue.use(VueRouter);
 
@@ -17,7 +18,8 @@ const router = new VueRouter({
     {
       path: "/",
       component: PublicLayout,
-      children: [...PublicRoutes]
+      /* user routes is private but layout is the same public layout */
+      children: [...PublicRoutes, ...UserRoutes]
     },
     {
       path: "/admin",

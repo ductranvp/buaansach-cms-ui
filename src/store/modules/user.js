@@ -9,8 +9,8 @@ const state = {
 };
 
 const mutations = {
-  SET_INFO: (state, name) => {
-    state.name = name;
+  SET_INFO: (state, info) => {
+    state.info = info;
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles;

@@ -1,6 +1,7 @@
 import store from "@/store";
 import Roles from "@/config/security/roles";
 import Constants from "@/utils/constants";
+import i18n from "@/i18n";
 
 function redirectBasedOnRole() {
   if (store.getters.roles.includes(Roles.ADMIN)) return "/admin";
@@ -12,9 +13,9 @@ function redirectBasedOnRole() {
 function generatePageTitle(pageTitle) {
   const title = Constants.APP_TITLE;
   if (pageTitle) {
-    return `${pageTitle} - ${title}`;
+    return `${i18n.t(pageTitle)} - ${i18n.t(title)}`;
   }
-  return `${title}`;
+  return `${i18n.t(title)}`;
 }
 
 const AppUtils = {

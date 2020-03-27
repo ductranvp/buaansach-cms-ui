@@ -22,9 +22,11 @@ export default {
 }
 .public-header {
   background: #eee;
+  border-bottom: 1px solid #aaa;
 }
+
 .public-main {
-  background: #fff;
+  background: #f0f2f5;
   overflow-x: hidden !important;
 }
 .public-footer {

@@ -16,7 +16,7 @@ const AccountService = {
     });
   },
   changePassword(payload) {
-    return request.post(baseUrl + "/change_password", JSON.stringify(payload));
+    return request.post(baseUrl + "/change-password", JSON.stringify(payload));
   },
   resetPasswordInit(payload) {
     return request.post(baseUrl + "/reset-password/init", payload);

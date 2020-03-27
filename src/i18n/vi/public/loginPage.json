@@ -1,0 +1,16 @@
+{
+  "loginPage": {
+    "pageTitle": "Đăng nhập",
+    "loginForm": {
+      "username": "Tên đăng nhập hoặc email",
+      "password": "Mật khẩu",
+      "rememberMe": "Ghi nhớ",
+      "showPassword": "Hiện mật khẩu",
+      "hidePassword": "Ẩn mật khẩu",
+      "validateUsername": "Tên đăng nhập không được bỏ trống",
+      "validatePassword": "Mật khẩu không được bỏ trống",
+      "loginBtn": "Đăng nhập",
+      "forgotBtn": "Quên mật khẩu?"
+    }
+  }
+}

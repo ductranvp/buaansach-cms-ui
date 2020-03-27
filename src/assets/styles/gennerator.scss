@@ -1,0 +1,34 @@
+/* margin, padding */
+$size:(0,5,10,15,20,25,30,40,50,60,70,80,90,100);
+$types: ('margin', 'padding');
+$positions: ('top', 'right', 'bottom', 'left');
+
+@mixin marginPadding {
+  @each $type in $types {
+    @each $pos in $positions {
+      @each $value in $size {
+        .#{$type}-#{$pos}-#{$value} {
+          #{$type}-#{$pos}: #{$value}px !important;
+        }
+      }
+    }
+  }
+  @each $type in $types {
+    @each $value in $size {
+      .#{$type}-#{$value} {
+        #{$type}: #{$value}px !important;
+      }
+    }
+  }
+  @each $type in $types {
+    @each $valueX in $size {
+      @each $valueY in $size {
+        .#{$type}-#{$valueX}-#{$valueY} {
+          #{$type}: #{$valueX}px #{$valueY}px !important;
+        }
+      }
+    }
+  }
+}
+
+@include marginPadding;
