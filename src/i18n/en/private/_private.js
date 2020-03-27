@@ -1,5 +1,9 @@
+import adminStorePage from "./adminStorePage";
+
 const privateText = {
-  private: {}
+  private: {
+    ...adminStorePage
+  }
 };
 
 export default privateText;

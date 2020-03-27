@@ -19,15 +19,13 @@
         :route="{ name: item.name }"
       >
         <i :class="item.meta.icon" />
-        <span slot="title">{{ item.meta.label }}</span>
+        <span slot="title">{{ $t(item.meta.title) }}</span>
       </el-menu-item>
     </el-menu>
   </el-aside>
 </template>
 
 <script>
-import AdminRoutes from "@/router/private-routes/admin-routes";
-
 export default {
   name: "AdminSidebar",
   data() {
@@ -35,13 +33,63 @@ export default {
       menuProps: {
         "default-active": ""
       },
-      isCollapse: true,
-      adminRoutes: []
+      adminRoutes: [
+        {
+          name: "adminDashboardPage",
+          meta: {
+            icon: "el-icon-odometer",
+            title: "layout.adminSidebar.adminDashboardPage"
+          }
+        },
+        {
+          name: "adminStorePage",
+          meta: {
+            icon: "el-icon-s-shop",
+            title: "layout.adminSidebar.adminStorePage"
+          }
+        },
+        {
+          name: "adminProductPage",
+          meta: {
+            icon: "el-icon-food",
+            title: "layout.adminSidebar.adminProductPage"
+          }
+        },
+        {
+          name: "adminUserPage",
+          meta: {
+            icon: "el-icon-user-solid",
+            title: "layout.adminSidebar.adminUserPage"
+          }
+        },
+        {
+          name: "adminReportPage",
+          meta: {
+            icon: "el-icon-s-marketing",
+            title: "layout.adminSidebar.adminReportPage"
+          }
+        },
+        {
+          name: "adminTrackerPage",
+          meta: {
+            icon: "el-icon-s-help",
+            title: "layout.adminSidebar.adminTrackerPage"
+          }
+        },
+        {
+          name: "adminSettingPage",
+          meta: {
+            icon: "el-icon-setting",
+            title: "layout.adminSidebar.adminSettingPage"
+          }
+        }
+      ],
+      isCollapse: true
     };
   },
   computed: {
     sideWidth() {
-      return this.isCollapse ? "64px" : "150px";
+      return this.isCollapse ? "64px" : "210px";
     }
   },
   watch: {
@@ -51,7 +99,6 @@ export default {
     }
   },
   created() {
-    this.adminRoutes = AdminRoutes;
     this.menuProps["default-active"] = this.$route.name;
     this.isCollapse = JSON.parse(localStorage.getItem("adminSidebarCollapse"));
   },

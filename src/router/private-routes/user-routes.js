@@ -4,9 +4,10 @@ import Profile from "@/views/private/user/profile/Profile";
 const UserRoutes = [
   {
     path: "profile",
+    name: "profilePage",
     component: Profile,
-    name: "ProfilePage",
     meta: {
+      title: "private.profilePage.pageTitle",
       roles: [Roles.USER]
     }
   }

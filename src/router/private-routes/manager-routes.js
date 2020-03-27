@@ -4,10 +4,10 @@ import Roles from "@/config/security/roles";
 const ManagerRoutes = [
   {
     path: "dashboard",
+    name: "managerDashboardPage",
     component: ManagerDashboard,
-    name: "ManagerDashboardPage",
     meta: {
-      title: "Manager",
+      title: "private.managerDashboardPage.pageTitle",
       roles: [Roles.MANAGER]
     }
   }

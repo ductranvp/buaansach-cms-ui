@@ -12,8 +12,8 @@ import ResetPasswordFinish from "@/views/public/reset-password/ResetPasswordFini
 
 const PublicRoutes = [
   {
-    path: "/",
-    name: "HomePage",
+    path: "home",
+    name: "homePage",
     component: Home,
     meta: {
       title: "public.homePage.pageTitle"
@@ -21,7 +21,7 @@ const PublicRoutes = [
   },
   {
     path: "about",
-    name: "AboutPage",
+    name: "aboutPage",
     component: About,
     meta: {
       title: "public.aboutPage.pageTitle"
@@ -29,7 +29,7 @@ const PublicRoutes = [
   },
   {
     path: "contact",
-    name: "ContactPage",
+    name: "contactPage",
     component: Contact,
     meta: {
       title: "public.contactPage.pageTitle"
@@ -37,7 +37,7 @@ const PublicRoutes = [
   },
   {
     path: "reset-password/init",
-    name: "ResetPasswordInitPage",
+    name: "resetPasswordInitPage",
     component: ResetPasswordInit,
     meta: {
       title: "public.resetPasswordInitPage.pageTitle"
@@ -45,7 +45,7 @@ const PublicRoutes = [
   },
   {
     path: "reset-password/finish?key=:key",
-    name: "ResetPasswordFinishPage",
+    name: "resetPasswordFinishPage",
     component: ResetPasswordFinish,
     meta: {
       title: "public.resetPasswordFinishPage.pageTitle"
@@ -53,7 +53,7 @@ const PublicRoutes = [
   },
   {
     path: "order",
-    name: "OrderPage",
+    name: "orderPage",
     component: Order,
     meta: {
       title: "public.orderPage.pageTitle"
@@ -61,7 +61,7 @@ const PublicRoutes = [
   },
   {
     path: "product",
-    name: "ProductPage",
+    name: "productPage",
     component: Product,
     meta: {
       title: "public.productPage.pageTitle"
@@ -69,7 +69,7 @@ const PublicRoutes = [
   },
   {
     path: "sale",
-    name: "SalePage",
+    name: "salePage",
     component: Sale,
     meta: {
       title: "public.salePage.pageTitle"
@@ -77,24 +77,24 @@ const PublicRoutes = [
   },
   {
     path: "login",
+    name: "loginPage",
     component: Login,
-    name: "LoginPage",
     meta: {
       title: "public.loginPage.pageTitle"
     }
   },
   {
     path: "forbidden",
+    name: "forbiddenPage",
     component: Page403,
-    name: "403Page",
     meta: {
       title: "public.forbiddenPage.pageTitle"
     }
   },
   {
     path: "not-found",
+    name: "notFoundPage",
     component: Page404,
-    name: "404Page",
     meta: {
       title: "public.notFoundPage.pageTitle"
     }

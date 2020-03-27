@@ -1,0 +1,11 @@
+{
+  "adminSidebar": {
+    "adminDashboardPage": "Bảng Điều Khiển",
+    "adminStorePage": "Quản Lý Cửa Hàng",
+    "adminProductPage": "Quản Lý Sản Phẩm",
+    "adminUserPage": "Quản Lý Người Dùng",
+    "adminReportPage": "Quản Lý Báo Cáo",
+    "adminTrackerPage": "Giám Sát Hệ Thống",
+    "adminSettingPage": "Cài Đặt"
+  }
+}

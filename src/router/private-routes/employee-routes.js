@@ -4,9 +4,10 @@ import Roles from "@/config/security/roles";
 const EmployeeRoutes = [
   {
     path: "dashboard",
+    name: "employeeDashboardPage",
     component: EmployeeDashboard,
-    name: "EmployeeDashboardPage",
     meta: {
+      title: "private.employeeDashboardPage.pageTitle",
       roles: [Roles.EMPLOYEE]
     }
   }

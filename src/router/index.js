@@ -18,6 +18,7 @@ const router = new VueRouter({
     {
       path: "/",
       component: PublicLayout,
+      redirect: "/home",
       /* user routes is private but layout is the same public layout */
       children: [...PublicRoutes, ...UserRoutes]
     },

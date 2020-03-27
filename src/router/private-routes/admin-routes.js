@@ -10,78 +10,64 @@ import AdminSetting from "@/views/private/admin/management/AdminSetting";
 const AdminRoutes = [
   {
     path: "dashboard",
+    name: "adminDashboardPage",
     component: AdminDashboard,
-    name: "AdminDashboardPage",
     meta: {
-      icon: "el-icon-odometer",
-      title: "Dashboard",
-      label: "Dashboard", // use for sidebar menu
+      title: "private.adminDashboardPage.pageTitle",
       roles: [Roles.ADMIN]
     }
   },
   {
     path: "store-management",
+    name: "adminStorePage",
     component: AdminStore,
-    name: "AdminStorePage",
     meta: {
-      icon: "el-icon-s-shop",
-      title: "Store Management",
-      label: "Store", // use for sidebar menu
+      title: "private.adminStorePage.pageTitle",
       roles: [Roles.ADMIN]
     }
   },
   {
     path: "product-management",
+    name: "adminProductPage",
     component: AdminProduct,
-    name: "AdminProductPage",
     meta: {
-      icon: "el-icon-food",
-      title: "Product Management",
-      label: "Product", // use for sidebar menu
+      title: "private.adminProductPage.pageTitle",
       roles: [Roles.ADMIN]
     }
   },
   {
     path: "user-management",
+    name: "adminUserPage",
     component: AdminUser,
-    name: "AdminUserPage",
     meta: {
-      icon: "el-icon-user-solid",
-      title: "User Management",
-      label: "User", // use for sidebar menu
+      title: "private.adminUserPage.pageTitle",
       roles: [Roles.ADMIN]
     }
   },
   {
     path: "report-management",
+    name: "adminReportPage",
     component: AdminReport,
-    name: "AdminReportPage",
     meta: {
-      icon: "el-icon-s-marketing",
-      title: "Report Management",
-      label: "Report", // use for sidebar menu
+      title: "private.adminReportPage.pageTitle",
       roles: [Roles.ADMIN]
     }
   },
   {
     path: "tracker-management",
+    name: "adminTrackerPage",
     component: AdminTracker,
-    name: "AdminTrackerPage",
     meta: {
-      icon: "el-icon-s-help",
-      title: "Tracker Management",
-      label: "Tracker", // use for sidebar menu
+      title: "private.adminTrackerPage.pageTitle",
       roles: [Roles.ADMIN]
     }
   },
   {
     path: "setting",
+    name: "adminSettingPage",
     component: AdminSetting,
-    name: "AdminSettingPage",
     meta: {
-      icon: "el-icon-setting",
-      title: "Setting",
-      label: "Setting",
+      title: "private.adminSettingPage.pageTitle",
       roles: [Roles.ADMIN]
     }
   }

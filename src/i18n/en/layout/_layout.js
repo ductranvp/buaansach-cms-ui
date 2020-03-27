@@ -1,5 +1,9 @@
+import adminSidebar from "./adminSidebar";
+
 const layoutText = {
-  layout: {}
+  layout: {
+    ...adminSidebar
+  }
 };
 
 export default layoutText;

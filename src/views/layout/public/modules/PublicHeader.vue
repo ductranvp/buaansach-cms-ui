@@ -78,47 +78,47 @@
                 Menu<i class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="AboutPage"
+                <el-dropdown-item command="aboutPage"
                   >About Us
                 </el-dropdown-item>
-                <el-dropdown-item command="ContactPage"
+                <el-dropdown-item command="contactPage"
                   >Contact Us
                 </el-dropdown-item>
-                <el-dropdown-item command="ProductPage"
+                <el-dropdown-item command="productPage"
                   >Product
                 </el-dropdown-item>
-                <el-dropdown-item command="SalePage">Sale</el-dropdown-item>
+                <el-dropdown-item command="salePage">Sale</el-dropdown-item>
                 <el-dropdown-item
                   v-if="!isAuthenticated"
-                  command="LoginPage"
+                  command="loginPage"
                   divided
                   >Login
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_ADMIN'])"
-                  command="AdminDashboardPage"
+                  command="adminDashboardPage"
                   divided
                   >{{ $t("admin.title") }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_MANAGER'])"
-                  command="ManagerDashboardPage"
+                  command="managerDashboardPage"
                   >{{ $t("manager.title") }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_EMPLOYEE'])"
-                  command="EmployeeDashboardPage"
+                  command="employeeDashboardPage"
                   >{{ $t("employee.title") }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_USER'])"
-                  command="ProfilePage"
+                  command="profilePage"
                   divided
                   >{{ $t("user.profile.menuTitle") }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="isAuthenticated"
-                  command="Logout"
+                  command="logout"
                   divided
                   >Logout
                 </el-dropdown-item>
@@ -150,7 +150,7 @@ export default {
   methods: {
     hasAnyRole,
     handleCommand(value) {
-      if (value === "Logout") {
+      if (value === "logout") {
         AuthUtils.logout();
       } else {
         this.$router.push({ name: value });
