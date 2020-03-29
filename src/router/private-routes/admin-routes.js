@@ -1,6 +1,6 @@
 import AdminDashboard from "@/views/private/admin/AdminDashboard";
 import Roles from "@/config/security/roles";
-import AdminStore from "@/views/private/admin/management/AdminStore";
+import AdminStore from "@/views/private/admin/management/store/AdminStore";
 import AdminProduct from "@/views/private/admin/management/AdminProduct";
 import AdminUser from "@/views/private/admin/management/AdminUser";
 import AdminReport from "@/views/private/admin/management/AdminReport";
@@ -13,7 +13,7 @@ const AdminRoutes = [
     name: "adminDashboardPage",
     component: AdminDashboard,
     meta: {
-      title: "private.adminDashboardPage.pageTitle",
+      title: "private.pageTitle.admin.adminDashboardPage",
       roles: [Roles.ADMIN]
     }
   },
@@ -22,7 +22,7 @@ const AdminRoutes = [
     name: "adminStorePage",
     component: AdminStore,
     meta: {
-      title: "private.adminStorePage.pageTitle",
+      title: "private.pageTitle.admin.adminStorePage",
       roles: [Roles.ADMIN]
     }
   },
@@ -31,7 +31,7 @@ const AdminRoutes = [
     name: "adminProductPage",
     component: AdminProduct,
     meta: {
-      title: "private.adminProductPage.pageTitle",
+      title: "private.pageTitle.admin.adminProductPage",
       roles: [Roles.ADMIN]
     }
   },
@@ -40,7 +40,7 @@ const AdminRoutes = [
     name: "adminUserPage",
     component: AdminUser,
     meta: {
-      title: "private.adminUserPage.pageTitle",
+      title: "private.pageTitle.admin.adminUserPage",
       roles: [Roles.ADMIN]
     }
   },
@@ -49,7 +49,7 @@ const AdminRoutes = [
     name: "adminReportPage",
     component: AdminReport,
     meta: {
-      title: "private.adminReportPage.pageTitle",
+      title: "private.pageTitle.admin.adminReportPage",
       roles: [Roles.ADMIN]
     }
   },
@@ -58,7 +58,7 @@ const AdminRoutes = [
     name: "adminTrackerPage",
     component: AdminTracker,
     meta: {
-      title: "private.adminTrackerPage.pageTitle",
+      title: "private.pageTitle.admin.adminTrackerPage",
       roles: [Roles.ADMIN]
     }
   },
@@ -67,7 +67,7 @@ const AdminRoutes = [
     name: "adminSettingPage",
     component: AdminSetting,
     meta: {
-      title: "private.adminSettingPage.pageTitle",
+      title: "private.pageTitle.admin.adminSettingPage",
       roles: [Roles.ADMIN]
     }
   }

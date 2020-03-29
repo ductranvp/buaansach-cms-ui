@@ -1,6 +1,5 @@
 {
   "loginPage": {
-    "pageTitle": "Đăng nhập",
     "loginForm": {
       "username": "Tên đăng nhập hoặc email",
       "password": "Mật khẩu",

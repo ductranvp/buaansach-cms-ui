@@ -1,5 +1,36 @@
 {
   "adminStorePage": {
-    "pageTitle": "Store Management"
+    "entityName": "store",
+    "searchPlaceholder": "Search by name or code",
+    "storeEntity": {
+      "id": "ID",
+      "code": "Code",
+      "name": "Name",
+      "address": "Address",
+      "imageUrl": "Image URL",
+      "status": "Status",
+      "ownerName": "Owner Name",
+      "ownerPhone": "Owner Phone",
+      "ownerEmail": "Owner Email",
+      "taxCode": "Tax Code",
+      "updateReason": "Update Reason",
+      "numberOfFloors": "Number of Floors",
+      "numberOfSeats": "Number of Seats",
+      "createdDate": "Created Date",
+      "createdBy": "Created By",
+      "lastModifiedDate": "Last Modified Date",
+      "lastModifiedBy": "Last Modified By"
+    },
+    "storeStatus": {
+      "activated": "Activated",
+      "paused": "Paused",
+      "deactivated": "Deactivated"
+    },
+    "notification": {
+      "saveSuccess": "Store save successfully!",
+      "saveError": "Failed to save store!",
+      "deleteSuccess": "Store deleted successfully!",
+      "deleteError": "Failed to delete store!"
+    }
   }
 }

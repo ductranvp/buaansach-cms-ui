@@ -9,6 +9,8 @@ import router from "@/router";
 import store from "@/store";
 import i18n from "@/i18n";
 
+import VueMoment from 'vue-moment';
+
 import "@/config/security/permission"; // permission control
 import "@/components"; // import registered components
 import "@/assets/styles/index.scss"; // all custom css here
@@ -20,6 +22,7 @@ Object.keys(filters).forEach(key => {
 });
 
 Vue.use(Element);
+Vue.use(VueMoment);
 
 Vue.config.productionTip = false;
 

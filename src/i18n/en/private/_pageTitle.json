@@ -1,0 +1,22 @@
+{
+  "pageTitle": {
+    "admin": {
+      "adminDashboardPage": "Dashboard",
+      "adminStorePage": "Store Management",
+      "adminProductPage": "Product Management",
+      "adminUserPage": "User Management",
+      "adminReportPage": "Report Management",
+      "adminTrackerPage": "System Tracker",
+      "adminSettingPage": "Setting"
+    },
+    "employee": {
+      "employeeDashboardPage": "Dashboard"
+    },
+    "manager": {
+      "managerDashboardPage": "Dashboard"
+    },
+    "user": {
+      "profilePage": "Profile"
+    }
+  }
+}

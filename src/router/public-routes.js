@@ -16,7 +16,7 @@ const PublicRoutes = [
     name: "homePage",
     component: Home,
     meta: {
-      title: "public.homePage.pageTitle"
+      title: "public.pageTitle.homePage"
     }
   },
   {
@@ -24,7 +24,7 @@ const PublicRoutes = [
     name: "aboutPage",
     component: About,
     meta: {
-      title: "public.aboutPage.pageTitle"
+      title: "public.pageTitle.aboutPage"
     }
   },
   {
@@ -32,7 +32,7 @@ const PublicRoutes = [
     name: "contactPage",
     component: Contact,
     meta: {
-      title: "public.contactPage.pageTitle"
+      title: "public.pageTitle.contactPage"
     }
   },
   {
@@ -40,7 +40,7 @@ const PublicRoutes = [
     name: "resetPasswordInitPage",
     component: ResetPasswordInit,
     meta: {
-      title: "public.resetPasswordInitPage.pageTitle"
+      title: "public.pageTitle.resetPasswordInitPage"
     }
   },
   {
@@ -48,7 +48,7 @@ const PublicRoutes = [
     name: "resetPasswordFinishPage",
     component: ResetPasswordFinish,
     meta: {
-      title: "public.resetPasswordFinishPage.pageTitle"
+      title: "public.pageTitle.resetPasswordFinishPage"
     }
   },
   {
@@ -56,7 +56,7 @@ const PublicRoutes = [
     name: "orderPage",
     component: Order,
     meta: {
-      title: "public.orderPage.pageTitle"
+      title: "public.pageTitle.orderPage"
     }
   },
   {
@@ -64,7 +64,7 @@ const PublicRoutes = [
     name: "productPage",
     component: Product,
     meta: {
-      title: "public.productPage.pageTitle"
+      title: "public.pageTitle.productPage"
     }
   },
   {
@@ -72,7 +72,7 @@ const PublicRoutes = [
     name: "salePage",
     component: Sale,
     meta: {
-      title: "public.salePage.pageTitle"
+      title: "public.pageTitle.salePage"
     }
   },
   {

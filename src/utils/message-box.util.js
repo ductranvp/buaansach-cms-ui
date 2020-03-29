@@ -1,22 +1,24 @@
 import { MessageBox } from "element-ui";
+import i18n from "@/i18n";
 
 const MessageBoxUtils = {
   // eslint-disable-next-line no-unused-vars
-  prompt(title, message, callback) {
+  prompt(title, message, isHTML, callback) {
     MessageBox.prompt(message, title, {
-      confirmButtonText: "OK",
-      cancelButtonText: "Cancel",
-      type: "info"
+      confirmButtonText: i18n.t("app.messageBox.okBtn"),
+      cancelButtonText: i18n.t("app.messageBox.cancelBtn"),
+      message: message !== undefined ? message : "",
+      dangerouslyUseHTMLString: isHTML
     })
       .then(val => {
-        console.log(val);
+        if (callback) callback(val);
       })
       .catch(() => {});
   },
   confirm(message, callback) {
-    MessageBox.confirm(message, "Confirm", {
-      confirmButtonText: "OK",
-      cancelButtonText: "Cancel",
+    MessageBox.confirm(message, i18n.t("app.messageBox.confirmTitle") + "", {
+      confirmButtonText: i18n.t("app.messageBox.okBtn"),
+      cancelButtonText: i18n.t("app.messageBox.cancelBtn"),
       type: "warning"
     })
       .then(() => {

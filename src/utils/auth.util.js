@@ -31,9 +31,13 @@ function hasAnyAuthority(authorities) {
   return false;
 }
 
-function logout() {
+function logout(routeName) {
+  /*routeName is the route that we want to redirect to when logged out*/
   store.dispatch("user/logout").then(() => {
-    router.push("/").catch(() => {});
+    if (routeName) router.push({ name: routeName }).catch(() => {});
+    else {
+      router.push("/").catch(() => {});
+    }
   });
 }
 

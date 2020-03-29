@@ -1,9 +1,8 @@
 import Vue from "vue";
-import SingleImageUploader from "@/components/SingleImageUploader";
-import RequiredLabel from "@/components/RequiredLabel";
-import OptionalLabel from "@/components/OptionalLabel";
-import InputLabel from "@/components/InputLabel";
+import SingleImageUploader from "@/components/single-image-uploader/index";
+import InputLabel from "@/components/input-label/index";
+
+/*register global components*/
+
 Vue.component("SingleImageUploader", SingleImageUploader);
-Vue.component("RequiredLabel", RequiredLabel);
-Vue.component("OptionalLabel", OptionalLabel);
 Vue.component("InputLabel", InputLabel);

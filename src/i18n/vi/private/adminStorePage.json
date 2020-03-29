@@ -1,5 +1,36 @@
 {
   "adminStorePage": {
-    "pageTitle": "Quản Lý Cửa Hàng"
+    "entityName": "cửa hàng",
+    "searchPlaceholder": "Tìm theo tên hoặc mã cửa hàng",
+    "storeEntity": {
+      "id": "ID",
+      "code": "Mã cửa hàng",
+      "name": "Tên cửa hàng",
+      "address": "Địa chỉ",
+      "imageUrl": "Ảnh banner",
+      "status": "Trạng thái",
+      "ownerName": "Tên chủ cửa hàng",
+      "ownerPhone": "SĐT chủ cửa hàng",
+      "ownerEmail": "Email chủ cửa hàng",
+      "taxCode": "Mã số thuế",
+      "updateReason": "Lí do chỉnh sửa",
+      "numberOfFloors": "Số tầng",
+      "numberOfSeats": "Số chỗ ngồi",
+      "createdDate": "Ngày tạo",
+      "createdBy": "Người tạo",
+      "lastModifiedDate": "Ngày sửa cuối",
+      "lastModifiedBy": "Người sửa cuối"
+    },
+    "storeStatus": {
+      "activated": "Hoạt động",
+      "paused": "Tạm ngưng",
+      "deactivated": "Dừng hoạt động"
+    },
+    "notification": {
+      "saveSuccess": "Lưu cửa hàng thành công!",
+      "saveError": "Lưu cửa hàng không thành công!",
+      "deleteSuccess": "Xóa cửa hàng thành công!",
+      "deleteError": "Xóa cửa hàng không thành công!"
+    }
   }
 }

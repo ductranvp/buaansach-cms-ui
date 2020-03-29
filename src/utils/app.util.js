@@ -18,9 +18,14 @@ function generatePageTitle(pageTitle) {
   return `${i18n.t(title)}`;
 }
 
+function deepCopy(object) {
+  return JSON.parse(JSON.stringify(object));
+}
+
 const AppUtils = {
   redirectBasedOnRole: redirectBasedOnRole,
-  generatePageTitle: generatePageTitle
+  generatePageTitle: generatePageTitle,
+  deepCopy: deepCopy
 };
 
 export default AppUtils;

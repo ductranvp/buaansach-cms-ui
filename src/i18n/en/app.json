@@ -1,5 +1,26 @@
 {
   "app": {
-    "pageTitle": "Bua An Sach"
+    "pageTitle": "Bua An Sach",
+    "notification": {
+      "successTitle": "Success",
+      "errorTitle": "Error",
+      "warningTitle": "Warning",
+      "infoTitle": "Information"
+    },
+    "messageBox": {
+      "confirmTitle": "Confirm",
+      "confirmBtn": "Confirm",
+      "okBtn": "OK",
+      "cancelBtn": "Cancel"
+    },
+    "error": {
+      "internalServerError": "Internal server error",
+      "server.not.reachable": "Server not reachable",
+      "url.not.found": "Not found",
+      "notNull": "Field {fieldName} cannot be empty!",
+      "loginExists": "Username is already in use!",
+      "idExists": "A new {entityName} cannot already have an ID.",
+      "emailExists": "Email is already in use!"
+    }
   }
 }

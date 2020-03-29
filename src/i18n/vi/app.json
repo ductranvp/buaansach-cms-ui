@@ -1,5 +1,26 @@
 {
   "app": {
-    "pageTitle": "Bữa Ăn Sạch"
+    "pageTitle": "Bữa Ăn Sạch",
+    "notification": {
+      "successTitle": "Thành công",
+      "errorTitle": "Lỗi",
+      "warningTitle": "Cảnh báo",
+      "infoTitle": "Thông tin"
+    },
+    "messageBox": {
+      "confirmTitle": "Xác nhận",
+      "confirmBtn": "Xác nhận",
+      "okBtn": "OK",
+      "cancelBtn": "Hủy"
+    },
+    "error": {
+      "internalServerError": "Lỗi máy chủ nội bộ",
+      "server.not.reachable": "Không tìm thấy máy chủ",
+      "url.not.found": "Không tìm thấy",
+      "notNull": "Trường {fieldName} không được để trống!",
+      "loginExists": "Tên đăng nhập đã được sử dụng!",
+      "idExists": "Thêm mới {entityName} không được trùng với định danh đã tồn tại.",
+      "emailExists": "Email đã được sử dụng!"
+    }
   }
 }

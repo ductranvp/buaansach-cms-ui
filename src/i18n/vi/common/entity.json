@@ -1,0 +1,36 @@
+{
+  "entity": {
+    "action": {
+      "title": "Thao tác",
+      "create": "Tạo mới",
+      "back": "Quay lại",
+      "cancel": "Hủy",
+      "delete": "Xóa",
+      "edit": "Sửa",
+      "open": "Mở",
+      "save": "Lưu",
+      "view": "Xem"
+    },
+    "dialog": {
+      "title": "Tạo hoặc cập nhật {entityName}"
+    },
+    "detail": {
+      "field": "Trường",
+      "value": "Giá trị"
+    },
+    "delete": {
+      "title": "Xác nhận hành động xóa"
+    },
+    "validation": {
+      "required": "Trường này bắt buộc phải nhập.",
+      "minlength": "Trường này phải có ít nhất {min} ký tự.",
+      "maxlength": "Trường này không được vượt quá {max} ký tự.",
+      "min": "Trường này phải lớn hơn {min}.",
+      "max": "Trường này phải nhỏ hơn {max}.",
+      "pattern": "Trường này phải theo định dạng {pattern}.",
+      "number": "Trường này phải là một số.",
+      "datetime": "Trường này phải là định dạng thời gian.",
+      "patternLogin": "Trường này chỉ được phép dùng các kí tự thường, số hoặc địa chỉ email."
+    }
+  }
+}

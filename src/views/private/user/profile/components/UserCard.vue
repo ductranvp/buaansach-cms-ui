@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import Avatar from "@/components/Avatar";
+import Avatar from "@/components/user-avatar/index";
 export default {
   name: "UserCard",
   components: { Avatar },

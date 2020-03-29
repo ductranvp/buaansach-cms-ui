@@ -1,0 +1,22 @@
+{
+  "pageTitle": {
+    "admin": {
+      "adminDashboardPage": "Bảng điều khiển",
+      "adminStorePage": "Quản Lý Cửa Hàng",
+      "adminProductPage": "Quản Lý Sản Phẩm",
+      "adminUserPage": "Quản Lý Người Dùng",
+      "adminReportPage": "Quản Lý Báo Cáo",
+      "adminTrackerPage": "Giám Sát Hệ Thống",
+      "adminSettingPage": "Cài Đặt"
+    },
+    "employee": {
+      "employeeDashboardPage": "Bảng điều khiển"
+    },
+    "manager": {
+      "managerDashboardPage": "Bảng điều khiển"
+    },
+    "user": {
+      "profilePage": "Hồ Sơ"
+    }
+  }
+}

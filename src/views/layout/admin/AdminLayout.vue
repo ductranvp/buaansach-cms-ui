@@ -35,5 +35,6 @@ export default {
 .admin-main {
   background: #fff;
   overflow-x: hidden !important;
+  padding: 10px !important; /* override file override.css */
 }
 </style>

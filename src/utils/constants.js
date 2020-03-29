@@ -1,5 +1,5 @@
 const Constants = {
-  SERVER_API_URL: "http://192.168.2.4",
+  SERVER_API_URL: "http://192.168.2.2",
   APP_TITLE: "app.pageTitle",
   DEFAULT_LANGUAGE: "vi"
 };

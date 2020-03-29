@@ -19,17 +19,17 @@ router.beforeEach(async (to, from, next) => {
     next("/not-found");
   }
 
-  /* if need authorities */
+  /* If need authorities */
   if (to.meta && to.meta.roles && to.meta.roles.length > 0) {
     /* and have a token => check role */
     if (AuthUtils.getToken()) {
-      /* if roles is not saved in store or page is refreshed
+      /* If roles is not saved in store or page is refreshed
        * call api to get account info first then check roles,
        * else just check the roles */
       if (!store.getters.roles.length) {
         await store.dispatch("user/getAccount");
       }
-      /* if user has requested role */
+      /* If user has requested role */
       if (AuthUtils.hasAnyAuthority(to.meta.roles)) {
         next();
       } else {
@@ -46,12 +46,12 @@ router.beforeEach(async (to, from, next) => {
         await store.dispatch("user/getAccount");
       }
     }
-    /* no authorities, so just proceed */
+    /* No authorities, so just proceed */
     next();
   }
 });
 
 router.afterEach(() => {
-  // finish progress bar
+  // Finish progress bar
   NProgress.done();
 });
