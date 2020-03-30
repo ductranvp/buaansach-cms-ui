@@ -27,7 +27,123 @@
     <div class="padding-top-10">
       <el-row>
         <data-table :fetch-data="fetchData" :filter="filter" ref="storeTable">
-          <el-table-column type="expand"> </el-table-column>
+          <el-table-column type="expand">
+            <template slot-scope="{ row }">
+              <el-row type="flex" align="middle">
+                <el-col :span="5" :xs="24">
+                  <el-image
+                    style="width: 208px; height:117px"
+                    :src="row.imageUrl"
+                    fit="cover"
+                    :preview-src-list="[row.imageUrl]"
+                  >
+                    <div slot="error" class="image-error-slot full-size">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                </el-col>
+                <el-col :span="15" :xs="24">
+                  <el-row type="flex">
+                    <el-col :span="10">
+                      <table class="expanded-table">
+                        <tr>
+                          <td>
+                            {{
+                              $t(
+                                "private.adminStorePage.storeEntity.ownerEmail"
+                              )
+                            }}
+                          </td>
+                          <td>{{ row.ownerEmail }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {{
+                              $t("private.adminStorePage.storeEntity.taxCode")
+                            }}
+                          </td>
+                          <td>{{ row.taxCode }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {{
+                              $t(
+                                "private.adminStorePage.storeEntity.numberOfFloors"
+                              )
+                            }}
+                          </td>
+                          <td>{{ row.numberOfFloors }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {{
+                              $t(
+                                "private.adminStorePage.storeEntity.numberOfSeats"
+                              )
+                            }}
+                          </td>
+                          <td>{{ row.numberOfSeats }}</td>
+                        </tr>
+                      </table>
+                    </el-col>
+                    <el-col :span="1">
+                      <el-divider
+                        direction="vertical"
+                        class="full-height"
+                      ></el-divider>
+                    </el-col>
+                    <el-col :span="13">
+                      <table class="expanded-table">
+                        <tr>
+                          <td>
+                            {{
+                              $t("private.adminStorePage.storeEntity.address")
+                            }}
+                          </td>
+                          <td>{{ row.address }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {{
+                              $t(
+                                "private.adminStorePage.storeEntity.previousUpdateReason"
+                              )
+                            }}
+                          </td>
+                          <td>{{ row.updateReason }}</td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {{
+                              $t(
+                                "private.adminStorePage.storeEntity.lastModifiedDate"
+                              )
+                            }}
+                          </td>
+                          <td>
+                            {{
+                              row.lastModifiedDate
+                                | moment("HH:mm - DD/MM/YYYY")
+                            }}
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            {{
+                              $t(
+                                "private.adminStorePage.storeEntity.lastModifiedBy"
+                              )
+                            }}
+                          </td>
+                          <td>{{ row.lastModifiedBy }}</td>
+                        </tr>
+                      </table>
+                    </el-col>
+                  </el-row>
+                </el-col>
+              </el-row>
+            </template>
+          </el-table-column>
 
           <el-table-column
             prop="code"
@@ -69,6 +185,13 @@
               </el-tag>
             </template>
           </el-table-column>
+
+          <el-table-column
+            prop="createdBy"
+            :label="$t('private.adminStorePage.storeEntity.createdBy')"
+          >
+          </el-table-column>
+
           <el-table-column
             prop="createdDate"
             sortable
@@ -79,7 +202,11 @@
             </template>
           </el-table-column>
 
-          <el-table-column :label="$t('common.entity.action.title')">
+          <el-table-column
+            :label="$t('common.entity.action.title')"
+            fixed="right"
+            width="150px"
+          >
             <template slot-scope="{ row }">
               <el-button size="mini" @click="handleEdit(row)">
                 <span>{{ $t("common.entity.action.edit") }}</span>
@@ -157,8 +284,11 @@ export default {
 </script>
 
 <style scoped>
-#detail-table tr td {
+.expanded-table {
+  width: 100%;
+}
+.expanded-table tr td {
   border: none;
-  padding: 0px 0px 5px 0px;
+  /*padding: 0px 0px 5px 0px;*/
 }
 </style>

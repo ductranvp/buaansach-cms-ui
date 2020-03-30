@@ -19,8 +19,10 @@
       "createdDate": "Created Date",
       "createdBy": "Created By",
       "lastModifiedDate": "Last Modified Date",
-      "lastModifiedBy": "Last Modified By"
+      "lastModifiedBy": "Last Modified By",
+      "previousUpdateReason": "Previously update"
     },
+    "previousUpdateReason": "Previous",
     "storeStatus": {
       "activated": "Activated",
       "paused": "Paused",

@@ -144,6 +144,13 @@
           :label="$t('private.adminStorePage.storeEntity.updateReason')"
           optional
         />
+        <div v-if="previousUpdateReason">
+          <em
+            >{{
+              $t("private.adminStorePage.storeEntity.previousUpdateReason")
+            }}: <b>{{ previousUpdateReason }}</b></em
+          >
+        </div>
         <el-input
           type="textarea"
           v-model="storeEntity.updateReason"

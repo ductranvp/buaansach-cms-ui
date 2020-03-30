@@ -6,6 +6,7 @@ const mixinData = {
       }),
       dialogFormVisible: false,
       isSaving: false,
+      previousUpdateReason: null,
       storeEntity: {
         id: null,
         code: null,

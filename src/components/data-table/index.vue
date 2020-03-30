@@ -1,12 +1,15 @@
 <template>
   <div v-loading="isLoading">
     <el-table
+      class="full-width"
       :fit="true"
       :data="tableData"
       sortable="custom"
       @sort-change="onSortChange"
-      border
       :default-sort="defaultSort"
+      stripe
+      border
+      :size="tableSize"
     >
       <slot>
         <!-- column definitions here -->
@@ -31,6 +34,10 @@
 export default {
   name: "DataTable",
   props: {
+    tableSize: {
+      type: String,
+      default: "small"
+    },
     defaultSort: {
       type: Object,
       default: function() {
@@ -138,4 +145,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+/deep/.el-table__fixed-right {
+  height: 100% !important;
+}
+</style>

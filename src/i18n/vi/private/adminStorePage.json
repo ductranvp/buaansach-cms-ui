@@ -19,7 +19,8 @@
       "createdDate": "Ngày tạo",
       "createdBy": "Người tạo",
       "lastModifiedDate": "Ngày sửa cuối",
-      "lastModifiedBy": "Người sửa cuối"
+      "lastModifiedBy": "Người sửa cuối",
+      "previousUpdateReason": "Cập nhật trước"
     },
     "storeStatus": {
       "activated": "Hoạt động",

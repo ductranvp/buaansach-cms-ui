@@ -12,6 +12,10 @@ const mixinMethod = {
     },
     edit(store) {
       this.storeEntity = AppUtils.deepCopy(store);
+      if (this.storeEntity.updateReason) {
+        this.previousUpdateReason = this.storeEntity.updateReason;
+        this.storeEntity.updateReason = null;
+      }
       this.$emit("update:imageUrl");
       this.show();
     },
@@ -30,6 +34,7 @@ const mixinMethod = {
       done();
     },
     resetForm() {
+      this.previousUpdateReason = null;
       this.$refs.storeForm.resetFields();
       this.$refs.storeForm.clearValidate();
       this.$refs.singleImageUploader.clearImage();

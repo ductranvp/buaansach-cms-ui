@@ -9,7 +9,7 @@ import router from "@/router";
 import store from "@/store";
 import i18n from "@/i18n";
 
-import VueMoment from 'vue-moment';
+import VueMoment from "vue-moment";
 
 import "@/config/security/permission"; // permission control
 import "@/components"; // import registered components

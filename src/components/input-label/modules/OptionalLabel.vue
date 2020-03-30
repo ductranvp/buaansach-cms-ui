@@ -1,5 +1,8 @@
 <template>
-  <label class="optional">{{ $t("components.inputLabel.optional") }}</label>
+  <!--  <label class="optional">{{ $t("components.inputLabel.optional") }}</label>-->
+  <el-tag type="primary" size="mini" class="margin-left-10">
+    <span>{{ $t("components.inputLabel.optional") }}</span>
+  </el-tag>
 </template>
 
 <script>
