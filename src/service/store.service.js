@@ -21,11 +21,14 @@ const StoreService = {
       params: params
     });
   },
-  getStore(params) {
-    return request.get(baseUrl + "/get/" + params);
+  getStore(storeGuid) {
+    return request.get(baseUrl + "/get/" + storeGuid);
   },
-  deleteStore(params) {
-    return request.delete(baseUrl + "/delete/" + params);
+  deleteStore(storeGuid) {
+    return request.delete(baseUrl + "/delete/" + storeGuid);
+  },
+  changeStoreOwner(payload) {
+    return request.put(baseUrl + "/change-owner", payload);
   }
 };
 

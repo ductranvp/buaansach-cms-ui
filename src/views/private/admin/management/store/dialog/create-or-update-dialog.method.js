@@ -6,17 +6,16 @@ const mixinMethod = {
   methods: {
     create() {
       this.storeEntity = {
-        status: "ACTIVATED"
+        storeStatus: "ACTIVATED"
       };
       this.show();
     },
     edit(store) {
       this.storeEntity = AppUtils.deepCopy(store);
-      if (this.storeEntity.updateReason) {
-        this.previousUpdateReason = this.storeEntity.updateReason;
-        this.storeEntity.updateReason = null;
+      if (this.storeEntity.lastUpdateReason) {
+        this.previousUpdateReason = this.storeEntity.lastUpdateReason;
+        this.storeEntity.lastUpdateReason = null;
       }
-      this.$emit("update:imageUrl");
       this.show();
     },
     show() {
@@ -27,7 +26,7 @@ const mixinMethod = {
       this.dialogFormVisible = false;
     },
     onImageCleared() {
-      this.storeEntity.imageUrl = null;
+      this.storeEntity.storeImageUrl = null;
     },
     beforeClose(done) {
       this.resetForm();
@@ -60,7 +59,10 @@ const mixinMethod = {
         if (valid) {
           vm.isSaving = true;
           const params = vm.getParams();
-          if (vm.storeEntity.id === null || vm.storeEntity.id === undefined) {
+          if (
+            vm.storeEntity.guid === null ||
+            vm.storeEntity.guid === undefined
+          ) {
             StoreService.createStore(params)
               .then(onSaveSuccess)
               .catch(onSaveError);

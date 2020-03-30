@@ -125,7 +125,7 @@ export default {
         this.tableData = this.data;
       }
     },
-    getData() {
+    getData(cb) {
       const params = {};
       params.search = this.filter.searchKey;
       params.page = this.tableConfig.currentPage;
@@ -136,10 +136,15 @@ export default {
         const { data } = response;
         this.tableData = data.content;
         this.tableConfig.totalElements = data.totalElements;
+        /* cb is callback for reload function, using when need loading animation */
+        if (cb) {
+          console.log("Data load successfully, this is callback");
+          cb();
+        }
       });
     },
-    reload() {
-      this.getData();
+    reload(cb) {
+      this.getData(cb);
     }
   }
 };

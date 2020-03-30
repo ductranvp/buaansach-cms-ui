@@ -15,7 +15,16 @@
             ></el-button>
           </el-input>
         </el-col>
-        <el-col :span="14">
+        <el-col :span="4">
+          <el-button
+            :loading="isLoading"
+            @click="reloadTableData"
+            icon="el-icon-refresh"
+          >
+            <span>{{ $t("common.entity.action.refresh") }}</span>
+          </el-button>
+        </el-col>
+        <el-col :span="10">
           <el-row type="flex" justify="end">
             <el-button type="primary" @click="createStore">
               <span>{{ $t("common.entity.action.create") }}</span>
@@ -29,155 +38,43 @@
         <data-table :fetch-data="fetchData" :filter="filter" ref="storeTable">
           <el-table-column type="expand">
             <template slot-scope="{ row }">
-              <el-row type="flex" align="middle">
-                <el-col :span="5" :xs="24">
-                  <el-image
-                    style="width: 208px; height:117px"
-                    :src="row.imageUrl"
-                    fit="cover"
-                    :preview-src-list="[row.imageUrl]"
-                  >
-                    <div slot="error" class="image-error-slot full-size">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                </el-col>
-                <el-col :span="15" :xs="24">
-                  <el-row type="flex">
-                    <el-col :span="10">
-                      <table class="expanded-table">
-                        <tr>
-                          <td>
-                            {{
-                              $t(
-                                "private.adminStorePage.storeEntity.ownerEmail"
-                              )
-                            }}
-                          </td>
-                          <td>{{ row.ownerEmail }}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{
-                              $t("private.adminStorePage.storeEntity.taxCode")
-                            }}
-                          </td>
-                          <td>{{ row.taxCode }}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{
-                              $t(
-                                "private.adminStorePage.storeEntity.numberOfFloors"
-                              )
-                            }}
-                          </td>
-                          <td>{{ row.numberOfFloors }}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{
-                              $t(
-                                "private.adminStorePage.storeEntity.numberOfSeats"
-                              )
-                            }}
-                          </td>
-                          <td>{{ row.numberOfSeats }}</td>
-                        </tr>
-                      </table>
-                    </el-col>
-                    <el-col :span="1">
-                      <el-divider
-                        direction="vertical"
-                        class="full-height"
-                      ></el-divider>
-                    </el-col>
-                    <el-col :span="13">
-                      <table class="expanded-table">
-                        <tr>
-                          <td>
-                            {{
-                              $t("private.adminStorePage.storeEntity.address")
-                            }}
-                          </td>
-                          <td>{{ row.address }}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{
-                              $t(
-                                "private.adminStorePage.storeEntity.previousUpdateReason"
-                              )
-                            }}
-                          </td>
-                          <td>{{ row.updateReason }}</td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{
-                              $t(
-                                "private.adminStorePage.storeEntity.lastModifiedDate"
-                              )
-                            }}
-                          </td>
-                          <td>
-                            {{
-                              row.lastModifiedDate
-                                | moment("HH:mm - DD/MM/YYYY")
-                            }}
-                          </td>
-                        </tr>
-                        <tr>
-                          <td>
-                            {{
-                              $t(
-                                "private.adminStorePage.storeEntity.lastModifiedBy"
-                              )
-                            }}
-                          </td>
-                          <td>{{ row.lastModifiedBy }}</td>
-                        </tr>
-                      </table>
-                    </el-col>
-                  </el-row>
-                </el-col>
-              </el-row>
+              <row-detail @ownerChanged="reloadTableData" :row="row" />
             </template>
           </el-table-column>
 
           <el-table-column
-            prop="code"
-            :label="$t('private.adminStorePage.storeEntity.code')"
+            prop="storeCode"
+            :label="$t('private.adminStorePage.storeEntity.storeCode')"
           >
           </el-table-column>
           <el-table-column
-            prop="name"
+            prop="storeName"
             sortable
-            :label="$t('private.adminStorePage.storeEntity.name')"
+            :label="$t('private.adminStorePage.storeEntity.storeName')"
           >
           </el-table-column>
 
           <el-table-column
-            prop="ownerName"
-            :label="$t('private.adminStorePage.storeEntity.ownerName')"
+            prop="storeOwnerName"
+            :label="$t('private.adminStorePage.storeEntity.storeOwnerName')"
           >
           </el-table-column>
 
           <el-table-column
-            prop="ownerPhone"
-            :label="$t('private.adminStorePage.storeEntity.ownerPhone')"
+            prop="storeOwnerPhone"
+            :label="$t('private.adminStorePage.storeEntity.storeOwnerPhone')"
           >
           </el-table-column>
 
           <el-table-column
-            prop="status"
-            :label="$t('private.adminStorePage.storeEntity.status')"
+            prop="storeStatus"
+            :label="$t('private.adminStorePage.storeEntity.storeStatus')"
           >
             <template slot-scope="{ row }">
-              <el-tag type="success" v-if="row.status === 'ACTIVATED'">
+              <el-tag type="success" v-if="row.storeStatus === 'ACTIVATED'">
                 {{ $t("private.adminStorePage.storeStatus.activated") }}
               </el-tag>
-              <el-tag type="warning" v-else-if="row.status === 'PAUSED'">
+              <el-tag type="warning" v-else-if="row.storeStatus === 'PAUSED'">
                 {{ $t("private.adminStorePage.storeStatus.paused") }}
               </el-tag>
               <el-tag type="danger" v-else>
@@ -208,10 +105,20 @@
             width="150px"
           >
             <template slot-scope="{ row }">
-              <el-button size="mini" @click="handleEdit(row)">
+              <el-button
+                size="mini"
+                type="warning"
+                plain
+                @click="handleEdit(row)"
+              >
                 <span>{{ $t("common.entity.action.edit") }}</span>
               </el-button>
-              <el-button size="mini" type="danger" @click="handleDelete(row)">
+              <el-button
+                size="mini"
+                type="danger"
+                plain
+                @click="handleDelete(row)"
+              >
                 <span>{{ $t("common.entity.action.delete") }}</span>
               </el-button>
             </template>
@@ -219,20 +126,24 @@
         </data-table>
       </el-row>
     </div>
-    <admin-store-dialog ref="storeDialog" @storeSaved="onStoreSaved" />
+    <create-or-update-store-dialog
+      ref="storeDialog"
+      @storeSaved="reloadTableData"
+    />
   </el-container>
 </template>
 
 <script>
-import AdminStoreDialog from "@/views/private/admin/management/store/dialog/AdminStoreDialog";
+import CreateOrUpdateStoreDialog from "@/views/private/admin/management/store/dialog/CreateOrUpdateStoreDialog";
 import StoreService from "@/service/store.service";
 import DataTable from "@/components/data-table/index";
 import MessageBoxUtils from "@/utils/message-box.util";
 import NotificationUtils from "@/utils/notification.util";
+import RowDetail from "@/views/private/admin/management/store/modules/RowDetail";
 
 export default {
   name: "AdminStoreManagement",
-  components: { AdminStoreDialog, DataTable },
+  components: { RowDetail, CreateOrUpdateStoreDialog, DataTable },
   data() {
     return {
       isLoading: false,
@@ -247,8 +158,13 @@ export default {
       this.$refs.storeDialog.create();
     },
     // eslint-disable-next-line no-unused-vars
-    onStoreSaved(store) {
-      this.$refs.storeTable.reload();
+    reloadTableData(store) {
+      const vm = this;
+      vm.isLoading = true;
+      this.$refs.storeTable.reload(whenDone);
+      function whenDone() {
+        vm.isLoading = false;
+      }
     },
     onSearch() {
       /* change filterRequest property to trigger DataTable filter */
@@ -263,7 +179,7 @@ export default {
     handleDelete(row) {
       let vm = this;
       MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), function() {
-        StoreService.deleteStore(row.code)
+        StoreService.deleteStore(row.guid)
           .then(() => {
             NotificationUtils.success(
               vm.$t("private.adminStorePage.notification.deleteSuccess")
@@ -283,12 +199,4 @@ export default {
 };
 </script>
 
-<style scoped>
-.expanded-table {
-  width: 100%;
-}
-.expanded-table tr td {
-  border: none;
-  /*padding: 0px 0px 5px 0px;*/
-}
-</style>
+<style scoped></style>

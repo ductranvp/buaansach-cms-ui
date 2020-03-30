@@ -9,7 +9,8 @@
       "edit": "Sửa",
       "open": "Mở",
       "save": "Lưu",
-      "view": "Xem"
+      "view": "Xem",
+      "refresh": "Tải lại"
     },
     "dialog": {
       "title": "Tạo hoặc cập nhật {entityName}"

@@ -8,19 +8,18 @@ const mixinData = {
       isSaving: false,
       previousUpdateReason: null,
       storeEntity: {
-        id: null,
-        code: null,
-        name: null,
-        address: null,
-        imageUrl: null,
-        status: "ACTIVATED",
-        ownerName: null,
-        ownerPhone: null,
-        ownerEmail: null,
-        taxCode: null,
-        updateReason: null,
-        numberOfFloors: 0,
-        numberOfSeats: 0,
+        guid: null,
+        storeCode: null,
+        storeName: null,
+        storeAddress: null,
+        storeImageUrl: null,
+        storeStatus: "ACTIVATED",
+        storeOwnerName: null,
+        storeOwnerPhone: null,
+        storeOwnerEmail: null,
+        storeTaxCode: null,
+        lastUpdateReason: null,
+        storeOwnerLogin: null,
         createdDate: null,
         createdBy: null,
         lastModifiedDate: null,
@@ -38,7 +37,7 @@ const mixinData = {
         }
       ],
       storeEntityRules: {
-        code: [
+        storeCode: [
           {
             required: true,
             message: this.$t("common.entity.validation.required"),
@@ -50,7 +49,7 @@ const mixinData = {
             trigger: "blur"
           }
         ],
-        name: [
+        storeName: [
           {
             required: true,
             message: this.$t("common.entity.validation.required"),
@@ -64,7 +63,7 @@ const mixinData = {
             trigger: "blur"
           }
         ],
-        address: [
+        storeAddress: [
           {
             required: true,
             message: this.$t("common.entity.validation.required"),
@@ -78,7 +77,7 @@ const mixinData = {
             trigger: "blur"
           }
         ],
-        ownerName: [
+        storeOwnerName: [
           {
             required: true,
             message: this.$t("common.entity.validation.required"),
@@ -92,7 +91,7 @@ const mixinData = {
             trigger: "blur"
           }
         ],
-        ownerPhone: [
+        storeOwnerPhone: [
           {
             required: true,
             message: this.$t("common.entity.validation.required"),
@@ -104,7 +103,7 @@ const mixinData = {
             trigger: "blur"
           }
         ],
-        ownerEmail: [
+        storeOwnerEmail: [
           {
             max: 100,
             message: this.$t("common.entity.validation.maxlength", {
@@ -113,7 +112,7 @@ const mixinData = {
             trigger: "blur"
           }
         ],
-        taxCode: [
+        storeTaxCode: [
           {
             max: 100,
             message: this.$t("common.entity.validation.maxlength", {
@@ -122,7 +121,7 @@ const mixinData = {
             trigger: "blur"
           }
         ],
-        updateReason: [
+        lastUpdateReason: [
           {
             max: 500,
             message: this.$t("common.entity.validation.maxlength", {
