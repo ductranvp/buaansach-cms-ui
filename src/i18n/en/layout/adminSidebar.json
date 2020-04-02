@@ -1,7 +1,13 @@
 {
   "adminSidebar": {
+    "collapse": "Collapse",
+    "show": "Show",
     "adminDashboardPage": "Dashboard",
-    "adminStorePage": "Store Management",
+    "adminStoreManagement": {
+      "title": "Store Management",
+      "adminStoreListPage": "List Store",
+      "adminStoreDetailPage": "Store Detail"
+    },
     "adminProductPage": "Product Management",
     "adminUserPage": "User Management",
     "adminReportPage": "Report Management",

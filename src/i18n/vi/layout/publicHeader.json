@@ -1,0 +1,15 @@
+{
+  "publicHeader": {
+    "pageTitle": "Bữa Ăn Sạch",
+    "order": "Đặt món",
+    "menu": "Menu",
+    "about": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "product": "Sản phẩm",
+    "sale": "Khuyến mãi",
+    "admin": "Quản trị viên",
+    "user": "Thành viên",
+    "login": "Đăng nhập",
+    "logout": "Đăng xuất"
+  }
+}

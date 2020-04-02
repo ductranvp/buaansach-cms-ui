@@ -1,0 +1,15 @@
+{
+  "adminStoreDetailPage": {
+    "tabs": {
+      "overview": "Thông tin",
+      "human": "Nhân sự",
+      "workShift": "Ca làm việc",
+      "sale": "Khuyến mãi",
+      "seat": "Chỗ ngồi",
+      "setting": "Cài đặt"
+    },
+    "children": {
+
+    }
+  }
+}

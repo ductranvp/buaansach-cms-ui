@@ -1,0 +1,44 @@
+{
+  "adminStoreListPage": {
+    "entityName": "store",
+    "searchPlaceholder": "Search by name or code",
+    "changeOwner": {
+      "triggerBtn": "Change Owner",
+      "title": "Change Owner",
+      "inputPlaceholder": "Input username or email of the owner",
+      "successMessage": "Change store owner successfully",
+      "errorMessage": "Failed to change store owner"
+    },
+    "storeEntity": {
+      "guid": "Guid",
+      "storeCode": "Code",
+      "storeName": "Name",
+      "storeAddress": "Address",
+      "storeImageUrl": "Image URL",
+      "storeStatus": "Status",
+      "storeOwnerName": "Owner Name",
+      "storeOwnerPhone": "Owner Phone",
+      "storeOwnerEmail": "Owner Email",
+      "storeTaxCode": "Tax Code",
+      "lastUpdateReason": "Update Reason",
+      "storeOwnerLogin": "Owner Login",
+      "createdDate": "Created Date",
+      "createdBy": "Created By",
+      "lastModifiedDate": "Last Modified Date",
+      "lastModifiedBy": "Last Modified By",
+      "previousUpdateReason": "Previously update"
+    },
+    "previousUpdateReason": "Previous",
+    "storeStatus": {
+      "activated": "Activated",
+      "paused": "Paused",
+      "deactivated": "Deactivated"
+    },
+    "notification": {
+      "saveSuccess": "Store save successfully!",
+      "saveError": "Failed to save store!",
+      "deleteSuccess": "Store deleted successfully!",
+      "deleteError": "Failed to delete store!"
+    }
+  }
+}

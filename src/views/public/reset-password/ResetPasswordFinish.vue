@@ -1,11 +1,117 @@
 <template>
-  <p>ResetPasswordFinish</p>
+  <el-container class="full-size">
+    <el-row class="full-size" type="flex" justify="center" align="middle">
+      <el-col :xs="18" :sm="12" :md="6">
+        <el-form ref="resetPasswordForm" :model="form" :rules="formRules">
+          <el-form-item prop="newPassword">
+            <input-label :label="$t('public.resetPasswordFinishPage.newPasswordLabel')" required/>
+            <el-input v-model="form.newPassword" type="password" show-password/>
+          </el-form-item>
+          <el-form-item prop="confirm">
+            <input-label :label="$t('public.resetPasswordFinishPage.confirmLabel')" required/>
+            <el-input v-model="form.confirm" type="password" show-password/>
+          </el-form-item>
+          <el-form-item>
+            <div>
+              <el-button
+                :loading="isLoading"
+                type="primary"
+                style="width: 100%"
+                @click="submit"
+              >
+                <span>{{ $t("public.resetPasswordFinishPage.submitBtn") }}</span>
+              </el-button>
+            </div>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
+  </el-container>
 </template>
 
 <script>
-export default {
-  name: "ResetPasswordFinish"
-};
+  import AccountService from "@/service/account.service";
+  import MessageBoxUtils from "@/utils/message-box.util";
+  import MessageUtils from "@/utils/message.util";
+  import NotificationUtils from "@/utils/notification.util";
+
+  export default {
+    name: "ResetPasswordFinish",
+    data() {
+      return {
+        isLoading: false,
+        form: {
+          key: null,
+          newPassword: null,
+          confirm: null
+        },
+        formRules: {
+          newPassword: [
+            {
+              required: true,
+              message: this.$t("common.entity.validation.required"),
+              trigger: "blur"
+            },
+            {
+              max: 100,
+              message: this.$t("common.entity.validation.maxlength", {
+                max: 100
+              }),
+              trigger: "blur"
+            },
+            {
+              min: 4,
+              message: this.$t("common.entity.validation.minlength", {
+                min: 4
+              }),
+              trigger: "blur"
+            }
+          ],
+          confirm: [
+            {
+              required: true,
+              message: this.$t("common.entity.validation.required"),
+              trigger: "blur"
+            },
+            {
+              max: 100,
+              message: this.$t("common.entity.validation.maxlength", {
+                max: 100
+              }),
+              trigger: "blur"
+            },
+            {
+              min: 4,
+              message: this.$t("common.entity.validation.minlength", {
+                min: 4
+              }),
+              trigger: "blur"
+            }
+          ]
+        }
+      };
+    },
+    methods: {
+      submit() {
+        const vm = this;
+        vm.$refs.resetPasswordForm.validate(valid => {
+          if (valid) {
+            if (vm.form.confirm !== vm.form.newPassword) {
+              NotificationUtils.error(vm.$t("public.resetPasswordFinishPage.passwordNotMatch"));
+              return false;
+            }
+            vm.form.key = vm.$route.params.key;
+            AccountService.resetPasswordFinish(vm.form).then(function () {
+              MessageBoxUtils.showAlert(vm.$t("public.resetPasswordFinishPage.alertTitle"),
+                vm.$t("public.resetPasswordFinishPage.alertMessage"), false, function () {
+                  vm.$router.push({name: 'loginPage'});
+                });
+            });
+          }
+        });
+      }
+    }
+  };
 </script>
 
 <style scoped></style>

@@ -10,6 +10,9 @@
       "validatePassword": "Mật khẩu không được bỏ trống",
       "loginBtn": "Đăng nhập",
       "forgotBtn": "Quên mật khẩu?"
+    },
+    "error": {
+      "badCredential": "Sai tên đăng nhập hoặc mật khẩu"
     }
   }
 }

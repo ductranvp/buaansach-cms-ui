@@ -1,0 +1,15 @@
+{
+  "adminStoreDetailPage": {
+    "tabs": {
+      "overview": "Overview",
+      "human": "Human",
+      "workShift": "Work Shift",
+      "sale": "Sale",
+      "seat": "Seat",
+      "setting": "Setting"
+    },
+    "children": {
+
+    }
+  }
+}

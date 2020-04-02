@@ -1,0 +1,15 @@
+{
+  "publicHeader": {
+    "pageTitle": "Bua An Sach",
+    "order": "Order",
+    "menu": "Menu",
+    "about": "About Us",
+    "contact": "Contact Us",
+    "product": "Product",
+    "sale": "Sale",
+    "admin": "Admin Dashboard",
+    "user": "User Dashboard",
+    "login": "Login",
+    "logout": "Logout"
+  }
+}

@@ -4,17 +4,12 @@
       type="flex"
       class="full-size"
       justify="space-between"
-      align="middle"
-    >
+      align="middle">
       <el-col :span="8">
         <el-button
           class="transparent-btn"
-          @click="
-            () => {
-              this.$router.push('/');
-            }
-          "
-          >Bữa Ăn Sạch
+          @click="handleCommand('homePage')">
+          <span>{{$t("app.pageTitle")}}</span>
         </el-button>
       </el-col>
       <el-col class="hidden-sm-and-down" :span="8">
@@ -27,23 +22,17 @@
           type="flex"
           justify="end"
           class="padding-right-20"
-          align="middle"
-        >
+          align="middle">
           <div
             class="padding-right-20"
-            @click="
-              () => {
-                this.$router.push('/order');
-              }
-            "
-          >
-            <el-button class="transparent-btn">Order</el-button>
+            @click="handleCommand('orderPage')">
+            <el-button class="transparent-btn">
+              {{ $t("layout.publicHeader.order") }}
+            </el-button>
           </div>
           <div class="padding-right-20">
             <el-dropdown trigger="click" @command="changeLanguage">
               <span class="el-dropdown-link">
-                <!--                {{ $t("public.header.language")-->
-                <!--                }}-->
                 <span v-if="currentLanguage === 'vi'">
                   <span class="flag-icon flag-icon-vn margin-right-10"></span>
                   <span>Tiếng Việt</span>
@@ -55,17 +44,11 @@
                 <i class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item
-                  command="vi"
-                  :class="currentLanguage === 'vi' ? 'active-language' : ''"
-                >
+                <el-dropdown-item command="vi" :class="currentLanguage === 'vi' ? 'active-language' : ''">
                   <span class="flag-icon flag-icon-vn margin-right-10"></span>
                   <span>Tiếng Việt</span>
                 </el-dropdown-item>
-                <el-dropdown-item
-                  command="en"
-                  :class="currentLanguage === 'en' ? 'active-language' : ''"
-                >
+                <el-dropdown-item command="en" :class="currentLanguage === 'en' ? 'active-language' : ''">
                   <span class="flag-icon flag-icon-us margin-right-10"></span>
                   <span>English</span>
                 </el-dropdown-item>
@@ -75,52 +58,42 @@
           <div>
             <el-dropdown trigger="click" @command="handleCommand">
               <span class="el-dropdown-link">
-                Menu<i class="el-icon-arrow-down el-icon--right" />
+                {{ $t("layout.publicHeader.menu") }}
+                <i class="el-icon-arrow-down el-icon--right" />
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item command="aboutPage"
-                  >About Us
+                <el-dropdown-item command="aboutPage">
+                  {{ $t("layout.publicHeader.about") }}
                 </el-dropdown-item>
-                <el-dropdown-item command="contactPage"
-                  >Contact Us
+                <el-dropdown-item command="contactPage">
+                  {{ $t("layout.publicHeader.contact") }}
                 </el-dropdown-item>
-                <el-dropdown-item command="productPage"
-                  >Product
+                <el-dropdown-item command="productPage">
+                  {{ $t("layout.publicHeader.product") }}
                 </el-dropdown-item>
-                <el-dropdown-item command="salePage">Sale</el-dropdown-item>
+                <el-dropdown-item command="salePage">
+                  {{ $t("layout.publicHeader.sale") }}
+                </el-dropdown-item>
                 <el-dropdown-item
                   v-if="!isAuthenticated"
                   command="loginPage"
-                  divided
-                  >Login
+                  divided>
+                  {{ $t("layout.publicHeader.login") }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_ADMIN'])"
                   command="adminDashboardPage"
-                  divided
-                  >{{ $t("admin.title") }}
-                </el-dropdown-item>
-                <el-dropdown-item
-                  v-if="hasAnyRole(['ROLE_MANAGER'])"
-                  command="managerDashboardPage"
-                  >{{ $t("manager.title") }}
-                </el-dropdown-item>
-                <el-dropdown-item
-                  v-if="hasAnyRole(['ROLE_EMPLOYEE'])"
-                  command="employeeDashboardPage"
-                  >{{ $t("employee.title") }}
+                  divided>
+                  {{ $t("layout.publicHeader.admin") }}
                 </el-dropdown-item>
                 <el-dropdown-item
                   v-if="hasAnyRole(['ROLE_USER'])"
-                  command="profilePage"
-                  divided
-                  >{{ $t("user.profile.menuTitle") }}
+                  command="userDashboardPage"
+                  divided>
+                  {{ $t("layout.publicHeader.user") }}
                 </el-dropdown-item>
-                <el-dropdown-item
-                  v-if="isAuthenticated"
-                  command="logout"
-                  divided
-                  >Logout
+                <el-dropdown-item v-if="isAuthenticated" command="logout" divided>
+                  {{ $t("layout.publicHeader.logout") }}
                 </el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
@@ -132,13 +105,13 @@
 </template>
 
 <script>
-import AuthUtils from "@/utils/auth.util";
-import { mapState } from "vuex";
-import hasAnyRole from "@/utils/has-any-role";
-import i18n from "@/i18n";
-import AppUtils from "@/utils/app.util";
+  import AuthUtils from "@/utils/auth.util";
+  import {mapState} from "vuex";
+  import hasAnyRole from "@/utils/has-any-role";
+  import i18n from "@/i18n";
+  import AppUtils from "@/utils/app.util";
 
-export default {
+  export default {
   name: "PublicHeader",
   computed: {
     ...mapState({

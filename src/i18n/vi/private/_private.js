@@ -1,10 +1,12 @@
 import pageTitle from "./_pageTitle";
-import adminStorePage from "./adminStorePage";
+import adminStoreListPage from "./adminStoreListPage";
+import adminStoreDetailPage from "./adminStoreDetailPage";
 
 const privateText = {
   private: {
     ...pageTitle,
-    ...adminStorePage
+    ...adminStoreListPage,
+    ...adminStoreDetailPage
   }
 };
 

@@ -25,7 +25,7 @@ export default {
 }
 .admin-sidebar {
   background: transparent;
-  border-right: 1px solid #bbb;
+  border-right: 1px solid #ddd;
   box-sizing: border-box;
   overflow-x: hidden;
 }

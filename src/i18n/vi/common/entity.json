@@ -24,6 +24,7 @@
     },
     "validation": {
       "required": "Trường này bắt buộc phải nhập.",
+      "email": "Trường này phải nhập đúng định dạng email.",
       "minlength": "Trường này phải có ít nhất {min} ký tự.",
       "maxlength": "Trường này không được vượt quá {max} ký tự.",
       "min": "Trường này phải lớn hơn {min}.",

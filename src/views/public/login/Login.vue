@@ -68,8 +68,7 @@
               <el-button
                 type="info"
                 style="width: 100%"
-                @click="forgotPassword"
-              >
+                @click="forgotPassword">
                 <span>{{ $t("public.loginPage.loginForm.forgotBtn") }}</span>
               </el-button>
             </div>
@@ -83,6 +82,7 @@
 <script>
 import AppUtils from "@/utils/app.util";
 import NotificationUtils from "@/utils/notification.util";
+import {mapState} from "vuex";
 
 export default {
   name: "Login",
@@ -114,6 +114,9 @@ export default {
     };
   },
   computed: {
+    ...mapState({
+      isAuthenticated: state => state.user.isAuthenticated
+    }),
     showPasswordTooltip() {
       if (this.passwordType === "password") {
         return this.$t("public.loginPage.loginForm.showPassword");
@@ -123,6 +126,7 @@ export default {
     }
   },
   mounted() {
+    if (this.isAuthenticated) this.$router.push({name: 'homePage'});
     if (this.loginForm.login === "") {
       this.$refs.login.focus();
     } else {
@@ -136,9 +140,10 @@ export default {
         : (this.passwordType = "");
     },
     forgotPassword() {
-      this.$router.push({ name: "ResetPasswordInitPage" });
+      this.$router.push({ name: "resetPasswordInitPage" });
     },
     handleLogin() {
+      const vm = this;
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true;
@@ -156,7 +161,7 @@ export default {
             })
             .catch(error => {
               if (error.status === 401)
-                NotificationUtils.error("Incorrect username or password!");
+                NotificationUtils.error(vm.$t("public.loginPage.error.badCredential"));
               else NotificationUtils.error(error.message || error.data.message);
               this.loading = false;
             });

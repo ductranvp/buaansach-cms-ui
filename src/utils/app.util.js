@@ -5,9 +5,7 @@ import i18n from "@/i18n";
 
 function redirectBasedOnRole() {
   if (store.getters.roles.includes(Roles.ADMIN)) return "/admin";
-  else if (store.getters.roles.includes(Roles.MANAGER)) return "/manager";
-  else if (store.getters.roles.includes(Roles.EMPLOYEE)) return "/employee";
-  else return "/";
+  else return "/user";
 }
 
 function generatePageTitle(pageTitle) {

@@ -2,20 +2,19 @@
   "pageTitle": {
     "admin": {
       "adminDashboardPage": "Dashboard",
-      "adminStorePage": "Store Management",
+      "adminStoreListPage": "Store Management",
       "adminProductPage": "Product Management",
       "adminUserPage": "User Management",
       "adminReportPage": "Report Management",
       "adminTrackerPage": "System Tracker",
-      "adminSettingPage": "Setting"
-    },
-    "employee": {
-      "employeeDashboardPage": "Dashboard"
-    },
-    "manager": {
-      "managerDashboardPage": "Dashboard"
+      "adminSettingPage": "Setting",
+      "adminStoreDetailPage": "Store Detail"
     },
     "user": {
+      "userDashboardPage": "Dashboard",
+      "userStorePage": "User Store"
+    },
+    "common": {
       "profilePage": "Profile"
     }
   }

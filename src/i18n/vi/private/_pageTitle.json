@@ -2,20 +2,26 @@
   "pageTitle": {
     "admin": {
       "adminDashboardPage": "Bảng điều khiển",
-      "adminStorePage": "Quản Lý Cửa Hàng",
+      "adminStoreListPage": "Danh Sách Cửa Hàng",
       "adminProductPage": "Quản Lý Sản Phẩm",
       "adminUserPage": "Quản Lý Người Dùng",
       "adminReportPage": "Quản Lý Báo Cáo",
       "adminTrackerPage": "Giám Sát Hệ Thống",
-      "adminSettingPage": "Cài Đặt"
-    },
-    "employee": {
-      "employeeDashboardPage": "Bảng điều khiển"
-    },
-    "manager": {
-      "managerDashboardPage": "Bảng điều khiển"
+      "adminSettingPage": "Cài Đặt",
+
+      "adminStoreDetailPage": "Cửa Hàng - Chi Tiết",
+      "adminStoreDetailOverviewPage": "Cửa Hàng - Tổng Quan",
+      "adminStoreDetailHumanPage": "Cửa Hàng - Nhân Sự",
+      "adminStoreDetailWorkShiftPage": "Cửa Hàng - Ca Làm Việc",
+      "adminStoreDetailSeatPage": "Cửa Hàng - Chỗ Ngồi",
+      "adminStoreDetailSettingPage": "Cửa Hàng - Cài Đặt",
+      "adminStoreDetailSalePage": "Cửa Hàng - Khuyến Mãi"
     },
     "user": {
+      "userDashboardPage": "Bảng Điều Khiển",
+      "userStorePage": "Thành Viên Cửa Hàng"
+    },
+    "common": {
       "profilePage": "Hồ Sơ"
     }
   }

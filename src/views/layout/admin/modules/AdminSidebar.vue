@@ -1,124 +1,84 @@
 <template>
   <el-aside :width="sideWidth">
-    <el-menu
-      v-bind="menuProps"
-      :collapse="isCollapse"
-      :collapse-transition="false"
-      :router="true"
-    >
+    <el-menu v-bind="menuProps"
+             :default-openeds="['adminStoreManagement']"
+             :collapse="isCollapse"
+             :collapse-transition="false"
+             :router="true">
       <el-menu-item class="sidebar-logo" @click="toggleSidebar">
-        <i v-if="!isCollapse" class="el-icon-d-arrow-left" />
-        <i v-else class="el-icon-d-arrow-right" />
-        <span v-if="!isCollapse" slot="title">Collapse</span>
-        <span v-else slot="title">Show</span>
+        <i v-if="!isCollapse" class="el-icon-d-arrow-left"/>
+        <i v-else class="el-icon-d-arrow-right"/>
+        <span v-if="!isCollapse" slot="title">
+          {{$t("layout.adminSidebar.collapse")}}
+        </span>
+        <span v-else slot="title">
+          {{$t("layout.adminSidebar.show")}}
+        </span>
       </el-menu-item>
-      <el-menu-item
-        v-for="item in adminRoutes"
-        :key="item.name"
-        :index="item.name"
-        :route="{ name: item.name }"
-      >
-        <i :class="item.meta.icon" />
-        <span slot="title">{{ $t(item.meta.title) }}</span>
-      </el-menu-item>
+      <template v-for="menu in adminMenu">
+        <el-submenu v-if="menu.subMenu && menu.subMenu.length > 0" :index="menu.name" :key="menu.title">
+          <template slot="title">
+            <i :class="menu.icon"></i>
+            <span slot="title">{{ $t(menu.title) }}</span>
+          </template>
+
+          <el-menu-item v-for="child in menu.subMenu"
+                        :route="{ name: child.routeName }"
+                        :index="child.routeName"
+                        :key="child.routeName">
+            <i class="el-icon-star-off"></i><span slot="title">{{ $t(child.meta.title) }}</span>
+          </el-menu-item>
+        </el-submenu>
+
+        <el-menu-item v-else
+                      :route="{ name: menu.routeName }"
+                      :index="menu.routeName"
+                      :key="menu.routeName">
+          <i :class="menu.meta.icon"></i><span slot="title">{{ $t(menu.meta.title) }}</span>
+        </el-menu-item>
+      </template>
     </el-menu>
   </el-aside>
 </template>
 
 <script>
-export default {
-  name: "AdminSidebar",
-  data() {
-    return {
-      menuProps: {
-        "default-active": ""
+  import mixinSidebarData from "@/views/layout/admin/modules/admin-side-bar.menu";
+
+  export default {
+    name: 'AdminSidebar',
+    mixins: [mixinSidebarData],
+    computed: {
+      sideWidth() {
+        return this.isCollapse ? '64px' : '210px';
       },
-      adminRoutes: [
-        {
-          name: "adminDashboardPage",
-          meta: {
-            icon: "el-icon-odometer",
-            title: "layout.adminSidebar.adminDashboardPage"
-          }
-        },
-        {
-          name: "adminStorePage",
-          meta: {
-            icon: "el-icon-s-shop",
-            title: "layout.adminSidebar.adminStorePage"
-          }
-        },
-        {
-          name: "adminProductPage",
-          meta: {
-            icon: "el-icon-food",
-            title: "layout.adminSidebar.adminProductPage"
-          }
-        },
-        {
-          name: "adminUserPage",
-          meta: {
-            icon: "el-icon-user-solid",
-            title: "layout.adminSidebar.adminUserPage"
-          }
-        },
-        {
-          name: "adminReportPage",
-          meta: {
-            icon: "el-icon-s-marketing",
-            title: "layout.adminSidebar.adminReportPage"
-          }
-        },
-        {
-          name: "adminTrackerPage",
-          meta: {
-            icon: "el-icon-s-help",
-            title: "layout.adminSidebar.adminTrackerPage"
-          }
-        },
-        {
-          name: "adminSettingPage",
-          meta: {
-            icon: "el-icon-setting",
-            title: "layout.adminSidebar.adminSettingPage"
-          }
-        }
-      ],
-      isCollapse: true
-    };
-  },
-  computed: {
-    sideWidth() {
-      return this.isCollapse ? "64px" : "210px";
-    }
-  },
-  watch: {
-    // eslint-disable-next-line no-unused-vars
-    $route(to, from) {
-      this.menuProps["default-active"] = to.name;
-    }
-  },
-  created() {
-    this.menuProps["default-active"] = this.$route.name;
-    this.isCollapse = JSON.parse(localStorage.getItem("adminSidebarCollapse"));
-  },
-  methods: {
-    toggleSidebar() {
-      this.isCollapse = !this.isCollapse;
-      localStorage.setItem(
-        "adminSidebarCollapse",
-        JSON.stringify(this.isCollapse)
-      );
-    }
-  }
-};
+    },
+    watch: {
+      $route(to, from) {
+        console.log(to);
+        if (to.meta.parentName) this.menuProps['default-active'] = to.meta.parentName;
+        else this.menuProps['default-active'] = to.name;
+      },
+    },
+    created() {
+      if (this.$route.meta.parentName) this.menuProps['default-active'] = this.$route.meta.parentName;
+      else this.menuProps['default-active'] = this.$route.name;
+      this.isCollapse = JSON.parse(localStorage.getItem('adminSidebarCollapse'));
+    },
+    methods: {
+      toggleSidebar() {
+        this.isCollapse = !this.isCollapse;
+        localStorage.setItem('adminSidebarCollapse', JSON.stringify(this.isCollapse));
+      },
+    },
+  };
 </script>
 
 <style scoped>
-.el-menu {
-  border-right-width: 0;
-}
-.is-active {
-  background-color: #ecf5ff;
-}
+  .el-menu {
+    border-right-width: 0;
+  }
+
+  .is-active {
+    background-color: #ecf5ff;
+  }
 </style>

@@ -1,11 +1,17 @@
 {
   "adminSidebar": {
-    "adminDashboardPage": "Bảng Điều Khiển",
-    "adminStorePage": "Quản Lý Cửa Hàng",
-    "adminProductPage": "Quản Lý Sản Phẩm",
-    "adminUserPage": "Quản Lý Người Dùng",
-    "adminReportPage": "Quản Lý Báo Cáo",
-    "adminTrackerPage": "Giám Sát Hệ Thống",
+    "collapse": "Thu nhỏ",
+    "show": "Hiện tên",
+    "adminDashboardPage": "Tổng Quan",
+    "adminStoreManagement": {
+      "title": "Cửa Hàng",
+      "adminStoreListPage": "Danh Sách",
+      "adminStoreDetailPage": "Chi Tiết"
+    },
+    "adminProductPage": "Sản Phẩm",
+    "adminUserPage": "Người Dùng",
+    "adminReportPage": "Báo Cáo",
+    "adminTrackerPage": "Giám Sát",
     "adminSettingPage": "Cài Đặt"
   }
 }

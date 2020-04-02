@@ -11,6 +11,9 @@
       "validatePassword": "Please enter password",
       "loginBtn": "Login",
       "forgotBtn": "Forgot password?"
+    },
+    "error": {
+      "badCredential": "Sai tên đăng nhập hoặc mật khẩu"
     }
   }
 }

@@ -1,14 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import PublicRoutes from "@/router/public-routes";
+import PublicRoutes from "@/router/public.routes";
 import PublicLayout from "@/views/layout/public/PublicLayout";
 import AdminLayout from "@/views/layout/admin/AdminLayout";
-import EmployeeLayout from "@/views/layout/employee/EmployeeLayout";
-import ManagerLayout from "@/views/layout/manager/ManagerLayout";
-import AdminRoutes from "@/router/private-routes/admin-routes";
-import ManagerRoutes from "@/router/private-routes/manager-routes";
-import EmployeeRoutes from "@/router/private-routes/employee-routes";
-import UserRoutes from "@/router/private-routes/user-routes";
+import AdminRoutes from "@/router/private-routes/admin.routes";
+import UserRoutes from "@/router/private-routes/user.routes";
+import UserLayout from "@/views/layout/user/UserLayout";
+import CommonRoutes from "@/router/private-routes/common.routes";
 
 Vue.use(VueRouter);
 
@@ -19,8 +17,7 @@ const router = new VueRouter({
       path: "/",
       component: PublicLayout,
       redirect: "/home",
-      /* user routes is private but layout is the same public layout */
-      children: [...PublicRoutes, ...UserRoutes]
+      children: [...PublicRoutes, ...CommonRoutes]
     },
     {
       path: "/admin",
@@ -29,16 +26,10 @@ const router = new VueRouter({
       children: [...AdminRoutes]
     },
     {
-      path: "/manager",
-      component: ManagerLayout,
-      redirect: "/manager/dashboard",
-      children: [...ManagerRoutes]
-    },
-    {
-      path: "/employee",
-      component: EmployeeLayout,
-      redirect: "/employee/dashboard",
-      children: [...EmployeeRoutes]
+      path: "/user",
+      component: UserLayout,
+      redirect: "/user/dashboard",
+      children: [...UserRoutes]
     }
   ]
 });
