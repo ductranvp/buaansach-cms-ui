@@ -1,8 +1,8 @@
 <template>
   <el-row type="flex" align="middle">
-    <el-col :span="6" :xs="24">
+    <el-col :span="4" :xs="24">
       <el-image
-        style="width: 240px; height:135px"
+        style="width: 160px; height:90px"
         :src="row.storeImageUrl"
         fit="cover"
         :preview-src-list="[row.storeImageUrl]"
@@ -12,7 +12,7 @@
         </div>
       </el-image>
     </el-col>
-    <el-col :span="16" :xs="24">
+    <el-col :span="20" :xs="24">
       <el-row type="flex">
         <el-col :span="13">
           <table class="expanded-table">
@@ -30,23 +30,9 @@
             </tr>
             <tr>
               <td>
-                {{ $t("private.adminStoreListPage.storeEntity.storeOwnerLogin") }}
+                {{ $t("private.adminStoreListPage.storeEntity.storeTaxCode") }}
               </td>
-              <td>{{ row.storeOwnerLogin }}</td>
-            </tr>
-            <tr>
-              <td colspan="2">
-                <el-button
-                  type="info"
-                  plain
-                  size="mini"
-                  @click="handleChangeOwner(row)"
-                >
-                  <span>{{
-                    $t("private.adminStoreListPage.changeOwner.triggerBtn")
-                  }}</span>
-                </el-button>
-              </td>
+              <td>{{ row.storeTaxCode }}</td>
             </tr>
           </table>
         </el-col>
@@ -57,15 +43,7 @@
           <table class="expanded-table">
             <tr>
               <td>
-                {{ $t("private.adminStoreListPage.storeEntity.storeTaxCode") }}
-              </td>
-              <td>{{ row.storeTaxCode }}</td>
-            </tr>
-            <tr>
-              <td>
-                {{
-                  $t("private.adminStoreListPage.storeEntity.previousUpdateReason")
-                }}
+                {{$t("private.adminStoreListPage.storeEntity.previousUpdateReason")}}
               </td>
               <td>{{ row.lastUpdateReason }}</td>
             </tr>
@@ -91,56 +69,26 @@
 </template>
 
 <script>
-import MessageBoxUtils from "@/utils/message-box.util";
-import StoreService from "@/service/store.service";
-import NotificationUtils from "@/utils/notification.util";
 
-export default {
-  name: "RowDetail",
-  props: {
-    row: {
-      type: Object,
-      required: true
-    }
-  },
-  methods: {
-    handleChangeOwner(row) {
-      const vm = this;
-      const title = vm.$t("private.adminStoreListPage.changeOwner.title");
-      const msg = vm.$t("private.adminStoreListPage.changeOwner.inputPlaceholder");
-      MessageBoxUtils.prompt(title, msg, false, function(response) {
-        const dto = {
-          storeGuid: row.guid,
-          usernameOrEmail: response.value
-        };
-        StoreService.changeStoreOwner(dto)
-          .then(() => {
-            const successMessage = vm.$t(
-              "private.adminStoreListPage.changeOwner.successMessage"
-            );
-            NotificationUtils.success(successMessage);
-            vm.$emit("ownerChanged");
-          })
-          .catch(error => {
-            const errorMessage =
-              error.message ||
-              error.data.message ||
-              vm.$t("private.adminStoreListPage.changeOwner.errorMessage");
-            NotificationUtils.error(errorMessage);
-          });
-      });
-    }
-  }
-};
+  export default {
+    name: "RowDetail",
+    props: {
+      row: {
+        type: Object,
+        required: true
+      }
+    },
+    methods: {}
+  };
 </script>
 
 <style scoped>
-.expanded-table {
-  width: 100%;
-}
+  .expanded-table {
+    width: 100%;
+  }
 
-.expanded-table tr td {
-  border: none;
-  /*padding: 0px 0px 5px 0px;*/
-}
+  .expanded-table tr td {
+    border: none;
+    /*padding: 0px 0px 5px 0px;*/
+  }
 </style>

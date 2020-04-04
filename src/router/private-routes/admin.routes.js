@@ -32,7 +32,6 @@ const AdminRoutes = [
     path: "store-detail/:storeGuid?",
     name: "adminStoreDetailPage",
     component: AdminStoreDetail,
-    redirect: {name: "adminStoreDetailOverviewPage"},
     meta: {
       title: "private.pageTitle.admin.adminStoreDetailPage",
       roles: [Roles.ADMIN]

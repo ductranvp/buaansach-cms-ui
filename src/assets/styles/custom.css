@@ -15,7 +15,11 @@
     background: #eee;
 }
 
-.full-size{
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.full-size {
     height: 100%;
     width: 100%;
 }
@@ -36,27 +40,48 @@
     display: flex;
 }
 
+.flex-1 {
+    flex: 1;
+}
+
 .transparent-btn {
     border: none !important;
     background: transparent !important;
 }
 
-.text-center{
+.text-center {
     text-align: center !important;
 }
 
-.text-right{
+.text-right {
     text-align: right !important;
 }
 
-.text-left{
+.text-bold-700 {
+    font-weight: 700 !important;
+}
+
+.text-bold-600 {
+    font-weight: 600 !important;
+}
+
+.text-left {
     text-align: left !important;
 }
 
-.text-16{
+.text-14 {
+    font-size: 14px !important;
+}
+
+.text-16 {
     font-size: 16px !important;
 }
+
 .text-24 {
     font-size: 24px !important;
+}
+
+.pointer {
+    cursor: pointer;
 }
 

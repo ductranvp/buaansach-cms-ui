@@ -4,6 +4,7 @@ import AdminStoreDetailHuman from "@/views/private/admin/management/store/module
 import AdminStoreDetailWorkShift from "@/views/private/admin/management/store/modules/AdminStoreDetailWorkShift";
 import AdminStoreDetailSale from "@/views/private/admin/management/store/modules/AdminStoreDetailSale";
 import AdminStoreDetailSetting from "@/views/private/admin/management/store/modules/AdminStoreDetailSetting";
+import AdminStoreDetailArea from "@/views/private/admin/management/store/modules/AdminStoreDetailArea";
 import AdminStoreDetailSeat from "@/views/private/admin/management/store/modules/AdminStoreDetailSeat";
 
 const AdminStoreDetailChildren = [
@@ -44,6 +45,16 @@ const AdminStoreDetailChildren = [
     meta: {
       parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailSalePage",
+      roles: [Roles.ADMIN]
+    }
+  },
+  {
+    path: "area",
+    name: "adminStoreDetailAreaPage",
+    component: AdminStoreDetailArea,
+    meta: {
+      parentName: "adminStoreDetailPage",
+      title: "private.pageTitle.admin.adminStoreDetailAreaPage",
       roles: [Roles.ADMIN]
     }
   },

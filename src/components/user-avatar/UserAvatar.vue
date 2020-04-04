@@ -1,4 +1,4 @@
-<template>
+<UserAvatar>
   <div :style="{ width: size + 'px', height: size + 'px' }" class="pointer">
     <el-tooltip
       :content="user.firstName + ' ' + user.lastName"
@@ -23,7 +23,7 @@
       </el-avatar>
     </el-tooltip>
   </div>
-</template>
+</UserAvatar>
 
 <script>
 export default {

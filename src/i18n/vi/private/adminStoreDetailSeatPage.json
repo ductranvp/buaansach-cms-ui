@@ -1,0 +1,9 @@
+{
+  "adminStoreDetailSeatPage": {
+    "displayBySeat": "Hiển thị theo chỗ ngồi",
+    "displayByArea": "Hiển thị theo khu vực",
+    "density": "Mật độ hiển thị",
+    "sortByName": "Sắp xếp theo tên",
+    "sortByCreatedDate": "Sắp xếp theo ngày tạo"
+  }
+}

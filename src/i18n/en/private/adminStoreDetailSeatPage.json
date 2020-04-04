@@ -1,0 +1,9 @@
+{
+  "adminStoreDetailSeatPage": {
+    "displayBySeat": "Display by Seat",
+    "displayByArea": "Display by Area",
+    "density": "Density",
+    "sortByName": "Sort by Name",
+    "sortByCreatedDate": "Sort by Created date"
+  }
+}

@@ -5,7 +5,7 @@ const mixinData = {
         entityName: this.$t("private.adminStoreListPage.entityName")
       }),
       dialogFormVisible: false,
-      isSaving: false,
+      isLoading: false,
       previousUpdateReason: null,
       storeEntity: {
         guid: null,
@@ -19,7 +19,6 @@ const mixinData = {
         storeOwnerEmail: null,
         storeTaxCode: null,
         lastUpdateReason: null,
-        storeOwnerLogin: null,
         createdDate: null,
         createdBy: null,
         lastModifiedDate: null,
@@ -30,7 +29,10 @@ const mixinData = {
           label: "private.adminStoreListPage.storeStatus.activated",
           value: "ACTIVATED"
         },
-        { label: "private.adminStoreListPage.storeStatus.paused", value: "PAUSED" },
+        {
+          label: "private.adminStoreListPage.storeStatus.paused",
+          value: "PAUSED"
+        },
         {
           label: "private.adminStoreListPage.storeStatus.deactivated",
           value: "DEACTIVATED"
@@ -45,7 +47,7 @@ const mixinData = {
           },
           {
             max: 20,
-            message: this.$t("common.entity.validation.maxlength", { max: 20 }),
+            message: this.$t("common.entity.validation.maxlength", {max: 20}),
             trigger: "blur"
           }
         ],
@@ -99,7 +101,7 @@ const mixinData = {
           },
           {
             max: 50,
-            message: this.$t("common.entity.validation.maxlength", { max: 50 }),
+            message: this.$t("common.entity.validation.maxlength", {max: 50}),
             trigger: "blur"
           }
         ],

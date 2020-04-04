@@ -2,13 +2,6 @@
   "adminStoreListPage": {
     "entityName": "cửa hàng",
     "searchPlaceholder": "Tìm theo tên hoặc mã cửa hàng",
-    "changeOwner": {
-      "triggerBtn": "Thay đổi tài khoản chủ cửa hàng",
-      "title": "Thay đổi tài khoản chủ cửa hàng",
-      "inputPlaceholder": "Điền tên đăng nhập hoặc email của người dùng",
-      "successMessage": "Sang nhượng thành công",
-      "errorMessage": "Sang nhượng thất bại. Thử lại"
-    },
     "storeEntity": {
       "guid": "Guid",
       "storeCode": "Mã cửa hàng",
@@ -21,7 +14,6 @@
       "storeOwnerEmail": "Email chủ cửa hàng",
       "storeTaxCode": "Mã số thuế",
       "lastUpdateReason": "Lí do chỉnh sửa",
-      "storeOwnerLogin": "Tài khoản chủ cửa hàng",
       "createdDate": "Ngày tạo",
       "createdBy": "Người tạo",
       "lastModifiedDate": "Ngày sửa cuối",

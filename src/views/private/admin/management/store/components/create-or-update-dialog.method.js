@@ -57,7 +57,7 @@ const mixinMethod = {
       let vm = this;
       this.$refs.storeForm.validate(valid => {
         if (valid) {
-          vm.isSaving = true;
+          vm.isLoading = true;
           const params = vm.getParams();
           if (
             vm.storeEntity.guid === null ||
@@ -75,7 +75,7 @@ const mixinMethod = {
       });
 
       function onSaveSuccess(response) {
-        vm.isSaving = false;
+        vm.isLoading = false;
         vm.$emit("storeSaved", response);
         NotificationUtils.success(
           vm.$t("private.adminStoreListPage.notification.saveSuccess")
@@ -84,7 +84,7 @@ const mixinMethod = {
       }
 
       function onSaveError(error) {
-        vm.isSaving = false;
+        vm.isLoading = false;
         const message =
           error.message ||
           error.data.message ||

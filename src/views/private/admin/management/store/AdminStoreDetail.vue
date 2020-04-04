@@ -1,95 +1,91 @@
 <template>
-  <div>
-    <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
-      <el-tab-pane v-for="tab in tabRoutes"
-                   :label="$t(tab.title)"
-                   :name="tab.routeName"
-                   :key="tab.routeName"/>
-    </el-tabs>
-    <div>
+  <el-container direction="vertical">
+    <el-row :gutter="10" type="flex">
+      <el-col :span="10" :xs="24">
+        <el-autocomplete
+          v-model="searchKey"
+          :fetch-suggestions="queryStore"
+          :value-key="'storeName'"
+          :placeholder="$t('private.adminStoreDetailPage.searchPlaceholder')"
+          :debounce="queryDebounce"
+          clearable
+          @select="handleSelect"
+          class="full-width"
+        >
+          <template slot-scope="{item}">
+            <!--         {{item}}-->
+            <span>{{item.storeCode}} - {{item.storeName}}</span>
+          </template>
+        </el-autocomplete>
+      </el-col>
+    </el-row>
+    <el-row v-if="storeGuid" class="margin-top-10 full-size">
+      <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tab-pane v-for="tab in tabRoutes"
+                     :label="$t(tab.title)"
+                     :name="tab.routeName"
+                     :key="tab.routeName"/>
+      </el-tabs>
       <transition name="fade-transform" mode="out-in">
         <router-view :key="key"/>
       </transition>
-    </div>
-  </div>
+    </el-row>
+  </el-container>
 </template>
 
 <script>
   import StoreService from "@/service/store.service";
+  import adminStoreDetailData from "@/views/private/admin/management/store/admin-store-detail.data";
 
   export default {
     name: "AdminStoreDetail",
+    mixins: [adminStoreDetailData],
     computed: {
       key() {
         return this.$route.path;
       }
     },
-    data() {
-      return {
-        activeName: 'adminStoreDetailOverviewPage',
-        storeGuid: null,
-        tabRoutes: [
-          {
-            routeName: "adminStoreDetailOverviewPage",
-            title: "private.adminStoreDetailPage.tabs.overview"
-          },
-          {
-            routeName: "adminStoreDetailHumanPage",
-            title: "private.adminStoreDetailPage.tabs.human"
-          },
-          {
-            routeName: "adminStoreDetailSalePage",
-            title: "private.adminStoreDetailPage.tabs.sale"
-          },
-          {
-            routeName: "adminStoreDetailWorkShiftPage",
-            title: "private.adminStoreDetailPage.tabs.workShift"
-          },
-          {
-            routeName: "adminStoreDetailSeatPage",
-            title: "private.adminStoreDetailPage.tabs.seat"
-          },
-          {
-            routeName: "adminStoreDetailSettingPage",
-            title: "private.adminStoreDetailPage.tabs.setting"
-          }
-        ],
-        storeEntity: {
-          guid: null,
-          storeCode: null,
-          storeName: null,
-          storeAddress: null,
-          storeImageUrl: null,
-          storeStatus: null,
-          storeOwnerName: null,
-          storeOwnerPhone: null,
-          storeOwnerEmail: null,
-          storeTaxCode: null,
-          lastUpdateReason: null,
-          storeOwnerLogin: null,
-          createdDate: null,
-          createdBy: null,
-          lastModifiedDate: null,
-          lastModifiedBy: null
-        }
-      };
-    },
-    mounted() {
+    created() {
       this.storeGuid = this.$route.params.storeGuid;
       this.activeName = this.$route.name;
       this.getStoreDetail();
     },
+    watch: {
+      $route(to, from) {
+        this.storeGuid = to.params.storeGuid;
+        this.activeName = to.name;
+      },
+    },
     methods: {
-      getStoreDetail() {
-        if (this.$route.params.storeGuid) {
-          StoreService.getStore(this.$route.params.storeGuid).then(response => {
-            console.log(response);
-          });
+      async queryStore(queryString, cb) {
+        try {
+          if (queryString) {
+            const {data} = await StoreService.getListStore({search: queryString});
+            cb(data.content);
+          } else {
+            cb([]);
+          }
+        } catch (e) {
+          // console.log(e);
         }
       },
-      handleClick(tab, event) {
+      handleSelect(selectedStore) {
+        const currentRouteName = this.$route.name;
+        if (this.$route.params.storeGuid !== selectedStore.guid)
+          this.$router.push({name: currentRouteName, params: {storeGuid: selectedStore.guid}});
+      },
+      async getStoreDetail() {
+        const vm = this;
+        if (this.$route.params.storeGuid) {
+          const {data} = await StoreService.getStore(this.$route.params.storeGuid);
+          vm.searchKey = data.storeName;
+        }
+      },
+      handleClick(tab) {
         this.activeName = tab.name;
-        this.$router.push({name: tab.name, params: {storeGuid: this.storeGuid}});
+        if (tab.name !== this.$route.name) {
+          this.$router.push({name: tab.name, params: {storeGuid: this.storeGuid}});
+        }
       }
     }
   };

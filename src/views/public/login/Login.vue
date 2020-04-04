@@ -54,7 +54,7 @@
           <el-form-item>
             <div>
               <el-button
-                :loading="loading"
+                :loading="isLoading"
                 type="primary"
                 style="width: 100%"
                 @click="handleLogin"
@@ -109,7 +109,7 @@ export default {
           }
         ]
       },
-      loading: false,
+      isLoading: false,
       passwordType: "password"
     };
   },
@@ -146,7 +146,7 @@ export default {
       const vm = this;
       this.$refs.loginForm.validate(valid => {
         if (valid) {
-          this.loading = true;
+          this.isLoading = true;
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
@@ -157,13 +157,13 @@ export default {
               } else {
                 this.$router.push({ path: AppUtils.redirectBasedOnRole() });
               }
-              this.loading = false;
+              this.isLoading = false;
             })
             .catch(error => {
               if (error.status === 401)
                 NotificationUtils.error(vm.$t("public.loginPage.error.badCredential"));
               else NotificationUtils.error(error.message || error.data.message);
-              this.loading = false;
+              this.isLoading = false;
             });
         } else {
           return false;

@@ -6,7 +6,6 @@
       :data="tableData"
       sortable="custom"
       @sort-change="onSortChange"
-      :default-sort="defaultSort"
       stripe
       border
       :size="tableSize"
@@ -59,8 +58,8 @@ export default {
       tableConfig: {
         totalElements: 0,
         currentPage: 1,
-        pageSize: 5,
-        pageSizes: [5, 10, 20, 30, 50, 100],
+        pageSize: 20,
+        pageSizes: [10, 20, 30, 50, 100],
         sort: {
           sortDirection: "DESC",
           sortField: "createdDate"
@@ -68,7 +67,7 @@ export default {
       }
     };
   },
-  mounted() {
+  created() {
     /* assign config */
     if (this.config) {
       if (this.config.pageSizes) {
@@ -138,7 +137,6 @@ export default {
         this.tableConfig.totalElements = data.totalElements;
         /* cb is callback for reload function, using when need loading animation */
         if (cb) {
-          console.log("Data load successfully, this is callback");
           cb();
         }
       });

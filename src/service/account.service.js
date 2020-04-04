@@ -1,6 +1,6 @@
 import request from "@/config/request";
 
-const baseUrl = "api/account";
+const baseUrl = "api/v1/account";
 const AccountService = {
   authenticate(payload) {
     return request.post(baseUrl + "/authenticate", JSON.stringify(payload));

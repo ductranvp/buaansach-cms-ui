@@ -13,7 +13,7 @@
         </el-button>
       </el-col>
       <el-col class="hidden-sm-and-down" :span="8">
-        <el-input placeholder="Search">
+        <el-input :placeholder="$t('layout.publicHeader.search')">
           <el-button slot="append" icon="el-icon-search" />
         </el-input>
       </el-col>

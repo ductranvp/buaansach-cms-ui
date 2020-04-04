@@ -1,10 +1,12 @@
 {
   "adminStoreDetailPage": {
+    "searchPlaceholder": "Nhập mã hoặc tên cửa hàng để tìm kiếm",
     "tabs": {
       "overview": "Thông tin",
       "human": "Nhân sự",
       "workShift": "Ca làm việc",
       "sale": "Khuyến mãi",
+      "area": "Khu vực",
       "seat": "Chỗ ngồi",
       "setting": "Cài đặt"
     },

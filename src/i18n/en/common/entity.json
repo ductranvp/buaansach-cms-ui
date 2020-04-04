@@ -10,7 +10,8 @@
       "open": "Open",
       "save": "Save",
       "view": "View",
-      "refresh": "Refresh"
+      "refresh": "Refresh",
+      "ok": "OK"
     },
     "dialog": {
       "title": "Create or update {entityName}"

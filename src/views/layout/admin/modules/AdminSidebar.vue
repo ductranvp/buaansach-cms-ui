@@ -42,7 +42,7 @@
 </template>
 
 <script>
-  import mixinSidebarData from "@/views/layout/admin/modules/admin-side-bar.menu";
+  import mixinSidebarData from "@/views/layout/admin/modules/admin-side-bar.data";
 
   export default {
     name: 'AdminSidebar',
@@ -54,7 +54,6 @@
     },
     watch: {
       $route(to, from) {
-        console.log(to);
         if (to.meta.parentName) this.menuProps['default-active'] = to.meta.parentName;
         else this.menuProps['default-active'] = to.name;
       },

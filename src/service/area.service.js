@@ -1,6 +1,6 @@
 import request from "@/config/request";
 
-const baseUrl = "api/area";
+const baseUrl = "api/v1/area";
 const AreaService = {
   createArea(payload) {
     return request.post(baseUrl + "/create", payload );
@@ -8,8 +8,8 @@ const AreaService = {
   updateArea(payload) {
     return request.put(baseUrl + "/update", payload);
   },
-  getListByStore(storeGuid) {
-    return request.get(baseUrl + "/list" + storeGuid);
+  getListAreaByStore(storeGuid) {
+    return request.get(baseUrl + "/list/" + storeGuid);
   },
   deleteArea(areaGuid) {
     return request.delete(baseUrl + "/delete/" + areaGuid);

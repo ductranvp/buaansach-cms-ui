@@ -2,13 +2,6 @@
   "adminStoreListPage": {
     "entityName": "store",
     "searchPlaceholder": "Search by name or code",
-    "changeOwner": {
-      "triggerBtn": "Change Owner",
-      "title": "Change Owner",
-      "inputPlaceholder": "Input username or email of the owner",
-      "successMessage": "Change store owner successfully",
-      "errorMessage": "Failed to change store owner"
-    },
     "storeEntity": {
       "guid": "Guid",
       "storeCode": "Code",
@@ -21,7 +14,6 @@
       "storeOwnerEmail": "Owner Email",
       "storeTaxCode": "Tax Code",
       "lastUpdateReason": "Update Reason",
-      "storeOwnerLogin": "Owner Login",
       "createdDate": "Created Date",
       "createdBy": "Created By",
       "lastModifiedDate": "Last Modified Date",

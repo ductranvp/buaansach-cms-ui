@@ -1,0 +1,36 @@
+{
+  "adminStoreDetailAreaPage": {
+    "seatEntityName": "seat",
+    "areaEntityName": "area",
+    "form": {
+      "areaName": "Area Name",
+      "numberOfSeats": "Number of Seats",
+      "autoCreateSeat": "Auto Create Seat",
+      "seatPrefix": "Seat Prefix",
+      "submitBtn": "Create Area"
+    },
+    "dialog": {
+      "addSeatTitle": "Add Seat",
+      "addSeatMessage": "Input Seat Name",
+      "editSeatTitle": "Edit Seat"
+    },
+    "table": {
+      "areaName": "Area Name",
+      "numberOfSeats": "Number of Seats",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date"
+    },
+    "notification": {
+      "saveAreaSuccess": "Area saved successfully",
+      "saveAreaError": "Area saved unsuccessfully",
+      "saveSeatSuccess": "Seat saved successfully",
+      "saveSeatError": "Seat saved successfully",
+      "deleteAreaSuccess": "Area deleted successfully",
+      "deleteAreaError": "Area deleted unsuccessfully",
+      "deleteSeatSuccess": "Seat deleted successfully",
+      "deleteSeatError": "Seat deleted unsuccessfully"
+    }
+  }
+}

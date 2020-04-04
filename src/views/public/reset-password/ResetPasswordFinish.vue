@@ -106,6 +106,9 @@
                 vm.$t("public.resetPasswordFinishPage.alertMessage"), false, function () {
                   vm.$router.push({name: 'loginPage'});
                 });
+            }).catch(error => {
+              const message = error.message || error.data.message;
+              NotificationUtils.error(message);
             });
           }
         });

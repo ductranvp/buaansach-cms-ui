@@ -9,13 +9,14 @@
       "adminTrackerPage": "Giám Sát Hệ Thống",
       "adminSettingPage": "Cài Đặt",
 
-      "adminStoreDetailPage": "Cửa Hàng - Chi Tiết",
-      "adminStoreDetailOverviewPage": "Cửa Hàng - Tổng Quan",
-      "adminStoreDetailHumanPage": "Cửa Hàng - Nhân Sự",
-      "adminStoreDetailWorkShiftPage": "Cửa Hàng - Ca Làm Việc",
-      "adminStoreDetailSeatPage": "Cửa Hàng - Chỗ Ngồi",
-      "adminStoreDetailSettingPage": "Cửa Hàng - Cài Đặt",
-      "adminStoreDetailSalePage": "Cửa Hàng - Khuyến Mãi"
+      "adminStoreDetailPage": "Chi Tiết - Cửa Hàng",
+      "adminStoreDetailOverviewPage": "Tổng Quan - Cửa Hàng",
+      "adminStoreDetailHumanPage": "Nhân Sự - Cửa Hàng",
+      "adminStoreDetailWorkShiftPage": "Ca Làm Việc - Cửa Hàng",
+      "adminStoreDetailAreaPage": "Khu Vực - Cửa Hàng",
+      "adminStoreDetailSeatPage": "Chỗ Ngồi - Cửa Hàng",
+      "adminStoreDetailSettingPage": "Cài Đặt - Cửa Hàng",
+      "adminStoreDetailSalePage": "Khuyến Mãi - Cửa Hàng"
     },
     "user": {
       "userDashboardPage": "Bảng Điều Khiển",

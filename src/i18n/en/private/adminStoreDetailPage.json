@@ -1,10 +1,12 @@
 {
   "adminStoreDetailPage": {
+    "searchPlaceholder": "Enter store code or store name",
     "tabs": {
       "overview": "Overview",
       "human": "Human",
       "workShift": "Work Shift",
       "sale": "Sale",
+      "area": "Area",
       "seat": "Seat",
       "setting": "Setting"
     },

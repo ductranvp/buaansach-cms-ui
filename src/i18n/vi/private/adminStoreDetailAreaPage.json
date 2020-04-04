@@ -1,0 +1,36 @@
+{
+  "adminStoreDetailAreaPage": {
+    "seatEntityName": "chỗ ngồi",
+    "areaEntityName": "khu vực",
+    "form": {
+      "areaName": "Tên khu vực",
+      "numberOfSeats": "Số lượng chỗ ngồi",
+      "autoCreateSeat": "Tự tạo số chỗ ngồi tương ứng",
+      "seatPrefix": "Tiền tố, ví dụ: Bàn, Ghế...",
+      "submitBtn": "Thêm khu vực"
+    },
+    "dialog": {
+      "addSeatTitle": "Thêm chỗ ngồi",
+      "addSeatMessage": "Nhập tên chỗ ngồi",
+      "editSeatTitle": "Sửa chỗ ngồi"
+    },
+    "table": {
+      "areaName": "Tên khu vực",
+      "numberOfSeats": "Số chỗ ngồi",
+      "createdBy": "Người tạo",
+      "createdDate": "Ngày tạo",
+      "lastModifiedBy": "Sửa lần cuối bởi",
+      "lastModifiedDate": "Sửa lần cuối lúc"
+    },
+    "notification": {
+      "saveAreaSuccess": "Lưu khu vực thành công",
+      "saveAreaError": "Lưu khu vực không thành công",
+      "saveSeatSuccess": "Lưu chỗ ngồi thành công",
+      "saveSeatError": "Lưu chỗ ngồi không thành công",
+      "deleteAreaSuccess": "Xóa khu vực thành công",
+      "deleteAreaError": "Xóa khu vực không thành công",
+      "deleteSeatSuccess": "Xóa chỗ ngồi thành công",
+      "deleteSeatError": "Xóa chỗ ngồi không thành công"
+    }
+  }
+}

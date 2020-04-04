@@ -8,7 +8,15 @@
       "adminReportPage": "Report Management",
       "adminTrackerPage": "System Tracker",
       "adminSettingPage": "Setting",
-      "adminStoreDetailPage": "Store Detail"
+
+      "adminStoreDetailPage": "Detail - Store",
+      "adminStoreDetailOverviewPage": "Overview - Store",
+      "adminStoreDetailHumanPage": "Human Resource - Store",
+      "adminStoreDetailWorkShiftPage": "Work Shift - Store",
+      "adminStoreDetailAreaPage": "Area - Store",
+      "adminStoreDetailSeatPage": "Seat - Store",
+      "adminStoreDetailSettingPage": "Setting - Store",
+      "adminStoreDetailSalePage": "Sale - Store"
     },
     "user": {
       "userDashboardPage": "Dashboard",

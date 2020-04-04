@@ -21,7 +21,7 @@
         </el-form-item>
         <el-form-item>
           <el-button
-            :loading="isSaving"
+            :loading="isLoading"
             @click="submit"
             class="width-100"
             type="primary"
@@ -41,7 +41,7 @@ export default {
   name: "ChangePassword",
   data() {
     return {
-      isSaving: false,
+      isLoading: false,
       form: {
         currentPassword: null,
         newPassword: null,
@@ -83,16 +83,16 @@ export default {
           if (vm.form.newPassword !== vm.form.confirm)
             NotificationUtils.error("Confirm password does not match");
           else {
-            vm.isSaving = true;
+            vm.isLoading = true;
             AccountService.changePassword(vm.form)
               .then(() => {
                 NotificationUtils.success("Change password successfully");
-                vm.isSaving = false;
+                vm.isLoading = false;
                 vm.resetForm();
               })
               .catch(error => {
                 NotificationUtils.error(error.data.message || error.message);
-                vm.isSaving = false;
+                vm.isLoading = false;
                 vm.resetForm();
               });
           }

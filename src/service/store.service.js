@@ -1,6 +1,6 @@
 import request from "@/config/request";
 
-const baseUrl = "api/store";
+const baseUrl = "api/v1/store";
 const StoreService = {
   createStore(payload) {
     return request.post(baseUrl + "/create", payload, {
