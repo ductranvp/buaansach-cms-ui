@@ -12,7 +12,8 @@
       "forgotBtn": "Quên mật khẩu?"
     },
     "error": {
-      "badCredential": "Sai tên đăng nhập hoặc mật khẩu"
+      "badCredential": "Sai tên đăng nhập hoặc mật khẩu",
+      "userNotActivated": "Tài khoản đã bị khóa"
     }
   }
 }

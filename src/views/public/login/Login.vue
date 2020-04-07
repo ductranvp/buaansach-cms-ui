@@ -160,9 +160,7 @@ export default {
               this.isLoading = false;
             })
             .catch(error => {
-              if (error.status === 401)
-                NotificationUtils.error(vm.$t("public.loginPage.error.badCredential"));
-              else NotificationUtils.error(error.message || error.data.message);
+              NotificationUtils.error(error.message || error.data.message);
               this.isLoading = false;
             });
         } else {

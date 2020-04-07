@@ -13,7 +13,8 @@
       "forgotBtn": "Forgot password?"
     },
     "error": {
-      "badCredential": "Sai tên đăng nhập hoặc mật khẩu"
+      "badCredential": "Incorrect username or password",
+      "userNotActivated": "Tài khoản đã bị khóa"
     }
   }
 }

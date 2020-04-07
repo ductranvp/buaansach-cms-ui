@@ -3,6 +3,7 @@ import adminStoreListPage from "./adminStoreListPage";
 import adminStoreDetailPage from "./adminStoreDetailPage";
 import adminStoreDetailAreaPage from "./adminStoreDetailAreaPage";
 import adminStoreDetailSeatPage from "./adminStoreDetailSeatPage";
+import adminStoreDetailHumanPage from "./adminStoreDetailHumanPage";
 
 const privateText = {
   private: {
@@ -10,7 +11,8 @@ const privateText = {
     ...adminStoreListPage,
     ...adminStoreDetailPage,
     ...adminStoreDetailAreaPage,
-    ...adminStoreDetailSeatPage
+    ...adminStoreDetailSeatPage,
+    ...adminStoreDetailHumanPage
   }
 };
 

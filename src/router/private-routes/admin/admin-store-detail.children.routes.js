@@ -1,11 +1,11 @@
-import AdminStoreDetailOverview from "@/views/private/admin/management/store/modules/AdminStoreDetailOverview";
+import AdminStoreDetailOverview from "@/views/private/admin/store/detail/overview/AdminStoreDetailOverview";
 import Roles from "@/config/security/roles";
-import AdminStoreDetailHuman from "@/views/private/admin/management/store/modules/AdminStoreDetailHuman";
-import AdminStoreDetailWorkShift from "@/views/private/admin/management/store/modules/AdminStoreDetailWorkShift";
-import AdminStoreDetailSale from "@/views/private/admin/management/store/modules/AdminStoreDetailSale";
-import AdminStoreDetailSetting from "@/views/private/admin/management/store/modules/AdminStoreDetailSetting";
-import AdminStoreDetailArea from "@/views/private/admin/management/store/modules/AdminStoreDetailArea";
-import AdminStoreDetailSeat from "@/views/private/admin/management/store/modules/AdminStoreDetailSeat";
+import AdminStoreDetailHuman from "@/views/private/admin/store/detail/human/AdminStoreDetailHuman";
+import AdminStoreDetailWorkShift from "@/views/private/admin/store/detail/work-shift/AdminStoreDetailWorkShift";
+import AdminStoreDetailSale from "@/views/private/admin/store/detail/sale/AdminStoreDetailSale";
+import AdminStoreDetailSetting from "@/views/private/admin/store/detail/setting/AdminStoreDetailSetting";
+import AdminStoreDetailArea from "@/views/private/admin/store/detail/area/AdminStoreDetailArea";
+import AdminStoreDetailSeat from "@/views/private/admin/store/detail/seat/AdminStoreDetailSeat";
 
 const AdminStoreDetailChildren = [
   {

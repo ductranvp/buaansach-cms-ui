@@ -35,7 +35,7 @@
 
 <script>
   import StoreService from "@/service/store.service";
-  import adminStoreDetailData from "@/views/private/admin/management/store/admin-store-detail.data";
+  import adminStoreDetailData from "@/views/private/admin/store/detail/admin-store-detail.data";
 
   export default {
     name: "AdminStoreDetail",
@@ -70,14 +70,17 @@
         }
       },
       handleSelect(selectedStore) {
-        const currentRouteName = this.$route.name;
-        if (this.$route.params.storeGuid !== selectedStore.guid)
+        const currentRouteName = this.$route.name !== "adminStoreDetailPage" ? this.$route.name : "adminStoreDetailOverviewPage";
+        if (this.$route.params.storeGuid !== selectedStore.guid) {
           this.$router.push({name: currentRouteName, params: {storeGuid: selectedStore.guid}});
+          this.getStoreDetail();
+        }
       },
       async getStoreDetail() {
         const vm = this;
         if (this.$route.params.storeGuid) {
           const {data} = await StoreService.getStore(this.$route.params.storeGuid);
+          this.$store.commit("adminStore/SET_CURRENT_STORE", data);
           vm.searchKey = data.storeName;
         }
       },

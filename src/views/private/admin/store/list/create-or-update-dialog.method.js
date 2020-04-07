@@ -18,6 +18,10 @@ const mixinMethod = {
       }
       this.show();
     },
+    dialogOpened(){
+      console.log(this.$refs);
+      this.$refs.storeCode.focus();
+    },
     show() {
       this.dialogFormVisible = true;
     },

@@ -4,6 +4,7 @@
     :before-close="beforeClose"
     :visible.sync="dialogFormVisible"
     :close-on-click-modal="false"
+    @opened="dialogOpened"
   >
     <el-form :model="storeEntity" ref="storeForm" :rules="storeEntityRules">
       <el-form-item>
@@ -11,6 +12,7 @@
           <el-form-item prop="storeCode">
             <input-label :label="$t('private.adminStoreListPage.storeEntity.storeCode')" required/>
             <el-input
+              ref="storeCode"
               v-model="storeEntity.storeCode"
               maxlength="20"
               show-word-limit
@@ -145,7 +147,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="hide($event)">
+      <el-button @click="hide">
         <span>{{ $t("common.entity.action.cancel") }}</span>
       </el-button>
       <el-button type="primary" @click="submit" :loading="isLoading">
@@ -156,17 +158,15 @@
 </template>
 
 <script>
-  import mixinData from "@/views/private/admin/management/store/components/create-or-update-dialog.data";
-  import mixinMethod from "@/views/private/admin/management/store/components/create-or-update-dialog.method";
+  import mixinData from "@/views/private/admin/store/list/create-or-update-dialog.data";
+  import mixinMethod from "@/views/private/admin/store/list/create-or-update-dialog.method";
 
   export default {
     name: "CreateOrUpdateStoreDialog",
-    mixins: [mixinData, mixinMethod]
+    mixins: [mixinData, mixinMethod],
   };
 </script>
 
 <style scoped>
-  /deep/ .el-dialog__body {
-    padding: 0 20px;
-  }
+
 </style>

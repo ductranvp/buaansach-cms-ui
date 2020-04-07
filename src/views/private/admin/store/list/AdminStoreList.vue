@@ -35,10 +35,14 @@
     </div>
     <div class="margin-top-10">
       <el-row>
-        <data-table :fetch-data="fetchData" :filter="filter" ref="storeTable">
+        <data-table :fetch-data="fetchData"
+                    :filter="filter"
+                    ref="storeTable"
+                    show-audit
+                    :custom-audit="['createdBy', 'createdDate']">
           <el-table-column type="expand">
             <template slot-scope="{ row }">
-              <row-detail :row="row"/>
+              <admin-store-list-row-detail :row="row"/>
             </template>
           </el-table-column>
 
@@ -88,45 +92,31 @@
             </template>
           </el-table-column>
 
-          <el-table-column
-            prop="createdBy"
-            :label="$t('private.adminStoreListPage.storeEntity.createdBy')"
-          >
-          </el-table-column>
-
-          <el-table-column
-            prop="createdDate"
-            sortable
-            :label="$t('private.adminStoreListPage.storeEntity.createdDate')"
-          >
-            <template slot-scope="{ row }">
-              <span>{{ row.createdDate | moment("HH:mm - DD/MM/YYYY") }}</span>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            :label="$t('common.entity.action.title')"
-            width="155px"
-          >
-            <template slot-scope="{ row }">
-              <el-button
-                size="mini"
-                type="warning"
-                plain
-                @click="handleEdit(row)"
-              >
-                <span>{{ $t("common.entity.action.edit") }}</span>
-              </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                plain
-                @click="handleDelete(row)"
-              >
-                <span>{{ $t("common.entity.action.delete") }}</span>
-              </el-button>
-            </template>
-          </el-table-column>
+          <template slot="action">
+            <el-table-column
+              :label="$t('common.entity.action.title')"
+              width="155px"
+            >
+              <template slot-scope="{ row }">
+                <el-button
+                  size="mini"
+                  type="warning"
+                  plain
+                  @click="handleEdit(row)"
+                >
+                  <span>{{ $t("common.entity.action.edit") }}</span>
+                </el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  plain
+                  @click="handleDelete(row)"
+                >
+                  <span>{{ $t("common.entity.action.delete") }}</span>
+                </el-button>
+              </template>
+            </el-table-column>
+          </template>
         </data-table>
       </el-row>
     </div>
@@ -138,16 +128,16 @@
 </template>
 
 <script>
-  import CreateOrUpdateStoreDialog from "@/views/private/admin/management/store/components/CreateOrUpdateStoreDialog";
+  import CreateOrUpdateStoreDialog from "@/views/private/admin/store/list/CreateOrUpdateStoreDialog";
   import StoreService from "@/service/store.service";
   import DataTable from "@/components/data-table/DataTable";
   import MessageBoxUtils from "@/utils/message-box.util";
   import NotificationUtils from "@/utils/notification.util";
-  import RowDetail from "@/views/private/admin/management/store/components/RowDetail";
+  import AdminStoreListRowDetail from "@/views/private/admin/store/list/AdminStoreListRowDetail";
 
   export default {
     name: "AdminStoreList",
-    components: {RowDetail, CreateOrUpdateStoreDialog, DataTable},
+    components: {AdminStoreListRowDetail, CreateOrUpdateStoreDialog, DataTable},
     data() {
       return {
         isLoading: false,

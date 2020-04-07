@@ -15,6 +15,7 @@
       "editSeatTitle": "Sửa chỗ ngồi"
     },
     "table": {
+      "addBtn": "Thêm",
       "areaName": "Tên khu vực",
       "numberOfSeats": "Số chỗ ngồi",
       "createdBy": "Người tạo",

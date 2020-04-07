@@ -3,3 +3,7 @@ header, main, aside, footer {
     padding: 0 !important;
     margin: 0 !important;
 }
+
+.el-dialog__body {
+    padding: 0 20px !important;
+}

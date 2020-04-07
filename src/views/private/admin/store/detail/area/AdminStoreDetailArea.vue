@@ -37,7 +37,7 @@
       <raw-data-table ref="areaTable" :data="areas">
         <el-table-column type="expand">
           <template slot-scope="{ row }">
-            <el-row :gutter="20" type="flex" align="middle" class="full-size flex-wrap margin-0">
+            <el-row :gutter="10" type="flex" align="middle" class="full-size flex-wrap margin-0">
               <el-col class="margin-bottom-10" :span="4" v-for="seat in row.listSeat" :key="seat.guid">
                 <el-card :body-style="{padding: '10px', background: '#eee'}" shadow="never">
                   <el-row type="flex" align="middle">
@@ -57,7 +57,7 @@
                 <el-card class="pointer" @click.native="addSeat(row)" :body-style="{padding: '10px'}" shadow="never">
                   <div class="text-center">
                     <el-button size="mini" type="text">
-                      <span>Thêm</span>
+                      <span>{{$t('private.adminStoreDetailAreaPage.table.addBtn')}}</span>
                     </el-button>
                   </div>
                 </el-card>
@@ -113,7 +113,7 @@
             {{ row.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}
           </template>
         </el-table-column>
-        <el-table-column :label="$t('common.entity.action.title')" width="150px">
+        <el-table-column :label="$t('common.entity.action.title')" width="160px">
           <template slot-scope="{ row }">
             <div v-if="row.edit">
               <el-button plain type="info" size="mini" @click="row.edit = false">
@@ -131,7 +131,6 @@
               <el-button plain type="danger" size="mini" @click="deleteArea(row)">
                 <span>{{$t("common.entity.action.delete")}}</span>
               </el-button>
-
             </div>
           </template>
         </el-table-column>

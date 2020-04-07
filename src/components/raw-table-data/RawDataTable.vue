@@ -2,15 +2,37 @@
   <div v-loading="isLoading">
     <el-table
       class="full-width"
-      :fit="true"
       :data="tableData"
       :sortable="true"
       :default-sort="defaultSort"
+      :size="tableSize"
+      :fit="true"
       stripe
-      border
-      :size="tableSize">
+      border>
+
+      <el-table-column v-if="showIndex" type="index" :index="indexMethod" :label="$t('common.entity.audit.index')">
+      </el-table-column>
+
       <slot>
         <!-- column definitions here -->
+      </slot>
+
+      <template v-if="showAudit">
+        <el-table-column v-for="audit in customAudit" :key="audit"
+                         :sortable="audit === 'createdDate' || audit === 'lastModifiedDate'"
+                         :prop="audit"
+                         :label="$t('common.entity.audit.' + audit)">
+          <template slot-scope="{row}">
+            <span v-if="audit === 'createdDate' ||  audit === 'lastModifiedDate'">
+              {{ row[audit] | moment("HH:mm - DD/MM/YYYY") }}
+            </span>
+            <span v-else>{{row[audit]}}</span>
+          </template>
+        </el-table-column>
+      </template>
+
+      <slot name="action">
+        <!-- action definitions here -->
       </slot>
     </el-table>
     <el-row type="flex" justify="end" class="margin-top-10">
@@ -32,6 +54,14 @@
   export default {
     name: "RawDataTable",
     props: {
+      showIndex: Boolean,
+      showAudit: Boolean,
+      customAudit: {
+        type: Array,
+        default: () => {
+          return ["createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"];
+        }
+      },
       tableSize: {
         type: String,
         default: "small"
@@ -42,13 +72,14 @@
       defaultSort: {
         type: Object,
         default: function () {
-          return {prop: "createdDate", order: "descending"};
+          return {prop: "createdDate", order: "ascending"};
         }
       },
       config: Object,
     },
     created() {
       this.tableData = this.data;
+      console.log(this.customAudit);
     },
     data() {
       return {
@@ -78,7 +109,9 @@
       }
     },
     methods: {
-      // eslint-disable-next-line no-unused-vars
+      indexMethod(index) {
+        return index + 1;
+      },
       onFilterChange(filter) {
         console.log(filter);
         this.renderTable();

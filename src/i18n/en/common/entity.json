@@ -1,5 +1,12 @@
 {
   "entity": {
+    "audit": {
+      "index": "No.",
+      "createdBy": "Created By",
+      "createdDate": "Created Date",
+      "lastModifiedBy": "Last Modified By",
+      "lastModifiedDate": "Last Modified Date"
+    },
     "action": {
       "title": "Action",
       "create": "Create",
@@ -11,7 +18,9 @@
       "save": "Save",
       "view": "View",
       "refresh": "Refresh",
-      "ok": "OK"
+      "ok": "OK",
+      "lock": "Lock",
+      "unlock": "Unlock"
     },
     "dialog": {
       "title": "Create or update {entityName}"
@@ -21,7 +30,9 @@
       "value": "Value"
     },
     "delete": {
-      "title": "Confirm delete operation"
+      "title": "Confirm delete operation",
+      "success": "Delete successfully",
+      "error": "Delete unsuccessfully"
     },
     "validation": {
       "required": "This field is required.",

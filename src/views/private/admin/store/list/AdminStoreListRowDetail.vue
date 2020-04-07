@@ -71,7 +71,7 @@
 <script>
 
   export default {
-    name: "RowDetail",
+    name: "AdminStoreListRowDetail",
     props: {
       row: {
         type: Object,

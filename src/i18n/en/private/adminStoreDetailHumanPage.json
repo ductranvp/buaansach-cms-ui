@@ -1,0 +1,36 @@
+{
+  "adminStoreDetailHumanPage": {
+    "storeUser": {
+      "userLogin": "User login",
+      "userLoginOrEmail": "User login or email",
+      "passwordWithoutRequired": "Password (leave empty if not change)",
+      "password": "Password",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "activated": "Account status",
+      "storeUserRole": "Role",
+      "storeUserStatus": "Status"
+    },
+    "accountStatus": {
+      "activated": "Activated",
+      "deactivated": "Deactivated"
+    },
+    "action": {
+      "addExistedUser": "Thêm tài khoản đã có"
+    },
+    "dialog": {
+      "title": "Tạo hoặc cập nhật nhân sự"
+    },
+    "storeUserRole": {
+      "owner": "Chủ cửa hàng",
+      "manager": "Quản lý",
+      "cashier": "Thu ngân",
+      "waiter": "Bồi bàn"
+    },
+    "storeUserStatus": {
+      "working": "Đang làm việc",
+      "fired": "Sa thải",
+      "quit": "Đã nghỉ"
+    }
+  }
+}

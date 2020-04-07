@@ -2,6 +2,7 @@ import axios from "axios";
 import constants from "@/utils/constants";
 import AuthUtils from "@/utils/auth.util";
 import router from "@/router";
+import store from "@/store";
 
 const baseUrl = constants.SERVER_API_URL;
 const timeout = 10000; // 10 seconds
@@ -35,13 +36,15 @@ request.interceptors.response.use(
   function(error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    const errorCode = error.response.status || error.status || 0;
+    const errorCode = error.status || (error.response && error.response.status) || 0;
     switch (errorCode) {
       case 401:
         AuthUtils.logout("loginPage");
         break;
       case 403:
+        store.dispatch("user/getAccount");
         router.push({ name: "forbiddenPage" }).then();
+        break;
     }
     if (error.response) return Promise.reject(error.response);
     return Promise.reject(error);

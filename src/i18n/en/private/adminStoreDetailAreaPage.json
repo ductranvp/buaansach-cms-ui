@@ -15,6 +15,7 @@
       "editSeatTitle": "Edit Seat"
     },
     "table": {
+      "addBtn": "Add",
       "areaName": "Area Name",
       "numberOfSeats": "Number of Seats",
       "createdBy": "Created By",

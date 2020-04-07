@@ -20,10 +20,17 @@ function deepCopy(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
+function setAttrs(vm, currentObj, newObj){
+  Object.keys(newObj).forEach(key => {
+    vm.$set(currentObj, key, newObj[key]);
+  });
+}
+
 const AppUtils = {
   redirectBasedOnRole: redirectBasedOnRole,
   generatePageTitle: generatePageTitle,
-  deepCopy: deepCopy
+  deepCopy: deepCopy,
+  setAttrs: setAttrs
 };
 
 export default AppUtils;

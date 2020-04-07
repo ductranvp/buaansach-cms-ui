@@ -1,5 +1,12 @@
 {
   "entity": {
+    "audit": {
+      "index": "STT",
+      "createdBy": "Người tạo",
+      "createdDate": "Ngày tạo",
+      "lastModifiedBy": "Sửa lần cuối bởi",
+      "lastModifiedDate": "Sửa lần cuối lúc"
+    },
     "action": {
       "title": "Thao tác",
       "create": "Tạo mới",
@@ -11,7 +18,9 @@
       "save": "Lưu",
       "view": "Xem",
       "refresh": "Tải lại",
-      "ok": "OK"
+      "ok": "OK",
+      "lock": "Khóa",
+      "unlock": "Mở khóa"
     },
     "dialog": {
       "title": "Tạo hoặc cập nhật {entityName}"
@@ -21,7 +30,9 @@
       "value": "Giá trị"
     },
     "delete": {
-      "title": "Xác nhận hành động xóa"
+      "title": "Xác nhận hành động xóa",
+      "success": "Xóa thành công",
+      "error": "Xóa không thành công"
     },
     "validation": {
       "required": "Trường này bắt buộc phải nhập.",
