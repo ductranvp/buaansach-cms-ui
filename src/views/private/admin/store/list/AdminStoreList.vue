@@ -34,91 +34,90 @@
       </el-row>
     </div>
     <div class="margin-top-10">
-      <el-row>
-        <data-table :fetch-data="fetchData"
-                    :filter="filter"
-                    ref="storeTable"
-                    show-audit
-                    :custom-audit="['createdBy', 'createdDate']">
-          <el-table-column type="expand">
-            <template slot-scope="{ row }">
-              <admin-store-list-row-detail :row="row"/>
-            </template>
-          </el-table-column>
-
-          <el-table-column
-            prop="storeCode"
-            :label="$t('private.adminStoreListPage.storeEntity.storeCode')"
-          >
-            <template slot-scope="{ row }">
-              <router-link :to="{name: 'adminStoreDetailOverviewPage', params: { storeGuid: row.guid }}">
-                {{ row.storeCode }}
-              </router-link>
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="storeName"
-            sortable
-            :label="$t('private.adminStoreListPage.storeEntity.storeName')"
-          >
-          </el-table-column>
-
-          <el-table-column
-            prop="storeOwnerName"
-            :label="$t('private.adminStoreListPage.storeEntity.storeOwnerName')"
-          >
-          </el-table-column>
-
-          <el-table-column
-            prop="storeOwnerPhone"
-            :label="$t('private.adminStoreListPage.storeEntity.storeOwnerPhone')"
-          >
-          </el-table-column>
-
-          <el-table-column
-            prop="storeStatus"
-            :label="$t('private.adminStoreListPage.storeEntity.storeStatus')"
-          >
-            <template slot-scope="{ row }">
-              <el-tag type="success" v-if="row.storeStatus === 'ACTIVATED'">
-                {{ $t("private.adminStoreListPage.storeStatus.activated") }}
-              </el-tag>
-              <el-tag type="warning" v-else-if="row.storeStatus === 'PAUSED'">
-                {{ $t("private.adminStoreListPage.storeStatus.paused") }}
-              </el-tag>
-              <el-tag type="danger" v-else>
-                {{ $t("private.adminStoreListPage.storeStatus.deactivated") }}
-              </el-tag>
-            </template>
-          </el-table-column>
-
-          <template slot="action">
-            <el-table-column
-              :label="$t('common.entity.action.title')"
-              width="155px"
-            >
-              <template slot-scope="{ row }">
-                <el-button
-                  size="mini"
-                  type="warning"
-                  plain
-                  @click="handleEdit(row)"
-                >
-                  <span>{{ $t("common.entity.action.edit") }}</span>
-                </el-button>
-                <el-button
-                  size="mini"
-                  type="danger"
-                  plain
-                  @click="handleDelete(row)"
-                >
-                  <span>{{ $t("common.entity.action.delete") }}</span>
-                </el-button>
-              </template>
-            </el-table-column>
+      <data-table :fetch-data="fetchData"
+                  :filter="filter"
+                  ref="storeTable"
+                  show-audit
+                  :custom-audit="['createdBy', 'createdDate']">
+        <el-table-column type="expand">
+          <template slot-scope="{ row }">
+            <admin-store-list-row-detail :row="row"/>
           </template>
-        </data-table>
-      </el-row>
+        </el-table-column>
+
+        <el-table-column
+          prop="storeCode"
+          :label="$t('private.adminStoreListPage.store.storeCode')"
+        >
+          <template slot-scope="{ row }">
+            <router-link :to="{name: 'adminStoreDetailOverviewPage', params: { storeGuid: row.guid }}">
+              {{ row.storeCode }}
+            </router-link>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          prop="storeName"
+          sortable
+          :label="$t('private.adminStoreListPage.store.storeName')"
+        >
+        </el-table-column>
+
+        <el-table-column
+          prop="storeOwnerName"
+          :label="$t('private.adminStoreListPage.store.storeOwnerName')"
+        >
+        </el-table-column>
+
+        <el-table-column
+          prop="storeOwnerPhone"
+          :label="$t('private.adminStoreListPage.store.storeOwnerPhone')"
+        >
+        </el-table-column>
+
+        <el-table-column
+          prop="storeStatus"
+          :label="$t('private.adminStoreListPage.store.storeStatus')"
+        >
+          <template slot-scope="{ row }">
+            <el-tag type="success" v-if="row.storeStatus === 'ACTIVATED'">
+              {{ $t("private.adminStoreListPage.storeStatus.activated") }}
+            </el-tag>
+            <el-tag type="warning" v-else-if="row.storeStatus === 'PAUSED'">
+              {{ $t("private.adminStoreListPage.storeStatus.paused") }}
+            </el-tag>
+            <el-tag type="danger" v-else>
+              {{ $t("private.adminStoreListPage.storeStatus.deactivated") }}
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <template slot="action">
+          <el-table-column
+            :label="$t('common.entity.action.title')"
+            width="155px"
+          >
+            <template slot-scope="{ row }">
+              <el-button
+                size="mini"
+                type="warning"
+                plain
+                @click="handleEdit(row)"
+              >
+                <span>{{ $t("common.entity.action.edit") }}</span>
+              </el-button>
+              <el-button
+                size="mini"
+                type="danger"
+                plain
+                @click="handleDelete(row)"
+              >
+                <span>{{ $t("common.entity.action.delete") }}</span>
+              </el-button>
+            </template>
+          </el-table-column>
+        </template>
+      </data-table>
     </div>
     <create-or-update-store-dialog
       ref="storeDialog"
@@ -129,7 +128,7 @@
 
 <script>
   import CreateOrUpdateStoreDialog from "@/views/private/admin/store/list/CreateOrUpdateStoreDialog";
-  import StoreService from "@/service/store.service";
+  import AdminStoreService from "@/service/admin/admin.store.service";
   import DataTable from "@/components/data-table/DataTable";
   import MessageBoxUtils from "@/utils/message-box.util";
   import NotificationUtils from "@/utils/notification.util";
@@ -151,8 +150,7 @@
       createStore() {
         this.$refs.storeDialog.create();
       },
-      // eslint-disable-next-line no-unused-vars
-      reloadTableData(store) {
+      reloadTableData() {
         const vm = this;
         vm.isLoading = true;
         this.$refs.storeTable.reload(whenDone);
@@ -162,32 +160,25 @@
         }
       },
       onSearch() {
-        /* change filterRequest property to trigger DataTable filter */
+        /* change filter property to trigger DataTable filter */
         this.filter.searchKey = this.searchKey;
       },
       fetchData(params) {
-        return StoreService.getListStore(params);
+        return AdminStoreService.getListStore(params);
       },
       handleEdit(row) {
         this.$refs["storeDialog"].edit(row);
       },
       handleDelete(row) {
         let vm = this;
-        MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), function () {
-          StoreService.deleteStore(row.guid)
-            .then(() => {
-              NotificationUtils.success(
-                vm.$t("private.adminStoreListPage.notification.deleteSuccess")
-              );
-              vm.$refs.storeTable.reload();
-            })
-            .catch(error => {
-              const message =
-                error.message ||
-                error.data.message ||
-                vm.$t("private.adminStoreListPage.notification.deleteError");
-              NotificationUtils.error(vm.$t(message));
-            });
+        MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), async function () {
+          try {
+            await AdminStoreService.deleteStore(row.guid);
+            NotificationUtils.success(vm.$t("common.entity.delete.success"));
+            vm.$refs.storeTable.reload();
+          } catch (error) {
+            NotificationUtils.error(error.message || error.data.message);
+          }
         });
       }
     }

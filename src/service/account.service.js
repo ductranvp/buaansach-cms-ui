@@ -1,22 +1,19 @@
 import request from "@/config/request";
+import CoreService from "@/service/core.service";
 
 const baseUrl = "api/v1/account";
 const AccountService = {
   authenticate(payload) {
-    return request.post(baseUrl + "/authenticate", JSON.stringify(payload));
+    return request.post(baseUrl + "/authenticate", payload);
   },
-  getInfo() {
+  getAccountInfo() {
     return request.get(baseUrl + "/info");
   },
-  update(payload) {
-    return request.put(baseUrl + "/update", payload, {
-      headers: {
-        "Content-Type": undefined
-      }
-    });
+  updateAccount(payload) {
+    return request.put(baseUrl + "/update", payload, CoreService.formDataConfig);
   },
   changePassword(payload) {
-    return request.post(baseUrl + "/change-password", JSON.stringify(payload));
+    return request.post(baseUrl + "/change-password", payload);
   },
   resetPasswordInit(payload) {
     return request.post(baseUrl + "/reset-password/init", payload);

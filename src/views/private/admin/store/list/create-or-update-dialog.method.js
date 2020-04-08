@@ -1,25 +1,22 @@
-import StoreService from "@/service/store.service";
+import AdminStoreService from "@/service/admin/admin.store.service";
 import AppUtils from "@/utils/app.util";
 import NotificationUtils from "@/utils/notification.util";
 
 const mixinMethod = {
   methods: {
     create() {
-      this.storeEntity = {
-        storeStatus: "ACTIVATED"
+      this.form = {
+        storeStatus: "ACTIVATED",
+        storeOpenHour: null,
+        storeCloseHour: null
       };
       this.show();
     },
     edit(store) {
-      this.storeEntity = AppUtils.deepCopy(store);
-      if (this.storeEntity.lastUpdateReason) {
-        this.previousUpdateReason = this.storeEntity.lastUpdateReason;
-        this.storeEntity.lastUpdateReason = null;
-      }
+      this.form = AppUtils.deepCopy(store);
       this.show();
     },
-    dialogOpened(){
-      console.log(this.$refs);
+    dialogOpened() {
       this.$refs.storeCode.focus();
     },
     show() {
@@ -30,71 +27,39 @@ const mixinMethod = {
       this.dialogFormVisible = false;
     },
     onImageCleared() {
-      this.storeEntity.storeImageUrl = null;
+      this.form.storeImageUrl = null;
     },
     beforeClose(done) {
       this.resetForm();
       done();
     },
     resetForm() {
-      this.previousUpdateReason = null;
       this.$refs.storeForm.resetFields();
       this.$refs.storeForm.clearValidate();
       this.$refs.singleImageUploader.clearImage();
     },
-    getParams() {
-      let vm = this;
-      let params = new FormData();
-      params.append(
-        "entity",
-        new Blob([JSON.stringify(vm.storeEntity)], { type: "application/json" })
-      );
-      let image = vm.$refs.singleImageUploader.getSelectedImage();
-      if (image) {
-        params.append("image", image.raw);
-      } else {
-        params.append("image", null);
-      }
-      return params;
-    },
     submit() {
       let vm = this;
-      this.$refs.storeForm.validate(valid => {
+      this.$refs.storeForm.validate(async valid => {
         if (valid) {
-          vm.isLoading = true;
-          const params = vm.getParams();
-          if (
-            vm.storeEntity.guid === null ||
-            vm.storeEntity.guid === undefined
-          ) {
-            StoreService.createStore(params)
-              .then(onSaveSuccess)
-              .catch(onSaveError);
-          } else {
-            StoreService.updateStore(params)
-              .then(onSaveSuccess)
-              .catch(onSaveError);
+          try {
+            vm.isLoading = true;
+            if (!vm.form.storeOpenHour) vm.form.storeCloseHour = null;
+            let image = vm.$refs.singleImageUploader.getSelectedImage();
+            if (!vm.form.guid) {
+              await AdminStoreService.createStore(vm.form, image);
+            } else {
+              await AdminStoreService.updateStore(vm.form, image);
+            }
+            vm.isLoading = false;
+            vm.$emit("storeSaved");
+            NotificationUtils.success(vm.$t("common.entity.save.success"));
+            vm.hide();
+          } catch (error) {
+            NotificationUtils.error(error.message || error.data.message);
           }
         }
       });
-
-      function onSaveSuccess(response) {
-        vm.isLoading = false;
-        vm.$emit("storeSaved", response);
-        NotificationUtils.success(
-          vm.$t("private.adminStoreListPage.notification.saveSuccess")
-        );
-        vm.hide();
-      }
-
-      function onSaveError(error) {
-        vm.isLoading = false;
-        const message =
-          error.message ||
-          error.data.message ||
-          vm.$t("private.adminStoreListPage.notification.saveError");
-        NotificationUtils.error(vm.$t(message));
-      }
     }
   }
 };

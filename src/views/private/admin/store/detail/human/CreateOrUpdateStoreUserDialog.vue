@@ -96,7 +96,7 @@
 </template>
 
 <script>
-  import StoreUserService from "@/service/store-user.service";
+  import AdminStoreUserService from "@/service/admin/admin.store-user.service";
   import NotificationUtils from "@/utils/notification.util";
   import {mapState} from "vuex";
 
@@ -224,10 +224,10 @@
               // this.isLoading = true;
               this.form.storeGuid = this.$route.params.storeGuid;
               if (!this.isEdit) {
-                response = await StoreUserService.createStoreUser(this.form);
+                response = await AdminStoreUserService.createStoreUser(this.form);
                 this.$emit("createStoreUser", response.data);
               } else {
-                response = await StoreUserService.updateStoreUser(this.form);
+                response = await AdminStoreUserService.updateStoreUser(this.form);
                 this.$emit("updateStoreUser", response.data);
               }
               this.isLoading = false;

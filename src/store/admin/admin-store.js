@@ -5,7 +5,6 @@ const state = {
 };
 const mutations = {
   SET_CURRENT_STORE: (state, currentStore) => {
-    console.log("Commit SET_CURRENT_STORE");
     state.currentStore = currentStore;
   }
 

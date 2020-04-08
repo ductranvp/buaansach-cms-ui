@@ -2,8 +2,8 @@
   "adminStoreListPage": {
     "entityName": "store",
     "searchPlaceholder": "Search by name or code",
-    "storeEntity": {
-      "guid": "Guid",
+    "activeTime": "Active time",
+    "store": {
       "storeCode": "Code",
       "storeName": "Name",
       "storeAddress": "Address",
@@ -13,24 +13,13 @@
       "storeOwnerPhone": "Owner Phone",
       "storeOwnerEmail": "Owner Email",
       "storeTaxCode": "Tax Code",
-      "lastUpdateReason": "Update Reason",
-      "createdDate": "Created Date",
-      "createdBy": "Created By",
-      "lastModifiedDate": "Last Modified Date",
-      "lastModifiedBy": "Last Modified By",
-      "previousUpdateReason": "Previously update"
+      "storeOpenHour": "Open Hour",
+      "storeCloseHour": "Close Hour"
     },
-    "previousUpdateReason": "Previous",
     "storeStatus": {
       "activated": "Activated",
       "paused": "Paused",
       "deactivated": "Deactivated"
-    },
-    "notification": {
-      "saveSuccess": "Store save successfully!",
-      "saveError": "Failed to save store!",
-      "deleteSuccess": "Store deleted successfully!",
-      "deleteError": "Failed to delete store!"
     }
   }
 }

@@ -6,14 +6,14 @@
     :close-on-click-modal="false"
     @opened="dialogOpened"
   >
-    <el-form :model="storeEntity" ref="storeForm" :rules="storeEntityRules">
+    <el-form :model="form" ref="storeForm" :rules="formRules">
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeCode">
-            <input-label :label="$t('private.adminStoreListPage.storeEntity.storeCode')" required/>
+            <input-label :label="$t('private.adminStoreListPage.store.storeCode')" required/>
             <el-input
               ref="storeCode"
-              v-model="storeEntity.storeCode"
+              v-model="form.storeCode"
               maxlength="20"
               show-word-limit
               autocomplete="off"
@@ -27,9 +27,9 @@
 
         <el-col :span="11">
           <el-form-item prop="storeName">
-            <input-label :label="$t('private.adminStoreListPage.storeEntity.storeName')" required/>
+            <input-label :label="$t('private.adminStoreListPage.store.storeName')" required/>
             <el-input
-              v-model="storeEntity.storeName"
+              v-model="form.storeName"
               maxlength="100"
               show-word-limit
               autocomplete="off"
@@ -39,9 +39,9 @@
       </el-form-item>
 
       <el-form-item prop="storeAddress">
-        <input-label :label="$t('private.adminStoreListPage.storeEntity.storeAddress')" required/>
+        <input-label :label="$t('private.adminStoreListPage.store.storeAddress')" required/>
         <el-input
-          v-model="storeEntity.storeAddress"
+          v-model="form.storeAddress"
           maxlength="255"
           show-word-limit
           autocomplete="off"
@@ -51,9 +51,9 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeOwnerName">
-            <input-label :label="$t('private.adminStoreListPage.storeEntity.storeOwnerName')" required/>
+            <input-label :label="$t('private.adminStoreListPage.store.storeOwnerName')" required/>
             <el-input
-              v-model="storeEntity.storeOwnerName"
+              v-model="form.storeOwnerName"
               maxlength="100"
               show-word-limit
               autocomplete="off"
@@ -67,9 +67,9 @@
 
         <el-col :span="11">
           <el-form-item prop="storeOwnerPhone">
-            <input-label :label="$t('private.adminStoreListPage.storeEntity.storeOwnerPhone')" required/>
+            <input-label :label="$t('private.adminStoreListPage.store.storeOwnerPhone')" required/>
             <el-input
-              v-model="storeEntity.storeOwnerPhone"
+              v-model="form.storeOwnerPhone"
               maxlength="50"
               show-word-limit
               autocomplete="off"
@@ -81,9 +81,9 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeOwnerEmail">
-            <input-label :label="$t('private.adminStoreListPage.storeEntity.storeOwnerEmail')" optional/>
+            <input-label :label="$t('private.adminStoreListPage.store.storeOwnerEmail')" optional/>
             <el-input
-              v-model="storeEntity.storeOwnerEmail"
+              v-model="form.storeOwnerEmail"
               maxlength="100"
               show-word-limit
               autocomplete="off"
@@ -97,9 +97,9 @@
 
         <el-col :span="11">
           <el-form-item prop="storeTaxCode">
-            <input-label :label="$t('private.adminStoreListPage.storeEntity.storeTaxCode')" optional/>
+            <input-label :label="$t('private.adminStoreListPage.store.storeTaxCode')" optional/>
             <el-input
-              v-model="storeEntity.storeTaxCode"
+              v-model="form.storeTaxCode"
               maxlength="100"
               show-word-limit
               autocomplete="off"
@@ -110,8 +110,37 @@
 
       <el-form-item>
         <el-col :span="11">
-          <input-label :label="$t('private.adminStoreListPage.storeEntity.storeStatus')" required/>
-          <el-select class="full-width" v-model="storeEntity.storeStatus">
+          <el-form-item prop="storeOpenHour">
+            <input-label :label="$t('private.adminStoreListPage.store.storeOpenHour')" optional/>
+            <el-time-select
+              class="full-width"
+              v-model="form.storeOpenHour"
+              :picker-options="timePickerOption">
+            </el-time-select>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="2">
+          <input-label label=""/>
+        </el-col>
+
+        <el-col :span="11">
+          <el-form-item prop="storeCloseHour">
+            <input-label :label="$t('private.adminStoreListPage.store.storeCloseHour')" optional/>
+            <el-time-select
+              class="full-width"
+              :disabled="!form.storeOpenHour"
+              v-model="form.storeCloseHour"
+              :picker-options="{...timePickerOption, minTime: form.storeOpenHour}">
+            </el-time-select>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
+
+      <el-form-item>
+        <el-col :span="11">
+          <input-label :label="$t('private.adminStoreListPage.store.storeStatus')" required/>
+          <el-select class="full-width" v-model="form.storeStatus">
             <el-option
               v-for="item in storeStatus"
               :key="item.value"
@@ -122,27 +151,13 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item v-if="storeEntity.guid">
-        <input-label :label="$t('private.adminStoreListPage.storeEntity.lastUpdateReason')" optional/>
-        <div v-if="previousUpdateReason">
-          <em>{{$t("private.adminStoreListPage.storeEntity.previousUpdateReason")}}:
-            <b>{{ previousUpdateReason }}</b>
-          </em>
-        </div>
-        <el-input
-          type="textarea"
-          v-model="storeEntity.lastUpdateReason"
-          maxlength="500"
-          show-word-limit
-        ></el-input>
-      </el-form-item>
 
       <el-form-item>
-        <input-label :label="$t('private.adminStoreListPage.storeEntity.storeImageUrl')" optional/>
+        <input-label :label="$t('private.adminStoreListPage.store.storeImageUrl')" optional/>
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
-          :image-url-prop.sync="storeEntity.storeImageUrl"
+          :image-url-prop.sync="form.storeImageUrl"
         />
       </el-form-item>
     </el-form>

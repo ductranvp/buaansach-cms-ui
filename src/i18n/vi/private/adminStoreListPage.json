@@ -2,8 +2,8 @@
   "adminStoreListPage": {
     "entityName": "cửa hàng",
     "searchPlaceholder": "Tìm theo tên hoặc mã cửa hàng",
-    "storeEntity": {
-      "guid": "Guid",
+    "activeTime": "Giờ hoạt động",
+    "store": {
       "storeCode": "Mã cửa hàng",
       "storeName": "Tên cửa hàng",
       "storeAddress": "Địa chỉ",
@@ -13,23 +13,13 @@
       "storeOwnerPhone": "SĐT chủ cửa hàng",
       "storeOwnerEmail": "Email chủ cửa hàng",
       "storeTaxCode": "Mã số thuế",
-      "lastUpdateReason": "Lí do chỉnh sửa",
-      "createdDate": "Ngày tạo",
-      "createdBy": "Người tạo",
-      "lastModifiedDate": "Ngày sửa cuối",
-      "lastModifiedBy": "Người sửa cuối",
-      "previousUpdateReason": "Cập nhật trước"
+      "storeOpenHour": "Giờ mở cửa",
+      "storeCloseHour": "Giờ đóng cửa"
     },
     "storeStatus": {
       "activated": "Hoạt động",
       "paused": "Tạm ngưng",
       "deactivated": "Dừng hoạt động"
-    },
-    "notification": {
-      "saveSuccess": "Lưu cửa hàng thành công!",
-      "saveError": "Lưu cửa hàng không thành công!",
-      "deleteSuccess": "Xóa cửa hàng thành công!",
-      "deleteError": "Xóa cửa hàng không thành công!"
     }
   }
 }

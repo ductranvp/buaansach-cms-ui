@@ -34,6 +34,9 @@
       "success": "Xóa thành công",
       "error": "Xóa không thành công"
     },
+    "save": {
+      "success": "Cập nhật thành công"
+    },
     "validation": {
       "required": "Trường này bắt buộc phải nhập.",
       "email": "Trường này phải nhập đúng định dạng email.",

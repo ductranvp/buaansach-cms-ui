@@ -34,7 +34,7 @@
 </template>
 
 <script>
-  import StoreService from "@/service/store.service";
+  import AdminStoreService from "@/service/admin/admin.store.service";
   import adminStoreDetailData from "@/views/private/admin/store/detail/admin-store-detail.data";
 
   export default {
@@ -60,7 +60,7 @@
       async queryStore(queryString, cb) {
         try {
           if (queryString) {
-            const {data} = await StoreService.getListStore({search: queryString});
+            const {data} = await AdminStoreService.getListStore({search: queryString});
             cb(data.content);
           } else {
             cb([]);
@@ -79,7 +79,7 @@
       async getStoreDetail() {
         const vm = this;
         if (this.$route.params.storeGuid) {
-          const {data} = await StoreService.getStore(this.$route.params.storeGuid);
+          const {data} = await AdminStoreService.getStore(this.$route.params.storeGuid);
           this.$store.commit("adminStore/SET_CURRENT_STORE", data);
           vm.searchKey = data.storeName;
         }

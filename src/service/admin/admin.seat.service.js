@@ -1,7 +1,7 @@
 import request from "@/config/request";
 
-const baseUrl = "api/v1/seat";
-const SeatService = {
+const baseUrl = "api/v1/admin/seat";
+const AdminSeatService = {
   createSeat(payload) {
     return request.post(baseUrl + "/create", payload );
   },
@@ -19,4 +19,4 @@ const SeatService = {
   }
 };
 
-export default SeatService;
+export default AdminSeatService;

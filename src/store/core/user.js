@@ -55,7 +55,7 @@ const actions = {
   // get user info
   getAccount({ commit }) {
     return new Promise((resolve, reject) => {
-      AccountService.getInfo()
+      AccountService.getAccountInfo()
         .then(response => {
           const { data } = response;
           if (!data) reject("Get account info failed, please login again.");

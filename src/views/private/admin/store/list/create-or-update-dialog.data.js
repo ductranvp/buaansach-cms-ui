@@ -6,8 +6,12 @@ const mixinData = {
       }),
       dialogFormVisible: false,
       isLoading: false,
-      previousUpdateReason: null,
-      storeEntity: {
+      timePickerOption: {
+        start: '08:00',
+        step: '00:15',
+        end: '21:00'
+      },
+      form: {
         guid: null,
         storeCode: null,
         storeName: null,
@@ -18,27 +22,14 @@ const mixinData = {
         storeOwnerPhone: null,
         storeOwnerEmail: null,
         storeTaxCode: null,
-        lastUpdateReason: null,
+        storeOpenHour: null,
+        storeCloseHour: null,
         createdDate: null,
         createdBy: null,
         lastModifiedDate: null,
         lastModifiedBy: null
       },
-      storeStatus: [
-        {
-          label: "private.adminStoreListPage.storeStatus.activated",
-          value: "ACTIVATED"
-        },
-        {
-          label: "private.adminStoreListPage.storeStatus.paused",
-          value: "PAUSED"
-        },
-        {
-          label: "private.adminStoreListPage.storeStatus.deactivated",
-          value: "DEACTIVATED"
-        }
-      ],
-      storeEntityRules: {
+      formRules: {
         storeCode: [
           {
             required: true,
@@ -132,7 +123,21 @@ const mixinData = {
             trigger: "blur"
           }
         ]
-      }
+      },
+      storeStatus: [
+        {
+          label: "private.adminStoreListPage.storeStatus.activated",
+          value: "ACTIVATED"
+        },
+        {
+          label: "private.adminStoreListPage.storeStatus.paused",
+          value: "PAUSED"
+        },
+        {
+          label: "private.adminStoreListPage.storeStatus.deactivated",
+          value: "DEACTIVATED"
+        }
+      ]
     };
   }
 };

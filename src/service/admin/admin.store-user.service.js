@@ -1,7 +1,7 @@
 import request from "@/config/request";
 
-const baseUrl = "api/v1/store-user";
-const StoreUserService = {
+const baseUrl = "api/v1/admin/store-user";
+const AdminStoreUserService = {
   createStoreUser(payload) {
     return request.post(baseUrl + "/create", payload);
   },
@@ -16,7 +16,10 @@ const StoreUserService = {
   },
   toggleAccount(storeUserGuid) {
     return request.put(baseUrl + "/toggle-account/" + storeUserGuid);
+  },
+  deleteStoreUser(storeUserGuid) {
+    return request.delete(baseUrl + "/delete/" + storeUserGuid);
   }
 };
 
-export default StoreUserService;
+export default AdminStoreUserService;

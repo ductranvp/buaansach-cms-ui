@@ -95,7 +95,7 @@
 
 <script>
   import CreateOrUpdateStoreUserDialog from "@/views/private/admin/store/detail/human/CreateOrUpdateStoreUserDialog";
-  import StoreUserService from "@/service/store-user.service";
+  import AdminStoreUserService from "@/service/admin/admin.store-user.service";
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
   import AddStoreUserDialog from "@/views/private/admin/store/detail/human/AddStoreUserDialog";
   import AppUtils from "@/utils/app.util";
@@ -143,14 +143,14 @@
       },
       async handleActivated(row) {
         try {
-          await StoreUserService.toggleAccount(row.guid);
+          await AdminStoreUserService.toggleAccount(row.guid);
           row.activated = !row.activated;
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);
         }
       },
       async getStoreUser() {
-        const {data} = await StoreUserService.getListStoreUserByStoreGuid(this.$route.params.storeGuid);
+        const {data} = await AdminStoreUserService.getListStoreUserByStoreGuid(this.$route.params.storeGuid);
         this.storeUsers = data;
       }
     }

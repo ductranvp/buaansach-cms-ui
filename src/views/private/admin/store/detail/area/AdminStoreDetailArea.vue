@@ -140,11 +140,11 @@
 </template>
 
 <script>
-  import AreaService from "@/service/area.service";
+  import AdminAreaService from "@/service/admin/admin.area.service";
   import NotificationUtils from "@/utils/notification.util";
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
   import MessageBoxUtils from "@/utils/message-box.util";
-  import SeatService from "@/service/seat.service";
+  import AdminSeatService from "@/service/admin/admin.seat.service";
 
   export default {
     name: "AdminStoreDetailArea",
@@ -194,7 +194,7 @@
                 seatName: val.value,
                 areaGuid: row.guid
               };
-              const {data} = await SeatService.createSeat(seatEntity);
+              const {data} = await AdminSeatService.createSeat(seatEntity);
               row.listSeat.push(data);
               NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.saveSeatSuccess"));
             } catch (error) {
@@ -206,7 +206,7 @@
         const vm = this;
         MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), async function () {
           try {
-            await SeatService.deleteSeat(seat.guid);
+            await AdminSeatService.deleteSeat(seat.guid);
             row.listSeat = row.listSeat.filter(s => s.guid !== seat.guid);
             NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.deleteSeatSuccess"));
           } catch (error) {
@@ -224,7 +224,7 @@
           async function (val) {
             try {
               seat.seatName = val.value;
-              await SeatService.updateSeat(seat);
+              await AdminSeatService.updateSeat(seat);
               NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.saveSeatSuccess"));
             } catch (error) {
               seat.seatName = originalSeatName;
@@ -241,7 +241,7 @@
         let vm = this;
         MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), async function () {
           try {
-            await AreaService.deleteArea(row.guid);
+            await AdminAreaService.deleteArea(row.guid);
             vm.areas = vm.areas.filter(area => area.guid !== row.guid);
             NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.deleteAreaSuccess"));
           } catch (error) {
@@ -258,7 +258,7 @@
       },
       async confirmEditArea(row) {
         try {
-          const {data: area} = await AreaService.updateArea(row);
+          const {data: area} = await AdminAreaService.updateArea(row);
           area.edit = false;
           Object.keys(area).forEach(key => {
             row[key] = area[key];
@@ -274,7 +274,7 @@
         if (vm.form.storeGuid) {
           try {
             vm.isLoading = true;
-            const {data: area} = await AreaService.createArea(vm.form);
+            const {data: area} = await AdminAreaService.createArea(vm.form);
             vm.isLoading = false;
             this.$set(area, 'edit', false);
             this.areas.push(area);
@@ -287,7 +287,7 @@
       },
       async getArea() {
         try {
-          const {data} = await AreaService.getListAreaByStore(this.$route.params.storeGuid);
+          const {data} = await AdminAreaService.getListAreaByStoreGuid(this.$route.params.storeGuid);
           this.areas = data.map(area => {
             this.$set(area, 'edit', false);
             return area;

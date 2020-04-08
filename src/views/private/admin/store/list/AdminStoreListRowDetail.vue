@@ -18,19 +18,19 @@
           <table class="expanded-table">
             <tr>
               <td>
-                {{ $t("private.adminStoreListPage.storeEntity.storeAddress") }}
+                {{ $t("private.adminStoreListPage.store.storeAddress") }}
               </td>
               <td>{{ row.storeAddress }}</td>
             </tr>
             <tr>
               <td>
-                {{ $t("private.adminStoreListPage.storeEntity.storeOwnerEmail") }}
+                {{ $t("private.adminStoreListPage.store.storeOwnerEmail") }}
               </td>
               <td>{{ row.storeOwnerEmail }}</td>
             </tr>
             <tr>
               <td>
-                {{ $t("private.adminStoreListPage.storeEntity.storeTaxCode") }}
+                {{ $t("private.adminStoreListPage.store.storeTaxCode") }}
               </td>
               <td>{{ row.storeTaxCode }}</td>
             </tr>
@@ -43,13 +43,13 @@
           <table class="expanded-table">
             <tr>
               <td>
-                {{$t("private.adminStoreListPage.storeEntity.previousUpdateReason")}}
+                {{$t("private.adminStoreListPage.activeTime")}}
               </td>
-              <td>{{ row.lastUpdateReason }}</td>
+              <td>{{ row.storeOpenHour }} - {{ row.storeCloseHour }}</td>
             </tr>
             <tr>
               <td>
-                {{ $t("private.adminStoreListPage.storeEntity.lastModifiedDate") }}
+                {{ $t("common.entity.audit.lastModifiedDate") }}
               </td>
               <td>
                 {{ row.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}
@@ -57,7 +57,7 @@
             </tr>
             <tr>
               <td>
-                {{ $t("private.adminStoreListPage.storeEntity.lastModifiedBy") }}
+                {{ $t("common.entity.audit.lastModifiedBy") }}
               </td>
               <td>{{ row.lastModifiedBy }}</td>
             </tr>

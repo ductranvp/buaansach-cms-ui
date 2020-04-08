@@ -58,7 +58,7 @@
 </template>
 
 <script>
-  import StoreUserService from "@/service/store-user.service";
+  import AdminStoreUserService from "@/service/admin/admin.store-user.service";
   import NotificationUtils from "@/utils/notification.util";
 
   export default {
@@ -143,7 +143,7 @@
             try {
               this.isLoading = true;
               this.form.storeGuid = this.$route.params.storeGuid;
-              const {data} = await StoreUserService.addStoreUser(this.form);
+              const {data} = await AdminStoreUserService.addStoreUser(this.form);
               this.$emit("addStoreUser", data);
               this.isLoading = false;
               this.hide();

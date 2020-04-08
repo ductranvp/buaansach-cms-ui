@@ -52,7 +52,7 @@
 
 <script>
   import NotificationUtils from "@/utils/notification.util";
-  import AreaService from "@/service/area.service";
+  import AdminAreaService from "@/service/admin/admin.area.service";
   import Constants from "@/utils/constants";
 
   export default {
@@ -74,7 +74,7 @@
       async getSeats() {
         if (this.$route.params.storeGuid) {
           try {
-            const {data} = await AreaService.getListAreaByStore(this.$route.params.storeGuid);
+            const {data} = await AdminAreaService.getListAreaByStoreGuid(this.$route.params.storeGuid);
             this.areas = data;
             this.areas.forEach(area => {
               const seats = area.listSeat.map(seat => {

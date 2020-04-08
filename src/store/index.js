@@ -1,10 +1,10 @@
 import Vue from "vue";
 import Vuex from "vuex";
 import getters from "@/store/getters";
-import AppModule from "./modules/app";
-import UserModule from "./modules/user";
-import TranslationModule from "./modules/translation";
-import AdminStoreModule from "./modules/admin-store";
+import AppModule from "./core/app";
+import UserModule from "./core/user";
+import TranslationModule from "./core/translation";
+import AdminStoreModule from "./admin/admin-store";
 
 Vue.use(Vuex);
 
