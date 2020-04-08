@@ -5,9 +5,6 @@
       <el-table-column prop="name" label="Name" width="120" />
       <el-table-column prop="address" label="Address" />
     </el-table>
-    <router-link class="pan-btn blue-btn" to="/documentation/index">
-      Documentation
-    </router-link>
   </div>
 </template>
 

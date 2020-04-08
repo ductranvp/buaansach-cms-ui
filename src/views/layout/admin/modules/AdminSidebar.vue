@@ -1,7 +1,6 @@
 <template>
   <el-aside :width="sideWidth">
     <el-menu v-bind="menuProps"
-             :default-openeds="['adminStoreManagement']"
              :collapse="isCollapse"
              :collapse-transition="false"
              :router="true">

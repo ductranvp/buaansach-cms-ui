@@ -11,7 +11,7 @@ export default {
   mounted() {
     this.$nextTick(function() {
       let url =
-        "http://192.168.2.4:8080/websocket" +
+        "http://192.168.2.2/websocket" +
         "?access_token=" +
         AuthUtils.getToken();
       let socket = new SockJS(url);

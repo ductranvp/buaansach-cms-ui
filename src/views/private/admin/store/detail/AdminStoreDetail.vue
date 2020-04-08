@@ -27,7 +27,7 @@
                      :key="tab.routeName"/>
       </el-tabs>
       <transition name="fade-transform" mode="out-in">
-        <router-view :key="key"/>
+        <router-view/>
       </transition>
     </el-row>
   </el-container>
@@ -40,11 +40,6 @@
   export default {
     name: "AdminStoreDetail",
     mixins: [adminStoreDetailData],
-    computed: {
-      key() {
-        return this.$route.path;
-      }
-    },
     created() {
       this.storeGuid = this.$route.params.storeGuid;
       this.activeName = this.$route.name;

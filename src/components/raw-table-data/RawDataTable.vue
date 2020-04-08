@@ -79,7 +79,6 @@
     },
     created() {
       this.tableData = this.data;
-      console.log(this.customAudit);
     },
     data() {
       return {
