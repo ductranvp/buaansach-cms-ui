@@ -7,6 +7,9 @@ import AdminRoutes from "@/router/private-routes/admin.routes";
 import UserRoutes from "@/router/private-routes/user.routes";
 import UserLayout from "@/views/layout/user/UserLayout";
 import CommonRoutes from "@/router/private-routes/common.routes";
+import ManagerLayout from "@/views/layout/manager/ManagerLayout";
+import ManagerRoutes from "@/router/private-routes/manager.routes";
+import EmployeeRoutes from "@/router/private-routes/employee.routes";
 
 Vue.use(VueRouter);
 
@@ -30,6 +33,17 @@ const router = new VueRouter({
       component: UserLayout,
       redirect: "/user/dashboard",
       children: [...UserRoutes]
+    },
+    {
+      path: "/management/:storeGuid",
+      component: ManagerLayout,
+      redirect: "/manager/dashboard",
+      children: [...ManagerRoutes]
+    },
+    {
+      path: "/store/:storeGuid",
+      component: () => import("@/views/layout/employee/EmployeeLayout"),
+      children: [...EmployeeRoutes]
     }
   ]
 });

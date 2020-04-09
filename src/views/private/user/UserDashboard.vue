@@ -8,7 +8,7 @@
           </div>
           <div class="text-center">
             <el-button v-if="store.storeUserRole === 'OWNER' || store.storeUserRole === 'MANAGER'">Quản lý</el-button>
-            <el-button v-else>Bán hàng</el-button>
+            <el-button v-else @click="goTo('posPage', store.storeGuid)">Bán hàng</el-button>
           </div>
         </el-card>
       </el-col>
@@ -32,6 +32,11 @@
       this.getStoreUser();
     },
     methods: {
+      goTo(routeName, storeGuid){
+        // this.$router.push({name: routeName, params: {storeGuid: storeGuid}});
+        let routeData = this.$router.resolve({name: routeName, params: {storeGuid: storeGuid}});
+        window.open(routeData.href, '_blank');
+      },
       async getStoreUser() {
         try {
           this.isLoading = true;
