@@ -1,20 +1,15 @@
 {
   "loginPage": {
-    "pageTitle": "Login",
     "loginForm": {
       "username": "Username",
       "password": "Password",
       "rememberMe": "Remember me",
-      "showPassword": "Show password",
-      "hidePassword": "Hide password",
-      "validateUsername": "Please enter username",
-      "validatePassword": "Please enter password",
       "loginBtn": "Login",
       "forgotBtn": "Forgot password?"
     },
     "error": {
       "badCredential": "Incorrect username or password",
-      "userNotActivated": "Tài khoản đã bị khóa"
+      "userNotActivated": "Your account has been deactivated"
     }
   }
 }

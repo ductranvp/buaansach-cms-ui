@@ -117,6 +117,11 @@
         storeUsers: [],
       };
     },
+    watch: {
+      $route(to, from) {
+        this.getStoreUser();
+      },
+    },
     created() {
       this.getStoreUser();
     },

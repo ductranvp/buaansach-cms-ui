@@ -1,7 +1,7 @@
 <template>
   <el-container class="full-size">
     <el-row class="full-size" type="flex" align="middle" justify="center">
-      <el-col :xs="18" :sm="12" :md="6">
+      <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
         <el-form
           ref="loginForm"
           class="full-size"
@@ -29,21 +29,10 @@
               ref="password"
               v-model="loginForm.password"
               prefix-icon="el-icon-lock"
-              :type="passwordType"
+              type="password"
+              show-password
               @keyup.enter.native="handleLogin"
             >
-              <el-tooltip
-                slot="append"
-                effect="dark"
-                :content="showPasswordTooltip"
-                placement="bottom-end"
-              >
-                <el-button
-                  :class="passwordType === '' ? 'show-password-btn' : ''"
-                  icon="el-icon-view"
-                  @click="showPassword"
-                />
-              </el-tooltip>
             </el-input>
           </el-form-item>
           <el-form-item prop="rememberMe">
@@ -80,104 +69,84 @@
 </template>
 
 <script>
-import AppUtils from "@/utils/app.util";
-import NotificationUtils from "@/utils/notification.util";
-import {mapState} from "vuex";
+  import AppUtils from "@/utils/app.util";
+  import NotificationUtils from "@/utils/notification.util";
+  import {mapState} from "vuex";
 
-export default {
-  name: "Login",
-  data() {
-    return {
-      loginForm: {
-        login: "",
-        password: "",
-        rememberMe: false
-      },
-      loginRules: {
-        login: [
-          {
-            required: true,
-            message: this.$t("public.loginPage.loginForm.validateUsername"),
-            trigger: "blur"
-          }
-        ],
-        password: [
-          {
-            required: true,
-            message: this.$t("public.loginPage.loginForm.validatePassword"),
-            trigger: "blur"
-          }
-        ]
-      },
-      isLoading: false,
-      passwordType: "password"
-    };
-  },
-  computed: {
-    ...mapState({
-      isAuthenticated: state => state.user.isAuthenticated
-    }),
-    showPasswordTooltip() {
-      if (this.passwordType === "password") {
-        return this.$t("public.loginPage.loginForm.showPassword");
+  export default {
+    name: "Login",
+    data() {
+      return {
+        loginForm: {
+          login: "",
+          password: "",
+          rememberMe: false
+        },
+        loginRules: {
+          login: [
+            {
+              required: true,
+              message: this.$t("common.entity.validation.required"),
+              trigger: "blur"
+            }
+          ],
+          password: [
+            {
+              required: true,
+              message: this.$t("common.entity.validation.required"),
+              trigger: "blur"
+            }
+          ]
+        },
+        isLoading: false
+      };
+    },
+    computed: {
+      ...mapState({
+        isAuthenticated: state => state.user.isAuthenticated
+      })
+    },
+    mounted() {
+      if (this.isAuthenticated) this.$router.push({name: 'homePage'});
+      if (this.loginForm.login === "") {
+        this.$refs.login.focus();
       } else {
-        return this.$t("public.loginPage.loginForm.hidePassword");
+        this.$refs.password.focus();
+      }
+    },
+    methods: {
+      forgotPassword() {
+        this.$router.push({name: "resetPasswordInitPage"});
+      },
+      handleLogin() {
+        const vm = this;
+        this.$refs.loginForm.validate(valid => {
+          if (valid) {
+            this.isLoading = true;
+            this.$store
+              .dispatch("user/login", this.loginForm)
+              .then(() => {
+                if (sessionStorage.getItem("requested-url")) {
+                  const item = sessionStorage.getItem("requested-url");
+                  sessionStorage.removeItem("requested-url");
+                  this.$router.push({path: item});
+                } else {
+                  this.$router.push({path: AppUtils.redirectBasedOnRole()});
+                }
+                this.isLoading = false;
+              })
+              .catch(error => {
+                NotificationUtils.error(error.message || error.data.message);
+                this.isLoading = false;
+              });
+          } else {
+            return false;
+          }
+        });
       }
     }
-  },
-  mounted() {
-    if (this.isAuthenticated) this.$router.push({name: 'homePage'});
-    if (this.loginForm.login === "") {
-      this.$refs.login.focus();
-    } else {
-      this.$refs.password.focus();
-    }
-  },
-  methods: {
-    showPassword() {
-      this.passwordType === ""
-        ? (this.passwordType = "password")
-        : (this.passwordType = "");
-    },
-    forgotPassword() {
-      this.$router.push({ name: "resetPasswordInitPage" });
-    },
-    handleLogin() {
-      const vm = this;
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.isLoading = true;
-          this.$store
-            .dispatch("user/login", this.loginForm)
-            .then(() => {
-              if (sessionStorage.getItem("requested-url")) {
-                const item = sessionStorage.getItem("requested-url");
-                sessionStorage.removeItem("requested-url");
-                this.$router.push({ path: item });
-              } else {
-                this.$router.push({ path: AppUtils.redirectBasedOnRole() });
-              }
-              this.isLoading = false;
-            })
-            .catch(error => {
-              NotificationUtils.error(error.message || error.data.message);
-              this.isLoading = false;
-            });
-        } else {
-          return false;
-        }
-      });
-    }
-  }
-};
+  };
 </script>
 
 <style lang="scss" scoped>
-.show-password-btn {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  color: #fff !important;
-  background-color: #ddd !important;
-  border-color: #ddd !important;
-}
 </style>

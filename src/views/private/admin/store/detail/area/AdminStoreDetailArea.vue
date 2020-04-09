@@ -161,6 +161,11 @@
     created() {
       this.getArea();
     },
+    watch: {
+      $route(to, from) {
+        this.getArea();
+      },
+    },
     data() {
       return {
         isLoading: false,

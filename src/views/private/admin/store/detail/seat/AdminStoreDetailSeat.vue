@@ -70,10 +70,16 @@
     created() {
       this.getSeats();
     },
+    watch: {
+      $route(to, from) {
+        this.getSeats();
+      },
+    },
     methods: {
       async getSeats() {
         if (this.$route.params.storeGuid) {
           try {
+            this.seats = [];
             const {data} = await AdminAreaService.getListAreaByStoreGuid(this.$route.params.storeGuid);
             this.areas = data;
             this.areas.forEach(area => {
