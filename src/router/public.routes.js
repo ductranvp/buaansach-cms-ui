@@ -52,7 +52,7 @@ const PublicRoutes = [
     }
   },
   {
-    path: "order",
+    path: "order/pos=:seatGuid",
     name: "orderPage",
     component: Order,
     meta: {

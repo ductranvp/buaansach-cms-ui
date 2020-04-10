@@ -22,7 +22,7 @@
       <el-col class="margin-bottom-10" :span="colSize" v-for="seat in seats" :key="seat.guid">
         <el-card shadow="never">
           <div class="text-center">
-            <qrcode :value="seatPrefixUrl + seat.guid" :options="{ width: colSize*40 }"></qrcode>
+            <qrcode @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid" :options="{ width: colSize*40 }"></qrcode>
           </div>
           <div class="text-center text-14 text-bold-600">
             <span>{{seat.seatName}} - {{seat.areaName}}</span>
@@ -76,6 +76,10 @@
       },
     },
     methods: {
+      goto(seatGuid){
+        let routeData = this.$router.resolve({name: "orderPage", params: {seatGuid: seatGuid}});
+        window.open(routeData.href, '_blank');
+      },
       async getSeats() {
         if (this.$route.params.storeGuid) {
           try {
