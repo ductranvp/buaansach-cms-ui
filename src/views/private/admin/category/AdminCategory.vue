@@ -1,0 +1,131 @@
+<template>
+  <el-container direction="vertical">
+    <el-row>
+      <el-col :span="20">
+        <el-form ref="categoryForm" :rules="formRules" :model="form" :inline="true">
+          <el-form-item prop="categoryName">
+            <el-input placeholder="Nhập tên danh mục"
+                      v-model="form.categoryName">
+            </el-input>
+          </el-form-item>
+        </el-form>
+      </el-col>
+      <el-col :span="4" class="text-right">
+        <el-button type="primary" :disabled="!form.categoryName" @click="submit">
+          <span>Thêm Danh Mục</span>
+        </el-button>
+      </el-col>
+    </el-row>
+    <el-row>
+      <raw-data-table ref="categoryTable"
+                      :data="categories"
+                      show-index
+                      show-audit
+      >
+        <el-table-column label="Tên Danh Mục" prop="categoryName"></el-table-column>
+        <template slot="action">
+          <el-table-column label="Thao tác">
+            <template slot-scope="{row}">
+              <el-button plain type="warning" size="mini" @click="editCategory(row)">
+                <span>{{$t("common.entity.action.edit")}}</span>
+              </el-button>
+
+              <el-button plain type="danger" size="mini" @click="deleteCategory(row)">
+                <span>{{$t("common.entity.action.delete")}}</span>
+              </el-button>
+            </template>
+          </el-table-column>
+        </template>
+      </raw-data-table>
+    </el-row>
+  </el-container>
+</template>
+
+<script>
+  import AdminCategoryService from "@/service/admin/admin.category.service";
+  import RawDataTable from "@/components/raw-table-data/RawDataTable";
+  import NotificationUtils from "@/utils/notification.util";
+  import MessageBoxUtils from "@/utils/message-box.util";
+  import AppUtils from "@/utils/app.util";
+
+  export default {
+    name: "AdminCategory",
+    components: {RawDataTable},
+    data() {
+      return {
+        categories: [],
+        form: {
+          categoryName: null,
+        },
+        formRules: {
+          categoryName: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          ]
+        }
+      };
+    },
+    created() {
+      this.getCategory();
+    },
+    methods: {
+      async getCategory() {
+        const {data} = await AdminCategoryService.getAllCategory();
+        this.categories = data;
+      },
+      editCategory(category) {
+        const vm = this;
+        const originalName = category.categoryName;
+        MessageBoxUtils.prompt("Sửa danh mục",
+          "Nhập vào tên danh mục",
+          false,
+          category.categoryName,
+          async function (callback) {
+            category.categoryName = callback.value;
+            try {
+              const {data} = await AdminCategoryService.updateCategory(category);
+              AppUtils.setAttrs(vm, category, data);
+              NotificationUtils.success("Sửa danh mục thành công");
+            } catch (error) {
+              category.categoryName = originalName;
+              NotificationUtils.error(error.message || error.data.message);
+            }
+          });
+      },
+      deleteCategory(category) {
+        let vm = this;
+        MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), async function () {
+          try {
+            await AdminCategoryService.deleteCategory(category.guid);
+            vm.categories = vm.categories.filter(cat => cat.guid !== category.guid);
+            NotificationUtils.success("Xóa danh mục thành công");
+          } catch (error) {
+            NotificationUtils.error(error.message || error.data.message);
+          }
+        });
+      },
+      resetForm() {
+        this.form = {};
+        this.$refs.categoryForm.clearValidate();
+        this.$refs.categoryForm.resetFields();
+      },
+      submit() {
+        this.$refs.categoryForm.validate(async valid => {
+          if (valid) {
+            try {
+              const {data} = await AdminCategoryService.createCategory(this.form);
+              this.categories.push(data);
+              NotificationUtils.success("Thêm danh mục thành công");
+              this.resetForm();
+            } catch (error) {
+              NotificationUtils.error(error.message || error.data.message);
+            }
+          }
+        });
+      }
+    }
+  };
+</script>
+
+<style scoped>
+
+</style>

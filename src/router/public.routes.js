@@ -1,42 +1,12 @@
-import Login from "@/views/public/login/Login";
-import Home from "@/views/public/home/Home";
 import Page403 from "@/views/public/error-page/Page403";
 import Page404 from "@/views/public/error-page/Page404";
-import About from "@/views/public/about/About";
-import Sale from "@/views/public/sale/Sale";
-import Product from "@/views/public/product/Product";
-import Order from "@/views/public/order/Order";
-import ResetPasswordInit from "@/views/public/reset-password/ResetPasswordInit";
-import Contact from "@/views/public/contact/Contact";
+import Login from "@/views/public/login/Login";
 import ResetPasswordFinish from "@/views/public/reset-password/ResetPasswordFinish";
+import ResetPasswordInit from "@/views/public/reset-password/ResetPasswordInit";
 
 const PublicRoutes = [
   {
-    path: "home",
-    name: "homePage",
-    component: Home,
-    meta: {
-      title: "public.pageTitle.homePage"
-    }
-  },
-  {
-    path: "about",
-    name: "aboutPage",
-    component: About,
-    meta: {
-      title: "public.pageTitle.aboutPage"
-    }
-  },
-  {
-    path: "contact",
-    name: "contactPage",
-    component: Contact,
-    meta: {
-      title: "public.pageTitle.contactPage"
-    }
-  },
-  {
-    path: "reset-password/init",
+    path: "/reset-password/init",
     name: "resetPasswordInitPage",
     component: ResetPasswordInit,
     meta: {
@@ -44,7 +14,7 @@ const PublicRoutes = [
     }
   },
   {
-    path: "reset-password/finish/key=:key?",
+    path: "/reset-password/finish/key=:key?",
     name: "resetPasswordFinishPage",
     component: ResetPasswordFinish,
     meta: {
@@ -52,31 +22,7 @@ const PublicRoutes = [
     }
   },
   {
-    path: "order/pos=:seatGuid",
-    name: "orderPage",
-    component: Order,
-    meta: {
-      title: "public.pageTitle.orderPage"
-    }
-  },
-  {
-    path: "product",
-    name: "productPage",
-    component: Product,
-    meta: {
-      title: "public.pageTitle.productPage"
-    }
-  },
-  {
-    path: "sale",
-    name: "salePage",
-    component: Sale,
-    meta: {
-      title: "public.pageTitle.salePage"
-    }
-  },
-  {
-    path: "login",
+    path: "/login",
     name: "loginPage",
     component: Login,
     meta: {
@@ -84,7 +30,7 @@ const PublicRoutes = [
     }
   },
   {
-    path: "forbidden",
+    path: "/forbidden",
     name: "forbiddenPage",
     component: Page403,
     meta: {
@@ -92,7 +38,7 @@ const PublicRoutes = [
     }
   },
   {
-    path: "not-found",
+    path: "/not-found",
     name: "notFoundPage",
     component: Page404,
     meta: {

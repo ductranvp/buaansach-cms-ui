@@ -8,6 +8,7 @@ import AdminTracker from "@/views/private/admin/tracker/AdminTracker";
 import AdminSetting from "@/views/private/admin/setting/AdminSetting";
 import AdminStoreDetail from "@/views/private/admin/store/detail/AdminStoreDetail";
 import AdminStoreDetailChildren from "@/router/private-routes/admin/admin-store-detail.children.routes";
+import AdminCategory from "@/views/private/admin/category/AdminCategory";
 
 const AdminRoutes = [
   {
@@ -46,6 +47,15 @@ const AdminRoutes = [
     component: AdminProduct,
     meta: {
       title: "private.pageTitle.admin.adminProductPage",
+      roles: [Roles.ADMIN]
+    }
+  },
+  {
+    path: "category-management",
+    name: "adminCategoryPage",
+    component: AdminCategory,
+    meta: {
+      title: "private.pageTitle.admin.adminCategoryPage",
       roles: [Roles.ADMIN]
     }
   },

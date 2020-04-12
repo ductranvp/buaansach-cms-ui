@@ -4,6 +4,7 @@
       "adminDashboardPage": "Dashboard",
       "adminStoreListPage": "Store Management",
       "adminProductPage": "Product Management",
+      "adminCategoryPage": "Category Management",
       "adminUserPage": "User Management",
       "adminReportPage": "Report Management",
       "adminTrackerPage": "System Tracker",

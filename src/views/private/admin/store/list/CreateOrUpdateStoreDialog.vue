@@ -20,12 +20,7 @@
             ></el-input>
           </el-form-item>
         </el-col>
-
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-
-        <el-col :span="11">
+        <el-col :span="11" :offset="2">
           <el-form-item prop="storeName">
             <input-label :label="$t('private.adminStoreListPage.store.storeName')" required/>
             <el-input
@@ -61,11 +56,7 @@
           </el-form-item>
         </el-col>
 
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-
-        <el-col :span="11">
+        <el-col :span="11" :offset="2">
           <el-form-item prop="storeOwnerPhone">
             <input-label :label="$t('private.adminStoreListPage.store.storeOwnerPhone')" required/>
             <el-input
@@ -91,11 +82,7 @@
           </el-form-item>
         </el-col>
 
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-
-        <el-col :span="11">
+        <el-col :span="11" :offset="2">
           <el-form-item prop="storeTaxCode">
             <input-label :label="$t('private.adminStoreListPage.store.storeTaxCode')" optional/>
             <el-input
@@ -120,11 +107,7 @@
           </el-form-item>
         </el-col>
 
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-
-        <el-col :span="11">
+        <el-col :span="11" :offset="2">
           <el-form-item prop="storeCloseHour">
             <input-label :label="$t('private.adminStoreListPage.store.storeCloseHour')" optional/>
             <el-time-select

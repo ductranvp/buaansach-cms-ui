@@ -1,14 +1,23 @@
 import Roles from "@/config/security/roles";
+import Home from "@/views/private/user/home/Home";
 import Profile from "@/views/private/user/profile/Profile";
-import UserDashboard from "@/views/private/user/UserDashboard";
 
 const UserRoutes = [
   {
-    path: "dashboard",
-    name: "userDashboardPage",
-    component: UserDashboard,
+    path: "home",
+    name: "homePage",
+    component: Home,
     meta: {
-      title: "private.pageTitle.user.userDashboardPage",
+      title: "public.pageTitle.homePage",
+      roles: [Roles.USER]
+    }
+  },
+  {
+    path: "profile",
+    name: "profilePage",
+    component: Profile,
+    meta: {
+      title: "private.pageTitle.common.profilePage",
       roles: [Roles.USER]
     }
   }

@@ -20,10 +20,8 @@
                       show-word-limit></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-        <el-col :span="11">
+
+        <el-col :span="11" :offset="2">
           <el-form-item prop="productName">
             <input-label label="Ten san pham" required/>
             <el-input ref="productName" v-model="form.productName" maxlength="100" show-word-limit></el-input>
@@ -44,10 +42,8 @@
             <el-input v-model="form.productRealPrice" type="number"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-        <el-col :span="11">
+
+        <el-col :span="11" :offset="2">
           <el-form-item prop="productName">
             <input-label label="Gia ban" required/>
             <el-input v-model="form.productPrice" type="number"></el-input>
@@ -68,11 +64,18 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-        <el-col :span="11">
 
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="categoryGuid">
+            <input-label label="Danh muc" required/>
+            <el-select v-model="form.categoryGuid" class="full-width">
+              <el-option v-for="category in categories"
+                         :key="category.guid"
+                         :label="category.categoryName"
+                         :value="category.guid">
+              </el-option>
+            </el-select>
+          </el-form-item>
         </el-col>
       </el-form-item>
 
@@ -102,6 +105,7 @@
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import AdminProductService from "@/service/admin/admin.product.service";
+  import AdminCategoryService from "@/service/admin/admin.category.service";
 
   export default {
     name: "CreateOrUpdateProductDialog",
@@ -110,6 +114,7 @@
         isLoading: false,
         dialogFormVisible: false,
         isEdit: false,
+        categories: [],
         form: {
           guid: null,
           productCode: null,
@@ -120,6 +125,7 @@
           productStatus: null,
           productRealPrice: null,
           productPrice: null,
+          categoryGuid: null,
         },
         formRules: {
           productCode: [
@@ -141,7 +147,10 @@
           ],
           productPrice: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
-          ]
+          ],
+          categoryGuid: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          ],
         },
         productStatus: [
           {label: "Đang kinh doanh", value: "ON"},
@@ -168,8 +177,10 @@
         this.form = AppUtils.deepCopy(product);
         this.show();
       },
-      show() {
+      async show() {
         this.dialogFormVisible = true;
+        const {data} = await AdminCategoryService.getAllCategory();
+        this.categories = data;
       },
       hide() {
         this.resetForm();

@@ -1,7 +1,7 @@
 import router from "@/router";
+import store from "@/store";
 
 const accessToken = "access-token";
-import store from "@/store";
 
 function getToken() {
   return (
@@ -31,13 +31,11 @@ function hasAnyAuthority(authorities) {
   return false;
 }
 
-function logout(routeName) {
+function logout() {
   /*routeName is the route that we want to redirect to when logged out*/
   store.dispatch("user/logout").then(() => {
-    if (routeName) router.push({ name: routeName }).catch(() => {});
-    else {
-      router.push("/").catch(() => {});
-    }
+    router.push("/login").catch(() => {
+    });
   });
 }
 

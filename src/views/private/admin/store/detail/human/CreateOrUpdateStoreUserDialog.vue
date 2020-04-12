@@ -15,10 +15,8 @@
                       show-word-limit></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-        <el-col :span="11">
+
+        <el-col :span="11" :offset="2">
           <el-form-item prop="password">
             <input-label v-show="isEdit"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.passwordWithoutRequired')"/>
@@ -41,10 +39,8 @@
             <el-input ref="lastName" maxlength="50" v-model="form.lastName" show-word-limit></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-        <el-col :span="11">
+
+        <el-col :span="11"  :offset="2">
           <el-form-item prop="firstName">
             <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.firstName')"/>
             <el-input maxlength="50" v-model="form.firstName" show-word-limit></el-input>
@@ -66,10 +62,8 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-        <el-col :span="11">
+
+        <el-col :span="11"  :offset="2">
           <el-form-item prop="storeUserStatus">
             <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserStatus')"/>
             <el-select class="full-width" v-model="form.storeUserStatus">

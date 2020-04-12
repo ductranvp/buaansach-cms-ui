@@ -4,7 +4,7 @@
              :collapse="isCollapse"
              :collapse-transition="false"
              :router="true">
-      <el-menu-item class="sidebar-logo" @click="toggleSidebar">
+      <el-menu-item class="sidebar-toggle" @click="toggleSidebar">
         <i v-if="!isCollapse" class="el-icon-d-arrow-left"/>
         <i v-else class="el-icon-d-arrow-right"/>
         <span v-if="!isCollapse" slot="title">

@@ -1,43 +1,33 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 import PublicRoutes from "@/router/public.routes";
-import PublicLayout from "@/views/layout/public/PublicLayout";
-import AdminLayout from "@/views/layout/admin/AdminLayout";
 import AdminRoutes from "@/router/private-routes/admin.routes";
-import UserRoutes from "@/router/private-routes/user.routes";
-import UserLayout from "@/views/layout/user/UserLayout";
-import CommonRoutes from "@/router/private-routes/common.routes";
-import ManagerLayout from "@/views/layout/manager/ManagerLayout";
 import ManagerRoutes from "@/router/private-routes/manager.routes";
 import EmployeeRoutes from "@/router/private-routes/employee.routes";
+import UserLayout from "@/views/layout/user/UserLayout";
+import UserRoutes from "@/router/private-routes/user.routes";
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
   mode: "history",
   routes: [
+    ...PublicRoutes,
     {
       path: "/",
-      component: PublicLayout,
+      component: UserLayout,
       redirect: "/home",
-      children: [...PublicRoutes, ...CommonRoutes]
+      children: [...UserRoutes]
     },
     {
       path: "/admin",
-      component: AdminLayout,
+      component: () => import("@/views/layout/admin/AdminLayout"),
       redirect: "/admin/dashboard",
       children: [...AdminRoutes]
     },
     {
-      path: "/user",
-      component: UserLayout,
-      redirect: "/user/dashboard",
-      children: [...UserRoutes]
-    },
-    {
       path: "/management/:storeGuid",
-      component: ManagerLayout,
-      redirect: "/manager/dashboard",
+      component: () => import("@/views/layout/manager/ManagerLayout"),
       children: [...ManagerRoutes]
     },
     {

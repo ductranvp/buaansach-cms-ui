@@ -5,7 +5,7 @@ import i18n from "@/i18n";
 
 function redirectBasedOnRole() {
   if (store.getters.roles.includes(Roles.ADMIN)) return "/admin";
-  else return "/user";
+  else return "/home";
 }
 
 function generatePageTitle(pageTitle) {
@@ -20,10 +20,13 @@ function deepCopy(object) {
   return JSON.parse(JSON.stringify(object));
 }
 
-function setAttrs(vm, currentObj, newObj){
+function setAttrs(vm, currentObj, newObj) {
+  const temp = deepCopy(currentObj);
   Object.keys(newObj).forEach(key => {
     vm.$set(currentObj, key, newObj[key]);
   });
+  vm.$set(currentObj, "createdBy", temp['createdBy']);
+  vm.$set(currentObj, "createdDate", temp['createdDate']);
 }
 
 const AppUtils = {

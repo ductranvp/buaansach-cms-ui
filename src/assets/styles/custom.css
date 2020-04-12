@@ -9,14 +9,10 @@
     color: #909399;
 }
 
-.sidebar-logo {
+.sidebar-toggle {
     height: 50px;
     line-height: 50px;
     background: #eee;
-}
-
-.flex-wrap {
-    flex-wrap: wrap;
 }
 
 .full-size {
@@ -34,19 +30,6 @@
 
 .block {
     display: block;
-}
-
-.flex {
-    display: flex;
-}
-
-.flex-1 {
-    flex: 1;
-}
-
-.transparent-btn {
-    border: none !important;
-    background: transparent !important;
 }
 
 .text-center {

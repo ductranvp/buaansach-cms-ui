@@ -22,7 +22,8 @@
       <el-col class="margin-bottom-10" :span="colSize" v-for="seat in seats" :key="seat.guid">
         <el-card shadow="never">
           <div class="text-center">
-            <qrcode @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid" :options="{ width: colSize*40 }"></qrcode>
+            <qrcode class="pointer" @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid"
+                    :options="{ width: colSize*40 }"></qrcode>
           </div>
           <div class="text-center text-14 text-bold-600">
             <span>{{seat.seatName}} - {{seat.areaName}}</span>
@@ -62,7 +63,8 @@
         colSize: 3,
         displayType: "SEAT",
         sortType: "NAME",
-        seatPrefixUrl: Constants.CLIENT_SEAT_PREFIX_URL,
+        seatPrefixUrl: "http://192.168.2.2:4000/seat=",
+        // seatPrefixUrl: Constants.CLIENT_SEAT_PREFIX_URL,
         areas: [],
         seats: [],
       };
@@ -76,9 +78,9 @@
       },
     },
     methods: {
-      goto(seatGuid){
-        let routeData = this.$router.resolve({name: "orderPage", params: {seatGuid: seatGuid}});
-        window.open(routeData.href, '_blank');
+      goto(seatGuid) {
+        let routeData = "http://192.168.2.2:4000/seat=" + seatGuid;
+        window.open(routeData, '_blank');
       },
       async getSeats() {
         if (this.$route.params.storeGuid) {

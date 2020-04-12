@@ -19,6 +19,13 @@
               </el-button>
             </div>
           </el-form-item>
+          <el-form-item>
+            <div>
+              <el-button type="info" style="width: 100%" @click="()=> {this.$router.push('/login')}">
+                <span>{{ $t("public.resetPasswordInitPage.loginBtn") }}</span>
+              </el-button>
+            </div>
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>

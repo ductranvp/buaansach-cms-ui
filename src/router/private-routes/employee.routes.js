@@ -1,11 +1,11 @@
-import PosPage from "@/views/private/employee/PosPage";
+import EmployeeDashboard from "@/views/private/employee/EmployeeDashboard";
 import Roles from "@/config/security/roles";
 
 const EmployeeRoutes = [
   {
-    path: "pos",
-    name: "posPage",
-    component: PosPage,
+    path: "dashboard",
+    name: "employeeDashboardPage",
+    component: EmployeeDashboard,
     meta: {
       title: "private.posPage.pageTitle",
       roles: [Roles.USER]

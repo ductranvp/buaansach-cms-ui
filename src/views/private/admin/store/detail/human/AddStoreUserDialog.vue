@@ -26,10 +26,8 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="2">
-          <input-label label=""/>
-        </el-col>
-        <el-col :span="11">
+
+        <el-col :span="11" :offset="2">
           <el-form-item prop="storeUserStatus">
             <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserStatus')"/>
             <el-select class="full-width" v-model="form.storeUserStatus">

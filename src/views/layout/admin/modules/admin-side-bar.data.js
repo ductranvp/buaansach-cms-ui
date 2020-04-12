@@ -41,6 +41,13 @@ const mixinSidebarData = {
           },
         },
         {
+          routeName: 'adminCategoryPage',
+          meta: {
+            icon: 'el-icon-s-management',
+            title: 'layout.adminSidebar.adminCategoryPage',
+          },
+        },
+        {
           routeName: 'adminUserPage',
           meta: {
             icon: 'el-icon-user-solid',

@@ -6,7 +6,7 @@
       align="middle"
       justify="space-between"
     >
-      <el-button class="transparent-btn text-24" @click="goHome">
+      <el-button class="text-24" @click="goHome">
         <i class="el-icon-s-home" />
         <span>Home</span>
       </el-button>

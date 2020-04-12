@@ -1,6 +1,5 @@
 <template>
   <el-container class="user-container" direction="horizontal">
-    <UserSidebar class="user-sidebar"/>
     <el-container class="user-main-container" direction="vertical">
       <UserHeader class="user-header"/>
       <UserMain class="user-main"/>
@@ -9,13 +8,12 @@
 </template>
 
 <script>
-  import UserSidebar from "@/views/layout/user/modules/UserSidebar";
   import UserHeader from "@/views/layout/user/modules/UserHeader";
   import UserMain from "@/views/layout/user/modules/UserMain";
 
   export default {
     name: "ManagerLayout",
-    components: {UserMain, UserHeader, UserSidebar}
+    components: {UserMain, UserHeader}
   };
 </script>
 

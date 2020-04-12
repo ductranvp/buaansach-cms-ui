@@ -2,29 +2,13 @@
   <el-container class="full-size">
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
-        <el-form
-          ref="loginForm"
-          class="full-size"
-          :model="loginForm"
-          :rules="loginRules"
-        >
+        <el-form ref="loginForm" class="full-size" :model="loginForm" :rules="loginRules">
           <el-form-item prop="login">
-            <InputLabel
-              :label="$t('public.loginPage.loginForm.username')"
-              required
-            />
-            <el-input
-              ref="login"
-              v-model="loginForm.login"
-              prefix-icon="el-icon-user"
-              type="text"
-            />
+            <InputLabel :label="$t('public.loginPage.loginForm.username')" required/>
+            <el-input ref="login" v-model="loginForm.login" prefix-icon="el-icon-user" type="text"/>
           </el-form-item>
           <el-form-item prop="password">
-            <InputLabel
-              :label="$t('public.loginPage.loginForm.password')"
-              required
-            />
+            <InputLabel :label="$t('public.loginPage.loginForm.password')" required/>
             <el-input
               ref="password"
               v-model="loginForm.password"
@@ -32,8 +16,7 @@
               type="password"
               show-password
               @keyup.enter.native="handleLogin"
-            >
-            </el-input>
+            ></el-input>
           </el-form-item>
           <el-form-item prop="rememberMe">
             <el-checkbox v-model="loginForm.rememberMe" class="full-width">
@@ -54,10 +37,7 @@
           </el-form-item>
           <el-form-item>
             <div>
-              <el-button
-                type="info"
-                style="width: 100%"
-                @click="forgotPassword">
+              <el-button type="info" style="width: 100%" @click="forgotPassword">
                 <span>{{ $t("public.loginPage.loginForm.forgotBtn") }}</span>
               </el-button>
             </div>
@@ -107,7 +87,7 @@
       })
     },
     mounted() {
-      if (this.isAuthenticated) this.$router.push({name: 'homePage'});
+      if (this.isAuthenticated) this.$router.push({name: "homePage"});
       if (this.loginForm.login === "") {
         this.$refs.login.focus();
       } else {
@@ -126,7 +106,8 @@
             this.$store
               .dispatch("user/login", this.loginForm)
               .then(() => {
-                if (sessionStorage.getItem("requested-url")) {
+                const redirect = sessionStorage.getItem("requested-url");
+                if (redirect && redirect !== "/home") {
                   const item = sessionStorage.getItem("requested-url");
                   sessionStorage.removeItem("requested-url");
                   this.$router.push({path: item});

@@ -21,7 +21,7 @@
   import NotificationUtils from "@/utils/notification.util";
 
   export default {
-    name: "UserDashboard",
+    name: "Home",
     data() {
       return {
         isLoading: false,
@@ -32,7 +32,7 @@
       this.getStoreUser();
     },
     methods: {
-      goTo(routeName, storeGuid){
+      goTo(routeName, storeGuid) {
         // this.$router.push({name: routeName, params: {storeGuid: storeGuid}});
         let routeData = this.$router.resolve({name: routeName, params: {storeGuid: storeGuid}});
         window.open(routeData.href, '_blank');
@@ -54,6 +54,4 @@
   };
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
