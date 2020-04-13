@@ -4,6 +4,7 @@ const getters = {
   roles: state => state.user.roles,
   currentLanguage: state => state.currentLanguage,
   languages: state => state.languages,
-  adminCurrentStore: state => state.adminStore.currentStore
+  adminCurrentStore: state => state.adminStore.currentStore,
+  adminSidebarCollapse: state => state.app.adminSidebarCollapse,
 };
 export default getters;

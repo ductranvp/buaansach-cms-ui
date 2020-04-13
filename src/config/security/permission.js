@@ -1,6 +1,6 @@
 import router from "@/router";
 import NProgress from "nprogress"; // progress bar
-import "nprogress/nprogress.css"; // progress bar style
+import "@/assets/styles/nprogress.scss"; // progress bar style
 import AuthUtils from "@/utils/auth.util"; // get token from cookie
 import AppUtils from "@/utils/app.util";
 import store from "@/store";

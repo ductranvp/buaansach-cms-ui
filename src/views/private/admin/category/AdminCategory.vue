@@ -8,12 +8,10 @@
                       v-model="form.categoryName">
             </el-input>
           </el-form-item>
+          <el-button type="primary" :disabled="!form.categoryName" @click="submit">
+            <span>Thêm Danh Mục</span>
+          </el-button>
         </el-form>
-      </el-col>
-      <el-col :span="4" class="text-right">
-        <el-button type="primary" :disabled="!form.categoryName" @click="submit">
-          <span>Thêm Danh Mục</span>
-        </el-button>
       </el-col>
     </el-row>
     <el-row>

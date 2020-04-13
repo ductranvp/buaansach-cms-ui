@@ -1,22 +1,16 @@
-import Page403 from "@/views/public/error-page/Page403";
-import Page404 from "@/views/public/error-page/Page404";
-import Login from "@/views/public/login/Login";
-import ResetPasswordFinish from "@/views/public/reset-password/ResetPasswordFinish";
-import ResetPasswordInit from "@/views/public/reset-password/ResetPasswordInit";
-
 const PublicRoutes = [
   {
     path: "/reset-password/init",
     name: "resetPasswordInitPage",
-    component: ResetPasswordInit,
+    component: () => import("@/views/public/reset-password/ResetPasswordInit"),
     meta: {
       title: "public.pageTitle.resetPasswordInitPage"
     }
   },
   {
-    path: "/reset-password/finish/key=:key?",
+    path: "/reset-password/finish/key=:key",
     name: "resetPasswordFinishPage",
-    component: ResetPasswordFinish,
+    component: () => import("@/views/public/reset-password/ResetPasswordFinish"),
     meta: {
       title: "public.pageTitle.resetPasswordFinishPage"
     }
@@ -24,7 +18,7 @@ const PublicRoutes = [
   {
     path: "/login",
     name: "loginPage",
-    component: Login,
+    component: () => import("@/views/public/login/Login"),
     meta: {
       title: "public.pageTitle.loginPage"
     }
@@ -32,7 +26,7 @@ const PublicRoutes = [
   {
     path: "/forbidden",
     name: "forbiddenPage",
-    component: Page403,
+    component: () => import("@/views/public/error-page/Page403"),
     meta: {
       title: "public.pageTitle.forbiddenPage"
     }
@@ -40,7 +34,7 @@ const PublicRoutes = [
   {
     path: "/not-found",
     name: "notFoundPage",
-    component: Page404,
+    component: () => import("@/views/public/error-page/Page404"),
     meta: {
       title: "public.pageTitle.notFoundPage"
     }

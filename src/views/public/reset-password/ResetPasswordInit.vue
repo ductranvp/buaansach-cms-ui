@@ -1,10 +1,10 @@
 <template>
-  <el-container class="full-size">
+  <el-container class="full-size reset-container">
     <el-row class="full-size" type="flex" align="middle" justify="center">
-      <el-col :xs="18" :sm="12" :md="6">
+      <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
         <el-form ref="resetPasswordForm" :model="form" :rules="formRules">
           <el-form-item prop="email">
-            <input-label :label="$t('public.resetPasswordInitPage.inputLabel')" required/>
+            <input-label effect="dark" :label="$t('public.resetPasswordInitPage.inputLabel')" required/>
             <el-input v-model="form.email"/>
           </el-form-item>
           <el-form-item>
@@ -78,4 +78,11 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .reset-container {
+    min-height: 100%;
+    width: 100%;
+    background-color: #2d3a4b;
+    overflow: hidden;
+  }
+</style>

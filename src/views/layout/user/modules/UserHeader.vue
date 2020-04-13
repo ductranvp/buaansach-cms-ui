@@ -1,29 +1,41 @@
 <template>
-  <el-header>
-    <el-row
-      class="full-size"
-      type="flex"
-      align="middle"
-      justify="space-between">
-      <p>UserHeader</p>
-      <el-button @click="logout">
-        Logout
-      </el-button>
+  <el-header class="bg-success" height="50px">
+    <el-row class="full-size padding-right-10 padding-left-10" type="flex" align="middle">
+      <el-col>
+        <el-button type="success" @click="goto('homePage')">
+          <span class="text-bold-700">BỮA ĂN SẠCH</span>
+        </el-button>
+      </el-col>
+      <el-col class="text-right">
+        <el-button type="success" v-if="hasAnyRole(['ROLE_ADMIN'])" @click="goto('adminDashboardPage')">
+          <span>Quản trị viên</span>
+        </el-button>
+        <el-button type="success" @click="goto('logout')">
+          <span>Đăng xuất</span>
+        </el-button>
+      </el-col>
     </el-row>
   </el-header>
 </template>
 
 <script>
-import AuthUtils from "@/utils/auth.util";
+  import AuthUtils from "@/utils/auth.util";
+  import hasAnyRole from "@/utils/has-any-role";
 
-export default {
-  name: "UserHeader",
-  methods: {
-    logout() {
-      AuthUtils.logout();
+  export default {
+    name: "UserHeader",
+    methods: {
+      goto(routeName) {
+        if (routeName === "logout") {
+          AuthUtils.logout();
+        } else {
+          this.$router.push({name: routeName}).catch(() => {
+          });
+        }
+      },
+      hasAnyRole: hasAnyRole,
     }
-  }
-};
+  };
 </script>
 
 <style scoped></style>

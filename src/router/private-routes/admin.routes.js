@@ -1,38 +1,29 @@
-import AdminDashboard from "@/views/private/admin/AdminDashboard";
 import Roles from "@/config/security/roles";
-import AdminStoreList from "@/views/private/admin/store/list/AdminStoreList";
-import AdminProduct from "@/views/private/admin/product/AdminProduct";
-import AdminUser from "@/views/private/admin/user/AdminUser";
-import AdminReport from "@/views/private/admin/report/AdminReport";
-import AdminTracker from "@/views/private/admin/tracker/AdminTracker";
-import AdminSetting from "@/views/private/admin/setting/AdminSetting";
-import AdminStoreDetail from "@/views/private/admin/store/detail/AdminStoreDetail";
 import AdminStoreDetailChildren from "@/router/private-routes/admin/admin-store-detail.children.routes";
-import AdminCategory from "@/views/private/admin/category/AdminCategory";
 
 const AdminRoutes = [
   {
     path: "dashboard",
     name: "adminDashboardPage",
-    component: AdminDashboard,
+    component: () => import("@/views/private/admin/dashboard/AdminDashboard"),
     meta: {
       title: "private.pageTitle.admin.adminDashboardPage",
       roles: [Roles.ADMIN]
     }
   },
   {
-    path: "store-list",
+    path: "store-management",
     name: "adminStoreListPage",
-    component: AdminStoreList,
+    component: () => import("@/views/private/admin/store/list/AdminStoreList"),
     meta: {
       title: "private.pageTitle.admin.adminStoreListPage",
       roles: [Roles.ADMIN]
     }
   },
   {
-    path: "store-detail/:storeGuid?",
+    path: "store-management/:storeGuid",
     name: "adminStoreDetailPage",
-    component: AdminStoreDetail,
+    component: () => import("@/views/private/admin/store/detail/AdminStoreDetail"),
     meta: {
       title: "private.pageTitle.admin.adminStoreDetailPage",
       roles: [Roles.ADMIN]
@@ -44,7 +35,7 @@ const AdminRoutes = [
   {
     path: "product-management",
     name: "adminProductPage",
-    component: AdminProduct,
+    component: () => import("@/views/private/admin/product/AdminProduct"),
     meta: {
       title: "private.pageTitle.admin.adminProductPage",
       roles: [Roles.ADMIN]
@@ -53,7 +44,7 @@ const AdminRoutes = [
   {
     path: "category-management",
     name: "adminCategoryPage",
-    component: AdminCategory,
+    component: () => import("@/views/private/admin/category/AdminCategory"),
     meta: {
       title: "private.pageTitle.admin.adminCategoryPage",
       roles: [Roles.ADMIN]
@@ -62,7 +53,7 @@ const AdminRoutes = [
   {
     path: "user-management",
     name: "adminUserPage",
-    component: AdminUser,
+    component: () => import("@/views/private/admin/user/AdminUser"),
     meta: {
       title: "private.pageTitle.admin.adminUserPage",
       roles: [Roles.ADMIN]
@@ -71,7 +62,7 @@ const AdminRoutes = [
   {
     path: "report-management",
     name: "adminReportPage",
-    component: AdminReport,
+    component: () => import("@/views/private/admin/report/AdminReport"),
     meta: {
       title: "private.pageTitle.admin.adminReportPage",
       roles: [Roles.ADMIN]
@@ -80,7 +71,7 @@ const AdminRoutes = [
   {
     path: "tracker-management",
     name: "adminTrackerPage",
-    component: AdminTracker,
+    component: () => import("@/views/private/admin/tracker/AdminTracker"),
     meta: {
       title: "private.pageTitle.admin.adminTrackerPage",
       roles: [Roles.ADMIN]
@@ -89,7 +80,7 @@ const AdminRoutes = [
   {
     path: "setting",
     name: "adminSettingPage",
-    component: AdminSetting,
+    component: () => import("@/views/private/admin/setting/AdminSetting"),
     meta: {
       title: "private.pageTitle.admin.adminSettingPage",
       roles: [Roles.ADMIN]

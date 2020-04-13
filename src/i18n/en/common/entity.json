@@ -20,7 +20,8 @@
       "refresh": "Refresh",
       "ok": "OK",
       "lock": "Lock",
-      "unlock": "Unlock"
+      "unlock": "Unlock",
+      "manage": "Manage"
     },
     "dialog": {
       "title": "Create or update {entityName}"

@@ -1,14 +1,14 @@
 <template>
-  <el-container class="full-size">
+  <el-container class="full-size reset-container">
     <el-row class="full-size" type="flex" justify="center" align="middle">
-      <el-col :xs="18" :sm="12" :md="6">
+      <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
         <el-form ref="resetPasswordForm" :model="form" :rules="formRules">
           <el-form-item prop="newPassword">
-            <input-label :label="$t('public.resetPasswordFinishPage.newPasswordLabel')" required/>
+            <input-label effect="dark" :label="$t('public.resetPasswordFinishPage.newPasswordLabel')" required/>
             <el-input v-model="form.newPassword" type="password" show-password/>
           </el-form-item>
           <el-form-item prop="confirm">
-            <input-label :label="$t('public.resetPasswordFinishPage.confirmLabel')" required/>
+            <input-label effect="dark" :label="$t('public.resetPasswordFinishPage.confirmLabel')" required/>
             <el-input v-model="form.confirm" type="password" show-password/>
           </el-form-item>
           <el-form-item>
@@ -23,6 +23,12 @@
               </el-button>
             </div>
           </el-form-item>
+          <el-form-item>
+            <div>
+              <el-button style="width: 100%" type="info" @click="()=>{this.$router.push('/home')}">Về trang chủ
+              </el-button>
+            </div>
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>
@@ -32,7 +38,6 @@
 <script>
   import AccountService from "@/service/account.service";
   import MessageBoxUtils from "@/utils/message-box.util";
-  import MessageUtils from "@/utils/message.util";
   import NotificationUtils from "@/utils/notification.util";
 
   export default {
@@ -117,4 +122,11 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .reset-container {
+    min-height: 100%;
+    width: 100%;
+    background-color: #2d3a4b;
+    overflow: hidden;
+  }
+</style>

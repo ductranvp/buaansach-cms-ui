@@ -1,13 +1,19 @@
 <template>
   <!--  <label class="optional">{{ $t("components.inputLabel.optional") }}</label>-->
-  <el-tag type="primary" size="mini" class="margin-left-10">
+  <el-tag :effect="effect" type="primary" size="mini" class="margin-left-10">
     <span>{{ $t("components.inputLabel.optional") }}</span>
   </el-tag>
 </template>
 
 <script>
 export default {
-  name: "OptionalLabel"
+  name: "OptionalLabel",
+  props: {
+    effect: {
+      type: String,
+      default: "light"
+    }
+  }
 };
 </script>
 

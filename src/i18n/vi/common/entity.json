@@ -20,7 +20,8 @@
       "refresh": "Tải lại",
       "ok": "OK",
       "lock": "Khóa",
-      "unlock": "Mở khóa"
+      "unlock": "Mở khóa",
+      "manage": "Quản lý"
     },
     "dialog": {
       "title": "Tạo hoặc cập nhật {entityName}"

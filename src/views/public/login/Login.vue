@@ -1,14 +1,16 @@
 <template>
-  <el-container class="full-size">
+  <el-container class="full-size login-container">
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
         <el-form ref="loginForm" class="full-size" :model="loginForm" :rules="loginRules">
           <el-form-item prop="login">
-            <InputLabel :label="$t('public.loginPage.loginForm.username')" required/>
+            <InputLabel effect="dark" :label="$t('public.loginPage.loginForm.username')"
+                        required/>
             <el-input ref="login" v-model="loginForm.login" prefix-icon="el-icon-user" type="text"/>
           </el-form-item>
           <el-form-item prop="password">
-            <InputLabel :label="$t('public.loginPage.loginForm.password')" required/>
+            <InputLabel effect="dark" :label="$t('public.loginPage.loginForm.password')"
+                        required/>
             <el-input
               ref="password"
               v-model="loginForm.password"
@@ -20,7 +22,7 @@
           </el-form-item>
           <el-form-item prop="rememberMe">
             <el-checkbox v-model="loginForm.rememberMe" class="full-width">
-              <span>{{ $t("public.loginPage.loginForm.rememberMe") }}</span>
+              <span class="text-light">{{ $t("public.loginPage.loginForm.rememberMe") }}</span>
             </el-checkbox>
           </el-form-item>
           <el-form-item>
@@ -129,5 +131,12 @@
   };
 </script>
 
-<style lang="scss" scoped>
+<style scoped>
+  .login-container {
+    min-height: 100%;
+    width: 100%;
+    background-color: #2d3a4b;
+    overflow: hidden;
+  }
+
 </style>

@@ -4,7 +4,6 @@ import PublicRoutes from "@/router/public.routes";
 import AdminRoutes from "@/router/private-routes/admin.routes";
 import ManagerRoutes from "@/router/private-routes/manager.routes";
 import EmployeeRoutes from "@/router/private-routes/employee.routes";
-import UserLayout from "@/views/layout/user/UserLayout";
 import UserRoutes from "@/router/private-routes/user.routes";
 
 Vue.use(VueRouter);
@@ -15,7 +14,7 @@ const router = new VueRouter({
     ...PublicRoutes,
     {
       path: "/",
-      component: UserLayout,
+      component: () => import("@/views/layout/user/UserLayout"),
       redirect: "/home",
       children: [...UserRoutes]
     },
@@ -34,6 +33,10 @@ const router = new VueRouter({
       path: "/store/:storeGuid",
       component: () => import("@/views/layout/employee/EmployeeLayout"),
       children: [...EmployeeRoutes]
+    },
+    {
+      path: "*",
+      redirect: "/not-found",
     }
   ]
 });

@@ -50,9 +50,9 @@
           :label="$t('private.adminStoreListPage.store.storeCode')"
         >
           <template slot-scope="{ row }">
-            <router-link :to="{name: 'adminStoreDetailOverviewPage', params: { storeGuid: row.guid }}">
+            <el-link href="javascript:void(0)" @click.native="handleManage(row)">
               {{ row.storeCode }}
-            </router-link>
+            </el-link>
           </template>
         </el-table-column>
 
@@ -95,9 +95,17 @@
         <template slot="action">
           <el-table-column
             :label="$t('common.entity.action.title')"
-            width="155px"
+            width="160px"
           >
             <template slot-scope="{ row }">
+              <el-button
+                size="mini"
+                type="primary"
+                plain
+                @click="handleManage(row)"
+              >
+                <span>{{ $t("common.entity.action.manage") }}</span>
+              </el-button>
               <el-button
                 size="mini"
                 type="warning"
@@ -106,14 +114,14 @@
               >
                 <span>{{ $t("common.entity.action.edit") }}</span>
               </el-button>
-              <el-button
-                size="mini"
-                type="danger"
-                plain
-                @click="handleDelete(row)"
-              >
-                <span>{{ $t("common.entity.action.delete") }}</span>
-              </el-button>
+<!--              <el-button-->
+<!--                size="mini"-->
+<!--                type="danger"-->
+<!--                plain-->
+<!--                @click="handleDelete(row)"-->
+<!--              >-->
+<!--                <span>{{ $t("common.entity.action.delete") }}</span>-->
+<!--              </el-button>-->
             </template>
           </el-table-column>
         </template>
@@ -165,6 +173,10 @@
       },
       fetchData(params) {
         return AdminStoreService.getListStore(params);
+      },
+      handleManage(row) {
+        let routeData = this.$router.resolve({name: 'adminStoreDetailOverviewPage', params: {storeGuid: row.guid}});
+        window.open(routeData.href, '_blank');
       },
       handleEdit(row) {
         this.$refs["storeDialog"].edit(row);

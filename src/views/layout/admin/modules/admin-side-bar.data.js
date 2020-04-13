@@ -1,6 +1,11 @@
 const mixinSidebarData = {
   data() {
     return {
+      variables: {
+        menuBg: "#304156",
+        menuText: "#bfcbd9",
+        menuActiveText: "#409EFF",
+      },
       menuProps: {
         'default-active': '',
       },
@@ -13,31 +18,10 @@ const mixinSidebarData = {
           },
         },
         {
-          name: "adminStoreManagement",
-          title: 'layout.adminSidebar.adminStoreManagement.title',
-          icon: 'el-icon-s-shop',
-          subMenu: [
-            {
-              routeName: 'adminStoreListPage',
-              meta: {
-                icon: 'el-icon-s-management',
-                title: 'layout.adminSidebar.adminStoreManagement.adminStoreListPage',
-              },
-            },
-            {
-              routeName: 'adminStoreDetailPage',
-              meta: {
-                icon: 'el-icon-tickets',
-                title: 'layout.adminSidebar.adminStoreManagement.adminStoreDetailPage',
-              },
-            },
-          ],
-        },
-        {
-          routeName: 'adminProductPage',
+          routeName: 'adminStoreListPage',
           meta: {
-            icon: 'el-icon-food',
-            title: 'layout.adminSidebar.adminProductPage',
+            icon: 'el-icon-s-shop',
+            title: 'layout.adminSidebar.adminStoreManagement.title',
           },
         },
         {
@@ -45,6 +29,13 @@ const mixinSidebarData = {
           meta: {
             icon: 'el-icon-s-management',
             title: 'layout.adminSidebar.adminCategoryPage',
+          },
+        },
+        {
+          routeName: 'adminProductPage',
+          meta: {
+            icon: 'el-icon-food',
+            title: 'layout.adminSidebar.adminProductPage',
           },
         },
         {

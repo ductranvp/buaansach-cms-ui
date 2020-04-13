@@ -1,36 +1,47 @@
 <template>
   <el-header height="50px">
-    <el-row
-      class="full-size"
-      type="flex"
-      align="middle"
-      justify="space-between"
-    >
-      <el-button class="text-24" @click="goHome">
-        <i class="el-icon-s-home" />
-        <span>Home</span>
-      </el-button>
-      <el-button @click="logout">
-        <span>Logout</span>
-      </el-button>
+    <el-row class="full-size padding-right-10 padding-left-10" type="flex" align="middle">
+      <hamburger id="hamburger-container" :is-active="!adminSidebarCollapse" class="hamburger-container"
+                 @toggleClick="toggleSidebar"/>
+      <el-col class="text-right">
+        <el-button plain @click="goto('logout')">
+          <span>Đăng xuất</span>
+        </el-button>
+      </el-col>
     </el-row>
   </el-header>
 </template>
 
 <script>
-import AuthUtils from "@/utils/auth.util";
+  import AuthUtils from "@/utils/auth.util";
+  import {mapState} from "vuex";
+  import Hamburger from "@/components/hamburger/index";
+  import MessageBoxUtils from "@/utils/message-box.util";
 
-export default {
-  name: "AdminHeader",
-  methods: {
-    goHome() {
-      this.$router.push({ name: "homePage" });
+  export default {
+    name: "AdminHeader",
+    components: {Hamburger},
+    computed: {
+      ...mapState({
+        adminSidebarCollapse: state => state.app.adminSidebarCollapse
+      })
     },
-    logout() {
-      AuthUtils.logout();
+    methods: {
+      toggleSidebar() {
+        this.$store.commit("app/TOGGLE_ADMIN_SIDEBAR");
+      },
+      goto(routeName) {
+        if (routeName === "logout") {
+          MessageBoxUtils.confirm("Thoát tài khoản", function () {
+            AuthUtils.logout();
+          });
+        } else {
+          this.$router.push({name: routeName}).catch(() => {
+          });
+        }
+      },
     }
-  }
-};
+  };
 </script>
 
 <style scoped></style>

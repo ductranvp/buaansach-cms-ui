@@ -1,54 +1,34 @@
 <template>
-  <el-aside :width="sideWidth">
+  <el-aside class="sidebar-container" :width="sideWidth">
+    <sidebar-logo :collapse="adminSidebarCollapse"/>
     <el-menu v-bind="menuProps"
-             :collapse="isCollapse"
+             :collapse="adminSidebarCollapse"
              :collapse-transition="false"
+             :background-color="variables.menuBg"
+             :text-color="variables.menuText"
+             :active-text-color="variables.menuActiveText"
              :router="true">
-      <el-menu-item class="sidebar-toggle" @click="toggleSidebar">
-        <i v-if="!isCollapse" class="el-icon-d-arrow-left"/>
-        <i v-else class="el-icon-d-arrow-right"/>
-        <span v-if="!isCollapse" slot="title">
-          {{$t("layout.adminSidebar.collapse")}}
-        </span>
-        <span v-else slot="title">
-          {{$t("layout.adminSidebar.show")}}
-        </span>
-      </el-menu-item>
-      <template v-for="menu in adminMenu">
-        <el-submenu v-if="menu.subMenu && menu.subMenu.length > 0" :index="menu.name" :key="menu.title">
-          <template slot="title">
-            <i :class="menu.icon"></i>
-            <span slot="title">{{ $t(menu.title) }}</span>
-          </template>
-
-          <el-menu-item v-for="child in menu.subMenu"
-                        :route="{ name: child.routeName }"
-                        :index="child.routeName"
-                        :key="child.routeName">
-            <i class="el-icon-star-off"></i><span slot="title">{{ $t(child.meta.title) }}</span>
-          </el-menu-item>
-        </el-submenu>
-
-        <el-menu-item v-else
-                      :route="{ name: menu.routeName }"
-                      :index="menu.routeName"
-                      :key="menu.routeName">
-          <i :class="menu.meta.icon"></i><span slot="title">{{ $t(menu.meta.title) }}</span>
-        </el-menu-item>
-      </template>
+      <sidebar-item v-for="item in adminMenu" :item="item" :key="item.routeName"/>
     </el-menu>
   </el-aside>
 </template>
 
 <script>
   import mixinSidebarData from "@/views/layout/admin/modules/admin-side-bar.data";
+  import {mapState} from "vuex";
+  import SidebarLogo from "@/views/layout/admin/modules/components/SidebarLogo";
+  import SidebarItem from "@/views/layout/admin/modules/components/SidebarItem";
 
   export default {
     name: 'AdminSidebar',
+    components: {SidebarItem, SidebarLogo},
     mixins: [mixinSidebarData],
     computed: {
+      ...mapState({
+        adminSidebarCollapse: state => state.app.adminSidebarCollapse,
+      }),
       sideWidth() {
-        return this.isCollapse ? '64px' : '210px';
+        return this.adminSidebarCollapse ? '64px' : '210px';
       },
     },
     watch: {
@@ -76,7 +56,9 @@
     border-right-width: 0;
   }
 
-  .is-active {
-    background-color: #ecf5ff;
+  .sidebar-container {
+    background-color: #304156;
+    height: 100%;
+    overflow: hidden;
   }
 </style>

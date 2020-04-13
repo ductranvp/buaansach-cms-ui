@@ -41,13 +41,9 @@
         :custom-audit="['createdBy', 'createdDate']"
         :filter="filter"
       >
-        <el-table-column prop="productCode" label="Mã SP">
+        <el-table-column prop="productCode" label="Mã SP"></el-table-column>
 
-        </el-table-column>
-
-        <el-table-column prop="productName" label="Tên sản phẩm">
-
-        </el-table-column>
+        <el-table-column prop="productName" label="Tên sản phẩm"></el-table-column>
 
         <el-table-column prop="productStatus" label="Trạng thái">
           <template slot-scope="{row}">
@@ -56,12 +52,9 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="productRealPrice" label="Giá gốc">
-
-        </el-table-column>
-        <el-table-column prop="productPrice" label="Giá bán">
-
-        </el-table-column>
+        <el-table-column prop="productRealPrice" label="Giá gốc"></el-table-column>
+        <el-table-column prop="productPrice" label="Giá bán"></el-table-column>
+        <el-table-column prop="categoryName" label="Danh mục"></el-table-column>
 
         <template slot="action">
           <el-table-column

@@ -1,13 +1,19 @@
 <template>
   <!--  <label class="required">{{ $t("components.inputLabel.required") }}</label>-->
-  <el-tag type="danger" size="mini" class="margin-left-10">
+  <el-tag :effect="effect" type="danger" size="mini" class="margin-left-10">
     <span>{{ $t("components.inputLabel.required") }}</span>
   </el-tag>
 </template>
 
 <script>
 export default {
-  name: "RequiredLabel"
+  name: "RequiredLabel",
+  props: {
+    effect: {
+      type: String,
+      default: "light"
+    }
+  }
 };
 </script>
 
