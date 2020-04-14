@@ -1,8 +1,7 @@
 <template>
   <el-header height="50px">
     <el-row class="full-size padding-right-10 padding-left-10" type="flex" align="middle">
-      <hamburger id="hamburger-container" :is-active="!adminSidebarCollapse" class="hamburger-container"
-                 @toggleClick="toggleSidebar"/>
+      <hamburger :is-active="!adminSidebarCollapse" @toggleClick="toggleSidebar"/>
       <el-col class="text-right">
         <el-button plain @click="goto('logout')">
           <span>Đăng xuất</span>

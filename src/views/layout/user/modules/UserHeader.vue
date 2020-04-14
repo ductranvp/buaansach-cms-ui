@@ -3,7 +3,7 @@
     <el-row class="full-size padding-right-10 padding-left-10" type="flex" align="middle">
       <el-col>
         <el-button type="success" @click="goto('homePage')">
-          <span class="text-bold-700">BỮA ĂN SẠCH</span>
+          <span>BỮA ĂN SẠCH</span>
         </el-button>
       </el-col>
       <el-col class="text-right">
@@ -21,13 +21,16 @@
 <script>
   import AuthUtils from "@/utils/auth.util";
   import hasAnyRole from "@/utils/has-any-role";
+  import MessageBoxUtils from "@/utils/message-box.util";
 
   export default {
     name: "UserHeader",
     methods: {
       goto(routeName) {
         if (routeName === "logout") {
-          AuthUtils.logout();
+          MessageBoxUtils.confirm("Thoát tài khoản", function () {
+            AuthUtils.logout();
+          });
         } else {
           this.$router.push({name: routeName}).catch(() => {
           });

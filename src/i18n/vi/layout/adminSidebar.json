@@ -1,7 +1,5 @@
 {
   "adminSidebar": {
-    "collapse": "Thu nhỏ",
-    "show": "Hiện tên",
     "adminDashboardPage": "Tổng Quan",
     "adminStoreManagement": {
       "title": "Cửa Hàng",

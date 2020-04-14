@@ -28,26 +28,18 @@
         adminSidebarCollapse: state => state.app.adminSidebarCollapse,
       }),
       sideWidth() {
-        return this.adminSidebarCollapse ? '64px' : '210px';
+        return this.adminSidebarCollapse ? '64px' : '192px';
       },
     },
     watch: {
       $route(to, from) {
-        if (to.meta.parentName) this.menuProps['default-active'] = to.meta.parentName;
-        else this.menuProps['default-active'] = to.name;
+        this.menuProps['default-active'] = to.name;
       },
     },
     created() {
-      if (this.$route.meta.parentName) this.menuProps['default-active'] = this.$route.meta.parentName;
-      else this.menuProps['default-active'] = this.$route.name;
-      this.isCollapse = JSON.parse(localStorage.getItem('adminSidebarCollapse'));
+      this.menuProps['default-active'] = this.$route.name;
     },
-    methods: {
-      toggleSidebar() {
-        this.isCollapse = !this.isCollapse;
-        localStorage.setItem('adminSidebarCollapse', JSON.stringify(this.isCollapse));
-      },
-    },
+    methods: {},
   };
 </script>
 

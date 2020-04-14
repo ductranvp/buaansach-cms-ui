@@ -9,11 +9,6 @@
 <script>
   export default {
     name: "AdminMain",
-    computed: {
-      key() {
-        return this.$route.path;
-      }
-    }
   };
 </script>
 

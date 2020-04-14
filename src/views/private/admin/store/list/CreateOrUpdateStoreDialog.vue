@@ -120,7 +120,7 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item prop="storeStatus">
         <el-col :span="11">
           <input-label :label="$t('private.adminStoreListPage.store.storeStatus')" required/>
           <el-select class="full-width" v-model="form.storeStatus">

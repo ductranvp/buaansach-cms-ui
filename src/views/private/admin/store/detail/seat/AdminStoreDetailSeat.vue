@@ -25,7 +25,7 @@
             <qrcode class="pointer" @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid"
                     :options="{ width: colSize*40 }"></qrcode>
           </div>
-          <div class="text-center text-14 text-bold-600">
+          <div class="text-center">
             <span>{{seat.seatName}} - {{seat.areaName}}</span>
           </div>
         </el-card>
@@ -34,14 +34,14 @@
     <el-row v-else class="full-size flex-wrap margin-0" :gutter="10" type="flex">
       <div class="full-width" v-for="area in areas" :key="area.guid">
         <el-divider>
-          <span class="text-bold-700">{{area.areaName}}</span>
+          <span>{{area.areaName}}</span>
         </el-divider>
         <el-col class="margin-bottom-10" :span="colSize" v-for="seat in area.listSeat" :key="seat.guid">
           <el-card shadow="never">
             <div class="text-center">
               <qrcode :value="seatPrefixUrl + seat.guid" :options="{ width: colSize*40 }"></qrcode>
             </div>
-            <div class="text-center text-14 text-bold-600">
+            <div class="text-center">
               <span>{{seat.seatName}}</span>
             </div>
           </el-card>

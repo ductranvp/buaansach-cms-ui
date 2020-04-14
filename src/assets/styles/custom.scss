@@ -11,12 +11,6 @@
   color: #909399;
 }
 
-.sidebar-toggle {
-  height: 50px !important;
-  line-height: 50px !important;
-  background: #eee;
-}
-
 .full-size {
   height: 100% !important;
   width: 100% !important;
@@ -42,34 +36,13 @@
   text-align: right !important;
 }
 
-.text-bold-700 {
-  font-weight: 700 !important;
-}
-
-.text-bold-600 {
-  font-weight: 600 !important;
-}
-
 .text-left {
   text-align: left !important;
-}
-
-.text-14 {
-  font-size: 14px !important;
-}
-
-.text-16 {
-  font-size: 16px !important;
-}
-
-.text-24 {
-  font-size: 24px !important;
 }
 
 .pointer {
   cursor: pointer;
 }
-
 
 .bg-primary {
   background: $--color-primary !important;
@@ -89,10 +62,6 @@
 
 .bg-info {
   background: $--color-info !important;
-}
-
-.bg-dark {
-    background: $--color-dark !important;
 }
 
 .text-primary {

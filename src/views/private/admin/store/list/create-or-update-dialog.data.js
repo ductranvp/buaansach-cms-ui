@@ -1,15 +1,14 @@
 const mixinData = {
   data() {
     return {
-      dialogTitle: this.$t("common.entity.dialog.title", {
-        entityName: this.$t("private.adminStoreListPage.entityName")
-      }),
+      dialogTitle: "Tạo hoặc cập nhật cửa hàng",
       dialogFormVisible: false,
+      isEdit: false,
       isLoading: false,
       timePickerOption: {
-        start: '08:00',
-        step: '00:15',
-        end: '21:00'
+        start: '07:00',
+        step: '00:30',
+        end: '22:00'
       },
       form: {
         guid: null,
@@ -50,9 +49,7 @@ const mixinData = {
           },
           {
             max: 100,
-            message: this.$t("common.entity.validation.maxlength", {
-              max: 100
-            }),
+            message: this.$t("common.entity.validation.maxlength", {max: 100}),
             trigger: "blur"
           }
         ],
@@ -64,9 +61,7 @@ const mixinData = {
           },
           {
             max: 255,
-            message: this.$t("common.entity.validation.maxlength", {
-              max: 255
-            }),
+            message: this.$t("common.entity.validation.maxlength", {max: 255}),
             trigger: "blur"
           }
         ],
@@ -78,9 +73,7 @@ const mixinData = {
           },
           {
             max: 100,
-            message: this.$t("common.entity.validation.maxlength", {
-              max: 100
-            }),
+            message: this.$t("common.entity.validation.maxlength", {max: 100}),
             trigger: "blur"
           }
         ],
@@ -99,29 +92,23 @@ const mixinData = {
         storeOwnerEmail: [
           {
             max: 100,
-            message: this.$t("common.entity.validation.maxlength", {
-              max: 100
-            }),
+            message: this.$t("common.entity.validation.maxlength", {max: 100}),
             trigger: "blur"
           }
         ],
         storeTaxCode: [
           {
             max: 100,
-            message: this.$t("common.entity.validation.maxlength", {
-              max: 100
-            }),
+            message: this.$t("common.entity.validation.maxlength", {max: 100}),
             trigger: "blur"
           }
         ],
-        lastUpdateReason: [
+        storeStatus: [
           {
-            max: 500,
-            message: this.$t("common.entity.validation.maxlength", {
-              max: 500
-            }),
+            required: true,
+            message: this.$t("common.entity.validation.required"),
             trigger: "blur"
-          }
+          },
         ]
       },
       storeStatus: [

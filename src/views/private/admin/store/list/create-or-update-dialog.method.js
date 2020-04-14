@@ -10,9 +10,11 @@ const mixinMethod = {
         storeOpenHour: null,
         storeCloseHour: null
       };
+      this.isEdit = false;
       this.show();
     },
     edit(store) {
+      this.isEdit = true;
       this.form = AppUtils.deepCopy(store);
       this.show();
     },
@@ -46,16 +48,17 @@ const mixinMethod = {
             vm.isLoading = true;
             if (!vm.form.storeOpenHour) vm.form.storeCloseHour = null;
             let image = vm.$refs.singleImageUploader.getSelectedImage();
-            if (!vm.form.guid) {
-              await AdminStoreService.createStore(vm.form, image);
-            } else {
+            if (vm.form.guid && this.isEdit) {
               await AdminStoreService.updateStore(vm.form, image);
+            } else {
+              await AdminStoreService.createStore(vm.form, image);
             }
             vm.isLoading = false;
             vm.$emit("storeSaved");
             NotificationUtils.success(vm.$t("common.entity.save.success"));
             vm.hide();
           } catch (error) {
+            vm.isLoading = false;
             NotificationUtils.error(error.message || error.data.message);
           }
         }

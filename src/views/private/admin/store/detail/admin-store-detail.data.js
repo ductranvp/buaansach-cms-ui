@@ -1,8 +1,6 @@
 const adminStoreDetailData = {
   data() {
     return {
-      queryDebounce: 300,
-      searchKey: null,
       activeName: 'adminStoreDetailOverviewPage',
       storeGuid: null,
       tabRoutes: [
@@ -14,14 +12,6 @@ const adminStoreDetailData = {
           routeName: "adminStoreDetailHumanPage",
           title: "private.adminStoreDetailPage.tabs.human"
         },
-        // {
-        //   routeName: "adminStoreDetailSalePage",
-        //   title: "private.adminStoreDetailPage.tabs.sale"
-        // },
-        // {
-        //   routeName: "adminStoreDetailWorkShiftPage",
-        //   title: "private.adminStoreDetailPage.tabs.workShift"
-        // },
         {
           routeName: "adminStoreDetailAreaPage",
           title: "private.adminStoreDetailPage.tabs.area"
@@ -30,10 +20,18 @@ const adminStoreDetailData = {
           routeName: "adminStoreDetailSeatPage",
           title: "private.adminStoreDetailPage.tabs.seat"
         },
-        // {
-        //   routeName: "adminStoreDetailSettingPage",
-        //   title: "private.adminStoreDetailPage.tabs.setting"
-        // }
+        {
+          routeName: "adminStoreDetailSalePage",
+          title: "private.adminStoreDetailPage.tabs.sale"
+        },
+        {
+          routeName: "adminStoreDetailWorkShiftPage",
+          title: "private.adminStoreDetailPage.tabs.workShift"
+        },
+        {
+          routeName: "adminStoreDetailSettingPage",
+          title: "private.adminStoreDetailPage.tabs.setting"
+        }
       ],
       storeEntity: {
         guid: null,

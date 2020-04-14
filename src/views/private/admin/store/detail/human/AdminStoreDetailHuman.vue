@@ -73,7 +73,6 @@
           >
             <template slot-scope="{ row }">
               <el-button
-                :disabled="currentUser.login === row.userLogin"
                 size="mini"
                 type="warning"
                 plain

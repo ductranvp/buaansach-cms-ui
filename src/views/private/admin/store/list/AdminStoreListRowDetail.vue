@@ -14,7 +14,7 @@
     </el-col>
     <el-col :span="20" :xs="24">
       <el-row type="flex">
-        <el-col :span="13">
+        <el-col :span="11">
           <table class="expanded-table">
             <tr>
               <td>
@@ -36,10 +36,10 @@
             </tr>
           </table>
         </el-col>
-        <el-col :span="1">
+        <el-col :span="2">
           <el-divider direction="vertical" class="full-height"></el-divider>
         </el-col>
-        <el-col :span="10">
+        <el-col :span="11">
           <table class="expanded-table">
             <tr>
               <td>
