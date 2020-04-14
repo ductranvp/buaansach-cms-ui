@@ -45,10 +45,10 @@
 
         <el-table-column prop="productName" label="Tên sản phẩm"></el-table-column>
 
-        <el-table-column prop="productStatus" label="Trạng thái">
+        <el-table-column min-width="100px" prop="productStatus" label="Trạng thái">
           <template slot-scope="{row}">
-            <el-tag v-if="row.productStatus === 'ON'">Đang kinh doanh</el-tag>
-            <el-tag v-else>Ngừng kinh doanh</el-tag>
+            <el-tag v-if="row.productStatus === 'ON'" type="success">Đang kinh doanh</el-tag>
+            <el-tag v-else type="danger">Ngừng kinh doanh</el-tag>
           </template>
         </el-table-column>
 
