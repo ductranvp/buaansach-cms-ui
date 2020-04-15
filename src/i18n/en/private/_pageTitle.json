@@ -19,6 +19,7 @@
       "adminStoreDetailSettingPage": "Setting - Store",
       "adminStoreDetailSalePage": "Sale - Store"
     },
+    "posPage": "Pos",
     "user": {
       "userDashboardPage": "Dashboard",
       "userStorePage": "User Store"

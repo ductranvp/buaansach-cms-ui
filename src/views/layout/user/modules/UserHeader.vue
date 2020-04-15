@@ -1,7 +1,10 @@
 <template>
-  <el-header class="bg-success" height="50px">
-    <el-row class="full-size padding-right-10 padding-left-10" type="flex" align="middle">
+  <el-header class="bg-success" height="60px">
+    <el-row class="full-size padding-0-10" type="flex" align="middle">
       <el-col>
+        <router-link to="/">
+          <img src="../../../../assets/images/logo.jpg" class="logo">
+        </router-link>
         <el-button type="success" @click="goto('homePage')">
           <span>BỮA ĂN SẠCH</span>
         </el-button>
@@ -41,4 +44,11 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .logo {
+    border: 2px solid gray;
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+  }
+</style>

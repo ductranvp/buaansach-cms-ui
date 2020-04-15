@@ -14,7 +14,10 @@ import ManagerHeader from "@/views/layout/manager/modules/ManagerHeader";
 import ManagerMain from "@/views/layout/manager/modules/ManagerMain";
 export default {
   name: "ManagerLayout",
-  components: { ManagerMain, ManagerHeader, ManagerSidebar }
+  components: { ManagerMain, ManagerHeader, ManagerSidebar },
+  created(){
+    console.log("test");
+  }
 };
 </script>
 

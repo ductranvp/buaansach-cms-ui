@@ -1,13 +1,13 @@
 <template>
   <el-main>
-    <router-view />
+    <router-view/>
   </el-main>
 </template>
 
 <script>
-export default {
-  name: "EmployeeMain"
-};
+  export default {
+    name: "PosMain",
+  };
 </script>
 
 <style scoped></style>

@@ -3,7 +3,7 @@
     <el-row class="full-size padding-right-10 padding-left-10" type="flex" align="middle">
       <hamburger :is-active="!adminSidebarCollapse" @toggleClick="toggleSidebar"/>
       <el-col class="text-right">
-        <el-button plain @click="goto('logout')">
+        <el-button size="medium" type="primary" plain @click="goto('logout')">
           <span>Đăng xuất</span>
         </el-button>
       </el-col>

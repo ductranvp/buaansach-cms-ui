@@ -5,7 +5,7 @@
     :close-on-click-modal="false"
     :visible.sync="dialogFormVisible"
     @opened="onOpened"
-    title="Them hoac sua san pham"
+    title="Thêm hoặc cập nhật sản phẩm"
   >
     <el-form
       ref="productForm"
@@ -15,7 +15,7 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="productCode">
-            <input-label label="Ma san pham" required/>
+            <input-label label="Mã sản phẩm" required/>
             <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="20"
                       show-word-limit></el-input>
           </el-form-item>
@@ -23,14 +23,14 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="productName">
-            <input-label label="Ten san pham" required/>
+            <input-label label="Tên sản phẩm" required/>
             <el-input ref="productName" v-model="form.productName" maxlength="100" show-word-limit></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
 
       <el-form-item prop="productDescription">
-        <input-label label="Mo ta" optional/>
+        <input-label label="Mô tả" optional/>
         <el-input type="textarea" rows="5" v-model="form.productDescription" maxlength="1000"
                   show-word-limit></el-input>
       </el-form-item>
@@ -38,14 +38,14 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="productRealPrice">
-            <input-label label="Gia goc" required/>
+            <input-label label="Giá gốc" required/>
             <el-input v-model="form.productRealPrice" type="number"></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="productName">
-            <input-label label="Gia ban" required/>
+            <input-label label="Giá bán" required/>
             <el-input v-model="form.productPrice" type="number"></el-input>
           </el-form-item>
         </el-col>
@@ -54,7 +54,7 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="productStatus">
-            <input-label label="Trang thai" required/>
+            <input-label label="Trạng thái" required/>
             <el-select v-model="form.productStatus" class="full-width">
               <el-option v-for="status in productStatus"
                          :key="status.value"
@@ -67,7 +67,7 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="categoryGuid">
-            <input-label label="Danh muc" required/>
+            <input-label label="Danh mục" required/>
             <el-select v-model="form.categoryGuid" class="full-width">
               <el-option v-for="category in categories"
                          :key="category.guid"
@@ -81,7 +81,7 @@
 
 
       <el-form-item>
-        <input-label label="Anh san pham" optional/>
+        <input-label label="Hình minh họa (nên dùng ảnh tỉ lệ 1:1)" optional/>
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"

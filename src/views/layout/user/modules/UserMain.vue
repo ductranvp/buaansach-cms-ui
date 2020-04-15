@@ -1,5 +1,5 @@
 <template>
-  <el-main>
+  <el-main class="padding-10">
     <router-view />
   </el-main>
 </template>
@@ -10,4 +10,6 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+
+</style>

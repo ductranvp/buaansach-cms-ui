@@ -12,7 +12,7 @@
   import UserMain from "@/views/layout/user/modules/UserMain";
 
   export default {
-    name: "ManagerLayout",
+    name: "UserLayout",
     components: {UserMain, UserHeader}
   };
 </script>
@@ -32,6 +32,6 @@
   }
 
   .user-main {
-    background: #fff;
+    background: #f0f2f5 !important;
   }
 </style>
