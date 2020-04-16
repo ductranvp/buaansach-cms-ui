@@ -1,13 +1,7 @@
 {
   "pageTitle": {
-    "homePage": "Home",
-    "aboutPage": "About",
-    "contactPage": "Contact",
     "resetPasswordInitPage": "Reset Password Init",
     "resetPasswordFinishPage": "Complete Reset Password",
-    "orderPage": "Order",
-    "productPage": "Product",
-    "salePage": "Sale",
     "loginPage": "Login",
     "forbiddenPage": "Forbidden",
     "notFoundPage": "Not Found"

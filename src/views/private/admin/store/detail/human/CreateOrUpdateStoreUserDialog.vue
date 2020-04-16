@@ -40,7 +40,7 @@
           </el-form-item>
         </el-col>
 
-        <el-col :span="11"  :offset="2">
+        <el-col :span="11" :offset="2">
           <el-form-item prop="firstName">
             <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.firstName')"/>
             <el-input maxlength="50" v-model="form.firstName" show-word-limit></el-input>
@@ -63,7 +63,7 @@
           </el-form-item>
         </el-col>
 
-        <el-col :span="11"  :offset="2">
+        <el-col :span="11" :offset="2">
           <el-form-item prop="storeUserStatus">
             <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserStatus')"/>
             <el-select class="full-width" v-model="form.storeUserStatus">
@@ -98,7 +98,7 @@
     name: "CreateOrUpdateStoreUserDialog",
     computed: {
       ...mapState({
-        currentStore: state => state.adminStore.currentStore
+        adminCurrentStore: state => state.adminStore.adminCurrentStore
       })
     },
     data() {

@@ -21,8 +21,8 @@
     },
     "posPage": "Bán Hàng",
     "user": {
-      "userDashboardPage": "Bảng Điều Khiển",
-      "userStorePage": "Thành Viên Cửa Hàng"
+      "homePage": "Trang Chủ",
+      "profilePage": "Hồ Sơ"
     },
     "common": {
       "profilePage": "Hồ Sơ"

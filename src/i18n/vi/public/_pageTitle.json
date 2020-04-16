@@ -1,13 +1,7 @@
 {
   "pageTitle": {
-    "homePage": "Trang chủ",
-    "aboutPage": "Về chúng tôi",
-    "contactPage": "Liên hệ",
     "resetPasswordInitPage": "Đặt lại mật khẩu",
     "resetPasswordFinishPage": "Hoàn tất đặt mật khẩu",
-    "orderPage": "Gọi món",
-    "productPage": "Sản phẩm",
-    "salePage": "Khuyến mãi",
     "loginPage": "Đăng nhập",
     "forbiddenPage": "Không có quyền truy cập",
     "notFoundPage": "Không tìm thấy"

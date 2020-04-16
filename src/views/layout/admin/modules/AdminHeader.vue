@@ -22,12 +22,12 @@
     components: {Hamburger},
     computed: {
       ...mapState({
-        adminSidebarCollapse: state => state.app.adminSidebarCollapse
+        adminSidebarCollapse: state => state.adminSetting.adminSidebarCollapse
       })
     },
     methods: {
       toggleSidebar() {
-        this.$store.commit("app/TOGGLE_ADMIN_SIDEBAR");
+        this.$store.commit("adminSetting/TOGGLE_ADMIN_SIDEBAR");
       },
       goto(routeName) {
         if (routeName === "logout") {

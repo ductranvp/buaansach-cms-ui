@@ -1,12 +1,12 @@
 <template>
-  <el-main>
-    <router-view/>
-  </el-main>
+  <div>
+    <p>PartnerDashboard</p>
+  </div>
 </template>
 
 <script>
   export default {
-    name: "PosMain",
+    name: "PartnerDashboard"
   };
 </script>
 

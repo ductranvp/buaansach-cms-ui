@@ -147,7 +147,7 @@
       },
       async handleActivated(row) {
         try {
-          await AdminStoreUserService.toggleAccount(row.guid);
+          await AdminStoreUserService.toggleAccountActivation(row.guid);
           row.activated = !row.activated;
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);

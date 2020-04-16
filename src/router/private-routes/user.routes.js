@@ -8,7 +8,7 @@ const UserRoutes = [
     name: "homePage",
     component: Home,
     meta: {
-      title: "public.pageTitle.homePage",
+      title: "private.pageTitle.user.homePage",
       roles: [Roles.USER]
     }
   },
@@ -17,7 +17,7 @@ const UserRoutes = [
     name: "profilePage",
     component: Profile,
     meta: {
-      title: "private.pageTitle.common.profilePage",
+      title: "private.pageTitle.user.profilePage",
       roles: [Roles.USER]
     }
   }

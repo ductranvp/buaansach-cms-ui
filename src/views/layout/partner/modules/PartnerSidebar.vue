@@ -1,13 +1,13 @@
 <template>
   <el-aside width="200px">
-    <p>ManagerSidebar</p>
+    <p>PartnerSidebar</p>
   </el-aside>
 </template>
 
 <script>
-export default {
-  name: "ManagerSidebar"
-};
+  export default {
+    name: "PartnerSidebar"
+  };
 </script>
 
 <style scoped></style>

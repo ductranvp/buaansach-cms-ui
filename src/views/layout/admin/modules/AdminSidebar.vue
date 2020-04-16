@@ -25,7 +25,7 @@
     mixins: [mixinSidebarData],
     computed: {
       ...mapState({
-        adminSidebarCollapse: state => state.app.adminSidebarCollapse,
+        adminSidebarCollapse: state => state.adminSetting.adminSidebarCollapse,
       }),
       sideWidth() {
         return this.adminSidebarCollapse ? '64px' : '192px';

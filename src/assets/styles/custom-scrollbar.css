@@ -5,13 +5,14 @@
 
 /* Track */
 ::-webkit-scrollbar-track {
-    background: #f1f1f1;
+    /*background: #f1f1f1;*/
+    background: #eee;
     /*border-radius: 5px;*/
 }
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    background: #ccc;
+    background: #aaa;
     /*border-radius: 5px;*/
 }
 

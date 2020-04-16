@@ -4,11 +4,11 @@
       <el-col :md="10" :sm="24">
         <div class="text-center">
           <el-image
-            v-if="currentStore.storeImageUrl"
+            v-if="adminCurrentStore.storeImageUrl"
             class="store-image"
-            :src="currentStore.storeImageUrl"
+            :src="adminCurrentStore.storeImageUrl"
             fit="cover"
-            :preview-src-list="[currentStore.storeImageUrl]"
+            :preview-src-list="[adminCurrentStore.storeImageUrl]"
           >
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
@@ -33,15 +33,15 @@
               <table>
                 <tr>
                   <td>Mã cửa hàng</td>
-                  <td>{{currentStore.storeCode}}</td>
+                  <td>{{adminCurrentStore.storeCode}}</td>
                 </tr>
                 <tr>
                   <td>Tên cửa hàng</td>
-                  <td>{{currentStore.storeName}}</td>
+                  <td>{{adminCurrentStore.storeName}}</td>
                 </tr>
                 <tr>
                   <td>Địa chỉ</td>
-                  <td>{{currentStore.storeAddress}}</td>
+                  <td>{{adminCurrentStore.storeAddress}}</td>
                 </tr>
                 <tr>
                   <td>Trạng thái</td>
@@ -50,14 +50,14 @@
                       size="small"
                       type="success"
                       effect="dark"
-                      v-if="currentStore.storeStatus === 'ACTIVATED'"
+                      v-if="adminCurrentStore.storeStatus === 'ACTIVATED'"
                     >{{ $t("private.adminStoreListPage.storeStatus.activated") }}
                     </el-tag>
                     <el-tag
                       size="small"
                       type="warning"
                       effect="dark"
-                      v-else-if="currentStore.storeStatus === 'PAUSED'"
+                      v-else-if="adminCurrentStore.storeStatus === 'PAUSED'"
                     >{{ $t("private.adminStoreListPage.storeStatus.paused") }}
                     </el-tag>
                     <el-tag
@@ -71,35 +71,35 @@
                 </tr>
                 <tr>
                   <td>Chủ cửa hàng</td>
-                  <td>{{currentStore.storeOwnerName}}</td>
+                  <td>{{adminCurrentStore.storeOwnerName}}</td>
                 </tr>
                 <tr>
                   <td>Số điện thoại</td>
-                  <td>{{currentStore.storeOwnerPhone}}</td>
+                  <td>{{adminCurrentStore.storeOwnerPhone}}</td>
                 </tr>
                 <tr>
                   <td>Email</td>
-                  <td>{{currentStore.storeOwnerEmail}}</td>
+                  <td>{{adminCurrentStore.storeOwnerEmail}}</td>
                 </tr>
                 <tr>
                   <td>Mã số thuế</td>
-                  <td>{{currentStore.storeTaxCode}}</td>
+                  <td>{{adminCurrentStore.storeTaxCode}}</td>
                 </tr>
                 <tr>
                   <td>Giờ hoạt động</td>
-                  <td><span v-if="currentStore.storeOpenHour">{{currentStore.storeOpenHour}} - {{currentStore.storeCloseHour}}</span>
+                  <td><span v-if="adminCurrentStore.storeOpenHour">{{adminCurrentStore.storeOpenHour}} - {{adminCurrentStore.storeCloseHour}}</span>
                   </td>
                 </tr>
               </table>
               <el-divider class="margin-15-0"></el-divider>
               <el-row type="flex" class="full-width">
                 <el-col :span="11">
-                  <el-button class="full-width" type="warning" @click="handleEdit(currentStore)">
+                  <el-button class="full-width" type="warning" @click="handleEdit(adminCurrentStore)">
                     <span>{{ $t("common.entity.action.edit") }}</span>
                   </el-button>
                 </el-col>
                 <el-col :span="11" :offset="2">
-                  <el-button class="full-width" type="danger" @click="handleDelete(currentStore)">
+                  <el-button class="full-width" type="danger" @click="handleDelete(adminCurrentStore)">
                     <span>{{ $t("common.entity.action.delete") }}</span>
                   </el-button>
                 </el-col>
@@ -126,7 +126,7 @@
     components: {CreateOrUpdateStoreDialog},
     computed: {
       ...mapState({
-        currentStore: state => state.adminStore.currentStore
+        adminCurrentStore: state => state.adminStore.adminCurrentStore
       }),
     },
     methods: {

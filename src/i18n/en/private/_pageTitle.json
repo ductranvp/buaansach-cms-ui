@@ -19,10 +19,10 @@
       "adminStoreDetailSettingPage": "Setting - Store",
       "adminStoreDetailSalePage": "Sale - Store"
     },
-    "posPage": "Pos",
+    "posPage": "POS",
     "user": {
-      "userDashboardPage": "Dashboard",
-      "userStorePage": "User Store"
+      "homePage": "Home",
+      "profilePage": "Profile"
     },
     "common": {
       "profilePage": "Profile"

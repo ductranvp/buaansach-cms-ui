@@ -6,7 +6,7 @@
       align="middle"
       justify="space-between"
     >
-      <p>ManagerHeader</p>
+      <p>PartnerHeader</p>
       <el-button @click="logout">
         Logout
       </el-button>
@@ -15,16 +15,16 @@
 </template>
 
 <script>
-import AuthUtils from "@/utils/auth.util";
+  import AuthUtils from "@/utils/auth.util";
 
-export default {
-  name: "ManagerHeader",
-  methods: {
-    logout() {
-      AuthUtils.logout();
+  export default {
+    name: "PartnerHeader",
+    methods: {
+      logout() {
+        AuthUtils.logout();
+      }
     }
-  }
-};
+  };
 </script>
 
 <style scoped></style>

@@ -1,6 +1,6 @@
 {
-    "inputLabel": {
-      "required": "Required",
-      "optional": "Optional"
-    }
+  "inputLabel": {
+    "required": "Required",
+    "optional": "Optional"
+  }
 }

@@ -6,7 +6,7 @@
 <script>
 
   export default {
-    name: "PosOrderMain"
+    name: "PosSidebarMain"
   };
 </script>
 

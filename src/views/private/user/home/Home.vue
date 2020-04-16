@@ -44,7 +44,7 @@
                   Quản lý<i class="el-icon-top-right"></i>
                 </el-button>
                 <el-button v-else type="success" plain class="full-width" size="medium"
-                           @click="goTo('managerDashboardPage', store.storeGuid)">
+                           @click="goTo('partnerDashboardPage', store.storeGuid)">
                   Quản lý<i class="el-icon-top-right"></i>
                 </el-button>
               </el-col>
@@ -103,6 +103,7 @@
     object-fit: cover;
     display: block;
   }
+
   th, td {
     font-weight: 600;
     padding-bottom: 15px;

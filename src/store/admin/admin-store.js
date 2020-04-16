@@ -1,11 +1,11 @@
 /* Store module pattern */
 
 const state = {
-  currentStore: {}
+  adminCurrentStore: {}
 };
 const mutations = {
-  SET_CURRENT_STORE: (state, currentStore) => {
-    state.currentStore = currentStore;
+  SET_CURRENT_STORE: (state, adminCurrentStore) => {
+    state.adminCurrentStore = adminCurrentStore;
   }
 
 };
