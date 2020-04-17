@@ -26,7 +26,7 @@
     },
     data() {
       return {
-        title: 'Bữa Ăn Sạch',
+        title: this.$t("app.pageTitle"),
         logo: "../../../../../assets/images/logo.jpg"
       };
     }

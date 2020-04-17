@@ -2,14 +2,13 @@
   "pageTitle": {
     "admin": {
       "adminDashboardPage": "Bảng điều khiển",
-      "adminStoreListPage": "Danh Sách Cửa Hàng",
+      "adminStoreManagementPage": "Quản Lý Cửa Hàng",
       "adminProductPage": "Quản Lý Sản Phẩm",
       "adminCategoryPage": "Quản Lý Danh Mục",
       "adminUserPage": "Quản Lý Người Dùng",
       "adminReportPage": "Quản Lý Báo Cáo",
       "adminTrackerPage": "Giám Sát Hệ Thống",
       "adminSettingPage": "Cài Đặt",
-
       "adminStoreDetailPage": "Chi Tiết - Cửa Hàng",
       "adminStoreDetailOverviewPage": "Thông tin - Cửa Hàng",
       "adminStoreDetailHumanPage": "Nhân Sự - Cửa Hàng",
@@ -22,9 +21,6 @@
     "posPage": "Bán Hàng",
     "user": {
       "homePage": "Trang Chủ",
-      "profilePage": "Hồ Sơ"
-    },
-    "common": {
       "profilePage": "Hồ Sơ"
     }
   }

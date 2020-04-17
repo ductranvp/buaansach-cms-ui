@@ -1,8 +1,7 @@
 {
-  "adminStoreListPage": {
-    "entityName": "cửa hàng",
+  "adminStoreManagementPage": {
     "searchPlaceholder": "Tìm theo tên hoặc mã cửa hàng",
-    "activeTime": "Giờ hoạt động",
+    "activeTime": "Giờ làm việc",
     "store": {
       "storeCode": "Mã cửa hàng",
       "storeName": "Tên cửa hàng",

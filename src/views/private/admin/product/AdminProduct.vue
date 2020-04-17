@@ -47,14 +47,20 @@
 
         <el-table-column min-width="100px" prop="productStatus" label="Trạng thái">
           <template slot-scope="{row}">
-            <el-tag v-if="row.productStatus === 'ON'" type="success">Đang kinh doanh</el-tag>
+            <el-tag v-if="row.productStatus === 'AVAILABLE'" type="success">Có sẵn</el-tag>
+            <el-tag v-else-if="row.productStatus === 'UNAVAILABLE'" type="warning">Tạm hết hàng</el-tag>
             <el-tag v-else type="danger">Ngừng kinh doanh</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="productRealPrice" label="Giá gốc"></el-table-column>
-        <el-table-column prop="productPrice" label="Giá bán"></el-table-column>
-        <el-table-column prop="categoryName" label="Danh mục"></el-table-column>
+        <el-table-column prop="productRootPrice" label="Giá gốc"></el-table-column>
+        <el-table-column prop="productNormalPrice" label="Giá bán"></el-table-column>
+        <el-table-column prop="productSalePrice" label="Giá khuyến mãi"></el-table-column>
+        <el-table-column prop="categoryName" label="Danh mục">
+          <template slot-scope="{row}">
+            <span>{{categories[row.categoryGuid]}}</span>
+          </template>
+        </el-table-column>
 
         <template slot="action">
           <el-table-column
@@ -93,6 +99,8 @@
   import CreateOrUpdateProductDialog from "@/views/private/admin/product/CreateOrUpdateProductDialog";
   import MessageBoxUtils from "@/utils/message-box.util";
   import NotificationUtils from "@/utils/notification.util";
+  import AdminCategoryService from "@/service/admin/admin.category.service";
+  import AppUtils from "@/utils/app.util";
 
   export default {
     name: "AdminProductManagement",
@@ -103,10 +111,27 @@
         searchKey: "",
         filter: {
           searchKey: "",
-        }
+        },
+        categories: {}
       };
     },
+    created() {
+      this.getCategory();
+    },
     methods: {
+      async getCategory() {
+        const vm = this;
+        try {
+          const {data} = await AdminCategoryService.getAllCategory();
+          let temp = {};
+          for (let i = 0; i < data.length; i++) {
+            temp[data[i].guid] = data[i].categoryName;
+          }
+          AppUtils.setAttrs(vm, vm.categories, temp);
+        } catch (error) {
+          NotificationUtils.error(error.message || error.data.message);
+        }
+      },
       onSearch() {
         this.filter.searchKey = this.searchKey;
       },

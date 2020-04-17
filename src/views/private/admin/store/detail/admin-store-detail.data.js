@@ -32,24 +32,7 @@ const adminStoreDetailData = {
           routeName: "adminStoreDetailSettingPage",
           title: "private.adminStoreDetailPage.tabs.setting"
         }
-      ],
-      storeEntity: {
-        guid: null,
-        storeCode: null,
-        storeName: null,
-        storeAddress: null,
-        storeImageUrl: null,
-        storeStatus: null,
-        storeOwnerName: null,
-        storeOwnerPhone: null,
-        storeOwnerEmail: null,
-        storeTaxCode: null,
-        lastUpdateReason: null,
-        createdDate: null,
-        createdBy: null,
-        lastModifiedDate: null,
-        lastModifiedBy: null
-      }
+      ]
     };
   },
 };

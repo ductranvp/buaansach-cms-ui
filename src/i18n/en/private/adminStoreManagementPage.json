@@ -1,8 +1,7 @@
 {
-  "adminStoreListPage": {
-    "entityName": "store",
+  "adminStoreManagementPage": {
     "searchPlaceholder": "Search by name or code",
-    "activeTime": "Active time",
+    "activeTime": "Work Hour",
     "store": {
       "storeCode": "Code",
       "storeName": "Name",

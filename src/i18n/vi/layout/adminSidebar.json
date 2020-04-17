@@ -1,11 +1,7 @@
 {
   "adminSidebar": {
     "adminDashboardPage": "Tổng Quan",
-    "adminStoreManagement": {
-      "title": "Cửa Hàng",
-      "adminStoreListPage": "Danh Sách",
-      "adminStoreDetailPage": "Chi Tiết"
-    },
+    "adminStoreManagementPage": "Cửa Hàng",
     "adminProductPage": "Sản Phẩm",
     "adminCategoryPage": "Danh Mục",
     "adminUserPage": "Người Dùng",

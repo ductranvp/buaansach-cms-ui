@@ -2,14 +2,13 @@
   "pageTitle": {
     "admin": {
       "adminDashboardPage": "Dashboard",
-      "adminStoreListPage": "Store Management",
+      "adminStoreManagementPage": "Store Management",
       "adminProductPage": "Product Management",
       "adminCategoryPage": "Category Management",
       "adminUserPage": "User Management",
       "adminReportPage": "Report Management",
       "adminTrackerPage": "System Tracker",
       "adminSettingPage": "Setting",
-
       "adminStoreDetailPage": "Detail - Store",
       "adminStoreDetailOverviewPage": "Overview - Store",
       "adminStoreDetailHumanPage": "Human Resource - Store",
@@ -22,9 +21,6 @@
     "posPage": "POS",
     "user": {
       "homePage": "Home",
-      "profilePage": "Profile"
-    },
-    "common": {
       "profilePage": "Profile"
     }
   }

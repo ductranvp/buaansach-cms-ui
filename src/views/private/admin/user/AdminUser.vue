@@ -134,7 +134,7 @@
           dangerouslyUseHTMLString: false
         })
           .then(async cb => {
-            if (cb.value) {
+            if (cb.value && cb.value.length >= 4 && cb.value.length <= 100) {
               const payload = {
                 login: row.login,
                 newPassword: cb.value
@@ -146,7 +146,7 @@
                 NotificationUtils.error(error.message || error.data.message);
               }
             } else {
-              NotificationUtils.error("Mật khẩu không được để trống");
+              NotificationUtils.error("Mật khẩu phải có độ dài 4-100 kí tự");
             }
           })
           .catch(() => {

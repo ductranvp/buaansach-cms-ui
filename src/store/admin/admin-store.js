@@ -4,7 +4,7 @@ const state = {
   adminCurrentStore: {}
 };
 const mutations = {
-  SET_CURRENT_STORE: (state, adminCurrentStore) => {
+  SET_ADMIN_CURRENT_STORE: (state, adminCurrentStore) => {
     state.adminCurrentStore = adminCurrentStore;
   }
 

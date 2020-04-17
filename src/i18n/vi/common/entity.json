@@ -21,7 +21,8 @@
       "ok": "OK",
       "lock": "Khóa",
       "unlock": "Mở khóa",
-      "manage": "Quản lý"
+      "manage": "Quản lý",
+      "search": "Tìm kiếm"
     },
     "dialog": {
       "title": "Tạo hoặc cập nhật {entityName}"

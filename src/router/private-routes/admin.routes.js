@@ -13,10 +13,10 @@ const AdminRoutes = [
   },
   {
     path: "store-management",
-    name: "adminStoreListPage",
-    component: () => import("@/views/private/admin/store/list/AdminStoreList"),
+    name: "adminStoreManagementPage",
+    component: () => import("@/views/private/admin/store/management/AdminStoreManagement"),
     meta: {
-      title: "private.pageTitle.admin.adminStoreListPage",
+      title: "private.pageTitle.admin.adminStoreManagementPage",
       roles: [Roles.ADMIN]
     }
   },

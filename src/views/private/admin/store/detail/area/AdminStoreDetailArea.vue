@@ -201,7 +201,7 @@
               };
               const {data} = await AdminSeatService.createSeat(seatEntity);
               row.listSeat.push(data);
-              NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.saveSeatSuccess"));
+              NotificationUtils.success(vm.$t("common.entity.save.success"));
             } catch (error) {
               NotificationUtils.error(error.message || error.data.message);
             }
@@ -213,7 +213,7 @@
           try {
             await AdminSeatService.deleteSeat(seat.guid);
             row.listSeat = row.listSeat.filter(s => s.guid !== seat.guid);
-            NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.deleteSeatSuccess"));
+            NotificationUtils.success(vm.$t("common.entity.save.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
@@ -230,7 +230,7 @@
             try {
               seat.seatName = val.value;
               await AdminSeatService.updateSeat(seat);
-              NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.saveSeatSuccess"));
+              NotificationUtils.success(vm.$t("common.entity.save.success"));
             } catch (error) {
               seat.seatName = originalSeatName;
               NotificationUtils.error(error.message || error.data.message);
@@ -248,7 +248,7 @@
           try {
             await AdminAreaService.deleteArea(row.guid);
             vm.areas = vm.areas.filter(area => area.guid !== row.guid);
-            NotificationUtils.success(vm.$t("private.adminStoreDetailAreaPage.notification.deleteAreaSuccess"));
+            NotificationUtils.success(vm.$t("common.entity.delete.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
@@ -262,13 +262,14 @@
         }, 100);
       },
       async confirmEditArea(row) {
+        const vm = this;
         try {
           const {data: area} = await AdminAreaService.updateArea(row);
           area.edit = false;
           Object.keys(area).forEach(key => {
             row[key] = area[key];
           });
-          NotificationUtils.success(this.$t("private.adminStoreDetailAreaPage.notification.saveAreaSuccess"));
+          NotificationUtils.success(vm.$t("common.entity.save.success"));
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);
         }
@@ -284,7 +285,7 @@
             this.$set(area, 'edit', false);
             this.areas.push(area);
             this.resetForm();
-            NotificationUtils.success(this.$t("private.adminStoreDetailAreaPage.notification.saveAreaSuccess"));
+            NotificationUtils.success(vm.$t("common.entity.save.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }

@@ -3,22 +3,13 @@
     <el-row class="full-size" :gutter="10">
       <el-col :md="10" :sm="24">
         <div class="text-center">
-          <el-image
-            v-if="adminCurrentStore.storeImageUrl"
-            class="store-image"
-            :src="adminCurrentStore.storeImageUrl"
-            fit="cover"
-            :preview-src-list="[adminCurrentStore.storeImageUrl]"
-          >
+          <el-image v-if="adminCurrentStore.storeImageUrl" class="store-image" :src="adminCurrentStore.storeImageUrl"
+                    fit="cover" :preview-src-list="[adminCurrentStore.storeImageUrl]">
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
             </div>
           </el-image>
-          <el-image
-            v-else
-            class="store-image-error"
-            fit="cover"
-          >
+          <el-image v-else class="store-image-error" fit="cover">
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
             </div>
@@ -51,21 +42,21 @@
                       type="success"
                       effect="dark"
                       v-if="adminCurrentStore.storeStatus === 'ACTIVATED'"
-                    >{{ $t("private.adminStoreListPage.storeStatus.activated") }}
+                    >{{ $t("private.adminStoreManagementPage.storeStatus.activated") }}
                     </el-tag>
                     <el-tag
                       size="small"
                       type="warning"
                       effect="dark"
                       v-else-if="adminCurrentStore.storeStatus === 'PAUSED'"
-                    >{{ $t("private.adminStoreListPage.storeStatus.paused") }}
+                    >{{ $t("private.adminStoreManagementPage.storeStatus.paused") }}
                     </el-tag>
                     <el-tag
                       size="small"
                       type="danger"
                       effect="dark"
                       v-else
-                    >{{ $t("private.adminStoreListPage.storeStatus.deactivated") }}
+                    >{{ $t("private.adminStoreManagementPage.storeStatus.deactivated") }}
                     </el-tag>
                   </td>
                 </tr>
@@ -119,7 +110,7 @@
   import MessageBoxUtils from "@/utils/message-box.util";
   import AdminStoreService from "@/service/admin/admin.store.service";
   import NotificationUtils from "@/utils/notification.util";
-  import CreateOrUpdateStoreDialog from "@/views/private/admin/store/list/CreateOrUpdateStoreDialog";
+  import CreateOrUpdateStoreDialog from "@/views/private/admin/store/management/CreateOrUpdateStoreDialog";
 
   export default {
     name: "AdminStoreDetailOverview",
@@ -131,8 +122,14 @@
     },
     methods: {
       async getStoreDetail() {
-        const {data} = await AdminStoreService.getStore(this.$route.params.storeGuid);
-        this.$store.commit("adminStore/SET_CURRENT_STORE", data);
+        if (this.$route.params.storeGuid) {
+          try {
+            const {data} = await AdminStoreService.getStore(this.$route.params.storeGuid);
+            this.$store.commit("adminStore/SET_ADMIN_CURRENT_STORE", data);
+          } catch (error) {
+            NotificationUtils.error(error.message || error.data.message);
+          }
+        }
       },
       handleEdit(row) {
         this.$refs["storeDialog"].edit(row);
@@ -148,7 +145,7 @@
               try {
                 await AdminStoreService.deleteStore(row.guid);
                 NotificationUtils.success(vm.$t("common.entity.delete.success"));
-                await vm.$router.push({name: "adminStoreListPage"});
+                await vm.$router.push({name: "adminStoreManagementPage"});
               } catch (error) {
                 NotificationUtils.error(error.message || error.data.message);
               }

@@ -1,11 +1,7 @@
 {
   "adminSidebar": {
     "adminDashboardPage": "Dashboard",
-    "adminStoreManagement": {
-      "title": "Store Management",
-      "adminStoreListPage": "List Store",
-      "adminStoreDetailPage": "Store Detail"
-    },
+    "adminStoreManagementPage": "Store Management",
     "adminProductPage": "Product Management",
     "adminCategoryPage": "Category Management",
     "adminUserPage": "User Management",

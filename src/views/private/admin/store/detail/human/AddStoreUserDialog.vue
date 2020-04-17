@@ -68,7 +68,7 @@
         form: {
           storeGuid: null,
           userLoginOrEmail: null,
-          storeUserRole: "WAITER",
+          storeUserRole: "STORE_WAITER",
           storeUserStatus: "WORKING",
         },
         formRules: {
@@ -79,19 +79,19 @@
         },
         storeUserRole: [
           {
-            value: "OWNER",
+            value: "STORE_OWNER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.owner"
           },
           {
-            value: "MANAGER",
+            value: "STORE_MANAGER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.manager"
           },
           {
-            value: "CASHIER",
+            value: "STORE_CASHIER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.cashier"
           },
           {
-            value: "WAITER",
+            value: "STORE_WAITER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.waiter"
           }
         ],
@@ -112,7 +112,7 @@
       };
     },
     methods: {
-      dialogOpened(){
+      dialogOpened() {
         this.$refs.userLoginOrEmail.focus();
       },
       show() {
@@ -131,7 +131,7 @@
       },
       resetForm() {
         const vm = this;
-        this.form = {storeUserRole: "WAITER", storeUserStatus: "WORKING"};
+        this.form = {storeUserRole: "STORE_WAITER", storeUserStatus: "WORKING"};
         vm.$refs.addsStoreUserForm.clearValidate();
         vm.$refs.addsStoreUserForm.resetFields();
       },
@@ -145,7 +145,7 @@
               this.$emit("addStoreUser", data);
               this.isLoading = false;
               this.hide();
-              NotificationUtils.success("Save successfully");
+              NotificationUtils.success(this.$t("common.entity.save.success"));
             } catch (error) {
               this.isLoading = false;
               NotificationUtils.error(error.message || error.data.message);

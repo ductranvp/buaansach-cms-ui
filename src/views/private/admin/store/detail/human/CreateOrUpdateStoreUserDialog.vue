@@ -35,14 +35,14 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="lastName">
-            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.lastName')"/>
+            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.lastName')" required/>
             <el-input ref="lastName" maxlength="50" v-model="form.lastName" show-word-limit></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="firstName">
-            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.firstName')"/>
+            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.firstName')" required/>
             <el-input maxlength="50" v-model="form.firstName" show-word-limit></el-input>
           </el-form-item>
         </el-col>
@@ -79,7 +79,7 @@
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
-      <el-button @click="hide($event)">
+      <el-button @click="hide">
         <span>{{ $t("common.entity.action.cancel") }}</span>
       </el-button>
       <el-button type="primary" @click="submit" :loading="isLoading">
@@ -115,7 +115,7 @@
           firstName: null,
           lastName: null,
           activated: null,
-          storeUserRole: "WAITER",
+          storeUserRole: "STORE_WAITER",
           storeUserStatus: "WORKING",
           createdBy: null,
           createdDate: null,
@@ -128,35 +128,33 @@
             {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ],
           password: [
-            {
-              required: !(this.form && this.form.guid),
-              message: this.$t("common.entity.validation.required"),
-              trigger: "blur"
-            },
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
           ],
           firstName: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ],
           lastName: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ]
         },
         storeUserRole: [
           {
-            value: "OWNER",
+            value: "STORE_OWNER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.owner"
           },
           {
-            value: "MANAGER",
+            value: "STORE_MANAGER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.manager"
           },
           {
-            value: "CASHIER",
+            value: "STORE_CASHIER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.cashier"
           },
           {
-            value: "WAITER",
+            value: "STORE_WAITER",
             label: "private.adminStoreDetailHumanPage.storeUserRole.waiter"
           }
         ],
@@ -194,7 +192,7 @@
       },
       resetForm() {
         const vm = this;
-        this.form = {storeUserRole: "WAITER", storeUserStatus: "WORKING"};
+        this.form = {storeUserRole: "STORE_WAITER", storeUserStatus: "WORKING"};
         vm.$refs.storeUserForm.clearValidate();
         vm.$refs.storeUserForm.resetFields();
       },

@@ -26,7 +26,6 @@
   }
 
   .admin-sidebar {
-    box-sizing: border-box;
     overflow-x: hidden;
   }
 

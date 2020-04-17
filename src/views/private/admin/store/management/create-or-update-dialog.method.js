@@ -4,22 +4,22 @@ import NotificationUtils from "@/utils/notification.util";
 
 const mixinMethod = {
   methods: {
+    dialogOpened() {
+      this.$refs.storeCode.focus();
+    },
     create() {
+      this.isEdit = false;
       this.form = {
         storeStatus: "ACTIVATED",
         storeOpenHour: null,
         storeCloseHour: null
       };
-      this.isEdit = false;
       this.show();
     },
     edit(store) {
       this.isEdit = true;
       this.form = AppUtils.deepCopy(store);
       this.show();
-    },
-    dialogOpened() {
-      this.$refs.storeCode.focus();
     },
     show() {
       this.dialogFormVisible = true;

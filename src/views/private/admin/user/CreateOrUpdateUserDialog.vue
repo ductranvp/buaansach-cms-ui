@@ -147,7 +147,12 @@
             {max: 255, message: this.$t("common.entity.validation.maxlength", {max: 255}), trigger: "blur"}
           ],
           phone: [
-            {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"}
+            {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
+            {
+              pattern: "^(09|03|07|08|05)+([0-9]{8})$",
+              message: this.$t("common.entity.validation.pattern", {pattern: "^(09|03|07|08|05)+([0-9]{8})$"}),
+              trigger: "blur"
+            }
           ],
           langKey: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
@@ -167,8 +172,8 @@
       };
     },
     methods: {
-      onOpened(){
-        if (this.isEdit){
+      onOpened() {
+        if (this.isEdit) {
           this.$refs.lastName.focus();
         } else {
           this.$refs.login.focus();

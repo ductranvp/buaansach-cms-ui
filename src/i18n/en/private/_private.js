@@ -1,5 +1,5 @@
 import pageTitle from "./_pageTitle";
-import adminStoreListPage from "./adminStoreListPage";
+import adminStoreManagementPage from "./adminStoreManagementPage";
 import adminStoreDetailPage from "./adminStoreDetailPage";
 import adminStoreDetailAreaPage from "./adminStoreDetailAreaPage";
 import adminStoreDetailSeatPage from "./adminStoreDetailSeatPage";
@@ -8,7 +8,7 @@ import adminStoreDetailHumanPage from "./adminStoreDetailHumanPage";
 const privateText = {
   private: {
     ...pageTitle,
-    ...adminStoreListPage,
+    ...adminStoreManagementPage,
     ...adminStoreDetailPage,
     ...adminStoreDetailAreaPage,
     ...adminStoreDetailSeatPage,

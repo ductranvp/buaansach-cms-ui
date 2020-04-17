@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :title="dialogTitle"
+    title="Tạo hoặc cập nhật cửa hàng"
     :before-close="beforeClose"
     :visible.sync="dialogFormVisible"
     :close-on-click-modal="false"
@@ -10,11 +10,11 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeCode">
-            <input-label :label="$t('private.adminStoreListPage.store.storeCode')" required/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeCode')" required/>
             <el-input
               ref="storeCode"
               v-model="form.storeCode"
-              maxlength="20"
+              maxlength="16"
               show-word-limit
               autocomplete="off"
             ></el-input>
@@ -22,7 +22,7 @@
         </el-col>
         <el-col :span="11" :offset="2">
           <el-form-item prop="storeName">
-            <input-label :label="$t('private.adminStoreListPage.store.storeName')" required/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeName')" required/>
             <el-input
               v-model="form.storeName"
               maxlength="100"
@@ -34,7 +34,7 @@
       </el-form-item>
 
       <el-form-item prop="storeAddress">
-        <input-label :label="$t('private.adminStoreListPage.store.storeAddress')" required/>
+        <input-label :label="$t('private.adminStoreManagementPage.store.storeAddress')" required/>
         <el-input
           v-model="form.storeAddress"
           maxlength="255"
@@ -46,7 +46,7 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeOwnerName">
-            <input-label :label="$t('private.adminStoreListPage.store.storeOwnerName')" required/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeOwnerName')" required/>
             <el-input
               v-model="form.storeOwnerName"
               maxlength="100"
@@ -58,7 +58,7 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="storeOwnerPhone">
-            <input-label :label="$t('private.adminStoreListPage.store.storeOwnerPhone')" required/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeOwnerPhone')" required/>
             <el-input
               v-model="form.storeOwnerPhone"
               maxlength="50"
@@ -72,7 +72,7 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeOwnerEmail">
-            <input-label :label="$t('private.adminStoreListPage.store.storeOwnerEmail')" optional/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeOwnerEmail')" optional/>
             <el-input
               v-model="form.storeOwnerEmail"
               maxlength="100"
@@ -84,10 +84,10 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="storeTaxCode">
-            <input-label :label="$t('private.adminStoreListPage.store.storeTaxCode')" optional/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeTaxCode')" optional/>
             <el-input
               v-model="form.storeTaxCode"
-              maxlength="100"
+              maxlength="50"
               show-word-limit
               autocomplete="off"
             ></el-input>
@@ -98,7 +98,7 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeOpenHour">
-            <input-label :label="$t('private.adminStoreListPage.store.storeOpenHour')" optional/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeOpenHour')" optional/>
             <el-time-select
               class="full-width"
               v-model="form.storeOpenHour"
@@ -109,7 +109,7 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="storeCloseHour">
-            <input-label :label="$t('private.adminStoreListPage.store.storeCloseHour')" optional/>
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeCloseHour')" optional/>
             <el-time-select
               class="full-width"
               :disabled="!form.storeOpenHour"
@@ -122,7 +122,7 @@
 
       <el-form-item prop="storeStatus">
         <el-col :span="11">
-          <input-label :label="$t('private.adminStoreListPage.store.storeStatus')" required/>
+          <input-label :label="$t('private.adminStoreManagementPage.store.storeStatus')" required/>
           <el-select class="full-width" v-model="form.storeStatus">
             <el-option
               v-for="item in storeStatus"
@@ -136,7 +136,7 @@
 
 
       <el-form-item>
-        <input-label :label="$t('private.adminStoreListPage.store.storeImageUrl')" optional/>
+        <input-label :label="$t('private.adminStoreManagementPage.store.storeImageUrl')" optional/>
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
@@ -156,8 +156,8 @@
 </template>
 
 <script>
-  import mixinData from "@/views/private/admin/store/list/create-or-update-dialog.data";
-  import mixinMethod from "@/views/private/admin/store/list/create-or-update-dialog.method";
+  import mixinData from "@/views/private/admin/store/management/create-or-update-dialog.data";
+  import mixinMethod from "@/views/private/admin/store/management/create-or-update-dialog.method";
 
   export default {
     name: "CreateOrUpdateStoreDialog",

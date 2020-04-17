@@ -1,7 +1,5 @@
 {
   "adminStoreDetailAreaPage": {
-    "seatEntityName": "seat",
-    "areaEntityName": "area",
     "form": {
       "areaName": "Area Name",
       "numberOfSeats": "Number of Seats",
@@ -25,13 +23,9 @@
     },
     "notification": {
       "saveAreaSuccess": "Area saved successfully",
-      "saveAreaError": "Area saved unsuccessfully",
       "saveSeatSuccess": "Seat saved successfully",
-      "saveSeatError": "Seat saved successfully",
       "deleteAreaSuccess": "Area deleted successfully",
-      "deleteAreaError": "Area deleted unsuccessfully",
-      "deleteSeatSuccess": "Seat deleted successfully",
-      "deleteSeatError": "Seat deleted unsuccessfully"
+      "deleteSeatSuccess": "Seat deleted successfully"
     }
   }
 }

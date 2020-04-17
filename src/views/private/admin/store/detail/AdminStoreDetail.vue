@@ -35,11 +35,10 @@
     },
     methods: {
       async getStoreDetail() {
-        const vm = this;
         if (this.$route.params.storeGuid) {
           try {
             const {data} = await AdminStoreService.getStore(this.$route.params.storeGuid);
-            this.$store.commit("adminStore/SET_CURRENT_STORE", data);
+            this.$store.commit("adminStore/SET_ADMIN_CURRENT_STORE", data);
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }

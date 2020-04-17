@@ -1,12 +1,7 @@
 <template>
   <el-row type="flex" align="middle">
     <el-col :span="4" :xs="24">
-      <el-image
-        style="width: 160px; height:90px"
-        :src="row.storeImageUrl"
-        fit="cover"
-        :preview-src-list="[row.storeImageUrl]"
-      >
+      <el-image class="store-image" :src="row.storeImageUrl" fit="cover" :preview-src-list="[row.storeImageUrl]">
         <div slot="error" class="image-error-slot full-size">
           <i class="el-icon-picture-outline"></i>
         </div>
@@ -17,21 +12,15 @@
         <el-col :span="11">
           <table class="expanded-table">
             <tr>
-              <td>
-                {{ $t("private.adminStoreListPage.store.storeAddress") }}
-              </td>
+              <td>{{ $t("private.adminStoreManagementPage.store.storeAddress") }}</td>
               <td>{{ row.storeAddress }}</td>
             </tr>
             <tr>
-              <td>
-                {{ $t("private.adminStoreListPage.store.storeOwnerEmail") }}
-              </td>
+              <td>{{ $t("private.adminStoreManagementPage.store.storeOwnerEmail") }}</td>
               <td>{{ row.storeOwnerEmail }}</td>
             </tr>
             <tr>
-              <td>
-                {{ $t("private.adminStoreListPage.store.storeTaxCode") }}
-              </td>
+              <td>{{ $t("private.adminStoreManagementPage.store.storeTaxCode") }}</td>
               <td>{{ row.storeTaxCode }}</td>
             </tr>
           </table>
@@ -42,23 +31,15 @@
         <el-col :span="11">
           <table class="expanded-table">
             <tr>
-              <td>
-                {{$t("private.adminStoreListPage.activeTime")}}
-              </td>
+              <td>{{$t("private.adminStoreManagementPage.activeTime")}}</td>
               <td>{{ row.storeOpenHour }} - {{ row.storeCloseHour }}</td>
             </tr>
             <tr>
-              <td>
-                {{ $t("common.entity.audit.lastModifiedDate") }}
-              </td>
-              <td>
-                {{ row.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}
-              </td>
+              <td>{{ $t("common.entity.audit.lastModifiedDate") }}</td>
+              <td>{{ row.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}</td>
             </tr>
             <tr>
-              <td>
-                {{ $t("common.entity.audit.lastModifiedBy") }}
-              </td>
+              <td>{{ $t("common.entity.audit.lastModifiedBy") }}</td>
               <td>{{ row.lastModifiedBy }}</td>
             </tr>
           </table>
@@ -71,7 +52,7 @@
 <script>
 
   export default {
-    name: "AdminStoreListRowDetail",
+    name: "AdminStoreManagementRowDetail",
     props: {
       row: {
         type: Object,
@@ -83,12 +64,16 @@
 </script>
 
 <style scoped>
+  .store-image {
+    width: 160px;
+    height: 90px
+  }
+
   .expanded-table {
     width: 100%;
   }
 
   .expanded-table tr td {
     border: none;
-    /*padding: 0px 0px 5px 0px;*/
   }
 </style>

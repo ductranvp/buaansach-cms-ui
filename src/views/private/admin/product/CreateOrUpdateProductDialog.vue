@@ -16,7 +16,7 @@
         <el-col :span="11">
           <el-form-item prop="productCode">
             <input-label label="Mã sản phẩm" required/>
-            <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="20"
+            <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="16"
                       show-word-limit></el-input>
           </el-form-item>
         </el-col>
@@ -31,28 +31,35 @@
 
       <el-form-item prop="productDescription">
         <input-label label="Mô tả" optional/>
-        <el-input type="textarea" rows="5" v-model="form.productDescription" maxlength="1000"
+        <el-input type="textarea" rows="5" v-model="form.productDescription" maxlength="2000"
                   show-word-limit></el-input>
       </el-form-item>
 
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="productRealPrice">
+          <el-form-item prop="productRootPrice">
             <input-label label="Giá gốc" required/>
-            <el-input v-model="form.productRealPrice" type="number"></el-input>
+            <el-input v-model.number="form.productRootPrice" min="0" type="number"></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :span="11" :offset="2">
-          <el-form-item prop="productName">
+          <el-form-item prop="productNormalPrice">
             <input-label label="Giá bán" required/>
-            <el-input v-model="form.productPrice" type="number"></el-input>
+            <el-input v-model.number="form.productNormalPrice" min="0" type="number"></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
 
       <el-form-item>
         <el-col :span="11">
+          <el-form-item prop="productSalePrice">
+            <input-label label="Giá khuyến mãi" optional/>
+            <el-input v-model.number="form.productSalePrice" min="0" type="number"></el-input>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="11" :offset="2">
           <el-form-item prop="productStatus">
             <input-label label="Trạng thái" required/>
             <el-select v-model="form.productStatus" class="full-width">
@@ -64,8 +71,10 @@
             </el-select>
           </el-form-item>
         </el-col>
+      </el-form-item>
 
-        <el-col :span="11" :offset="2">
+      <el-form-item>
+        <el-col :span="11">
           <el-form-item prop="categoryGuid">
             <input-label label="Danh mục" required/>
             <el-select v-model="form.categoryGuid" class="full-width">
@@ -123,38 +132,45 @@
           productImageUrl: null,
           productThumbnailUrl: null,
           productStatus: null,
-          productRealPrice: null,
-          productPrice: null,
+          productRootPrice: null,
+          productNormalPrice: null,
+          productSalePrice: null,
           categoryGuid: null,
         },
         formRules: {
           productCode: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
+            {max: 16, message: this.$t("common.entity.validation.maxlength", {max: 16}), trigger: "blur"}
           ],
           productName: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
           ],
           productDescription: [
-            {max: 1000, message: this.$t("common.entity.validation.maxlength", {max: 1000}), trigger: "blur"}
+            {max: 2000, message: this.$t("common.entity.validation.maxlength", {max: 2000}), trigger: "blur"}
           ],
           productStatus: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
-          productRealPrice: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          productRootPrice: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+            {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
-          productPrice: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          productNormalPrice: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+            {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
+          ],
+          productSalePrice: [
+            {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
           categoryGuid: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
         },
         productStatus: [
-          {label: "Đang kinh doanh", value: "ON"},
-          {label: "Ngừng kinh doanh", value: "OFF"}
+          {label: "Có sẵn", value: "AVAILABLE"},
+          {label: "Tạm hết hàng", value: "UNAVAILABLE"},
+          {label: "Ngừng kinh doanh", value: "STOP_TRADING"}
         ]
       };
     },
@@ -169,7 +185,7 @@
       },
       create() {
         this.isEdit = false;
-        this.form = {productStatus: "ON"};
+        this.form = {productStatus: "AVAILABLE"};
         this.show();
       },
       edit(product) {

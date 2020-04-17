@@ -18,10 +18,10 @@ const mixinSidebarData = {
           },
         },
         {
-          routeName: 'adminStoreListPage',
+          routeName: 'adminStoreManagementPage',
           meta: {
             icon: 'el-icon-s-shop',
-            title: 'layout.adminSidebar.adminStoreManagement.title',
+            title: 'layout.adminSidebar.adminStoreManagementPage',
           },
         },
         {
