@@ -51,6 +51,5 @@
   .sidebar-container {
     background-color: #304156;
     height: 100%;
-    overflow: hidden;
   }
 </style>

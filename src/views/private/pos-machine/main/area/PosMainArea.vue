@@ -17,6 +17,9 @@
   export default {
     name: "PosMainArea",
     components: {PosMainAreaSidebar, PosMainAreaMain},
+    created(){
+
+    }
   };
 </script>
 

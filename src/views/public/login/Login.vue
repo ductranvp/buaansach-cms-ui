@@ -108,6 +108,7 @@
             this.$store
               .dispatch("user/login", this.loginForm)
               .then(() => {
+                vm.$store.dispatch("websocket/connect");
                 const redirect = sessionStorage.getItem("requested-url");
                 if (redirect && redirect !== "/home") {
                   const item = sessionStorage.getItem("requested-url");

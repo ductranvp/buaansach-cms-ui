@@ -11,9 +11,7 @@ export default {
   mounted() {
     this.$nextTick(function() {
       let url =
-        "http://192.168.2.2/websocket" +
-        "?access_token=" +
-        AuthUtils.getToken();
+        "http://192.168.2.2/websocket?access_token=" + AuthUtils.getToken();
       let socket = new SockJS(url);
       let stompClient = Stomp.over(socket);
       stompClient.connect(

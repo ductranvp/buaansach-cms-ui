@@ -5,6 +5,7 @@ import AdminRoutes from "@/router/private-routes/admin.routes";
 import PartnerRoutes from "@/router/private-routes/partner.routes";
 import UserRoutes from "@/router/private-routes/user.routes";
 import Roles from "@/config/security/roles";
+import PosStoreService from "@/service/pos/pos.store.service";
 
 Vue.use(VueRouter);
 
@@ -38,6 +39,15 @@ const router = new VueRouter({
       path: "/pos/:storeGuid",
       name: "posPage",
       component: () => import("@/views/layout/pos-machine/PosMachineLayout"),
+      beforeEnter: async (to, from, next) => {
+        try {
+          const {data} = await PosStoreService.checkAccessibility(to.params.storeGuid);
+          if (!data) await router.push({name: "forbiddenPage"});
+          next();
+        } catch (error) {
+          await router.push({name: "homePage"});
+        }
+      },
       meta: {
         title: "private.pageTitle.posPage",
         roles: [Roles.USER]

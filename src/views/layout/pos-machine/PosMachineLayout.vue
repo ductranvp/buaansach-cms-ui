@@ -1,5 +1,5 @@
 <template>
-  <el-container class="pos-container" direction="horizontal">
+  <el-container v-loading="!$store.getters.posMachine.ready" class="pos-container" direction="horizontal">
     <el-aside width="420px">
       <pos-machine-sidebar class="pos-sidebar"/>
     </el-aside>
@@ -18,7 +18,10 @@
 
   export default {
     name: "PosMachineLayout",
-    components: {PosMachineMain, PosMachineHeader, PosMachineSidebar}
+    components: {PosMachineMain, PosMachineHeader, PosMachineSidebar},
+    created() {
+      this.$store.dispatch("posMachine/initState", this.$route.params.storeGuid);
+    },
   };
 </script>
 

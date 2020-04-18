@@ -1,12 +1,25 @@
 <template>
-  <div id="app">
+  <div id="app" v-loading.fullscreen.lock="lostConnection">
     <router-view/>
   </div>
 </template>
 
 <script>
+  import AuthUtils from "@/utils/auth.util";
+  import {mapState} from "vuex";
+
   export default {
-    name: "App"
+    name: "App",
+    computed: {
+      ...mapState({
+        lostConnection: state => state.websocket.lostConnection
+      })
+    },
+    mounted() {
+      if (AuthUtils.getToken())
+        this.$store.dispatch("websocket/connect");
+      console.log(window);
+    }
   };
 </script>
 <style lang="scss">
