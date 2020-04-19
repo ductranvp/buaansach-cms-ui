@@ -17,6 +17,9 @@ const AdminProductService = {
       params: params
     });
   },
+  getListProductNotInStore(params) {
+    return request.get(baseUrl + "/list-not-in-store/" + params);
+  },
   getProduct(productGuid) {
     return request.get(baseUrl + "/get/" + productGuid);
   },

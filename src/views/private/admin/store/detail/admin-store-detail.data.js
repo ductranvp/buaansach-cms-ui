@@ -9,6 +9,10 @@ const adminStoreDetailData = {
           title: "private.adminStoreDetailPage.tabs.overview"
         },
         {
+          routeName: "adminStoreProductPage",
+          title: "private.adminStoreDetailPage.tabs.product"
+        },
+        {
           routeName: "adminStoreDetailHumanPage",
           title: "private.adminStoreDetailPage.tabs.human"
         },

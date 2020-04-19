@@ -29,8 +29,9 @@
 
         <el-table-column prop="storeCode" :label="$t('private.adminStoreManagementPage.store.storeCode')">
           <template slot-scope="{ row }">
-            <el-link href="javascript:void(0)" @click.native="handleManage(row)">{{ row.storeCode }}<i
-              class="el-icon-top-right"></i></el-link>
+            <router-link :to="{name: 'adminStoreDetailOverviewPage', params: {storeGuid: row.guid}}">
+              <span>{{row.storeCode }}</span>
+            </router-link>
           </template>
         </el-table-column>
 

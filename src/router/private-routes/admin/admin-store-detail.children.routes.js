@@ -6,7 +6,6 @@ const AdminStoreDetailChildren = [
     name: "adminStoreDetailOverviewPage",
     component: () => import("@/views/private/admin/store/detail/overview/AdminStoreDetailOverview"),
     meta: {
-      parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailOverviewPage",
       roles: [Roles.ADMIN]
     }
@@ -16,7 +15,6 @@ const AdminStoreDetailChildren = [
     name: "adminStoreDetailHumanPage",
     component: () => import("@/views/private/admin/store/detail/human/AdminStoreDetailHuman"),
     meta: {
-      parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailHumanPage",
       roles: [Roles.ADMIN]
     }
@@ -26,7 +24,6 @@ const AdminStoreDetailChildren = [
     name: "adminStoreDetailWorkShiftPage",
     component: () => import("@/views/private/admin/store/detail/work-shift/AdminStoreDetailWorkShift"),
     meta: {
-      parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailWorkShiftPage",
       roles: [Roles.ADMIN]
     }
@@ -36,7 +33,6 @@ const AdminStoreDetailChildren = [
     name: "adminStoreDetailSalePage",
     component: () => import("@/views/private/admin/store/detail/sale/AdminStoreDetailSale"),
     meta: {
-      parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailSalePage",
       roles: [Roles.ADMIN]
     }
@@ -46,7 +42,6 @@ const AdminStoreDetailChildren = [
     name: "adminStoreDetailAreaPage",
     component: () => import("@/views/private/admin/store/detail/area/AdminStoreDetailArea"),
     meta: {
-      parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailAreaPage",
       roles: [Roles.ADMIN]
     }
@@ -56,8 +51,16 @@ const AdminStoreDetailChildren = [
     name: "adminStoreDetailSeatPage",
     component: () => import("@/views/private/admin/store/detail/seat/AdminStoreDetailSeat"),
     meta: {
-      parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailSeatPage",
+      roles: [Roles.ADMIN]
+    }
+  },
+  {
+    path: "product",
+    name: "adminStoreProductPage",
+    component: () => import("@/views/private/admin/store/detail/product/AdminStoreProduct"),
+    meta: {
+      title: "private.pageTitle.admin.adminStoreProductPage",
       roles: [Roles.ADMIN]
     }
   },
@@ -66,7 +69,6 @@ const AdminStoreDetailChildren = [
     name: "adminStoreDetailSettingPage",
     component: () => import("@/views/private/admin/store/detail/setting/AdminStoreDetailSetting"),
     meta: {
-      parentName: "adminStoreDetailPage",
       title: "private.pageTitle.admin.adminStoreDetailSettingPage",
       roles: [Roles.ADMIN]
     }

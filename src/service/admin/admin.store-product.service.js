@@ -5,16 +5,17 @@ const AdminStoreProductService = {
   addStoreProduct(payload) {
     return request.post(baseUrl + "/add", payload);
   },
+  addAllStoreProduct(payload) {
+    return request.post(baseUrl + "/add-all", payload);
+  },
+  getListStoreProductByStoreGuid(storeGuid) {
+    return request.get(baseUrl + "/list-by-store/" + storeGuid);
+  },
   updateStoreProduct(payload) {
     return request.put(baseUrl + "/update", payload);
   },
-  removeStoreProduct(storeGuid, productGuid) {
-    return request.delete(baseUrl + "/remove", {
-      params: {
-        storeGuid: storeGuid,
-        productGuid: productGuid
-      }
-    });
+  deleteStoreProduct(params) {
+    return request.delete(baseUrl + "/delete/" + params);
   }
 };
 
