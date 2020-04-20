@@ -2,9 +2,9 @@
   <el-container direction="vertical">
     <el-row>
       <el-col :span="20">
-        <el-form ref="categoryForm" :rules="formRules" :model="form" :inline="true">
+        <el-form onsubmit="return false" ref="categoryForm" :rules="formRules" :model="form" :inline="true">
           <el-form-item prop="categoryName">
-            <el-input placeholder="Nhập tên danh mục"
+            <el-input @keypress.enter.native="submit" placeholder="Nhập tên danh mục"
                       v-model="form.categoryName">
             </el-input>
           </el-form-item>

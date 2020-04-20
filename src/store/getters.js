@@ -7,6 +7,6 @@ const getters = {
   adminCurrentStore: state => state.adminStore.adminCurrentStore,
   adminSidebarCollapse: state => state.adminSetting.adminSidebarCollapse,
   websocket: state => state.websocket.stompClient,
-  posMachine: state => state.posMachine
+  posMachine: state => state.posMachine,
 };
 export default getters;

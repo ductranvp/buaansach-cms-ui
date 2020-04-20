@@ -1,6 +1,7 @@
 <template>
   <el-main>
     <el-container class="full-size" direction="horizontal">
+      <el-divider direction="vertical" class="full-height bg-success margin-0"></el-divider>
       <el-slider
         v-model="posSize"
         @change="changePosSize"
@@ -11,11 +12,10 @@
       <el-divider direction="vertical" class="full-height bg-success margin-0"></el-divider>
       <el-container class="full-size" direction="vertical">
         <el-main :style="areaStyle">
-          <pos-main-area/>
+          <pos-seat-layout/>
         </el-main>
-        <el-divider class="full-width bg-success margin-0"></el-divider>
         <el-main :style="productStyle">
-          <pos-main-product/>
+          <pos-store-product-layout/>
         </el-main>
       </el-container>
     </el-container>
@@ -23,12 +23,13 @@
 </template>
 
 <script>
-  import PosMainArea from "@/views/private/pos-machine/main/area/PosMainArea";
-  import PosMainProduct from "@/views/private/pos-machine/main/product/PosMainProduct";
+  import PosSeatLayout from "@/views/private/pos-machine/main/seat/PosSeatLayout";
+  import PosStoreProductLayout from "@/views/private/pos-machine/main/store-product/PosStoreProductLayout";
+  import hotkeys from 'hotkeys-js';
 
   export default {
     name: "PosMachineMain",
-    components: {PosMainProduct, PosMainArea},
+    components: {PosStoreProductLayout, PosSeatLayout},
     computed: {
       areaStyle() {
         return {
@@ -46,14 +47,36 @@
         posSize: localStorage.getItem("posSize") ? JSON.parse(localStorage.getItem("posSize")) : 50
       };
     },
+    created() {
+      if (this.posSize < 10) this.posSize = 10;
+      if (this.posSize > 90) this.posSize = 90;
+    },
+    mounted() {
+      const vm = this;
+      hotkeys.filter = function (event) {
+        return true;
+      };
+      hotkeys('alt+a', 'posMachine', function (event, handler) {
+        vm.posSize = 10;
+        localStorage.setItem("posSize", 10 + "");
+      });
+      hotkeys('alt+s', 'posMachine', function (event, handler) {
+        vm.posSize = 90;
+        localStorage.setItem("posSize", 90 + "");
+      });
+      hotkeys.setScope("posMachine");
+    },
+    beforeDestroy() {
+      hotkeys.deleteScope('posMachine');
+    },
     methods: {
       formatTooltip(value) {
         return "Tỉ lệ : " + (100 - value) + " | " + (value);
       },
       changePosSize(value) {
-        if (value > 85) this.posSize = 85;
-        if (value < 15) this.posSize = 15;
-        localStorage.setItem("posSize", value);
+        if (value > 90) this.posSize = 90;
+        if (value < 10) this.posSize = 10;
+        localStorage.setItem("posSize", this.posSize);
       }
     }
   };

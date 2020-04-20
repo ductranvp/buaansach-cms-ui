@@ -73,6 +73,14 @@
   background: $--color-info !important;
 }
 
+.bg-light {
+  background: white !important;
+}
+
+.bg-dark {
+  background: darkgray !important;
+}
+
 .text-primary {
   color: $--color-primary !important;
 }
@@ -99,5 +107,13 @@
 
 .text-dark {
   color: #000 !important;
+}
+
+.show-vertical-scroll {
+  overflow-y: scroll;
+}
+
+.show-horizontal-scroll {
+  overflow-x: scroll;
 }
 

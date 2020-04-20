@@ -4,8 +4,10 @@ import * as SockJS from "sockjs-client";
 import * as Stomp from "webstomp-client";
 import {Notification} from "element-ui";
 import router from "@/router";
+import store from "@/store";
 
 const state = {
+  pendingRoute: null,
   error: null,
   lostConnection: false,
   stompClient: null,
@@ -16,6 +18,7 @@ const mutations = {
   },
   SET_ERROR(state) {
     if (state.error == null) {
+      state.pendingRoute = router.history.pending || router.history.current;
       state.lostConnection = true;
       setTimeout(() => {
         state.error = Notification.error({
@@ -31,8 +34,10 @@ const mutations = {
   CLEAR_ERROR(state) {
     if (state.error) {
       state.lostConnection = false;
-      router.push(router.history.pending).catch(() => {
-      });
+      if (state.pendingRoute.name === 'posPage') {
+        store.dispatch("posMachine/initState", state.pendingRoute.params.storeGuid);
+      }
+      router.push(state.pendingRoute);
       setTimeout(() => {
         Notification.success({
           title: "Kết nối thành công!",
@@ -41,8 +46,6 @@ const mutations = {
         });
       }, 500);
       setTimeout(() => {
-        router.push(state.currentRoute).catch(() => {
-        });
         state.error.close();
         state.error = null;
       }, 1000);
@@ -52,15 +55,14 @@ const mutations = {
 const actions = {
   connect(store) {
     let url = "http://192.168.2.2/websocket?access_token=" + AuthUtils.getToken();
-    let options = {debug: false, protocols: ['v12.stomp'], server:'Apache/1.3.9'};
+    let options = {debug: false, protocols: ['v12.stomp'], server: 'Apache/1.3.9'};
     let socket = new SockJS(url);
     let stompClient = Stomp.over(socket, options);
 
     stompClient.connect(
       {},
-      function (frame  ) {
-        console.log(frame);
-        console.log("Connected...");
+      function (frame) {
+        console.log("WS Connected...");
         store.commit("CLEAR_ERROR");
         store.commit("SET_CONNECTION", stompClient);
         stompClient.subscribe("abc/def");

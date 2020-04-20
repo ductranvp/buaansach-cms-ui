@@ -18,7 +18,6 @@
     mounted() {
       if (AuthUtils.getToken())
         this.$store.dispatch("websocket/connect");
-      console.log(window);
     }
   };
 </script>

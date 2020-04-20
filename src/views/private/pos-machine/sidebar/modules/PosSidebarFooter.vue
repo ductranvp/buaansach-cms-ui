@@ -9,9 +9,9 @@
             </el-input>
           </el-col>
           <el-button class="icon-button" type="success" v-if="!showAdvanced" @click="showAdvanced = true"><i
-            class="el-icon-arrow-up"></i></el-button>
+              class="el-icon-arrow-up"></i></el-button>
           <el-button class="icon-button" type="success" v-else @click="showAdvanced = false"><i
-            class="el-icon-arrow-down"></i></el-button>
+              class="el-icon-arrow-down"></i></el-button>
         </el-row>
       </el-header>
 
@@ -57,14 +57,14 @@
 </template>
 
 <script>
-  export default {
-    name: "PosSidebarFooter",
-    data() {
-      return {
-        showAdvanced: false,
-      };
-    }
-  };
+    export default {
+        name: "PosSidebarFooter",
+        data() {
+            return {
+                showAdvanced: false,
+            };
+        }
+    };
 </script>
 
 <style scoped>

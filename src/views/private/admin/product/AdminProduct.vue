@@ -6,7 +6,7 @@
           <el-input
             placeholder="Tìm theo mã hoặc tên sản phẩm"
             v-model="searchKey"
-            @keypress.enter.native="onSearch"
+            @key.enter="onSearch"
           >
             <el-button
               slot="append"
@@ -47,7 +47,7 @@
 
         <el-table-column min-width="100px" prop="productStatus" label="Trạng thái">
           <template slot-scope="{row}">
-            <el-tag v-if="row.productStatus === 'AVAILABLE'" type="success">Có sẵn</el-tag>
+            <el-tag v-if="row.productStatus === 'AVAILABLE'" type="success">Còn hàng</el-tag>
             <el-tag v-else-if="row.productStatus === 'UNAVAILABLE'" type="warning">Tạm hết hàng</el-tag>
             <el-tag v-else type="danger">Ngừng kinh doanh</el-tag>
           </template>
