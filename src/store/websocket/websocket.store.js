@@ -5,6 +5,7 @@ import * as Stomp from "webstomp-client";
 import {Notification} from "element-ui";
 import router from "@/router";
 import store from "@/store";
+import Constants from "@/utils/constants";
 
 const state = {
   pendingRoute: null,
@@ -54,15 +55,15 @@ const mutations = {
 };
 const actions = {
   connect(store) {
-    let url = "http://192.168.2.2/websocket?access_token=" + AuthUtils.getToken();
-    let options = {debug: false, protocols: ['v12.stomp'], server: 'Apache/1.3.9'};
+    let url = Constants.SERVER_API_URL + "/websocket?access_token=" + AuthUtils.getToken();
+    let options = {debug: false, protocols: ['v12.stomp']};
     let socket = new SockJS(url);
     let stompClient = Stomp.over(socket, options);
 
     stompClient.connect(
       {},
       function (frame) {
-        console.log("WS Connected...");
+        console.log("Connected...");
         store.commit("CLEAR_ERROR");
         store.commit("SET_CONNECTION", stompClient);
         stompClient.subscribe("abc/def");

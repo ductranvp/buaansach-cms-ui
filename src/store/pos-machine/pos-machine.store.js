@@ -8,6 +8,7 @@ import PosSeatStore from "@/store/pos-machine/modules/pos.seat.store";
 import PosCategoryStore from "@/store/pos-machine/modules/pos.category.store";
 import PosAreaStore from "@/store/pos-machine/modules/pos.area.store";
 import PosStoreProductStore from "@/store/pos-machine/modules/pos.store-product.store";
+import PosOrderStore from "@/store/pos-machine/order/pos.order.store";
 
 const state = {
   ready: false,
@@ -15,6 +16,7 @@ const state = {
   ...PosAreaStore.state,
   ...PosCategoryStore.state,
   ...PosStoreProductStore.state,
+  ...PosOrderStore.state,
 };
 const mutations = {
   SET_READY(state, ready) {
@@ -24,12 +26,14 @@ const mutations = {
   ...PosAreaStore.mutations,
   ...PosCategoryStore.mutations,
   ...PosStoreProductStore.mutations,
+  ...PosOrderStore.mutations,
 };
 const actions = {
   ...PosSeatStore.actions,
   ...PosAreaStore.actions,
   ...PosCategoryStore.actions,
   ...PosStoreProductStore.actions,
+  ...PosOrderStore.actions,
   async initState({state, commit, dispatch}, storeGuid) {
     try {
       commit("SET_READY", false);
@@ -53,8 +57,9 @@ const actions = {
     }
   },
   parseData({state, dispatch}) {
-    dispatch("changeSelectedSeat", state.currentAreaGuid);
-    dispatch("changeSelectedStoreProduct", state.currentCategoryGuid);
+    dispatch("changeDisplaySeat", state.currentAreaGuid);
+    dispatch("changeDisplayStoreProduct", state.currentCategoryGuid);
+    dispatch("selectSeat", state.displaySeats[0]);
   },
 };
 

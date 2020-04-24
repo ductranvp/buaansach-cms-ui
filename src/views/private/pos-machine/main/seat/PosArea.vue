@@ -34,7 +34,7 @@
     },
     methods: {
       changeArea(areaGuid) {
-        this.$store.dispatch("posMachine/changeSelectedSeat", areaGuid);
+        this.$store.dispatch("posMachine/changeDisplaySeat", areaGuid);
       }
     }
   };

@@ -38,12 +38,14 @@
     <el-main v-loading="isLoading" class="show-vertical-scroll full-size padding-left-5 padding-right-5 padding-top-10">
       <el-row :gutter="10" class="full-size flex-wrap margin-0">
         <el-col
-          v-for="seat in filterSeat ? filteredSeat : selectedSeats"
+          v-for="seat in filterSeat ? filteredSeat : displaySeats"
           class="margin-bottom-10"
           :span="sizes[displaySeatSize]"
           :key="seat.guid"
         >
-          <el-card shadow="never">
+          <el-card :class="[selectedSeat.guid === seat.guid? 'selected-seat' : '',
+            seat.seatStatus === 'NON_EMPTY'? 'bg-warning' : '']"
+                   class="pointer" shadow="never" @click.native="changeSeat(seat)">
             <div class="text-center">
               <div>{{seat.seatName}}</div>
               <el-divider class="full-width margin-10-0"></el-divider>
@@ -64,8 +66,9 @@
     name: "PosSeat",
     computed: {
       ...mapState({
-        selectedSeats: state => state.posMachine.selectedSeats,
-        selectedArea: state => state.posMachine.selectedArea
+        displaySeats: state => state.posMachine.displaySeats,
+        selectedArea: state => state.posMachine.selectedArea,
+        selectedSeat: state => state.posMachine.selectedSeat
       })
     },
     mounted() {
@@ -100,12 +103,16 @@
       }
     },
     methods: {
+      changeSeat(seat) {
+        if (this.selectedSeat.guid !== seat.guid)
+          this.$store.dispatch("posMachine/selectSeat", seat);
+      },
       changeDisplaySeatSize(value) {
         localStorage.setItem("displaySeatSize", value);
       },
       querySeat(keyword, cb) {
         keyword = keyword.trim();
-        this.filteredSeat = this.selectedSeats.filter(
+        this.filteredSeat = this.displaySeats.filter(
           seat =>
             seat.seatName.toLowerCase().search(keyword) !== -1 ||
             seat.areaName.toLowerCase().search(keyword) !== -1
@@ -118,4 +125,12 @@
 </script>
 
 <style scoped>
+  .selected-seat {
+    /*box-shadow: 0 0 5px green;*/
+    box-shadow: 0 0 3px 2px green;
+  }
+
+  .non-empty-seat {
+    background-color: darkgoldenrod;
+  }
 </style>

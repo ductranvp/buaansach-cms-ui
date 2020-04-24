@@ -44,7 +44,7 @@
     },
     data() {
       return {
-        posSize: localStorage.getItem("posSize") ? JSON.parse(localStorage.getItem("posSize")) : 50
+        posSize: localStorage.getItem("posMainSize") ? JSON.parse(localStorage.getItem("posMainSize")) : 50
       };
     },
     created() {
@@ -58,11 +58,11 @@
       };
       hotkeys('alt+a', 'posMachine', function (event, handler) {
         vm.posSize = 10;
-        localStorage.setItem("posSize", 10 + "");
+        localStorage.setItem("posMainSize", 10 + "");
       });
       hotkeys('alt+s', 'posMachine', function (event, handler) {
         vm.posSize = 90;
-        localStorage.setItem("posSize", 90 + "");
+        localStorage.setItem("posMainSize", 90 + "");
       });
       hotkeys.setScope("posMachine");
     },

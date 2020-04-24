@@ -37,11 +37,14 @@
     </el-header>
     <el-main class="show-vertical-scroll full-size padding-left-5 padding-right-5 padding-top-10">
       <el-row :gutter="10" v-loading="isLoading" class="full-size flex-wrap margin-0">
-        <el-col v-for="storeProduct in filterStoreProduct ? filteredStoreProducts : selectedStoreProducts"
+        <el-col v-for="storeProduct in filterStoreProduct ? filteredStoreProducts : displayStoreProducts"
                 class="margin-bottom-10"
                 :span="sizes[displaySize]"
                 :key="storeProduct.guid">
-          <el-card :body-style="{ padding: '0px' }" shadow="never">
+          <el-card class="pointer"
+                   :body-style="{ padding: '0px' }"
+                   @click.native="addOrderProduct(storeProduct)"
+                   shadow="never">
             <img :src="storeProduct.productImageUrl" class="image">
             <el-divider class="full-width margin-10-0"></el-divider>
             <div class="text-center  padding-bottom-10">
@@ -58,13 +61,16 @@
 <script>
   import {mapState} from "vuex";
   import hotkeys from "hotkeys-js";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "PosStoreProduct",
     computed: {
       ...mapState({
-        selectedStoreProducts: state => state.posMachine.selectedStoreProducts,
-        selectedCategory: state => state.posMachine.selectedCategory
+        displayStoreProducts: state => state.posMachine.displayStoreProducts,
+        selectedCategory: state => state.posMachine.selectedCategory,
+        selectedSeat: state => state.posMachine.selectedSeat,
+        currentOrder: state => state.posMachine.currentOrder,
       })
     },
     mounted() {
@@ -98,12 +104,24 @@
       }
     },
     methods: {
+      addOrderProduct(storeProduct) {
+        console.log(storeProduct);
+        if (this.selectedSeat.guid && this.currentOrder.guid) {
+          this.$store.dispatch("posMachine/addOrderProduct", {vm: this, storeProduct: storeProduct});
+        } else {
+          if (this.selectedSeat.guid) {
+            MessageUtils.warning("Vui lòng tạo đơn trước khi chọn món!");
+          } else {
+            MessageUtils.warning("Vui lòng chọn một bàn ăn!");
+          }
+        }
+      },
       changeDisplayStoreProductSize(value) {
         localStorage.setItem("displayStoreProductSize", value);
       },
       queryStoreProduct(keyword, cb) {
         keyword = keyword.trim();
-        this.filteredStoreProducts = this.selectedStoreProducts
+        this.filteredStoreProducts = this.displayStoreProducts
           .filter(storeProduct => storeProduct.productCode.toLowerCase().search(keyword) !== -1 || storeProduct.productName.toLowerCase().search(keyword) !== -1);
         this.isLoading = false;
         cb([]);

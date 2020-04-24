@@ -35,7 +35,7 @@
     },
     methods: {
       changeCategory(categoryGuid) {
-        this.$store.dispatch("posMachine/changeSelectedStoreProduct", categoryGuid);
+        this.$store.dispatch("posMachine/changeDisplayStoreProduct", categoryGuid);
       }
     }
   };

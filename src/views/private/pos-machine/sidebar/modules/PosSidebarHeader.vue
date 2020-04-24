@@ -1,16 +1,23 @@
 <template>
-  <el-header class="bg-success" height="auto">
-    <el-row class="full-size padding-10" type="flex" align="middle" justify="center">
-      <el-input placeholder="Nhập tên hoặc mã sản phẩm">
-        <i slot="prefix" class="el-input__icon el-icon-search"></i>
-      </el-input>
+  <el-header class="bg-success" height="60px">
+    <el-row class="full-size" type="flex" align="middle" justify="center">
+      <el-col v-if="selectedSeat.seatName" class="text-center text-light">
+        <h1>{{selectedSeat.seatName}} - {{selectedSeat.areaName}}</h1>
+      </el-col>
     </el-row>
   </el-header>
 </template>
 
 <script>
+  import {mapState} from "vuex";
+
   export default {
-    name: "PosSidebarHeader"
+    name: "PosSidebarHeader",
+    computed: {
+      ...mapState({
+        selectedSeat: state => state.posMachine.selectedSeat,
+      })
+    },
   };
 </script>
 

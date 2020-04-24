@@ -1,6 +1,6 @@
 <template>
   <el-container v-loading="!$store.getters.posMachine.ready" class="pos-container" direction="horizontal">
-    <el-aside width="360px">
+    <el-aside width="400px">
       <pos-machine-sidebar class="pos-sidebar"/>
     </el-aside>
     <el-container class="pos-main-container" direction="vertical">
