@@ -1,6 +1,6 @@
 <template>
   <el-container v-loading="!$store.getters.posMachine.ready" class="pos-container" direction="horizontal">
-    <el-aside width="400px">
+    <el-aside width="450px" class="aside">
       <pos-machine-sidebar class="pos-sidebar"/>
     </el-aside>
     <el-container class="pos-main-container" direction="vertical">
@@ -62,5 +62,11 @@
 
   .pos-main {
     background: #f0f2f5 !important;
+  }
+
+  .aside {
+    box-shadow: 3px 0 5px rgba(0,0,0,.24);
+    background-color: #fff;
+    z-index: 2;
   }
 </style>

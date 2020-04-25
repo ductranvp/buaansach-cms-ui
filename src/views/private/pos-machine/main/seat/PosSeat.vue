@@ -2,21 +2,14 @@
   <el-container class="full-size" direction="vertical">
     <el-header class="padding-0-10 bg-yellowgreen" height="42px">
       <el-row :gutter="10" class="full-size" type="flex" align="middle">
-        <el-col :span="8">
-          <el-autocomplete
-            ref="filterSeat"
-            class="full-width"
-            size="small"
-            v-model="filterSeat"
-            :fetch-suggestions="querySeat"
-            placeholder="Nhập tên chỗ khoặc khu vực (F3)"
-            :debounce="filterDebounce"
-            :trigger-on-focus="false"
-          ></el-autocomplete>
+        <el-col :span="10">
+          <el-radio-group fill="#159550" v-model="displaySeatType" size="mini">
+            <el-radio-button label="ALL">Tất cả</el-radio-button>
+            <el-radio-button label="EMPTY">Còn trống</el-radio-button>
+            <el-radio-button label="NON_EMPTY">Đang dùng</el-radio-button>
+          </el-radio-group>
         </el-col>
-        <el-col :span="10" class="text-center">
-          <span class="text-bold">{{selectedArea.areaName}}</span>
-        </el-col>
+        <el-col :span="8"></el-col>
         <el-col :span="6">
           <el-row :gutter="10" type="flex" align="middle">
             <div class="text-bold padding-right-10" style="white-space: nowrap;">Mật độ</div>
@@ -37,22 +30,22 @@
     </el-header>
     <el-main v-loading="isLoading" class="show-vertical-scroll full-size padding-left-5 padding-right-5 padding-top-10">
       <el-row :gutter="10" class="full-size flex-wrap margin-0">
-        <el-col
-          v-for="seat in filterSeat ? filteredSeat : displaySeats"
-          class="margin-bottom-10"
-          :span="sizes[displaySeatSize]"
-          :key="seat.guid"
-        >
-          <el-card :class="[selectedSeat.guid === seat.guid? 'selected-seat' : '',
+        <template v-for="seat in displaySeats">
+          <el-col v-if="displaySeatType === 'ALL' ? true : seat.seatStatus === displaySeatType" class="margin-bottom-10"
+                  :span="sizes[displaySeatSize]" :key="seat.guid">
+            <el-card :body-style="{padding: '10px'}" :class="[selectedSeat.guid === seat.guid? 'selected-seat' : '',
             seat.seatStatus === 'NON_EMPTY'? 'bg-warning' : '']"
-                   class="pointer" shadow="never" @click.native="changeSeat(seat)">
-            <div class="text-center">
-              <div>{{seat.seatName}}</div>
-              <el-divider class="full-width margin-10-0"></el-divider>
-              <div>{{seat.areaName}}</div>
-            </div>
-          </el-card>
-        </el-col>
+                     class="pointer" shadow="never" @click.native="changeSeat(seat)">
+              <div class="text-center" :class="textSize[displaySeatSize]">
+                <div>{{seat.seatName}}</div>
+                <template v-if="!selectedArea.guid">
+                  <el-divider class="full-width margin-10-0"></el-divider>
+                  <div>{{seat.areaName}}</div>
+                </template>
+              </div>
+            </el-card>
+          </el-col>
+        </template>
       </el-row>
     </el-main>
   </el-container>
@@ -68,7 +61,8 @@
       ...mapState({
         displaySeats: state => state.posMachine.displaySeats,
         selectedArea: state => state.posMachine.selectedArea,
-        selectedSeat: state => state.posMachine.selectedSeat
+        selectedSeat: state => state.posMachine.selectedSeat,
+        unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
       })
     },
     mounted() {
@@ -80,9 +74,12 @@
     data() {
       return {
         isLoading: false,
-        filterDebounce: 400,
-        filterSeat: "",
-        filteredSeat: [],
+        textSize: {
+          1: 'text-small',
+          2: 'text-medium',
+          3: 'text-large',
+          4: 'text-large',
+        },
         displaySeatSize: localStorage.getItem("displaySeatSize")
           ? JSON.parse(localStorage.getItem("displaySeatSize"))
           : 2,
@@ -91,17 +88,18 @@
           2: 4,
           3: 6,
           4: 8
+        },
+        displaySeatType: localStorage.getItem("displaySeatType")
+          ? JSON.parse(localStorage.getItem("displaySeatType"))
+          : 'ALL',
+        types: {
+          ALL: 'ALL',
+          EMPTY: 'EMPTY',
+          NON_EMPTY: 'NON_EMPTY',
         }
       };
     },
-    watch: {
-      selectedArea: function () {
-        this.filterSeat = "";
-      },
-      filterSeat: function (val) {
-        this.isLoading = val;
-      }
-    },
+    watch: {},
     methods: {
       changeSeat(seat) {
         if (this.selectedSeat.guid !== seat.guid)
@@ -110,16 +108,6 @@
       changeDisplaySeatSize(value) {
         localStorage.setItem("displaySeatSize", value);
       },
-      querySeat(keyword, cb) {
-        keyword = keyword.trim();
-        this.filteredSeat = this.displaySeats.filter(
-          seat =>
-            seat.seatName.toLowerCase().search(keyword) !== -1 ||
-            seat.areaName.toLowerCase().search(keyword) !== -1
-        );
-        this.isLoading = false;
-        cb([]);
-      }
     }
   };
 </script>

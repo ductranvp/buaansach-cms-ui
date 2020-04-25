@@ -1,12 +1,12 @@
 <template>
-  <el-header class="bg-success padding-10" height="auto">
+  <el-header class="bg-success padding-10" height="50px">
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :md="12" :sm="24" :xs="24">
-        <el-button type="success" @click="goto('homePage')">
+        <el-button size="small" type="success" @click="goto('homePage')">
           <i class="el-icon-s-home"></i>
           <span class="hidden-sm-and-down">Trang chủ</span>
         </el-button>
-        <el-button type="success" @click="goto('homePage')">
+        <el-button size="small" type="success" @click="goto('homePage')">
           <i class="el-icon-s-data"></i>
           <span class="hidden-sm-and-down">Báo cáo</span>
         </el-button>
@@ -26,11 +26,11 @@
           </el-row>
 
           <el-row class="padding-0-10" type="flex" align="middle">
-            <el-avatar :size="32" :src="circleUrl"></el-avatar>
+            <el-avatar :size="24" :src="circleUrl"></el-avatar>
           </el-row>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
-            <el-button type="success">
+            <el-button size="small" type="success">
               <span>{{currentUser.firstName}}</span>
             </el-button>
           </el-row>
@@ -99,9 +99,9 @@
 <style scoped>
   .icon-button {
     padding: 0;
-    height: 40px;
-    width: 40px;
-    font-size: 28px
+    height: 32px;
+    width: 32px;
+    font-size: 22px
   }
 
   /deep/ .el-dropdown-menu__item {

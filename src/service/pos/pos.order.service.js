@@ -5,8 +5,8 @@ const PosOrderService = {
   createOrder(payload) {
     return request.post(baseUrl + "/create", payload);
   },
-  saveOrder(payload) {
-    return request.put(baseUrl + "/save", payload);
+  updateOrder(payload) {
+    return request.put(baseUrl + "/update", payload);
   },
   getOrder(params) {
     return request.get(baseUrl + "/get/" + params);

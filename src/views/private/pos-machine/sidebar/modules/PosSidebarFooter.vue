@@ -1,5 +1,5 @@
 <template>
-  <el-footer class="bg-success padding-10" height="auto">
+  <el-footer v-if="currentOrder.guid" class="bg-success padding-10" height="auto">
     <el-container class="full-size" direction="vertical">
       <el-header height="auto">
         <el-row type="flex" align="middle">
@@ -9,9 +9,9 @@
             </el-input>
           </el-col>
           <el-button class="icon-button" type="success" v-if="!showAdvanced" @click="showAdvanced = true"><i
-              class="el-icon-arrow-up"></i></el-button>
+            class="el-icon-arrow-up"></i></el-button>
           <el-button class="icon-button" type="success" v-else @click="showAdvanced = false"><i
-              class="el-icon-arrow-down"></i></el-button>
+            class="el-icon-arrow-down"></i></el-button>
         </el-row>
       </el-header>
 
@@ -39,13 +39,30 @@
       </el-main>
       <el-footer height="auto">
         <el-divider class="margin-10-0"></el-divider>
-        <el-row type="flex" align="middle">
-          <el-col class="text-light text-bold" :span="14">
-            <span>Tổng: </span>
-            <span>{{200000 | price }}</span>
+        <el-row :gutter="10" type="flex" align="middle">
+          <el-col>
+            <el-select size="small" v-model="payment">
+              <el-option v-for="item in paymentMethod" :key="item.value" :value="item.value"
+                         :label="item.label"></el-option>
+            </el-select>
           </el-col>
-          <el-col :span="10">
-            <el-button class="full-width">
+          <el-col>
+            <el-input size="small" v-if="payment === 'CASH' " v-model="customerCharge"
+                      v-currency
+                      placeholder="Khách đưa"></el-input>
+            <el-button v-else class="full-width">Tạo mã thanh toán</el-button>
+          </el-col>
+          <el-col>
+            <span class="text-light" v-if="customerCharge">Trả lại: {{$parseCurrency(customerCharge) - totalCharge | price}}</span>
+          </el-col>
+        </el-row>
+        <el-row class="padding-top-20" :gutter="10" type="flex" align="middle">
+          <el-col class="text-light text-bold" :span="16">
+            <span>Thanh toán: </span>
+            <span>{{totalCharge | price }}</span>
+          </el-col>
+          <el-col :span="8">
+            <el-button @click="completeOrder" class="full-width">
               <i class="el-icon-printer"></i>
               <span>IN HÓA ĐƠN</span>
             </el-button>
@@ -57,14 +74,50 @@
 </template>
 
 <script>
-    export default {
-        name: "PosSidebarFooter",
-        data() {
-            return {
-                showAdvanced: false,
-            };
+  import {mapState} from "vuex";
+  import MessageUtils from "@/utils/message.util";
+
+  export default {
+    name: "PosSidebarFooter",
+    computed: {
+      ...mapState({
+        totalCharge: state => {
+          return state.posMachine.savedOrderProduct
+            .map(item => item.orderProductPrice * item.orderProductQuantity)
+            .reduce((prev, curr) => prev + curr, 0);
+        },
+        savedOrderProduct: state => state.posMachine.savedOrderProduct,
+        paymentMethod: state => state.posMachine.paymentMethod,
+        currentOrder: state => state.posMachine.currentOrder,
+      })
+    },
+    data() {
+      return {
+        customerCharge: null,
+        payment: "CASH",
+        showAdvanced: false,
+      };
+    },
+    methods: {
+      completeOrder() {
+        const vm = this;
+        if (this.customerCharge < this.totalCharge) {
+          MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền thanh toán");
+          return;
         }
-    };
+        this.$store.dispatch("posMachine/completeOrder", {
+          paymentMethod: this.payment,
+          totalCharge: this.totalCharge,
+          customerCharge: this.customerCharge,
+          vm: vm,
+        }).then(function () {
+          vm.customerCharge = null;
+          vm.payment = "CASH";
+          vm.showAdvanced = null;
+        });
+      }
+    }
+  };
 </script>
 
 <style scoped>

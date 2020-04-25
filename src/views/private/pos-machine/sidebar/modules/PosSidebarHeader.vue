@@ -1,5 +1,5 @@
 <template>
-  <el-header class="bg-success" height="60px">
+  <el-header class="bg-success" height="50px">
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col v-if="selectedSeat.seatName" class="text-center text-light">
         <h1>{{selectedSeat.seatName}} - {{selectedSeat.areaName}}</h1>

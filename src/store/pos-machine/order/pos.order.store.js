@@ -1,6 +1,8 @@
 /* Store module pattern */
 import PosOrderService from "@/service/pos/pos.order.service";
 import NotificationUtils from "@/utils/notification.util";
+import MessageBoxUtils from "@/utils/message-box.util";
+import MessageUtils from "@/utils/message.util";
 
 const orderStatus = {
   CREATED_BY_CUSTOMER: "CREATED_BY_CUSTOMER",
@@ -23,7 +25,7 @@ const orderProductStatus = {
 };
 
 const paymentMethod = [
-  {label: "Tiền măt", value: "CASH"},
+  {label: "Tiền mặt", value: "CASH"},
   {label: "Thẻ tín dụng", value: "CREDIT_CARD"},
   {label: "Ví MoMo", value: "MOMO_APP"},
   {label: "Zalo Pay", value: "ZALO_PAY"},
@@ -96,9 +98,16 @@ const mutations = {
   }
 };
 const actions = {
-  selectSeat({commit, dispatch}, seat) {
-    commit("SET_SELECTED_SEAT", seat);
-    dispatch("getSeatOrderInfo", seat.guid);
+  selectSeat({state, commit, dispatch}, seat) {
+    if (state.unsavedOrderProduct.length) {
+      MessageBoxUtils.confirm("Đơn hàng chưa được lưu, xác nhận đổi bàn?", function () {
+        commit("SET_SELECTED_SEAT", seat);
+        dispatch("getSeatOrderInfo", seat.guid);
+      });
+    } else {
+      commit("SET_SELECTED_SEAT", seat);
+      dispatch("getSeatOrderInfo", seat.guid);
+    }
   },
   async createOrder({state, commit}, vm) {
     try {
@@ -109,13 +118,13 @@ const actions = {
       NotificationUtils.error(error.message || error.data.message);
     }
   },
-  async saveOrder({state, commit}, vm) {
+  async updateOrder({state, commit}) {
     try {
       let posOrderUpdate = {
         orderGuid: state.currentOrder.guid,
         listOrderProduct: state.unsavedOrderProduct
       };
-      const {data} = await PosOrderService.saveOrder(posOrderUpdate);
+      const {data} = await PosOrderService.updateOrder(posOrderUpdate);
       commit("SET_CURRENT_ORDER", data);
       commit("SET_SAVED_ORDER_PRODUCT", data.listOrderProduct);
       commit("SET_UNSAVED_ORDER_PRODUCT", []);
@@ -123,6 +132,31 @@ const actions = {
     } catch (error) {
       NotificationUtils.error(error.message || error.data.message);
     }
+  },
+  async completeOrder({state, commit}, payload) {
+    return new Promise((resolve, reject) => {
+      if (!state.savedOrderProduct.length) {
+        MessageUtils.error("Chưa có sản phẩm nào trong đơn hàng");
+        return;
+      }
+      const purchaseOrder = {
+        orderGuid: state.currentOrder.guid,
+        paymentMethod: payload.paymentMethod,
+        totalCharge: payload.totalCharge,
+      };
+      PosOrderService.purchaseOrder(purchaseOrder).then(function () {
+        NotificationUtils.success("Thanh toán thành công");
+        commit("CHANGE_SEAT_STATUS", {vm: payload.vm, seatGuid: state.selectedSeat.guid, status: "EMPTY"});
+        commit("RESET_ORDER");
+        resolve();
+      }, function (error) {
+        NotificationUtils.error(error.message || error.data.message);
+        reject();
+      });
+    });
+  },
+  executePosPrint({state}, payload) {
+
   },
   async cancelOrder({state, commit}, {vm, cancelReason}) {
     try {

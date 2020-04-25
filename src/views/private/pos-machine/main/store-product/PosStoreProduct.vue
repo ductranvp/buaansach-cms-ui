@@ -2,10 +2,9 @@
   <el-container class="full-size" direction="vertical">
     <el-header class="padding-0-10 bg-yellowgreen" height="42px">
       <el-row :gutter="10" class="full-size" type="flex" align="middle">
-        <el-col :span="8">
+        <el-col :span="10">
           <el-autocomplete
             ref="filterStoreProduct"
-            class="full-width"
             size="small"
             v-model="filterStoreProduct"
             :fetch-suggestions="queryStoreProduct"
@@ -14,9 +13,7 @@
             :trigger-on-focus="false">
           </el-autocomplete>
         </el-col>
-        <el-col :span="10" class="text-center">
-          <span class="text-bold">{{selectedCategory.categoryName}}</span>
-        </el-col>
+        <el-col :span="8"></el-col>
         <el-col :span="6">
           <el-row :gutter="10" type="flex" align="middle">
             <div class="text-bold padding-right-10" style="white-space: nowrap;">Mật độ</div>
@@ -46,9 +43,12 @@
                    @click.native="addOrderProduct(storeProduct)"
                    shadow="never">
             <img :src="storeProduct.productImageUrl" class="image">
-            <el-divider class="full-width margin-10-0"></el-divider>
-            <div class="text-center  padding-bottom-10">
-              <div>{{storeProduct.productName}}</div>
+            <el-divider class="full-width margin-0"></el-divider>
+            <div class="padding-10-10" :class="textSize[displaySize]">
+              <div>{{storeProduct.productCode}}</div>
+              <div class="text-bold text-single-line">
+                <span>{{storeProduct.productName}}</span>
+              </div>
               <div>{{storeProduct.productNormalPrice | price}}</div>
             </div>
           </el-card>
@@ -85,8 +85,14 @@
         filterDebounce: 400,
         filterStoreProduct: "",
         filteredStoreProducts: [],
+        textSize: {
+          1: 'text-small',
+          2: 'text-medium',
+          3: 'text-large',
+          4: 'text-large',
+        },
         displaySize: localStorage.getItem("displayStoreProductSize") ?
-          JSON.parse(localStorage.getItem("displayStoreProductSize")) : 3,
+          JSON.parse(localStorage.getItem("displayStoreProductSize")) : 2,
         sizes: {
           1: 3,
           2: 4,
@@ -110,9 +116,9 @@
           this.$store.dispatch("posMachine/addOrderProduct", {vm: this, storeProduct: storeProduct});
         } else {
           if (this.selectedSeat.guid) {
-            MessageUtils.warning("Vui lòng tạo đơn trước khi chọn món!");
+            MessageUtils.error("Vui lòng tạo đơn trước khi chọn món!");
           } else {
-            MessageUtils.warning("Vui lòng chọn một bàn ăn!");
+            MessageUtils.error("Vui lòng chọn một bàn ăn!");
           }
         }
       },
@@ -131,6 +137,11 @@
 </script>
 
 <style scoped>
+  .el-card {
+    box-sizing: border-box;
+    border: 1px solid #bbb;
+  }
+
   .image {
     width: 100%;
     display: block;
