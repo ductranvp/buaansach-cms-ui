@@ -19,6 +19,26 @@ const mutations = {
       foundedSeat.seatStatus = status;
       vm.$set(state.allSeats, idx, foundedSeat);
     }
+  },
+  SWAP_SEAT_STATUS(state, {vm, seatAGuid, seatBGuid}) {
+    const idxA = state.allSeats.findIndex(seat => seat.guid === seatAGuid);
+    const idxB = state.allSeats.findIndex(seat => seat.guid === seatBGuid);
+    if (idxA !== -1 && idxB !== -1) {
+      const seatA = state.allSeats[idxA];
+      const seatB = state.allSeats[idxB];
+      const temp = {
+        seatStatus: seatA.seatStatus,
+        currentOrderGuid: seatA.currentOrderGuid,
+      };
+      seatA.seatStatus = seatB.seatStatus;
+      seatA.currentOrderGuid = seatB.currentOrderGuid;
+
+      seatB.seatStatus = temp.seatStatus;
+      seatB.currentOrderGuid = temp.currentOrderGuid;
+
+      vm.$set(state.allSeats, idxA, seatA);
+      vm.$set(state.allSeats, idxB, seatB);
+    }
   }
 };
 const actions = {

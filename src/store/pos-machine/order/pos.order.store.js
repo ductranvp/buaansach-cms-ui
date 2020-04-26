@@ -2,11 +2,10 @@
 import PosOrderService from "@/service/pos/pos.order.service";
 import NotificationUtils from "@/utils/notification.util";
 import MessageBoxUtils from "@/utils/message-box.util";
-import MessageUtils from "@/utils/message.util";
+import PosOrderProductService from "@/service/pos/pos.order-product.service";
 
 const orderStatus = {
-  CREATED_BY_CUSTOMER: "CREATED_BY_CUSTOMER",
-  CREATED_BY_EMPLOYEE: "CREATED_BY_EMPLOYEE",
+  CREATED: "CREATED",
   RECEIVED: "RECEIVED",
   PURCHASED: "PURCHASED",
   CANCELLED_BY_EMPLOYEE: "CANCELLED_BY_EMPLOYEE",
@@ -15,8 +14,6 @@ const orderStatus = {
 };
 
 const orderProductStatus = {
-  WAITING: "WAITING",
-  RECEIVED: "RECEIVED",
   PREPARING: "PREPARING",
   SERVED: "SERVED",
   CANCELLED_BY_EMPLOYEE: "CANCELLED_BY_EMPLOYEE",
@@ -80,15 +77,29 @@ const mutations = {
   SET_UNSAVED_ORDER_PRODUCT(state, unsavedOrderProduct) {
     state.unsavedOrderProduct = unsavedOrderProduct;
   },
-  ADD_ORDER_PRODUCT(state, {vm, orderProduct}) {
+  SET_ORDER_PRODUCT_QUANTITY(state, {vm, orderProduct, quantity}) {
     const idx = state.unsavedOrderProduct.findIndex(item => item.productGuid === orderProduct.productGuid);
     if (idx !== -1) {
       const temp = state.unsavedOrderProduct[idx];
-      temp.orderProductQuantity += 1;
+      temp.orderProductQuantity = quantity;
       vm.$set(state.unsavedOrderProduct, idx, temp);
     } else {
-      orderProduct.orderProductQuantity = 1;
+      orderProduct.orderProductQuantity = quantity;
       state.unsavedOrderProduct.push(orderProduct);
+    }
+  },
+  SET_ORDER_PRODUCT_STATUS(state, {vm, orderProduct, status}) {
+    const idx = state.savedOrderProduct.findIndex(item => item.guid === orderProduct.guid);
+    if (idx !== -1) {
+      const temp = state.savedOrderProduct[idx];
+      temp.orderProductStatus = status;
+      vm.$set(state.savedOrderProduct, idx, temp);
+    }
+  },
+  REMOVE_UNSAVED_ORDER_PRODUCT(state, {orderProduct}) {
+    const idx = state.unsavedOrderProduct.findIndex(item => item.productGuid === orderProduct.productGuid);
+    if (idx !== -1) {
+      state.unsavedOrderProduct.splice(idx, 1);
     }
   },
   RESET_ORDER(state) {
@@ -135,10 +146,6 @@ const actions = {
   },
   async completeOrder({state, commit}, payload) {
     return new Promise((resolve, reject) => {
-      if (!state.savedOrderProduct.length) {
-        MessageUtils.error("Chưa có sản phẩm nào trong đơn hàng");
-        return;
-      }
       const purchaseOrder = {
         orderGuid: state.currentOrder.guid,
         paymentMethod: payload.paymentMethod,
@@ -157,6 +164,25 @@ const actions = {
   },
   executePosPrint({state}, payload) {
 
+  },
+  async changeOrderSeat({state, commit}, {vm, newSeatGuid, storeGuid}) {
+    const dto = {
+      storeGuid: storeGuid,
+      orderGuid: state.currentOrder.guid,
+      currentSeatGuid: state.selectedSeat.guid,
+      newSeatGuid: newSeatGuid,
+    };
+    return new Promise((resolve, reject) => {
+      PosOrderService.changeOrderSeat(dto).then(function () {
+        commit("SWAP_SEAT_STATUS", {vm: vm, seatAGuid: state.selectedSeat.guid, seatBGuid: newSeatGuid});
+        commit("RESET_ORDER");
+        NotificationUtils.success("Chuyển bàn thành công");
+        resolve();
+      }).catch(function (error) {
+        NotificationUtils.error(error.message || error.data.message);
+        reject();
+      });
+    });
   },
   async cancelOrder({state, commit}, {vm, cancelReason}) {
     try {
@@ -190,23 +216,69 @@ const actions = {
      * code check product status before add
      *
      * */
-    const orderProduct = {
-      orderGuid: null,
-      productGuid: storeProduct.productGuid,
-      orderProductGroup: null,
-      productCode: storeProduct.productCode,
-      productName: storeProduct.productName,
-      orderProductQuantity: null,
-      orderProductPrice: storeProduct.productNormalPrice,
-      orderProductDiscount: storeProduct.productSalePrice,
-      orderProductNote: null,
-      orderProductStatus: state.orderProductStatus.PREPARING,
-      orderProductStatusTimeline: null,
-      orderProductCancelReason: null,
-    };
-    commit("ADD_ORDER_PRODUCT", {vm, orderProduct});
+    const orderProduct = storeProductToOrderProduct(state, storeProduct);
+    const item = state.unsavedOrderProduct.find(item => item.productGuid === orderProduct.productGuid);
+    let quantity = 1;
+    if (item) quantity = Number(item.orderProductQuantity) + 1;
+    commit("SET_ORDER_PRODUCT_QUANTITY", {vm, orderProduct, quantity});
+  },
+  async serveOrderProduct({state, commit}, {vm, orderProduct, storeGuid}) {
+    try {
+      let orderProductChange = {
+        storeGuid: storeGuid,
+        orderProductGuid: orderProduct.guid,
+      };
+      await PosOrderProductService.serveOrderProduct(orderProductChange);
+      NotificationUtils.success("Cập nhật thành công", 1000);
+      commit("SET_ORDER_PRODUCT_STATUS", {
+        vm: vm,
+        orderProduct: orderProduct,
+        status: state.orderProductStatus.SERVED
+      });
+    } catch (error) {
+      NotificationUtils.error(error.message || error.data.message);
+    }
+  },
+  async cancelOrderProduct({state, commit}, {vm, orderProduct, cancelReason, storeGuid}) {
+    try {
+      let orderProductChange = {
+        storeGuid: storeGuid,
+        orderProductGuid: orderProduct.guid,
+        orderProductCancelReason: cancelReason
+      };
+      await PosOrderProductService.cancelOrderProduct(orderProductChange);
+      NotificationUtils.success("Hủy món thành công");
+      commit("SET_ORDER_PRODUCT_STATUS", {
+        vm: vm,
+        orderProduct: orderProduct,
+        status: state.orderProductStatus.CANCELLED_BY_EMPLOYEE
+      });
+    } catch (error) {
+      NotificationUtils.error(error.message || error.data.message);
+    }
+  },
+  updateOrderProductQuantity({state, commit}, {vm, orderProduct, quantity}) {
+    commit("SET_ORDER_PRODUCT_QUANTITY", {vm, orderProduct, quantity});
   }
 };
+
+function storeProductToOrderProduct(state, storeProduct) {
+  return {
+    guid: null,
+    orderGuid: null,
+    productGuid: storeProduct.productGuid,
+    orderProductGroup: null,
+    productCode: storeProduct.productCode,
+    productName: storeProduct.productName,
+    orderProductQuantity: null,
+    orderProductPrice: storeProduct.productNormalPrice,
+    orderProductDiscount: storeProduct.productSalePrice,
+    orderProductNote: null,
+    orderProductStatus: state.orderProductStatus.PREPARING,
+    orderProductStatusTimeline: null,
+    orderProductCancelReason: null,
+  };
+}
 
 export default {
   namespaced: true,

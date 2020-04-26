@@ -33,8 +33,11 @@
         <template v-for="seat in displaySeats">
           <el-col v-if="displaySeatType === 'ALL' ? true : seat.seatStatus === displaySeatType" class="margin-bottom-10"
                   :span="sizes[displaySeatSize]" :key="seat.guid">
-            <el-card :body-style="{padding: '10px'}" :class="[selectedSeat.guid === seat.guid? 'selected-seat' : '',
-            seat.seatStatus === 'NON_EMPTY'? 'bg-warning' : '']"
+            <el-card :body-style="{padding: '10px'}"
+                     :class="[
+                       selectedSeat.guid === seat.guid? 'selected-seat' : '',
+                       seat.seatStatus === 'NON_EMPTY'? 'bg-warning' : '',
+                       ]"
                      class="pointer" shadow="never" @click.native="changeSeat(seat)">
               <div class="text-center" :class="textSize[displaySeatSize]">
                 <div>{{seat.seatName}}</div>
@@ -70,6 +73,7 @@
       hotkeys("f8", "posMachine", function (event, handler) {
         vm.$refs.filterSeat.focus();
       });
+      console.log(this.$store.state.posMachine.displaySeats);
     },
     data() {
       return {

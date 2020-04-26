@@ -111,7 +111,6 @@
     },
     methods: {
       addOrderProduct(storeProduct) {
-        console.log(storeProduct);
         if (this.selectedSeat.guid && this.currentOrder.guid) {
           this.$store.dispatch("posMachine/addOrderProduct", {vm: this, storeProduct: storeProduct});
         } else {

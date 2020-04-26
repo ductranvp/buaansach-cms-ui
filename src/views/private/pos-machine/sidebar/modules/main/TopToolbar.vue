@@ -1,5 +1,6 @@
 <template>
   <el-header height="40px">
+    <change-order-seat-dialog ref="changeSeatDialog"/>
     <el-row v-if="currentOrder.guid" class="full-size padding-0-10" type="flex" align="middle" justify="center">
       <el-col :span="18" class="text-small">
         <el-row :gutter="10" type="flex" align="middle">
@@ -20,7 +21,7 @@
             <span>Tùy chọn</span>
           </el-button>
           <el-dropdown-menu class="padding-0" slot="dropdown">
-            <el-dropdown-item command="moveOrder">
+            <el-dropdown-item @click.native="changeOrderSeat">
               <span>Chuyển bàn</span>
             </el-dropdown-item>
             <el-dropdown-item command="orderHistory">
@@ -39,9 +40,11 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
+  import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/modules/main/ChangeOrderSeatDialog";
 
   export default {
     name: "TopToolbar",
+    components: {ChangeOrderSeatDialog},
     computed: {
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
@@ -62,6 +65,9 @@
           }
         });
       },
+      changeOrderSeat() {
+        this.$refs.changeSeatDialog.show();
+      }
     }
   };
 </script>

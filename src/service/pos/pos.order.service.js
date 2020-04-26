@@ -14,8 +14,8 @@ const PosOrderService = {
   getOrderBySeatGuid(params) {
     return request.get(baseUrl + "/get-by-seat/" + params);
   },
-  moveOrder(payload) {
-    return request.put(baseUrl + "/move", payload);
+  changeOrderSeat(payload) {
+    return request.put(baseUrl + "/change-seat", payload);
   },
   receiveOrder(payload) {
     return request.put(baseUrl + "/receive", payload);

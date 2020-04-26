@@ -101,8 +101,12 @@
     methods: {
       completeOrder() {
         const vm = this;
-        if (this.customerCharge < this.totalCharge) {
+        if (this.$parseCurrency(this.customerCharge) < this.totalCharge) {
           MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền thanh toán");
+          return;
+        }
+        if (!this.savedOrderProduct.length) {
+          MessageUtils.error("Chưa có sản phẩm nào trong đơn hàng");
           return;
         }
         this.$store.dispatch("posMachine/completeOrder", {
