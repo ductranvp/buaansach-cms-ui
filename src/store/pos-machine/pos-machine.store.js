@@ -50,16 +50,24 @@ const actions = {
       const storeProductData = await PosStoreProductService.getListProductByStoreGuid(storeGuid);
       commit("SET_STORE_PRODUCT", storeProductData.data);
 
-      commit("SET_READY", true);
       dispatch("parseData");
+      commit("SET_READY", true);
     } catch (error) {
-      NotificationUtils.error(error.message || error.data.message);
+      NotificationUtils.error(error.message || error.data.message, 0);
     }
   },
   parseData({state, dispatch}) {
     dispatch("changeDisplaySeat", state.currentAreaGuid);
     dispatch("changeDisplayStoreProduct", state.currentCategoryGuid);
-    dispatch("selectSeat", state.displaySeats[0]);
+
+    if (state.displaySeats.length) {
+      if (state.currentSeatGuid) {
+        const savedSeat = state.allSeats.find(seat => seat.guid === state.currentSeatGuid);
+        dispatch("selectSeat", savedSeat);
+      } else {
+        dispatch("selectSeat", state.displaySeats[0]);
+      }
+    }
   },
 };
 

@@ -3,6 +3,8 @@ import PosOrderService from "@/service/pos/pos.order.service";
 import NotificationUtils from "@/utils/notification.util";
 import MessageBoxUtils from "@/utils/message-box.util";
 import PosOrderProductService from "@/service/pos/pos.order-product.service";
+import Constants from "@/utils/constants";
+import MessageUtils from "@/utils/message.util";
 
 const orderStatus = {
   CREATED: "CREATED",
@@ -21,7 +23,7 @@ const orderProductStatus = {
   CANCELLED_BY_SYSTEM: "CANCELLED_BY_SYSTEM",
 };
 
-const paymentMethod = [
+const paymentMethods = [
   {label: "Tiền mặt", value: "CASH"},
   {label: "Thẻ tín dụng", value: "CREDIT_CARD"},
   {label: "Ví MoMo", value: "MOMO_APP"},
@@ -31,7 +33,9 @@ const paymentMethod = [
 ];
 
 const state = {
+  isLoadingSeatOrder: false,
   selectedSeat: {},
+  currentSeatGuid: localStorage.getItem("currentSeatGuid") ? JSON.parse(localStorage.getItem("currentSeatGuid")) : null,
   currentOrder: {},
   savedOrderProduct: [],
   unsavedOrderProduct: [],
@@ -61,15 +65,20 @@ const state = {
     orderProductCancelReason: null,
   },
   orderStatus: orderStatus,
-  paymentMethod: paymentMethod,
+  paymentMethods: paymentMethods,
   orderProductStatus: orderProductStatus,
 };
 const mutations = {
+  SET_IS_LOADING_SEAT_ORDER(state, status) {
+    state.isLoadingSeatOrder = status;
+  },
   SET_CURRENT_ORDER(state, currentOrder) {
     state.currentOrder = currentOrder;
   },
   SET_SELECTED_SEAT(state, selectedSeat) {
     state.selectedSeat = selectedSeat;
+    state.currentSeatGuid = selectedSeat.guid;
+    localStorage.setItem("currentSeatGuid", JSON.stringify(selectedSeat.guid));
   },
   SET_SAVED_ORDER_PRODUCT(state, savedOrderProduct) {
     state.savedOrderProduct = savedOrderProduct;
@@ -77,23 +86,23 @@ const mutations = {
   SET_UNSAVED_ORDER_PRODUCT(state, unsavedOrderProduct) {
     state.unsavedOrderProduct = unsavedOrderProduct;
   },
-  SET_ORDER_PRODUCT_QUANTITY(state, {vm, orderProduct, quantity}) {
+  SET_ORDER_PRODUCT_QUANTITY(state, {orderProduct, quantity}) {
     const idx = state.unsavedOrderProduct.findIndex(item => item.productGuid === orderProduct.productGuid);
     if (idx !== -1) {
       const temp = state.unsavedOrderProduct[idx];
       temp.orderProductQuantity = quantity;
-      vm.$set(state.unsavedOrderProduct, idx, temp);
+      state.unsavedOrderProduct.splice(idx, 1, temp);
     } else {
       orderProduct.orderProductQuantity = quantity;
       state.unsavedOrderProduct.push(orderProduct);
     }
   },
-  SET_ORDER_PRODUCT_STATUS(state, {vm, orderProduct, status}) {
+  SET_ORDER_PRODUCT_STATUS(state, {orderProduct, status}) {
     const idx = state.savedOrderProduct.findIndex(item => item.guid === orderProduct.guid);
     if (idx !== -1) {
       const temp = state.savedOrderProduct[idx];
       temp.orderProductStatus = status;
-      vm.$set(state.savedOrderProduct, idx, temp);
+      state.savedOrderProduct.splice(idx, 1, temp);
     }
   },
   REMOVE_UNSAVED_ORDER_PRODUCT(state, {orderProduct}) {
@@ -113,6 +122,7 @@ const actions = {
     if (state.unsavedOrderProduct.length) {
       MessageBoxUtils.confirm("Đơn hàng chưa được lưu, xác nhận đổi bàn?", function () {
         commit("SET_SELECTED_SEAT", seat);
+        commit("RESET_ORDER");
         dispatch("getSeatOrderInfo", seat.guid);
       });
     } else {
@@ -120,19 +130,27 @@ const actions = {
       dispatch("getSeatOrderInfo", seat.guid);
     }
   },
-  async createOrder({state, commit}, vm) {
+  async createOrder({state, commit}, payload) {
     try {
-      const {data} = await PosOrderService.createOrder({seatGuid: state.selectedSeat.guid});
+      payload.seatGuid = state.selectedSeat.guid;
+      const {data} = await PosOrderService.createOrder(payload);
       commit("SET_CURRENT_ORDER", data);
-      commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: 'NON_EMPTY', vm: vm});
+      commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: 'NON_EMPTY'});
     } catch (error) {
       NotificationUtils.error(error.message || error.data.message);
     }
   },
   async updateOrder({state, commit}) {
     try {
+      const patt = new RegExp(Constants.PHONE_REGEX);
+      if (state.currentOrder.customerPhone && !patt.test(state.currentOrder.customerPhone)) {
+        MessageUtils.error("Số điện thoại không hợp lệ");
+        return;
+      }
       let posOrderUpdate = {
         orderGuid: state.currentOrder.guid,
+        customerName: state.currentOrder.customerName,
+        customerPhone: state.currentOrder.customerPhone,
         listOrderProduct: state.unsavedOrderProduct
       };
       const {data} = await PosOrderService.updateOrder(posOrderUpdate);
@@ -153,7 +171,7 @@ const actions = {
       };
       PosOrderService.purchaseOrder(purchaseOrder).then(function () {
         NotificationUtils.success("Thanh toán thành công");
-        commit("CHANGE_SEAT_STATUS", {vm: payload.vm, seatGuid: state.selectedSeat.guid, status: "EMPTY"});
+        commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: "EMPTY"});
         commit("RESET_ORDER");
         resolve();
       }, function (error) {
@@ -165,7 +183,7 @@ const actions = {
   executePosPrint({state}, payload) {
 
   },
-  async changeOrderSeat({state, commit}, {vm, newSeatGuid, storeGuid}) {
+  async changeOrderSeat({state, commit}, {newSeatGuid, storeGuid}) {
     const dto = {
       storeGuid: storeGuid,
       orderGuid: state.currentOrder.guid,
@@ -174,7 +192,7 @@ const actions = {
     };
     return new Promise((resolve, reject) => {
       PosOrderService.changeOrderSeat(dto).then(function () {
-        commit("SWAP_SEAT_STATUS", {vm: vm, seatAGuid: state.selectedSeat.guid, seatBGuid: newSeatGuid});
+        commit("SWAP_SEAT_STATUS", {seatAGuid: state.selectedSeat.guid, seatBGuid: newSeatGuid});
         commit("RESET_ORDER");
         NotificationUtils.success("Chuyển bàn thành công");
         resolve();
@@ -184,14 +202,14 @@ const actions = {
       });
     });
   },
-  async cancelOrder({state, commit}, {vm, cancelReason}) {
+  async cancelOrder({state, commit}, cancelReason) {
     try {
       let orderChange = state.orderStatusChange;
       orderChange.orderGuid = state.currentOrder.guid;
       orderChange.cancelReason = cancelReason;
       await PosOrderService.cancelOrder(orderChange);
       NotificationUtils.success("Hủy đơn thành công");
-      commit("CHANGE_SEAT_STATUS", {vm: vm, seatGuid: state.selectedSeat.guid, status: "EMPTY"});
+      commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: "EMPTY"});
       commit("RESET_ORDER");
     } catch (error) {
       NotificationUtils.error(error.message || error.data.message);
@@ -199,6 +217,7 @@ const actions = {
   },
   async getSeatOrderInfo({commit}, seatGuid) {
     try {
+      commit("SET_IS_LOADING_SEAT_ORDER", true);
       const {data} = await PosOrderService.getOrderBySeatGuid(seatGuid);
       if (data.guid) {
         commit("SET_CURRENT_ORDER", data);
@@ -207,11 +226,13 @@ const actions = {
       } else {
         commit("RESET_ORDER");
       }
+      commit("SET_IS_LOADING_SEAT_ORDER", false);
     } catch (error) {
+      commit("SET_IS_LOADING_SEAT_ORDER", false);
       NotificationUtils.error(error.message || error.data.message);
     }
   },
-  addOrderProduct({state, commit}, {vm, storeProduct}) {
+  addOrderProduct({state, commit}, {storeProduct}) {
     /**
      * code check product status before add
      *
@@ -220,7 +241,7 @@ const actions = {
     const item = state.unsavedOrderProduct.find(item => item.productGuid === orderProduct.productGuid);
     let quantity = 1;
     if (item) quantity = Number(item.orderProductQuantity) + 1;
-    commit("SET_ORDER_PRODUCT_QUANTITY", {vm, orderProduct, quantity});
+    commit("SET_ORDER_PRODUCT_QUANTITY", {orderProduct, quantity});
   },
   async serveOrderProduct({state, commit}, {vm, orderProduct, storeGuid}) {
     try {
@@ -231,7 +252,6 @@ const actions = {
       await PosOrderProductService.serveOrderProduct(orderProductChange);
       NotificationUtils.success("Cập nhật thành công", 1000);
       commit("SET_ORDER_PRODUCT_STATUS", {
-        vm: vm,
         orderProduct: orderProduct,
         status: state.orderProductStatus.SERVED
       });
@@ -249,7 +269,6 @@ const actions = {
       await PosOrderProductService.cancelOrderProduct(orderProductChange);
       NotificationUtils.success("Hủy món thành công");
       commit("SET_ORDER_PRODUCT_STATUS", {
-        vm: vm,
         orderProduct: orderProduct,
         status: state.orderProductStatus.CANCELLED_BY_EMPLOYEE
       });

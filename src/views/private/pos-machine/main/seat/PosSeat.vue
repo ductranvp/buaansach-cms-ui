@@ -73,7 +73,6 @@
       hotkeys("f8", "posMachine", function (event, handler) {
         vm.$refs.filterSeat.focus();
       });
-      console.log(this.$store.state.posMachine.displaySeats);
     },
     data() {
       return {

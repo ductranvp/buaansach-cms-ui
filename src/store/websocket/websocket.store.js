@@ -6,6 +6,7 @@ import {Notification} from "element-ui";
 import router from "@/router";
 import store from "@/store";
 import Constants from "@/utils/constants";
+import request from "@/config/request";
 
 const state = {
   pendingRoute: null,
@@ -16,6 +17,9 @@ const state = {
 const mutations = {
   SET_CONNECTION(state, connection) {
     state.stompClient = connection;
+  },
+  SET_STATE_WHEN_JWT_EXPIRED(state) {
+    state.lostConnection = false;
   },
   SET_ERROR(state) {
     if (state.error == null) {
@@ -59,23 +63,28 @@ const actions = {
     let options = {debug: false, protocols: ['v12.stomp']};
     let socket = new SockJS(url);
     let stompClient = Stomp.over(socket, options);
-
-    stompClient.connect(
-      {},
-      function (frame) {
-        console.log("Connected...");
-        store.commit("CLEAR_ERROR");
-        store.commit("SET_CONNECTION", stompClient);
-        stompClient.subscribe("abc/def");
-      },
-      function (error) {
-        store.commit("SET_ERROR");
-        setTimeout(() => {
-          console.log("Trying to reconnect...");
-          store.dispatch("connect");
-        }, 2000);
-      }
-    );
+    /* if has token => try to connect to ws */
+    if (AuthUtils.getToken()) {
+      stompClient.connect(
+        {},
+        function (frame) {
+          store.commit("CLEAR_ERROR");
+          store.commit("SET_CONNECTION", stompClient);
+        },
+        function (error) {
+          store.commit("SET_ERROR");
+          /* this request is to test jwt validity */
+          request.get(url).catch(err => {
+            if (err.status === 401) {
+              store.commit("SET_STATE_WHEN_JWT_EXPIRED");
+            }
+          });
+          setTimeout(() => {
+            store.dispatch("connect");
+          }, 2000);
+        }
+      );
+    }
   },
 };
 

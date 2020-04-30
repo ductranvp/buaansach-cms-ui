@@ -24,9 +24,9 @@
             <el-dropdown-item @click.native="changeOrderSeat">
               <span>Chuyển bàn</span>
             </el-dropdown-item>
-            <el-dropdown-item command="orderHistory">
-              <span>Lịch sử</span>
-            </el-dropdown-item>
+<!--            <el-dropdown-item command="orderHistory">-->
+<!--              <span>Lịch sử</span>-->
+<!--            </el-dropdown-item>-->
             <el-dropdown-item @click.native="cancelOrder">
               <span>Hủy đơn</span>
             </el-dropdown-item>
@@ -59,7 +59,7 @@
           inputType: 'textarea'
         }).then(cb => {
           if (cb.value) {
-            vm.$store.dispatch("posMachine/cancelOrder", {vm: vm, cancelReason: cb.value});
+            vm.$store.dispatch("posMachine/cancelOrder", cb.value);
           } else {
             MessageUtils.error("Bạn phải nhập lí do hủy đơn");
           }

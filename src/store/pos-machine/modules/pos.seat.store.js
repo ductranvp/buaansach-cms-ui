@@ -12,15 +12,15 @@ const mutations = {
   SET_DISPLAY_SEAT(state, displaySeats) {
     state.displaySeats = displaySeats;
   },
-  CHANGE_SEAT_STATUS(state, {vm, seatGuid, status}) {
+  CHANGE_SEAT_STATUS(state, {seatGuid, status}) {
     const idx = state.allSeats.findIndex(seat => seat.guid === seatGuid);
     if (idx !== -1) {
       const foundedSeat = state.allSeats[idx];
       foundedSeat.seatStatus = status;
-      vm.$set(state.allSeats, idx, foundedSeat);
+      state.allSeats.splice(idx, 1, foundedSeat);
     }
   },
-  SWAP_SEAT_STATUS(state, {vm, seatAGuid, seatBGuid}) {
+  SWAP_SEAT_STATUS(state, {seatAGuid, seatBGuid}) {
     const idxA = state.allSeats.findIndex(seat => seat.guid === seatAGuid);
     const idxB = state.allSeats.findIndex(seat => seat.guid === seatBGuid);
     if (idxA !== -1 && idxB !== -1) {
@@ -36,8 +36,8 @@ const mutations = {
       seatB.seatStatus = temp.seatStatus;
       seatB.currentOrderGuid = temp.currentOrderGuid;
 
-      vm.$set(state.allSeats, idxA, seatA);
-      vm.$set(state.allSeats, idxB, seatB);
+      state.allSeats.splice(idxA, 1, seatA);
+      state.allSeats.splice(idxB, 1, seatB);
     }
   }
 };

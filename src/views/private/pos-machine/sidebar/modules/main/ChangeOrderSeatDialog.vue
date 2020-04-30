@@ -100,7 +100,6 @@
             const payload = {
               storeGuid: vm.$route.params.storeGuid,
               newSeatGuid: vm.form.selectedSeatGuid,
-              vm: vm
             };
             vm.$store.dispatch("posMachine/changeOrderSeat", payload).then(function () {
               vm.isLoading = false;

@@ -1,7 +1,7 @@
 <template>
   <el-main class="full-size">
     <el-container class="full-size" direction="vertical">
-      <el-main v-if="selectedSeat.guid" class="full-size show-vertical-scroll">
+      <el-main v-if="selectedSeat.guid" class="scroll full-size show-vertical-scroll">
 
         <div v-if="currentOrder.guid" class="full-size">
           <div id="saved_order">
@@ -13,10 +13,10 @@
                 <el-row class="full-size" type="flex" align="middle">
                   <el-col :span="8" class="text-small">
                     <span>{{item.productName}}</span><br>
-                    <span>{{item.orderProductPrice | price}}</span>
+                    <span>{{item.orderProductPrice | priceAppend("₫")}}</span>
                   </el-col>
                   <el-col :span="6">
-                    <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | price}}</span>
+                    <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend("₫")}}</span>
                   </el-col>
                   <el-col :span="10" class="padding-left-10 text-right">
                     <template v-if="item.orderProductStatus === 'PREPARING'">
@@ -84,10 +84,10 @@
                 <el-row class="full-size" type="flex" align="middle">
                   <el-col :span="8" class="text-small">
                     <span>{{item.productName}}</span><br>
-                    <span>{{item.orderProductPrice | price}}</span>
+                    <span>{{item.orderProductPrice | priceAppend("₫")}}</span>
                   </el-col>
                   <el-col :span="8">
-                    <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | price}}</span>
+                    <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend("₫")}}</span>
                   </el-col>
                   <el-col :span="8" class="padding-left-10 text-right">
                     <el-tag type="info">Chưa lưu</el-tag>
@@ -105,7 +105,19 @@
         <!--show when order is not created -->
         <div v-else class="full-size">
           <el-row class="full-size" type="flex" align="middle" justify="center">
-            <el-button type="warning" @click="createOrder">Tạo đơn</el-button>
+            <el-form ref="createOrderForm" :model="form" :rules="formRules">
+              <el-form-item>
+                <input-label label="Tên khách hàng" optional/>
+                <el-input v-model="form.customerName"></el-input>
+              </el-form-item>
+              <el-form-item prop="customerPhone">
+                <input-label label="SĐT khách hàng" optional/>
+                <el-input v-model="form.customerPhone"></el-input>
+              </el-form-item>
+              <el-form-item>
+                <el-button class="full-width" type="warning" @click="createOrder">Tạo đơn</el-button>
+              </el-form-item>
+            </el-form>
           </el-row>
         </div>
 
@@ -143,9 +155,45 @@
     },
     data() {
       return {
+        form: {
+          seatGuid: null,
+          customerName: null,
+          customerPhone: null,
+          recreateFromOrderGuid: null,
+        },
+        formRules: {
+          customerPhone: [
+            {
+              pattern: "^(09|03|07|08|05)+([0-9]{8})$",
+              message: "Số điện thoại không hợp lệ",
+              trigger: "blur"
+            }
+          ]
+        },
         popoverVisible: false,
         orderProductQuantity: null,
       };
+    },
+    watch: {
+      currentOrder: function () {
+        if (!this.currentOrder.guid) this.resetForm();
+      },
+      unsavedOrderProduct: function () {
+        this.scrollToEnd();
+      },
+    },
+    // updated() {
+    //   this.scrollToEnd();
+    // },
+    methods: {
+      resetForm() {
+        this.form = {};
+      },
+      scrollToEnd() {
+        let container = document.querySelector(".scroll");
+        let scrollHeight = container.scrollHeight;
+        container.scrollTop = scrollHeight;
+      },
     }
   };
 </script>

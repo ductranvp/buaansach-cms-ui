@@ -1,11 +1,11 @@
 <template>
-  <el-container v-loading="!$store.getters.posMachine.ready" class="pos-container" direction="horizontal">
+  <el-container v-loading="!ready" class="full-size" direction="horizontal">
     <el-aside width="450px" class="aside">
-      <pos-machine-sidebar class="pos-sidebar"/>
+      <pos-machine-sidebar/>
     </el-aside>
-    <el-container class="pos-main-container" direction="vertical">
-      <pos-machine-header class="pos-header"/>
-      <pos-machine-main class="pos-main"/>
+    <el-container class="full-size" direction="vertical">
+      <pos-machine-header/>
+      <pos-machine-main/>
     </el-container>
   </el-container>
 </template>
@@ -15,12 +15,28 @@
   import PosMachineHeader from "@/views/private/pos-machine/header/PosMachineHeader";
   import PosMachineMain from "@/views/private/pos-machine/main/PosMachineMain";
   import MessageBoxUtils from "@/utils/message-box.util";
+  import {mapState} from "vuex";
+  import WebSocketHandler from "@/views/layout/pos-machine/websocket.handler";
 
   export default {
     name: "PosMachineLayout",
     components: {PosMachineMain, PosMachineHeader, PosMachineSidebar},
+    mixins: [WebSocketHandler],
+    computed: {
+      ...mapState({
+        stompClient: state => state.websocket.stompClient,
+        allSeats: state => state.posMachine.allSeats,
+        ready: state => state.posMachine.ready,
+      })
+    },
     data() {
       return {askBeforeLeave: false};
+    },
+    watch: {
+      stompClient: function (val) {
+        if (this.stompClient)
+          this.stompClient.subscribe("/topic/pos/" + this.$route.params.storeGuid, this.onMessageReceived);
+      }
     },
     mounted() {
       if (this.askBeforeLeave) {
@@ -52,20 +68,8 @@
     height: 100%;
   }
 
-  .pos-sidebar {
-    background: #aaa;
-  }
-
-  .pos-header {
-    background: #eee;
-  }
-
-  .pos-main {
-    background: #f0f2f5 !important;
-  }
-
   .aside {
-    box-shadow: 3px 0 5px rgba(0,0,0,.24);
+    box-shadow: 3px 0 5px rgba(0, 0, 0, .24);
     background-color: #fff;
     z-index: 2;
   }

@@ -7,8 +7,14 @@ export function lowercase(value) {
     return value.toLowerCase();
 }
 
-export function price(value, unit) {
+export function priceAppend(value, unit) {
   if (unit) unit = " " + unit;
   else unit = "";
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + unit;
+}
+
+export function pricePrepend(value, unit) {
+  if (unit) unit = unit + " ";
+  else unit = "";
+  return unit + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }

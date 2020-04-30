@@ -49,7 +49,7 @@
               <div class="text-bold text-single-line">
                 <span>{{storeProduct.productName}}</span>
               </div>
-              <div>{{storeProduct.productNormalPrice | price}}</div>
+              <div>{{storeProduct.productNormalPrice | priceAppend}}</div>
             </div>
           </el-card>
         </el-col>
@@ -112,7 +112,7 @@
     methods: {
       addOrderProduct(storeProduct) {
         if (this.selectedSeat.guid && this.currentOrder.guid) {
-          this.$store.dispatch("posMachine/addOrderProduct", {vm: this, storeProduct: storeProduct});
+          this.$store.dispatch("posMachine/addOrderProduct", {storeProduct: storeProduct});
         } else {
           if (this.selectedSeat.guid) {
             MessageUtils.error("Vui lòng tạo đơn trước khi chọn món!");

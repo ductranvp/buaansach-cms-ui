@@ -5,8 +5,8 @@
         <span class="text-bold">Khu Vực</span>
       </el-row>
     </el-header>
-    <el-main class="full-size bg-light">
-      <el-menu :default-active="currentAreaGuid">
+    <el-main class="full-size">
+      <el-menu class="full-height" :default-active="currentAreaGuid">
         <el-menu-item index="all" @click="changeArea('all')">
           <span>Tất cả</span>
         </el-menu-item>
@@ -41,12 +41,13 @@
 </script>
 
 <style scoped>
-  .el-menu-item{
+  .el-menu-item {
     height: 42px;
     line-height: 42px;
   }
-  .el-menu-item.is-active{
-    background: #cf9236;
+
+  .el-menu-item.is-active {
+    background: #e6a23c;
     color: white;
     font-weight: 700;
   }

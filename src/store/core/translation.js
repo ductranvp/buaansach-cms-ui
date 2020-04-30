@@ -2,9 +2,7 @@ import Constants from "@/utils/constants";
 
 const state = {
   /* check if user has change language before and saved in localStorage. If not, switch to default language*/
-  currentLanguage:
-    JSON.parse(JSON.stringify(localStorage.getItem("currentLanguage"))) ||
-    Constants.DEFAULT_LANGUAGE,
+  currentLanguage: localStorage.getItem("currentLanguage") || Constants.DEFAULT_LANGUAGE,
   languages: {
     en: { name: "English", value: "en" },
     vi: { name: "Tiếng Việt", value: "vi" }
