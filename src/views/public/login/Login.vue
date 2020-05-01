@@ -20,11 +20,11 @@
               @keyup.enter.native="handleLogin"
             ></el-input>
           </el-form-item>
-          <el-form-item prop="rememberMe">
-            <el-checkbox v-model="loginForm.rememberMe" class="full-width">
-              <span class="text-light">{{ $t("public.loginPage.loginForm.rememberMe") }}</span>
-            </el-checkbox>
-          </el-form-item>
+<!--          <el-form-item prop="rememberMe">-->
+<!--            <el-checkbox v-model="loginForm.rememberMe" class="full-width">-->
+<!--              <span class="text-light">{{ $t("public.loginPage.loginForm.rememberMe") }}</span>-->
+<!--            </el-checkbox>-->
+<!--          </el-form-item>-->
           <el-form-item>
             <div>
               <el-button

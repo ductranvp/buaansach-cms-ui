@@ -26,7 +26,7 @@ const mixinData = {
       formRules: {
         storeCode: [
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-          {max: 16, message: this.$t("common.entity.validation.maxlength", {max: 16}), trigger: "blur"}
+          {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
         ],
         storeName: [
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},

@@ -27,13 +27,13 @@
         <el-table-column prop="storeUserRole"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserRole')">
           <template slot-scope="{row}">
-            <el-tag type="primary" v-if="row.storeUserRole === 'OWNER'">
+            <el-tag type="primary" v-if="row.storeUserRole === 'STORE_OWNER'">
               {{ $t("private.adminStoreDetailHumanPage.storeUserRole.owner") }}
             </el-tag>
-            <el-tag type="primary" v-else-if="row.storeUserRole === 'MANAGER'">
+            <el-tag type="primary" v-else-if="row.storeUserRole === 'STORE_MANAGER'">
               {{ $t("private.adminStoreDetailHumanPage.storeUserRole.manager") }}
             </el-tag>
-            <el-tag type="primary" v-else-if="row.storeUserRole === 'CASHIER'">
+            <el-tag type="primary" v-else-if="row.storeUserRole === 'STORE_CASHIER'">
               {{ $t("private.adminStoreDetailHumanPage.storeUserRole.cashier") }}
             </el-tag>
             <el-tag type="primary" v-else>
@@ -58,7 +58,8 @@
         <el-table-column prop="activated"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.activated')">
           <template slot-scope="{row}">
-            <el-button :disabled="currentUser.login === row.userLogin" size="small" type="success" @click="handleActivated(row)" v-if="row.activated">
+            <el-button :disabled="currentUser.login === row.userLogin" size="small" type="success"
+                       @click="handleActivated(row)" v-if="row.activated">
               {{ $t("private.adminStoreDetailHumanPage.accountStatus.activated") }}
             </el-button>
             <el-button size="small" type="danger" @click="handleActivated(row)" v-else>

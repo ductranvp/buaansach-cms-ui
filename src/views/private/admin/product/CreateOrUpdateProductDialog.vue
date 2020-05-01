@@ -3,6 +3,7 @@
     ref="productDialog"
     :before-close="beforeClose"
     :close-on-click-modal="false"
+    :destroy-on-close="true"
     :visible.sync="dialogFormVisible"
     @opened="onOpened"
     title="Thêm hoặc cập nhật sản phẩm"
@@ -16,7 +17,7 @@
         <el-col :span="11">
           <el-form-item prop="productCode">
             <input-label label="Mã sản phẩm" required/>
-            <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="16"
+            <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="20"
                       show-word-limit></el-input>
           </el-form-item>
         </el-col>
@@ -44,18 +45,18 @@
         </el-col>
 
         <el-col :span="11" :offset="2">
-          <el-form-item prop="productNormalPrice">
+          <el-form-item prop="productPrice">
             <input-label label="Giá bán" required/>
-            <el-input v-model.number="form.productNormalPrice" min="0" type="number"></el-input>
+            <el-input v-model.number="form.productPrice" min="0" type="number"></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
 
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="productSalePrice">
-            <input-label label="Giá khuyến mãi" optional/>
-            <el-input v-model.number="form.productSalePrice" min="0" type="number"></el-input>
+          <el-form-item prop="productDiscount">
+            <input-label label="Giảm giá" optional/>
+            <el-input v-model.number="form.productDiscount" min="0" type="number"></el-input>
           </el-form-item>
         </el-col>
 
@@ -75,9 +76,9 @@
 
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="categoryGuid">
+          <el-form-item prop="categories">
             <input-label label="Danh mục" required/>
-            <el-select v-model="form.categoryGuid" class="full-width">
+            <el-select multiple v-model="form.categories" class="full-width">
               <el-option v-for="category in categories"
                          :key="category.guid"
                          :label="category.categoryName"
@@ -133,14 +134,14 @@
           productThumbnailUrl: null,
           productStatus: null,
           productRootPrice: null,
-          productNormalPrice: null,
-          productSalePrice: null,
-          categoryGuid: null,
+          productPrice: null,
+          productDiscount: null,
+          categories: [],
         },
         formRules: {
           productCode: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 16, message: this.$t("common.entity.validation.maxlength", {max: 16}), trigger: "blur"}
+            {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
           ],
           productName: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
@@ -156,14 +157,14 @@
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
-          productNormalPrice: [
+          productPrice: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
-          productSalePrice: [
+          productDiscount: [
             {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
-          categoryGuid: [
+          categories: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
         },
@@ -190,6 +191,7 @@
       },
       edit(product) {
         this.isEdit = true;
+        product.categories = product.categories.map(category => category.guid);
         this.form = AppUtils.deepCopy(product);
         this.show();
       },
@@ -216,10 +218,12 @@
             let image = this.$refs.singleImageUploader.getSelectedImage();
             try {
               this.isLoading = true;
+              let payload = JSON.parse(JSON.stringify(this.form));
+              payload.categories = this.categories.filter(category => this.form.categories.includes(category.guid));
               if (this.isEdit && this.form.guid) {
-                await AdminProductService.updateProduct(this.form, image);
+                await AdminProductService.updateProduct(payload, image);
               } else {
-                await AdminProductService.createProduct(this.form, image);
+                await AdminProductService.createProduct(payload, image);
               }
               this.isLoading = false;
               this.$emit("productSaved");

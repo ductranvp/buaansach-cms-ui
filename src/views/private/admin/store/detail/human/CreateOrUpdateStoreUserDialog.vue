@@ -224,7 +224,7 @@
               }
               this.isLoading = false;
               this.hide();
-              NotificationUtils.success("Save successfully");
+              NotificationUtils.success(this.$t("common.entity.save.success"));
             } catch (error) {
               this.isLoading = false;
               NotificationUtils.error(error.message || error.data.message);

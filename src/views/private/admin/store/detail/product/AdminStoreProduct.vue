@@ -11,8 +11,8 @@
     <el-row class="margin-top-10">
       <raw-data-table ref="storeProductTable" show-audit :data="storeProducts">
         <el-table-column prop="productName" label="Tên sản phẩm"></el-table-column>
-        <el-table-column prop="productNormalPrice" label="Giá bán"></el-table-column>
-        <el-table-column prop="productSalePrice" label="Giá khuyến mãi"></el-table-column>
+        <el-table-column prop="productPrice" label="Giá bán"></el-table-column>
+        <el-table-column prop="productDiscount" label="Giảm giá"></el-table-column>
         <el-table-column prop="storeProductStatus" label="Kho">
           <template slot-scope="{row}">
 

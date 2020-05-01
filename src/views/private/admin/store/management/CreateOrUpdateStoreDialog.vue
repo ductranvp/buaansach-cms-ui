@@ -14,7 +14,7 @@
             <el-input
               ref="storeCode"
               v-model="form.storeCode"
-              maxlength="16"
+              maxlength="20"
               show-word-limit
               autocomplete="off"
             ></el-input>

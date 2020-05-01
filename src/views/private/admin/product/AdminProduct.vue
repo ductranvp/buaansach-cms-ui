@@ -54,11 +54,11 @@
         </el-table-column>
 
         <el-table-column prop="productRootPrice" label="Giá gốc"></el-table-column>
-        <el-table-column prop="productNormalPrice" label="Giá bán"></el-table-column>
-        <el-table-column prop="productSalePrice" label="Giá khuyến mãi"></el-table-column>
+        <el-table-column prop="productPrice" label="Giá bán"></el-table-column>
+        <el-table-column prop="productDiscount" label="Giảm giá"></el-table-column>
         <el-table-column prop="categoryName" label="Danh mục">
           <template slot-scope="{row}">
-            <span>{{categories[row.categoryGuid]}}</span>
+            <el-tag v-for="category in row.categories" :key="category.guid">{{category.categoryName}}</el-tag>
           </template>
         </el-table-column>
 

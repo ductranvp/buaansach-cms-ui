@@ -2,16 +2,17 @@
   <el-dialog
     title="Thêm hoặc cập nhật sản phẩm cho cửa hàng"
     :before-close="beforeClose"
+    :destroy-on-close="true"
     :visible.sync="dialogFormVisible"
     :close-on-click-modal="false">
     <el-form ref="storeProductForm" :model="form" :rules="formRules">
 
       <el-form-item>
         <el-col :span="11">
-          <el-form-item v-if="isEdit">
+          <el-form-item v-show="isEdit">
             <el-input disabled v-model="form.productName"></el-input>
           </el-form-item>
-          <el-form-item prop="productGuid" v-else>
+          <el-form-item prop="productGuid" v-show="!isEdit">
             <el-select class="full-width" v-model="form.productGuid">
               <el-option v-for="product in productNotInStore"
                          :key="product.guid"
@@ -93,7 +94,9 @@
       },
       edit(storeProduct) {
         this.isEdit = true;
+        this.productNotInStore = [];
         this.form = AppUtils.deepCopy(storeProduct);
+        console.log(this.form);
         this.show();
       },
       async getProductNotInStore() {
@@ -112,6 +115,7 @@
         this.dialogFormVisible = false;
       },
       resetForm() {
+        this.productNotInStore = [];
         this.form = {storeProductStatus: 'AVAILABLE'};
         this.$refs.storeProductForm.clearValidate();
         this.$refs.storeProductForm.resetFields();
@@ -127,7 +131,8 @@
             try {
               vm.isLoading = true;
               vm.form.storeGuid = vm.$route.params.storeGuid;
-              if (vm.isEdit && vm.form.guid) {
+              console.log(JSON.parse(JSON.stringify(vm.form)));
+              if (vm.isEdit) {
                 const {data} = await AdminStoreProductService.updateStoreProduct(vm.form);
                 vm.$emit("onUpdated", data);
               } else {

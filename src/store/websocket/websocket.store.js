@@ -73,12 +73,6 @@ const actions = {
         },
         function (error) {
           store.commit("SET_ERROR");
-          /* this request is to test jwt validity */
-          request.get(url).catch(err => {
-            if (err.status === 401) {
-              store.commit("SET_STATE_WHEN_JWT_EXPIRED");
-            }
-          });
           setTimeout(() => {
             store.dispatch("connect");
           }, 2000);
