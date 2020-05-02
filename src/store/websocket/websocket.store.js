@@ -4,9 +4,7 @@ import * as SockJS from "sockjs-client";
 import * as Stomp from "webstomp-client";
 import {Notification} from "element-ui";
 import router from "@/router";
-import store from "@/store";
 import Constants from "@/utils/constants";
-import request from "@/config/request";
 
 const state = {
   pendingRoute: null,
@@ -18,13 +16,10 @@ const mutations = {
   SET_CONNECTION(state, connection) {
     state.stompClient = connection;
   },
-  SET_STATE_WHEN_JWT_EXPIRED(state) {
-    state.lostConnection = false;
-  },
   SET_ERROR(state) {
     if (state.error == null) {
-      state.pendingRoute = router.history.pending || router.history.current;
       state.lostConnection = true;
+      state.pendingRoute = router.history.pending || router.history.current;
       setTimeout(() => {
         state.error = Notification.error({
           title: "Mất kết nối tới máy chủ!",
@@ -39,10 +34,8 @@ const mutations = {
   CLEAR_ERROR(state) {
     if (state.error) {
       state.lostConnection = false;
-      if (state.pendingRoute.name === 'posPage') {
-        store.dispatch("posMachine/initState", state.pendingRoute.params.storeGuid);
-      }
-      router.push(state.pendingRoute);
+      router.push(state.pendingRoute).catch(() => {
+      });
       setTimeout(() => {
         Notification.success({
           title: "Kết nối thành công!",
@@ -50,6 +43,7 @@ const mutations = {
           duration: 5000
         });
       }, 500);
+
       setTimeout(() => {
         state.error.close();
         state.error = null;
@@ -58,7 +52,7 @@ const mutations = {
   }
 };
 const actions = {
-  connect(store) {
+  connect({state, commit, dispatch}) {
     let url = Constants.SERVER_API_URL + "/websocket?access_token=" + AuthUtils.getToken();
     let options = {debug: false, protocols: ['v12.stomp']};
     let socket = new SockJS(url);
@@ -68,13 +62,16 @@ const actions = {
       stompClient.connect(
         {},
         function (frame) {
-          store.commit("CLEAR_ERROR");
-          store.commit("SET_CONNECTION", stompClient);
+          if (state.error && state.pendingRoute.name === 'posPage') {
+            dispatch("posMachine/initState", state.pendingRoute.params.storeGuid);
+          }
+          commit("CLEAR_ERROR");
+          commit("SET_CONNECTION", stompClient);
         },
         function (error) {
-          store.commit("SET_ERROR");
+          commit("SET_ERROR");
           setTimeout(() => {
-            store.dispatch("connect");
+            dispatch("connect");
           }, 2000);
         }
       );

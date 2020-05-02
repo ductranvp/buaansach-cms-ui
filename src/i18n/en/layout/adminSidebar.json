@@ -7,6 +7,7 @@
     "adminUserPage": "User Management",
     "adminReportPage": "Report Management",
     "adminTrackerPage": "System Tracker",
-    "adminSettingPage": "Setting"
+    "adminSettingPage": "Setting",
+    "adminVoucherPage": "Voucher"
   }
 }

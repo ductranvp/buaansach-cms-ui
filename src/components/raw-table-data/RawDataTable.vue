@@ -78,7 +78,7 @@
       config: Object,
     },
     created() {
-      this.tableData = this.data;
+      this.renderTable();
     },
     data() {
       return {
@@ -98,7 +98,7 @@
     },
     watch: {
       data: function (val) {
-        this.tableData = this.data;
+        this.renderTable();
       },
       filter: {
         deep: true,
@@ -112,7 +112,6 @@
         return index + 1;
       },
       onFilterChange(filter) {
-        console.log(filter);
         this.renderTable();
       },
       onSizeChange(size) {
