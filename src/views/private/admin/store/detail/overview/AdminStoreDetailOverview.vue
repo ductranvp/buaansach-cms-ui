@@ -41,22 +41,34 @@
                       size="small"
                       type="success"
                       effect="dark"
-                      v-if="adminCurrentStore.storeStatus === 'ACTIVATED'"
-                    >{{ $t("private.adminStoreManagementPage.storeStatus.activated") }}
-                    </el-tag>
-                    <el-tag
-                      size="small"
-                      type="warning"
-                      effect="dark"
-                      v-else-if="adminCurrentStore.storeStatus === 'PAUSED'"
-                    >{{ $t("private.adminStoreManagementPage.storeStatus.paused") }}
+                      v-if="adminCurrentStore.storeStatus === 'OPENING'"
+                    >{{ $t("private.adminStoreManagementPage.storeStatus.opening") }}
                     </el-tag>
                     <el-tag
                       size="small"
                       type="danger"
                       effect="dark"
                       v-else
-                    >{{ $t("private.adminStoreManagementPage.storeStatus.deactivated") }}
+                    >{{ $t("private.adminStoreManagementPage.storeStatus.closed") }}
+                    </el-tag>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Kích hoạt</td>
+                  <td>
+                    <el-tag
+                      size="small"
+                      type="success"
+                      effect="dark"
+                      v-if="adminCurrentStore.storeActivated">{{
+                      $t("private.adminStoreManagementPage.storeActivated.activated") }}
+                    </el-tag>
+                    <el-tag
+                      size="small"
+                      type="danger"
+                      effect="dark"
+                      v-else
+                    >{{ $t("private.adminStoreManagementPage.storeActivated.deactivated") }}
                     </el-tag>
                   </td>
                 </tr>

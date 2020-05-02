@@ -8,6 +8,7 @@
       "storeAddress": "Địa chỉ",
       "storeImageUrl": "Ảnh banner",
       "storeStatus": "Trạng thái",
+      "storeActivated": "Kích hoạt",
       "storeOwnerName": "Tên chủ cửa hàng",
       "storeOwnerPhone": "SĐT chủ cửa hàng",
       "storeOwnerEmail": "Email chủ cửa hàng",
@@ -16,9 +17,12 @@
       "storeCloseHour": "Giờ đóng cửa"
     },
     "storeStatus": {
+      "opening": "Mở cửa",
+      "closed": "Đóng cửa"
+    },
+    "storeActivated": {
       "activated": "Hoạt động",
-      "paused": "Tạm ngưng",
-      "deactivated": "Dừng hoạt động"
+      "deactivated": "Ngưng hoạt động"
     }
   }
 }

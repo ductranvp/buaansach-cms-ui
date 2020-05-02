@@ -10,7 +10,8 @@ const mixinMethod = {
     create() {
       this.isEdit = false;
       this.form = {
-        storeStatus: "ACTIVATED",
+        storeStatus: "OPENING",
+        storeActivated: true,
         storeOpenHour: null,
         storeCloseHour: null
       };

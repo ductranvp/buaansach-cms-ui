@@ -121,17 +121,24 @@
       </el-form-item>
 
       <el-form-item prop="storeStatus">
-        <el-col :span="11">
-          <input-label :label="$t('private.adminStoreManagementPage.store.storeStatus')" required/>
-          <el-select class="full-width" v-model="form.storeStatus">
-            <el-option
-              v-for="item in storeStatus"
-              :key="item.value"
-              :label="$t(item.label)"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-col>
+        <el-row type="flex" align="bottom">
+          <el-col :span="11">
+            <input-label :label="$t('private.adminStoreManagementPage.store.storeStatus')" required/>
+            <el-select class="full-width" v-model="form.storeStatus">
+              <el-option
+                v-for="item in storeStatus"
+                :key="item.value"
+                :label="$t(item.label)"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-col>
+          <el-col :span="11" :offset="2">
+            <el-checkbox v-model="form.storeActivated">
+              <span>{{$t('private.adminStoreManagementPage.store.storeActivated')}}</span>
+            </el-checkbox>
+          </el-col>
+        </el-row>
       </el-form-item>
 
 

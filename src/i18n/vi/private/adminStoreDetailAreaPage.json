@@ -4,6 +4,7 @@
     "areaEntityName": "khu vực",
     "form": {
       "areaName": "Tên khu vực",
+      "areaColor": "Màu khu vực",
       "numberOfSeats": "Số lượng chỗ ngồi",
       "autoCreateSeat": "Tự tạo số chỗ ngồi tương ứng",
       "seatPrefix": "Tiền tố, ví dụ: Bàn, Ghế...",
@@ -17,6 +18,7 @@
     "table": {
       "addBtn": "Thêm",
       "areaName": "Tên khu vực",
+      "areaColor": "Màu khu vực",
       "numberOfSeats": "Số chỗ ngồi",
       "createdBy": "Người tạo",
       "createdDate": "Ngày tạo",

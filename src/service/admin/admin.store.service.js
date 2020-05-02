@@ -17,6 +17,9 @@ const AdminStoreService = {
       params: params
     });
   },
+  getAllStore() {
+    return request.get(baseUrl + "/list-all");
+  },
   getStore(storeGuid) {
     return request.get(baseUrl + "/get/" + storeGuid);
   },

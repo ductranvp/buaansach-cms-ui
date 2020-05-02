@@ -9,6 +9,13 @@
             </el-input>
           </el-form-item>
           <el-form-item>
+            <el-color-picker
+              v-model="form.areaColor"
+              show-alpha
+              :predefine="predefineColors">
+            </el-color-picker>
+          </el-form-item>
+          <el-form-item>
             <el-input :disabled="!form.autoCreateSeat" type="number"
                       :placeholder="$t('private.adminStoreDetailAreaPage.form.numberOfSeats')"
                       v-model="form.numberOfSeats">
@@ -74,6 +81,19 @@
           <template slot-scope="{ row }">
             <el-input :ref="row.guid" v-show="row.edit" v-model="row.areaName" size="small"/>
             <span v-show="!row.edit">{{ row.areaName }}</span>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="areaColor"
+          sortable
+          :label="$t('private.adminStoreDetailAreaPage.table.areaColor')">
+          <template slot-scope="{ row }">
+            <el-color-picker
+              v-model="row.areaColor"
+              @change="changeAreaColor($event, row)"
+              show-alpha
+              :predefine="predefineColors">
+            </el-color-picker>
           </template>
         </el-table-column>
         <el-table-column
@@ -172,6 +192,7 @@
         areas: [],
         form: {
           areaName: null,
+          areaColor: "#ffffff",
           autoCreateSeat: true,
           numberOfSeats: null,
           seatPrefix: null,
@@ -184,7 +205,23 @@
               trigger: "blur"
             }
           ]
-        }
+        },
+        predefineColors: [
+          '#ff4500',
+          '#ff8c00',
+          '#ffd700',
+          '#90ee90',
+          '#00ced1',
+          '#1e90ff',
+          '#c71585',
+          'rgba(255, 69, 0, 0.68)',
+          'rgb(255, 120, 0)',
+          'hsv(51, 100, 98)',
+          'hsva(120, 40, 94, 0.5)',
+          'hsl(181, 100%, 37%)',
+          'hsla(209, 100%, 56%, 0.73)',
+          '#c7158577'
+        ]
       };
     },
     methods: {
@@ -306,6 +343,13 @@
         if (!val) {
           this.form.numberOfSeats = null;
           this.form.seatPrefix = null;
+        }
+      },
+      async changeAreaColor(val, row) {
+        try {
+          await AdminAreaService.updateArea(row);
+        } catch (error) {
+          NotificationUtils.error(error.message || error.data.message);
         }
       }
     }

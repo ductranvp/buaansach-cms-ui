@@ -2,6 +2,7 @@
   "adminStoreDetailAreaPage": {
     "form": {
       "areaName": "Area Name",
+      "areaColor": "Area Color",
       "numberOfSeats": "Number of Seats",
       "autoCreateSeat": "Auto Create Seat",
       "seatPrefix": "Seat Prefix",

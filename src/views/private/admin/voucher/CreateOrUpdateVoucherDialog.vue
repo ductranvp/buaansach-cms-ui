@@ -59,7 +59,7 @@
         <el-date-picker
           class="full-width"
           v-model="form.timeLimit"
-          type="datetimerange"
+          type="daterange"
           range-separator="-"
           start-placeholder="Ngày bắt đầu"
           end-placeholder="Ngày kết thúc">
@@ -68,6 +68,16 @@
       <el-form-item prop="usageLimit" v-if="conditions.includes('USAGE_LIMIT')">
         <input-label label="Nhập số lần sử dụng tối đa" required/>
         <el-input v-model.number="form.usageLimit" min="0"></el-input>
+      </el-form-item>
+      <el-form-item prop="storeLimit" v-if="conditions.includes('STORE_LIMIT')">
+        <input-label label="Chọn cửa hàng" required/>
+        <el-select class="full-width" v-model="form.storeLimit">
+          <el-option v-for="item in listStore"
+                     :key="item.guid"
+                     :label="item.storeCode + ' - ' + item.storeName"
+                     :value="item.guid">
+          </el-option>
+        </el-select>
       </el-form-item>
     </el-form>
     <div slot="footer">
@@ -85,6 +95,7 @@
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import AdminVoucherService from "@/service/admin/admin.voucher.service";
+  import AdminStoreService from "@/service/admin/admin.store.service";
 
   export default {
     name: "CreateOrUpdateVoucherDialog",
@@ -94,7 +105,6 @@
         isLoading: false,
         dialogFormVisible: false,
         conditions: [],
-        dateRange: [],
         form: {
           guid: null,
           voucherName: null,
@@ -114,8 +124,13 @@
             voucherGuid: null,
             maxUsage: null,
           },
+          storeCondition: {
+            voucherGuid: null,
+            storeGuid: null,
+          },
           timeLimit: [],
           usageLimit: null,
+          storeLimit: null,
         },
         formRules: {
           voucherName: [
@@ -132,7 +147,7 @@
           voucherDiscountType: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
           ],
-          numberOfVoucherCode: [
+          numberVoucherCode: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
             {type: 'number', min: 1, message: this.$t("common.entity.validation.min", {min: 1}), trigger: "blur"}
           ]
@@ -144,22 +159,33 @@
         voucherConditions: [
           {label: "Giới hạn thời gian", value: "TIME_LIMIT"},
           {label: "Giới hạn lượt dùng", value: "USAGE_LIMIT"},
-        ]
+          {label: "Giới hạn cửa hàng", value: "STORE_LIMIT"},
+        ],
+        listStore: [],
       };
     },
+    created() {
+    },
     methods: {
+      async getAllStore() {
+        const {data} = await AdminStoreService.getAllStore();
+        this.listStore = data;
+      },
       create() {
+        this.getAllStore();
         this.isEdit = false;
         this.form = {
           voucherDiscountType: "VALUE",
           voucherEnable: true,
           timeCondition: {},
           usageCondition: {},
+          storeCondition: {},
           timeLimit: []
         };
         this.show();
       },
       edit(voucher) {
+        this.getAllStore();
         this.isEdit = true;
         this.form = AppUtils.deepCopy(voucher);
         this.show();
@@ -172,6 +198,8 @@
         this.dialogFormVisible = false;
       },
       resetForm() {
+        this.conditions = [];
+        this.listStore = [];
         this.$refs.voucherForm.clearValidate();
         this.$refs.voucherForm.resetFields();
       },
@@ -196,6 +224,14 @@
         } else {
           this.formRules.usageLimit = [];
         }
+
+        if (value.includes("STORE_LIMIT")) {
+          this.formRules.storeLimit = [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
+          ];
+        } else {
+          this.formRules.storeLimit = [];
+        }
       },
       submit() {
         this.$refs.voucherForm.validate(async valid => {
@@ -203,11 +239,17 @@
             try {
               this.isLoading = true;
               if (this.conditions.includes("TIME_LIMIT")) {
+                if (!this.form.timeCondition) this.form.timeCondition = {};
                 this.form.timeCondition.validFrom = this.form.timeLimit[0];
                 this.form.timeCondition.validUntil = this.form.timeLimit[1];
               }
               if (this.conditions.includes("USAGE_LIMIT")) {
+                if (!this.form.usageCondition) this.form.usageCondition = {};
                 this.form.usageCondition.maxUsage = this.form.usageLimit;
+              }
+              if (this.conditions.includes("STORE_LIMIT")) {
+                if (!this.form.storeCondition) this.form.storeCondition = {};
+                this.form.storeCondition.storeGuid = this.form.storeLimit;
               }
               this.form.voucherConditions = this.conditions.join(";");
               if (!this.isEdit) {

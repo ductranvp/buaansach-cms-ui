@@ -46,14 +46,22 @@
 
         <el-table-column prop="storeStatus" :label="$t('private.adminStoreManagementPage.store.storeStatus')">
           <template slot-scope="{ row }">
-            <el-tag type="success" v-if="row.storeStatus === 'ACTIVATED'">
-              <span>{{ $t("private.adminStoreManagementPage.storeStatus.activated") }}</span>
+            <el-tag type="success" v-if="row.storeStatus === 'OPENING'">
+              <span>{{ $t("private.adminStoreManagementPage.storeStatus.opening") }}</span>
             </el-tag>
-            <el-tag type="warning" v-else-if="row.storeStatus === 'PAUSED'">
-              <span>{{ $t("private.adminStoreManagementPage.storeStatus.paused") }}</span>
+            <el-tag type="danger" v-if="row.storeStatus === 'CLOSED'">
+              <span>{{ $t("private.adminStoreManagementPage.storeStatus.closed") }}</span>
+            </el-tag>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="storeActivated" :label="$t('private.adminStoreManagementPage.store.storeActivated')">
+          <template slot-scope="{ row }">
+            <el-tag type="success" v-if="row.storeActivated">
+              <span>{{ $t("private.adminStoreManagementPage.storeActivated.activated") }}</span>
             </el-tag>
             <el-tag type="danger" v-else>
-              <span>{{ $t("private.adminStoreManagementPage.storeStatus.deactivated") }}</span>
+              <span>{{ $t("private.adminStoreManagementPage.storeActivated.deactivated") }}</span>
             </el-tag>
           </template>
         </el-table-column>

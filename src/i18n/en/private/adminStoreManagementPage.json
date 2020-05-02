@@ -8,6 +8,7 @@
       "storeAddress": "Address",
       "storeImageUrl": "Image URL",
       "storeStatus": "Status",
+      "storeActivated": "Activated",
       "storeOwnerName": "Owner Name",
       "storeOwnerPhone": "Owner Phone",
       "storeOwnerEmail": "Owner Email",
@@ -16,8 +17,11 @@
       "storeCloseHour": "Close Hour"
     },
     "storeStatus": {
+      "opening": "Opening",
+      "closed": "Closed"
+    },
+    "storeActivated": {
       "activated": "Activated",
-      "paused": "Paused",
       "deactivated": "Deactivated"
     }
   }

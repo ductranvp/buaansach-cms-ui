@@ -25,7 +25,7 @@
             </el-popover>
           </template>
         </el-table-column>
-        <el-table-column label="Giới hạn thời gian" prop="voucherConditions">
+        <el-table-column label="Giới hạn thời gian">
           <template slot-scope="{row}">
             <el-tag v-if="row.timeCondition">
               <span>{{row.timeCondition.validFrom | moment("DD/MM/YY")}} - {{row.timeCondition.validUntil | moment("DD/MM/YY")}}</span>
@@ -33,10 +33,19 @@
             <el-tag v-else>Không giới hạn</el-tag>
           </template>
         </el-table-column>
-        <el-table-column label="Giới hạn lượt dùng" prop="voucherConditions">
+        <el-table-column label="Giới hạn lượt dùng">
           <template slot-scope="{row}">
             <el-tag v-if="row.usageCondition">
               <span>{{row.usageCondition.maxUsage}}</span>
+            </el-tag>
+            <el-tag v-else>Không giới hạn</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="Giới hạn cửa hàng">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.storeCondition">
+              <span>{{listStore.find(store => store.guid === row.storeCondition.storeGuid).storeCode}} - </span>
+              <span>{{listStore.find(store => store.guid === row.storeCondition.storeGuid).storeName}}</span>
             </el-tag>
             <el-tag v-else>Không giới hạn</el-tag>
           </template>
@@ -73,6 +82,7 @@
   import ListVoucherCodeDialog from "@/views/private/admin/voucher/ListVoucherCodeDialog";
   import GenerateVoucherInventoryDialog from "@/views/private/admin/voucher/GenerateVoucherInventoryDialog";
   import AdminVoucherInventoryService from "@/service/admin/admin.voucher-inventory.service";
+  import AdminStoreService from "@/service/admin/admin.store.service";
 
   export default {
     name: "AdminVoucher",
@@ -80,6 +90,7 @@
     data() {
       return {
         listVoucher: [],
+        listStore: [],
         voucherConditions: {
           TIME_LIMIT: "TIME_LIMIT",
           USAGE_LIMIT: "USAGE_LIMIT"
@@ -91,10 +102,15 @@
       };
     },
     created() {
+      this.getAllStore();
       this.getListVoucher();
       this.getVoucherInventoryStatus();
     },
     methods: {
+      async getAllStore() {
+        const {data} = await AdminStoreService.getAllStore();
+        this.listStore = data;
+      },
       onVoucherCreated(voucher) {
         this.listVoucher.push(voucher);
       },
@@ -124,7 +140,7 @@
         try {
           await AdminVoucherService.toggleVoucher(row.guid);
           row.voucherEnable = !row.voucherEnable;
-          NotificationUtils.success(this.$t("common.entity.save.success"));
+          // NotificationUtils.success(this.$t("common.entity.save.success"));
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);
         }

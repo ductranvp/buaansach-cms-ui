@@ -15,7 +15,8 @@ const mixinData = {
         storeName: null,
         storeAddress: null,
         storeImageUrl: null,
-        storeStatus: "ACTIVATED",
+        storeStatus: "OPENING",
+        storeActivated: true,
         storeOwnerName: null,
         storeOwnerPhone: null,
         storeOwnerEmail: null,
@@ -57,17 +58,13 @@ const mixinData = {
       },
       storeStatus: [
         {
-          label: "private.adminStoreManagementPage.storeStatus.activated",
-          value: "ACTIVATED"
+          label: "private.adminStoreManagementPage.storeStatus.opening",
+          value: "OPENING"
         },
         {
-          label: "private.adminStoreManagementPage.storeStatus.paused",
-          value: "PAUSED"
+          label: "private.adminStoreManagementPage.storeStatus.closed",
+          value: "CLOSED"
         },
-        {
-          label: "private.adminStoreManagementPage.storeStatus.deactivated",
-          value: "DEACTIVATED"
-        }
       ]
     };
   }
