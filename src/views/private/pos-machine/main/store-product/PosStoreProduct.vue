@@ -49,7 +49,7 @@
               <div class="text-bold text-single-line">
                 <span>{{storeProduct.productName}}</span>
               </div>
-              <div>{{storeProduct.productNormalPrice | priceAppend}}</div>
+              <div>{{storeProduct.productPrice | priceAppend}}</div>
             </div>
           </el-card>
         </el-col>

@@ -5,7 +5,7 @@ import router from "@/router";
 import store from "@/store";
 
 const baseUrl = constants.SERVER_API_URL;
-const timeout = 10000; // 10 seconds
+const timeout = 100000; // 100 seconds
 
 const request = axios.create({
   baseURL: baseUrl,

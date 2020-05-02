@@ -3,7 +3,7 @@
     <el-row type="flex" align="middle" justify="end">
       <el-col>
         <el-button type="primary" plain>Kho mã: {{inventory.totalCode}}</el-button>
-        <el-button type="primary" plain>Đã dùng: {{inventory.totalCode - inventory.remainCode}}</el-button>
+        <el-button type="primary" plain>Đã lấy ra: {{inventory.totalCode - inventory.remainCode}}</el-button>
         <el-button type="primary" plain>Còn lại: {{inventory.remainCode}}</el-button>
         <el-button type="primary" @click="generateVoucherInventory">Sinh mã code</el-button>
       </el-col>
@@ -12,7 +12,7 @@
     <el-row class="margin-top-10">
       <raw-data-table ref="voucherTable"
                       :data="listVoucher">
-        <el-table-column label="Tên voucher" prop="voucherName"></el-table-column>
+        <el-table-column label="Tên Voucher" prop="voucherName"></el-table-column>
         <el-table-column label="Mô tả" prop="voucherDescription">
           <template slot-scope="{row}">
             <el-popover
@@ -48,7 +48,7 @@
             <el-button size="small" type="danger" @click="toggleVoucher(row)" v-else>Đã khóa</el-button>
           </template>
         </el-table-column>
-        <el-table-column label="Số lượng voucher" prop="numberVoucherCode">
+        <el-table-column label="Số lượng mã" prop="numberVoucherCode">
         </el-table-column>
         <template slot="action">
           <el-table-column>
