@@ -43,7 +43,7 @@
         @size-change="onSizeChange"
         :current-page.sync="tableConfig.currentPage"
         :page-sizes="tableConfig.pageSizes"
-        :pager-count="tableConfig.pageCount"
+        :page-count="tableConfig.pageCount"
         :page-size="tableConfig.pageSize"
         :total="tableConfig.totalElements"
         layout="total, sizes, prev, pager, next, jumper"

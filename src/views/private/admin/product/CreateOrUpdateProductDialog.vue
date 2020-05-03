@@ -227,8 +227,9 @@
       },
       edit(product) {
         this.isEdit = true;
-        product.categories = product.categories.map(category => category.guid);
-        this.form = AppUtils.deepCopy(product);
+        let editProduct = AppUtils.deepCopy(product);
+        editProduct.categories = product.categories.map(category => category.guid);
+        this.form = editProduct;
         this.show();
       },
       async show() {

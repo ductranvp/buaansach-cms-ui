@@ -39,7 +39,7 @@
                 </el-button>
               </el-col>
               <el-col
-                v-if="store.storeUserRole === 'OWNER' || store.storeUserRole === 'MANAGER' || hasAnyRole(['ROLE_ADMIN'])">
+                v-if="store.storeUserRole === 'STORE_OWNER' || store.storeUserRole === 'STORE_MANAGER' || hasAnyRole(['ROLE_ADMIN'])">
                 <el-button v-if="hasAnyRole(['ROLE_ADMIN'])" type="success" plain class="full-width" size="medium"
                            @click="goTo('adminStoreDetailOverviewPage', store.storeGuid)">
                   <span>Quản lý</span>
@@ -68,7 +68,7 @@
     data() {
       return {
         isLoading: false,
-        openNewTab: false,
+        openNewTab: true,
         storeUser: [],
       };
     },

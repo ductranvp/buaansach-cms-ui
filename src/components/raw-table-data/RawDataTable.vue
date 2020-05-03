@@ -41,7 +41,7 @@
         @current-change="onPageChange"
         @size-change="onSizeChange"
         :current-page.sync="tableConfig.currentPage"
-        :pager-count="tableConfig.pageCount"
+        :page-count="tableConfig.pageCount"
         :page-sizes="tableConfig.pageSizes"
         :page-size="tableConfig.pageSize"
         :total="data.length"
@@ -100,6 +100,7 @@
     },
     watch: {
       data: function (val) {
+        console.log(val);
         this.renderTable();
       },
       filter: {
@@ -125,6 +126,10 @@
         this.renderTable();
       },
       renderTable() {
+        if (!this.data.length) {
+          this.tableData = [];
+          return;
+        }
         const startIndex = (this.tableConfig.currentPage - 1) * this.tableConfig.pageSize;
         const endIndex = this.tableConfig.currentPage * this.tableConfig.pageSize;
         if (this.data.length - 1 >= startIndex) {
