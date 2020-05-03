@@ -41,7 +41,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <raw-data-table ref="areaTable" :data="areas">
+      <raw-data-table ref="areaTable" :data="areas" show-audit>
         <el-table-column type="expand">
           <template slot-scope="{ row }">
             <el-row :gutter="10" type="flex" align="middle" class="full-size flex-wrap margin-0">
@@ -85,7 +85,6 @@
         </el-table-column>
         <el-table-column
           prop="areaColor"
-          sortable
           :label="$t('private.adminStoreDetailAreaPage.table.areaColor')">
           <template slot-scope="{ row }">
             <el-color-picker
@@ -103,57 +102,29 @@
             {{ row.listSeat.length }}
           </template>
         </el-table-column>
-        <el-table-column
-          prop="createdBy"
-          :label="$t('private.adminStoreDetailAreaPage.table.createdBy')">
-          <template slot-scope="{ row }">
-            {{ row.createdBy }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="createdDate"
-          sortable
-          :label="$t('private.adminStoreDetailAreaPage.table.createdDate')">
-          <template slot-scope="{ row }">
-            {{ row.createdDate | moment("HH:mm - DD/MM/YYYY") }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="lastModifiedBy"
-          :label="$t('private.adminStoreDetailAreaPage.table.lastModifiedBy')">
-          <template slot-scope="{ row }">
-            {{ row.lastModifiedBy }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="lastModifiedDate"
-          sortable
-          :label="$t('private.adminStoreDetailAreaPage.table.lastModifiedDate')">
-          <template slot-scope="{ row }">
-            {{ row.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}
-          </template>
-        </el-table-column>
-        <el-table-column :label="$t('common.entity.action.title')" width="160px">
-          <template slot-scope="{ row }">
-            <div v-if="row.edit">
-              <el-button plain type="info" size="mini" @click="row.edit = false">
-                <span>{{$t("common.entity.action.cancel")}}</span>
-              </el-button>
-              <el-button plain type="primary" size="mini" @click="confirmEditArea(row)">
-                <span>{{$t("common.entity.action.save")}}</span>
-              </el-button>
-            </div>
-            <div v-else>
-              <el-button plain type="warning" size="mini" @click="editArea(row)">
-                <span>{{$t("common.entity.action.edit")}}</span>
-              </el-button>
+        <template slot="action">
+          <el-table-column :label="$t('common.entity.action.title')" width="160px">
+            <template slot-scope="{ row }">
+              <div v-if="row.edit">
+                <el-button plain type="info" size="mini" @click="row.edit = false">
+                  <span>{{$t("common.entity.action.cancel")}}</span>
+                </el-button>
+                <el-button plain type="primary" size="mini" @click="confirmEditArea(row)">
+                  <span>{{$t("common.entity.action.save")}}</span>
+                </el-button>
+              </div>
+              <div v-else>
+                <el-button plain type="warning" size="mini" @click="editArea(row)">
+                  <span>{{$t("common.entity.action.edit")}}</span>
+                </el-button>
 
-              <el-button plain type="danger" size="mini" @click="deleteArea(row)">
-                <span>{{$t("common.entity.action.delete")}}</span>
-              </el-button>
-            </div>
-          </template>
-        </el-table-column>
+                <el-button plain type="danger" size="mini" @click="deleteArea(row)">
+                  <span>{{$t("common.entity.action.delete")}}</span>
+                </el-button>
+              </div>
+            </template>
+          </el-table-column>
+        </template>
       </raw-data-table>
     </el-row>
   </el-container>
@@ -275,7 +246,10 @@
           });
       },
       resetForm() {
-        this.form = {autoCreateSeat: true};
+        this.form = {
+          autoCreateSeat: true,
+          areaColor: "#ffffff",
+        };
         this.$refs.areaForm.clearValidate();
         this.$refs.areaForm.resetFields();
       },

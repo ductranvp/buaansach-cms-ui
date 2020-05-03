@@ -8,19 +8,19 @@
   >
     <el-form :model="form" ref="storeForm" :rules="formRules">
       <el-form-item>
-        <el-col :span="11">
-          <el-form-item prop="storeCode">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeCode')" required/>
-            <el-input
-              ref="storeCode"
-              v-model="form.storeCode"
-              maxlength="20"
-              show-word-limit
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="11" :offset="2">
+<!--        <el-col :span="11">-->
+<!--          <el-form-item prop="storeCode">-->
+<!--            <input-label :label="$t('private.adminStoreManagementPage.store.storeCode')" required/>-->
+<!--            <el-input-->
+<!--              ref="storeCode"-->
+<!--              v-model="form.storeCode"-->
+<!--              maxlength="20"-->
+<!--              show-word-limit-->
+<!--              autocomplete="off"-->
+<!--            ></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
+<!--        <el-col :span="11" :offset="2">-->
           <el-form-item prop="storeName">
             <input-label :label="$t('private.adminStoreManagementPage.store.storeName')" required/>
             <el-input
@@ -30,7 +30,7 @@
               autocomplete="off"
             ></el-input>
           </el-form-item>
-        </el-col>
+<!--        </el-col>-->
       </el-form-item>
 
       <el-form-item prop="storeAddress">

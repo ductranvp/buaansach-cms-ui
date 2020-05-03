@@ -63,7 +63,8 @@ const actions = {
     if (state.displaySeats.length) {
       if (state.currentSeatGuid) {
         const savedSeat = state.allSeats.find(seat => seat.guid === state.currentSeatGuid);
-        dispatch("selectSeat", savedSeat);
+        if (savedSeat) dispatch("selectSeat", savedSeat);
+        else dispatch("selectSeat", state.displaySeats[0]);
       } else {
         dispatch("selectSeat", state.displaySeats[0]);
       }

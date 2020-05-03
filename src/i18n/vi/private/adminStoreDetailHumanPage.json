@@ -1,6 +1,7 @@
 {
   "adminStoreDetailHumanPage": {
     "storeUser": {
+      "userCode": "Mã NV",
       "userLogin": "Tên đăng nhập",
       "userLoginOrEmail": "Tên đăng nhập hoặc email",
       "passwordWithoutRequired": "Mật khẩu (để trống nếu không thay đổi)",

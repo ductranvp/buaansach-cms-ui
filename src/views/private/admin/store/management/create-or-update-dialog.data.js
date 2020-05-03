@@ -16,19 +16,19 @@ const mixinData = {
         storeAddress: null,
         storeImageUrl: null,
         storeStatus: "OPENING",
-        storeActivated: true,
         storeOwnerName: null,
         storeOwnerPhone: null,
         storeOwnerEmail: null,
         storeTaxCode: null,
         storeOpenHour: null,
         storeCloseHour: null,
+        storeActivated: true,
       },
       formRules: {
-        storeCode: [
-          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-          {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
-        ],
+        // storeCode: [
+        //   {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+        //   {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
+        // ],
         storeName: [
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
           {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}

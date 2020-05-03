@@ -12,8 +12,10 @@
       <raw-data-table ref="storeUserTable"
                       :data="storeUsers"
                       show-audit
-                      :custom-audit="['createdDate']"
-                      show-index>
+                      :custom-audit="['createdDate']">
+        <el-table-column prop="userCode"
+                         :label="$t('private.adminStoreDetailHumanPage.storeUser.userCode')">
+        </el-table-column>
         <el-table-column prop="userLogin"
                          sortable
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.userLogin')">

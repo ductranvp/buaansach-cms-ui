@@ -1,6 +1,7 @@
 {
   "adminStoreDetailHumanPage": {
     "storeUser": {
+      "userCode": "User code",
       "userLogin": "User login",
       "userLoginOrEmail": "User login or email",
       "passwordWithoutRequired": "Password (leave empty if not change)",

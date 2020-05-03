@@ -41,6 +41,7 @@
         @current-change="onPageChange"
         @size-change="onSizeChange"
         :current-page.sync="tableConfig.currentPage"
+        :pager-count="tableConfig.pageCount"
         :page-sizes="tableConfig.pageSizes"
         :page-size="tableConfig.pageSize"
         :total="data.length"
@@ -87,6 +88,7 @@
         tableConfig: {
           totalElements: 0,
           currentPage: 1,
+          pageCount: 4,
           pageSize: 20,
           pageSizes: [10, 20, 30, 50, 100],
           sort: {

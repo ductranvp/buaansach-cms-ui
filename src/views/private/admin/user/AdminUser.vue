@@ -49,7 +49,7 @@
             </el-button>
           </template>
         </el-table-column>
-        <el-table-column prop="langKey" label="Ngôn ngữ"></el-table-column>
+<!--        <el-table-column prop="langKey" label="Ngôn ngữ"></el-table-column>-->
         <template slot="action">
           <el-table-column width="130px" label="Thao tác">
             <template slot-scope="{ row }">

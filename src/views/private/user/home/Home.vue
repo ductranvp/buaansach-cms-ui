@@ -34,14 +34,16 @@
               <el-col>
                 <el-button type="success" plain class="full-width" size="medium"
                            @click="goTo('posPage', store.storeGuid)">
-                  Bán hàng<i class="el-icon-top-right"></i>
+                  <span>Bán hàng</span>
+                  <i v-if="openNewTab" class="el-icon-top-right"></i>
                 </el-button>
               </el-col>
               <el-col
                 v-if="store.storeUserRole === 'OWNER' || store.storeUserRole === 'MANAGER' || hasAnyRole(['ROLE_ADMIN'])">
                 <el-button v-if="hasAnyRole(['ROLE_ADMIN'])" type="success" plain class="full-width" size="medium"
                            @click="goTo('adminStoreDetailOverviewPage', store.storeGuid)">
-                  Quản lý<i class="el-icon-top-right"></i>
+                  <span>Quản lý</span>
+                  <i v-if="openNewTab" class="el-icon-top-right"></i>
                 </el-button>
                 <el-button v-else type="success" plain class="full-width" size="medium"
                            @click="goTo('partnerDashboardPage', store.storeGuid)">
@@ -66,6 +68,7 @@
     data() {
       return {
         isLoading: false,
+        openNewTab: false,
         storeUser: [],
       };
     },
@@ -75,9 +78,12 @@
     methods: {
       hasAnyRole: hasAnyRole,
       goTo(routeName, storeGuid) {
-        // this.$router.push({name: routeName, params: {storeGuid: storeGuid}});
-        let routeData = this.$router.resolve({name: routeName, params: {storeGuid: storeGuid}});
-        window.open(routeData.href, '_blank');
+        if (this.openNewTab) {
+          let routeData = this.$router.resolve({name: routeName, params: {storeGuid: storeGuid}});
+          window.open(routeData.href, '_blank');
+        } else {
+          this.$router.push({name: routeName, params: {storeGuid: storeGuid}});
+        }
       },
       async getStoreUser() {
         try {

@@ -11,9 +11,9 @@ const mixinMethod = {
       this.isEdit = false;
       this.form = {
         storeStatus: "OPENING",
-        storeActivated: true,
         storeOpenHour: null,
-        storeCloseHour: null
+        storeCloseHour: null,
+        storeActivated: true,
       };
       this.show();
     },

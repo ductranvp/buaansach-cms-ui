@@ -43,6 +43,7 @@
         @size-change="onSizeChange"
         :current-page.sync="tableConfig.currentPage"
         :page-sizes="tableConfig.pageSizes"
+        :pager-count="tableConfig.pageCount"
         :page-size="tableConfig.pageSize"
         :total="tableConfig.totalElements"
         layout="total, sizes, prev, pager, next, jumper"
@@ -85,6 +86,7 @@
           totalElements: 0,
           currentPage: 1,
           pageSize: 20,
+          pageCount: 4,
           pageSizes: [10, 20, 30, 50, 100],
           sort: {
             sortDirection: "DESC",

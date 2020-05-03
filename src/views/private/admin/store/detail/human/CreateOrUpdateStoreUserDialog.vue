@@ -109,6 +109,7 @@
         form: {
           guid: null,
           storeGuid: null,
+          userCode: null,
           userLogin: null,
           userLoginOrEmail: null,
           password: null,

@@ -14,20 +14,20 @@
       :rules="formRules"
     >
       <el-form-item>
-        <el-col :span="11">
-          <el-form-item prop="productCode">
-            <input-label label="Mã sản phẩm" required/>
-            <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="20"
-                      show-word-limit></el-input>
-          </el-form-item>
-        </el-col>
+<!--        <el-col :span="11">-->
+<!--          <el-form-item prop="productCode">-->
+<!--            <input-label label="Mã sản phẩm" required/>-->
+<!--            <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="20"-->
+<!--                      show-word-limit></el-input>-->
+<!--          </el-form-item>-->
+<!--        </el-col>-->
 
-        <el-col :span="11" :offset="2">
+<!--        <el-col :span="11" :offset="2">-->
           <el-form-item prop="productName">
             <input-label label="Tên sản phẩm" required/>
             <el-input ref="productName" v-model="form.productName" maxlength="100" show-word-limit></el-input>
           </el-form-item>
-        </el-col>
+<!--        </el-col>-->
       </el-form-item>
 
       <el-form-item prop="productDescription">
@@ -54,13 +54,6 @@
 
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="productDiscount">
-            <input-label label="Giảm giá" optional/>
-            <el-input v-model.number="form.productDiscount" min="0" type="number"></el-input>
-          </el-form-item>
-        </el-col>
-
-        <el-col :span="11" :offset="2">
           <el-form-item prop="productStatus">
             <input-label label="Trạng thái" required/>
             <el-select v-model="form.productStatus" class="full-width">
@@ -72,10 +65,35 @@
             </el-select>
           </el-form-item>
         </el-col>
+
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="productType">
+            <input-label label="Loại sản phẩm" required/>
+            <el-select v-model="form.productType" class="full-width">
+              <el-option v-for="type in productType"
+                         :key="type.value"
+                         :label="type.label"
+                         :value="type.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-form-item>
 
       <el-form-item>
         <el-col :span="11">
+          <el-form-item prop="productDisplay">
+            <input-label label="Hiển thị" required/>
+            <el-select v-model="form.productDisplay" class="full-width">
+              <el-option v-for="item in productDisplay"
+                         :key="item.value"
+                         :label="item.label"
+                         :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col :span="11" :offset="2">
           <el-form-item prop="categories">
             <input-label label="Danh mục" required/>
             <el-select multiple v-model="form.categories" class="full-width">
@@ -133,16 +151,19 @@
           productImageUrl: null,
           productThumbnailUrl: null,
           productStatus: null,
+          productType: null,
+          productDisplay: null,
           productRootPrice: null,
           productPrice: null,
-          productDiscount: null,
+          productPosition: null,
+          productSaleGuid: null,
           categories: [],
         },
         formRules: {
-          productCode: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
-          ],
+          // productCode: [
+          //   {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+          //   {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
+          // ],
           productName: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
@@ -153,15 +174,18 @@
           productStatus: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
+          productDisplay: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          ],
+          productType: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          ],
           productRootPrice: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
           productPrice: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
-          ],
-          productDiscount: [
             {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
           categories: [
@@ -172,6 +196,14 @@
           {label: "Có sẵn", value: "AVAILABLE"},
           {label: "Tạm hết hàng", value: "UNAVAILABLE"},
           {label: "Ngừng kinh doanh", value: "STOP_TRADING"}
+        ],
+        productType: [
+          {label: "Sản phẩm chính", value: "MAIN_PRODUCT"},
+          {label: "Sản phẩm phụ", value: "SUB_PRODUCT"},
+        ],
+        productDisplay: [
+          {label: "Mặc định", value: "DEFAULT"},
+          {label: "Hiện trên trang order", value: "ORDER_PAGE"},
         ]
       };
     },
@@ -186,7 +218,11 @@
       },
       create() {
         this.isEdit = false;
-        this.form = {productStatus: "AVAILABLE"};
+        this.form = {
+          productStatus: "AVAILABLE",
+          productType: "MAIN_PRODUCT",
+          productDisplay: "DEFAULT"
+        };
         this.show();
       },
       edit(product) {

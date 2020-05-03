@@ -38,11 +38,11 @@
         <el-table-column prop="storeName" sortable :label="$t('private.adminStoreManagementPage.store.storeName')">
         </el-table-column>
 
-        <el-table-column prop="storeOwnerName" :label="$t('private.adminStoreManagementPage.store.storeOwnerName')">
-        </el-table-column>
+<!--        <el-table-column prop="storeOwnerName" :label="$t('private.adminStoreManagementPage.store.storeOwnerName')">-->
+<!--        </el-table-column>-->
 
-        <el-table-column prop="storeOwnerPhone" :label="$t('private.adminStoreManagementPage.store.storeOwnerPhone')">
-        </el-table-column>
+<!--        <el-table-column prop="storeOwnerPhone" :label="$t('private.adminStoreManagementPage.store.storeOwnerPhone')">-->
+<!--        </el-table-column>-->
 
         <el-table-column prop="storeStatus" :label="$t('private.adminStoreManagementPage.store.storeStatus')">
           <template slot-scope="{ row }">
