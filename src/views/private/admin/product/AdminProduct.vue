@@ -38,6 +38,7 @@
         ref="productTable"
         :fetch-data="fetchData"
         show-audit
+        :default-sort="{prop: 'productPosition', order: 'descending'}"
         :custom-audit="['createdBy', 'createdDate']"
         :filter="filter"
       >

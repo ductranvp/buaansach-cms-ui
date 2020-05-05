@@ -15,7 +15,7 @@
       </el-col>
     </el-row>
     <el-row>
-      <raw-data-table ref="categoryTable" :data="categories" :default-sort="{prop: 'categoryPosition', order: 'ascending'}" show-index show-audit>
+      <raw-data-table ref="categoryTable" :data="categories" :default-sort="{prop: 'categoryPosition', order: 'descending'}" show-index show-audit>
         <el-table-column label="Tên Danh Mục" prop="categoryName"></el-table-column>
 <!--        <el-table-column label="Thứ tự" prop="categoryPosition" sortable></el-table-column>-->
         <template slot="action">

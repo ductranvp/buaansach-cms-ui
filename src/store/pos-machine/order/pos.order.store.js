@@ -290,8 +290,8 @@ function storeProductToOrderProduct(state, storeProduct) {
     productCode: storeProduct.productCode,
     productName: storeProduct.productName,
     orderProductQuantity: null,
-    orderProductPrice: storeProduct.productNormalPrice,
-    orderProductDiscount: storeProduct.productSalePrice,
+    orderProductPrice: storeProduct.productPrice,
+    orderProductDiscount: null,
     orderProductNote: null,
     orderProductStatus: state.orderProductStatus.PREPARING,
     orderProductStatusTimeline: null,
@@ -299,9 +299,11 @@ function storeProductToOrderProduct(state, storeProduct) {
   };
 }
 
-export default {
+const PosOrderStore = {
   namespaced: true,
   state,
   mutations,
   actions
 };
+
+export default PosOrderStore;

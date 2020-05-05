@@ -15,20 +15,20 @@
         </el-col>
         <el-col :span="8"></el-col>
         <el-col :span="6">
-          <el-row :gutter="10" type="flex" align="middle">
-            <div class="text-bold padding-right-10" style="white-space: nowrap;">Mật độ</div>
-            <el-col>
-              <el-slider
-                v-model="displaySize"
-                @change="changeDisplayStoreProductSize"
-                :show-tooltip="false"
-                show-stops
-                :step="1"
-                :min="1"
-                :max="4">
-              </el-slider>
-            </el-col>
-          </el-row>
+<!--          <el-row :gutter="10" type="flex" align="middle">-->
+<!--            <div class="text-bold padding-right-10" style="white-space: nowrap;">Mật độ</div>-->
+<!--            <el-col>-->
+<!--              <el-slider-->
+<!--                v-model="displaySize"-->
+<!--                @change="changeDisplayStoreProductSize"-->
+<!--                :show-tooltip="false"-->
+<!--                show-stops-->
+<!--                :step="1"-->
+<!--                :min="1"-->
+<!--                :max="4">-->
+<!--              </el-slider>-->
+<!--            </el-col>-->
+<!--          </el-row>-->
         </el-col>
       </el-row>
     </el-header>
@@ -42,12 +42,14 @@
                    :body-style="{ padding: '0px' }"
                    @click.native="addOrderProduct(storeProduct)"
                    shadow="never">
-            <img :src="storeProduct.productImageUrl" class="image">
+            <img :src="storeProduct.productImageUrl" class="store-product-image">
             <el-divider class="full-width margin-0"></el-divider>
             <div class="padding-10-10" :class="textSize[displaySize]">
               <div>{{storeProduct.productCode}}</div>
               <div class="text-bold text-single-line">
-                <span>{{storeProduct.productName}}</span>
+                <el-tooltip class="item" effect="dark" :content="storeProduct.productName" placement="top-start">
+                  <span>{{storeProduct.productName}}</span>
+                </el-tooltip>
               </div>
               <div>{{storeProduct.productPrice | priceAppend}}</div>
             </div>
@@ -141,8 +143,10 @@
     border: 1px solid #bbb;
   }
 
-  .image {
+  .store-product-image {
     width: 100%;
+    object-fit: cover;
+    height: 100px;
     display: block;
   }
 </style>

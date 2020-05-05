@@ -9,6 +9,8 @@ import PosCategoryStore from "@/store/pos-machine/modules/pos.category.store";
 import PosAreaStore from "@/store/pos-machine/modules/pos.area.store";
 import PosStoreProductStore from "@/store/pos-machine/modules/pos.store-product.store";
 import PosOrderStore from "@/store/pos-machine/order/pos.order.store";
+import PosStoreStore from "@/store/pos-machine/modules/pos.store.store";
+import PosStoreService from "@/service/pos/pos.store.service";
 
 const state = {
   ready: false,
@@ -17,6 +19,7 @@ const state = {
   ...PosCategoryStore.state,
   ...PosStoreProductStore.state,
   ...PosOrderStore.state,
+  ...PosStoreStore.state,
 };
 const mutations = {
   SET_READY(state, ready) {
@@ -27,6 +30,7 @@ const mutations = {
   ...PosCategoryStore.mutations,
   ...PosStoreProductStore.mutations,
   ...PosOrderStore.mutations,
+  ...PosStoreStore.mutations,
 };
 const actions = {
   ...PosSeatStore.actions,
@@ -34,9 +38,13 @@ const actions = {
   ...PosCategoryStore.actions,
   ...PosStoreProductStore.actions,
   ...PosOrderStore.actions,
+  ...PosStoreStore.actions,
   async initState({state, commit, dispatch}, storeGuid) {
     try {
       commit("SET_READY", false);
+
+      const storeData = await PosStoreService.getStore(storeGuid);
+      commit("SET_CURRENT_STORE", storeData.data);
 
       const seatData = await PosSeatService.getListSeatByStoreGuid(storeGuid);
       commit("SET_SEAT", seatData.data);

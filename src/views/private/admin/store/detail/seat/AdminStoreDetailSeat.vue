@@ -79,7 +79,7 @@
     },
     methods: {
       goto(seatGuid) {
-        let routeData = "http://192.168.2.2:4000/seat=" + seatGuid;
+        let routeData = "http://192.168.2.2:4000/order/seat=" + seatGuid;
         window.open(routeData, '_blank');
       },
       async getSeats() {

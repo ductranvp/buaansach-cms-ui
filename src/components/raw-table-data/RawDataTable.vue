@@ -92,15 +92,14 @@
           pageSize: 20,
           pageSizes: [10, 20, 30, 50, 100],
           sort: {
-            sortDirection: "DESC",
-            sortField: "createdDate"
+            sortDirection: this.defaultSort.order === 'descending' ? "DESC" : "ASC",
+            sortField: this.defaultSort.prop,
           }
         }
       };
     },
     watch: {
       data: function (val) {
-        console.log(val);
         this.renderTable();
       },
       filter: {

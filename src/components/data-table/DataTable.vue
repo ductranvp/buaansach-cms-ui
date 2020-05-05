@@ -89,8 +89,8 @@
           pageCount: 4,
           pageSizes: [10, 20, 30, 50, 100],
           sort: {
-            sortDirection: "DESC",
-            sortField: "createdDate"
+            sortDirection: this.defaultSort.order === 'descending' ? "DESC" : "ASC",
+            sortField: this.defaultSort.prop,
           }
         }
       };
@@ -129,8 +129,8 @@
       },
       onSortChange(sort) {
         if (sort.order === null) {
-          this.tableConfig.sort.sortField = "createdDate";
-          this.tableConfig.sort.sortDirection = "DESC";
+          this.tableConfig.sort.sortField = this.defaultSort.prop;
+          this.tableConfig.sort.sortDirection = this.defaultSort.order === 'descending' ? "DESC" : "ASC";
         } else if (sort.order === "ascending") {
           this.tableConfig.sort.sortField = sort.prop;
           this.tableConfig.sort.sortDirection = "ASC";

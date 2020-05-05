@@ -1,7 +1,7 @@
 <template>
   <el-header class="bg-success padding-10" height="50px">
     <el-row class="full-size flex-wrap" type="flex" align="middle">
-      <el-col :md="12" :sm="24" :xs="24">
+      <el-col :span="8">
         <el-button size="small" type="success" @click="goto('homePage')">
           <i class="el-icon-s-home"></i>
           <span class="hidden-sm-and-down">Trang chủ</span>
@@ -12,7 +12,29 @@
         </el-button>
       </el-col>
 
-      <el-col :md="12" :sm="24" :xs="24">
+      <el-col :span="8">
+        <el-row type="flex" align="middle" justify="center">
+          <el-dropdown trigger="click" @command="changeStoreStatus">
+            <el-button size="small" type="success">
+              <span v-if="currentStore.storeName" class="text-light text-bold">{{currentStore.storeCode}} - {{currentStore.storeName}}</span>
+            </el-button>
+            <el-dropdown-menu class="padding-0" slot="dropdown">
+              <el-dropdown-item command="CLOSED" v-if="currentStore.storeStatus === 'OPENING'">
+                <i class="el-icon-close padding-right-10"></i>
+                <span>Đóng cửa</span>
+              </el-dropdown-item>
+              <el-dropdown-item command="OPENING" v-if="currentStore.storeStatus === 'CLOSED'">
+                <i class="el-icon-key padding-right-10"></i>
+                <span>Mở cửa</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+          <el-tag size="small" type="success" v-if="currentStore.storeStatus === 'OPENING'">Đang mở cửa</el-tag>
+          <el-tag size="small" type="danger" v-if="currentStore.storeStatus === 'CLOSED'">Đã đóng cửa</el-tag>
+        </el-row>
+      </el-col>
+
+      <el-col :span="8">
         <el-row type="flex" align="middle" justify="end">
           <el-row type="flex" align="middle">
             <el-dropdown trigger="click">
@@ -67,12 +89,15 @@
   import AuthUtils from "@/utils/auth.util";
   import MessageBoxUtils from "@/utils/message-box.util";
   import {mapState} from "vuex";
+  import NotificationUtils from "@/utils/notification.util";
+  import PosStoreService from "@/service/pos/pos.store.service";
 
   export default {
     name: "PosMachineHeader",
     computed: {
       ...mapState({
-        currentUser: state => state.user.info
+        currentUser: state => state.user.info,
+        currentStore: state => state.posMachine.currentStore
       })
     },
     data() {
@@ -92,6 +117,20 @@
           });
         }
       },
+      async changeStoreStatus(status) {
+        try {
+          const payload = {
+            storeGuid: this.$route.params.storeGuid,
+            storeStatus: status
+          };
+          if (this.currentStore.storeStatus !== status) {
+            await PosStoreService.changeStoreStatus(payload);
+            this.$store.commit("posMachine/CHANGE_STORE_STATUS", status);
+          }
+        } catch (e) {
+          NotificationUtils.error(e.message || e.data.message);
+        }
+      }
     }
   };
 </script>
