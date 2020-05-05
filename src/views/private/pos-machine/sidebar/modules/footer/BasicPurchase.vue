@@ -50,17 +50,18 @@
           </el-button>
         </el-col>
       </el-row>
+      <bill ref="bill" style="visibility: hidden"/>
     </el-footer>
   </el-container>
 </template>
 
 <script>
   import {mapState} from "vuex";
-  import MessageUtils from "@/utils/message.util";
-  import MessageBoxUtils from "@/utils/message-box.util";
+  import Bill from "@/views/private/pos-machine/bill/Bill";
 
   export default {
     name: "BasicPurchase",
+    components: {Bill},
     computed: {
       ...mapState({
         totalCharge: state => {
@@ -90,30 +91,33 @@
       },
       completeOrder() {
         const vm = this;
-        if (this.customerCharge * 1000 < this.totalCharge) {
-          MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền thanh toán");
-          return;
-        }
-        if (!this.savedOrderProduct.length) {
-          MessageUtils.error("Chưa có sản phẩm nào trong đơn hàng");
-          return;
-        }
-        const payload = {
-          paymentMethod: "CASH",
-          totalCharge: this.totalCharge,
-          customerCharge: this.customerCharge,
-        };
-        if (this.unsavedOrderProduct.length) {
-          MessageBoxUtils.confirm("Đơn hàng có sản phẩm chưa được lưu, vẫn tiếp tục?", function () {
-            vm.$store.dispatch("posMachine/completeOrder", payload).then(function () {
-              vm.customerCharge = null;
-            });
-          });
-        } else {
-          this.$store.dispatch("posMachine/completeOrder", payload).then(function () {
-            vm.customerCharge = null;
-          });
-        }
+        if (this.customerCharge)
+          vm.$refs.bill.printBill(this.customerCharge*1000);
+        return;
+        // if (this.customerCharge * 1000 < this.totalCharge) {
+        //   MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền thanh toán");
+        //   return;
+        // }
+        // if (!this.savedOrderProduct.length) {
+        //   MessageUtils.error("Chưa có sản phẩm nào trong đơn hàng");
+        //   return;
+        // }
+        // const payload = {
+        //   paymentMethod: "CASH",
+        //   totalCharge: this.totalCharge,
+        //   customerCharge: this.customerCharge,
+        // };
+        // if (this.unsavedOrderProduct.length) {
+        //   MessageBoxUtils.confirm("Đơn hàng có sản phẩm chưa được lưu, vẫn tiếp tục?", function () {
+        //     vm.$store.dispatch("posMachine/completeOrder", payload).then(function () {
+        //       vm.customerCharge = null;
+        //     });
+        //   });
+        // } else {
+        //   this.$store.dispatch("posMachine/completeOrder", payload).then(function () {
+        //     vm.customerCharge = null;
+        //   });
+        // }
 
       }
     }

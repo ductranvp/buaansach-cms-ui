@@ -39,6 +39,7 @@ const state = {
   currentOrder: {},
   savedOrderProduct: [],
   unsavedOrderProduct: [],
+  orderDiscount: 0,
   orderStatusChange: {
     orderGuid: null,
     orderStatus: null,
