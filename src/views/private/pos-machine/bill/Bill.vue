@@ -130,7 +130,7 @@
         return head;
       },
       getBillBody(customerCharge) {
-        let body = "<body onload='window.print()'>";
+        let body = "<body>";
         body += this.getBasicInfo();
         body += this.getBillMeta();
         body += "<div class='divider'></div>";
@@ -138,7 +138,7 @@
         body += "<div class='divider'></div>";
         body += this.getBillSummary(customerCharge);
         body += "<div class='divider'></div>";
-        body += "<h4 class='text-center' style='padding-bottom:8px'>CẢM ƠN QUÝ KHÁCH!</h4>";
+        body += "<h4 class='text-center'>CẢM ƠN QUÝ KHÁCH!</h4>";
         body += "</body>";
         return body;
       },
@@ -155,6 +155,7 @@
         doc.open();
         doc.write(html);
         doc.close();
+        document.getElementById("bill_frame").contentWindow.print();
       },
     }
   };

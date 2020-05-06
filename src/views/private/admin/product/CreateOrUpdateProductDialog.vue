@@ -14,20 +14,19 @@
       :rules="formRules"
     >
       <el-form-item>
-<!--        <el-col :span="11">-->
-<!--          <el-form-item prop="productCode">-->
-<!--            <input-label label="Mã sản phẩm" required/>-->
-<!--            <el-input :disabled="isEdit" ref="productCode" v-model="form.productCode" maxlength="20"-->
-<!--                      show-word-limit></el-input>-->
-<!--          </el-form-item>-->
-<!--        </el-col>-->
-
-<!--        <el-col :span="11" :offset="2">-->
+        <el-col :span="11">
           <el-form-item prop="productName">
             <input-label label="Tên sản phẩm" required/>
             <el-input ref="productName" v-model="form.productName" maxlength="100" show-word-limit></el-input>
           </el-form-item>
-<!--        </el-col>-->
+        </el-col>
+
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="productUnit">
+            <input-label label="Đơn vị" optional/>
+            <el-input ref="productUnit" v-model="form.productUnit" maxlength="50" show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
       </el-form-item>
 
       <el-form-item prop="productDescription">
@@ -39,7 +38,7 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="productRootPrice">
-            <input-label label="Giá gốc" required/>
+            <input-label label="Giá gốc" optional/>
             <el-input v-model.number="form.productRootPrice" min="0" type="number"></el-input>
           </el-form-item>
         </el-col>
@@ -147,6 +146,7 @@
           guid: null,
           productCode: null,
           productName: null,
+          productUnit: null,
           productDescription: null,
           productImageUrl: null,
           productThumbnailUrl: null,
@@ -154,19 +154,19 @@
           productType: null,
           productDisplay: null,
           productRootPrice: null,
+          productDiscount: null,
           productPrice: null,
           productPosition: null,
           productSaleGuid: null,
           categories: [],
         },
         formRules: {
-          // productCode: [
-          //   {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-          //   {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
-          // ],
           productName: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
+          ],
+          productUnit: [
+            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ],
           productDescription: [
             {max: 2000, message: this.$t("common.entity.validation.maxlength", {max: 2000}), trigger: "blur"}
@@ -181,7 +181,6 @@
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
           productRootPrice: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {type: 'number', min: 0, message: this.$t("common.entity.validation.min", {min: 0}), trigger: "blur"}
           ],
           productPrice: [
