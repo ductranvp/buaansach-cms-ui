@@ -5,7 +5,7 @@
     </el-aside>
     <el-container class="full-size" direction="vertical">
       <pos-machine-header/>
-      <pos-machine-main/>
+      <pos-machine-main class="hidden-sm-and-down"/>
     </el-container>
   </el-container>
 </template>
@@ -14,7 +14,6 @@
   import PosMachineSidebar from "@/views/private/pos-machine/sidebar/PosMachineSidebar";
   import PosMachineHeader from "@/views/private/pos-machine/header/PosMachineHeader";
   import PosMachineMain from "@/views/private/pos-machine/main/PosMachineMain";
-  import MessageBoxUtils from "@/utils/message-box.util";
   import {mapState} from "vuex";
   import WebSocketHandler from "@/views/layout/pos-machine/websocket.handler";
 
@@ -30,7 +29,7 @@
       })
     },
     data() {
-      return {askBeforeLeave: false};
+      return {askBeforeLeave: true};
     },
     watch: {
       stompClient: function (val) {
@@ -43,14 +42,6 @@
         window.onbeforeunload = function (event) {
           event.returnValue = "ask before leave";
         };
-      }
-    },
-    beforeRouteLeave(to, from, next) {
-      if (to.name === "loginPage") next();
-      else {
-        MessageBoxUtils.confirm("Bạn có chắc muốn rời trang này?", function () {
-          next();
-        });
       }
     },
     beforeDestroy() {

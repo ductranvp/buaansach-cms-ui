@@ -3,8 +3,13 @@ import MessageUtils from "@/utils/message.util";
 const mixinMethod = {
     methods: {
         createOrder() {
-            this.$refs.createOrderForm.validate(valid => {
-                if (valid) this.$store.dispatch("posMachine/createOrder", this.form);
+          const vm = this;
+            this.$refs.createOrderForm.validate(async valid => {
+                if (valid) {
+                  vm.isLoading = true;
+                  await this.$store.dispatch("posMachine/createOrder", this.form);
+                  vm.isLoading = false;
+                }
             });
         },
         serveOrderProduct(product) {

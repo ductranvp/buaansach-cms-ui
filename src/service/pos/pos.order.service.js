@@ -8,11 +8,11 @@ const PosOrderService = {
   updateOrder(payload) {
     return request.put(baseUrl + "/update", payload);
   },
-  getOrder(params) {
-    return request.get(baseUrl + "/get/" + params);
-  },
-  getOrderBySeatGuid(params) {
-    return request.get(baseUrl + "/get-by-seat/" + params);
+  // getOrder(params) {
+  //   return request.get(baseUrl + "/get/" + params);
+  // },
+  getSeatCurrentOrder(params) {
+    return request.get(baseUrl + "/get-seat-order/" + params);
   },
   changeOrderSeat(payload) {
     return request.put(baseUrl + "/change-seat", payload);
@@ -25,6 +25,10 @@ const PosOrderService = {
   },
   cancelOrder(payload) {
     return request.put(baseUrl + "/cancel", payload);
+  },
+  changeCustomerPhone(payload) {
+    // seatGuid, orderGuid, newCustomerPhone
+    return request.put(baseUrl + "/change-customer-phone", payload);
   }
 };
 

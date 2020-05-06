@@ -2,18 +2,18 @@
   <el-header class="bg-success padding-10" height="50px">
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
-        <el-button size="small" type="success" @click="goto('homePage')">
+        <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">
           <i class="el-icon-s-home"></i>
-          <span class="hidden-sm-and-down">Trang chủ</span>
+          <span class="hidden-md-and-down">Trang chủ</span>
         </el-button>
-        <el-button size="small" type="success" @click="goto('homePage')">
+        <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">
           <i class="el-icon-s-data"></i>
-          <span class="hidden-sm-and-down">Báo cáo</span>
+          <span class="hidden-md-and-down">Báo cáo</span>
         </el-button>
       </el-col>
 
       <el-col :span="8">
-        <el-row type="flex" align="middle" justify="center">
+        <el-row class="hidden-md-and-down" type="flex" align="middle" justify="center">
           <el-dropdown trigger="click" @command="changeStoreStatus">
             <el-button size="small" type="success">
               <span v-if="currentStore.storeName" class="text-light text-bold">{{currentStore.storeCode}} - {{currentStore.storeName}}</span>

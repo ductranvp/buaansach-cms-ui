@@ -63,7 +63,7 @@ const actions = {
         {},
         function (frame) {
           if (state.error && state.pendingRoute.name === 'posPage') {
-            dispatch("posMachine/initState", state.pendingRoute.params.storeGuid);
+            dispatch("posMachine/initState", state.pendingRoute.params.storeGuid, {root: true});
           }
           commit("CLEAR_ERROR");
           commit("SET_CONNECTION", stompClient);

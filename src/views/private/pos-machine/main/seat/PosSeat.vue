@@ -2,14 +2,13 @@
   <el-container class="full-size" direction="vertical">
     <el-header class="padding-0-10 bg-yellowgreen" height="42px">
       <el-row :gutter="10" class="full-size" type="flex" align="middle">
-        <el-col :span="10">
+        <el-col :span="18">
           <el-radio-group fill="#159550" v-model="displaySeatType" size="mini">
             <el-radio-button label="ALL">Tất cả</el-radio-button>
             <el-radio-button label="EMPTY">Còn trống</el-radio-button>
             <el-radio-button label="NON_EMPTY">Đang dùng</el-radio-button>
           </el-radio-group>
         </el-col>
-        <el-col :span="8"></el-col>
         <el-col :span="6">
           <el-row :gutter="10" type="flex" align="middle">
             <div class="text-bold padding-right-10" style="white-space: nowrap;">Mật độ</div>

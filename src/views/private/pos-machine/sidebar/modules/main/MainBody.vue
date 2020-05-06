@@ -106,16 +106,13 @@
         <div v-else class="full-size">
           <el-row class="full-size" type="flex" align="middle" justify="center">
             <el-form ref="createOrderForm" :model="form" :rules="formRules">
-              <el-form-item>
-                <input-label label="Tên khách hàng" optional/>
-                <el-input v-model="form.customerName"></el-input>
-              </el-form-item>
               <el-form-item prop="customerPhone">
                 <input-label label="SĐT khách hàng" optional/>
                 <el-input v-model="form.customerPhone"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button class="full-width" type="warning" @click="createOrder">Tạo đơn</el-button>
+                <el-button class="full-width" type="warning" @click="createOrder"  :loading="isLoading">Tạo đơn
+                </el-button>
               </el-form-item>
             </el-form>
           </el-row>
@@ -155,9 +152,9 @@
     },
     data() {
       return {
+        isLoading: false,
         form: {
           seatGuid: null,
-          customerName: null,
           customerPhone: null,
           recreateFromOrderGuid: null,
         },

@@ -132,14 +132,17 @@ const actions = {
     }
   },
   async createOrder({state, commit}, payload) {
-    try {
+    return new Promise((resolve, reject) => {
       payload.seatGuid = state.selectedSeat.guid;
-      const {data} = await PosOrderService.createOrder(payload);
-      commit("SET_CURRENT_ORDER", data);
-      commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: 'NON_EMPTY'});
-    } catch (error) {
-      NotificationUtils.error(error.message || error.data.message);
-    }
+      PosOrderService.createOrder(payload).then(response => {
+        commit("SET_CURRENT_ORDER", response.data);
+        commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: 'NON_EMPTY'});
+        resolve();
+      }).catch(error => {
+        reject();
+        NotificationUtils.error(error.message || error.data.message);
+      });
+    });
   },
   async updateOrder({state, commit}) {
     try {
@@ -219,7 +222,7 @@ const actions = {
   async getSeatOrderInfo({commit}, seatGuid) {
     try {
       commit("SET_IS_LOADING_SEAT_ORDER", true);
-      const {data} = await PosOrderService.getOrderBySeatGuid(seatGuid);
+      const {data} = await PosOrderService.getSeatCurrentOrder(seatGuid);
       if (data.guid) {
         commit("SET_CURRENT_ORDER", data);
         commit("SET_SAVED_ORDER_PRODUCT", data.listOrderProduct);
