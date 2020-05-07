@@ -22,7 +22,7 @@
         </el-col>
         <el-col :span="11" :offset="2">
           <el-form-item prop="selectedAreaGuid" label="Chọn vị trí">
-            <el-select class="full-width" v-model="form.selectedSeatGuid">
+            <el-select no-data-text="Không còn vị trí trống" class="full-width" v-model="form.selectedSeatGuid">
               <el-option v-for="seat in emptySeats"
                          :key="seat.guid"
                          :value="seat.guid"

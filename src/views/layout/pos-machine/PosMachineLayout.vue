@@ -29,7 +29,7 @@
       })
     },
     data() {
-      return {askBeforeLeave: true};
+      return {askBeforeLeave: false};
     },
     watch: {
       stompClient: function (val) {
@@ -60,8 +60,8 @@
   }
 
   .aside {
-    box-shadow: 3px 0 5px rgba(0, 0, 0, .24);
+    /*box-shadow: 3px 0 5px rgba(0, 0, 0, .24);*/
     background-color: #fff;
-    z-index: 2;
+    /*z-index: 2;*/
   }
 </style>

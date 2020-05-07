@@ -7,27 +7,27 @@
     :destroy-on-close="true"
   >
     <el-form ref="dialogForm" :model="form" :rules="formRules">
-      <el-form-item>
-        <input-label label="" required/>
-        <el-input></el-input>
+      <el-form-item prop="att">
+        <input-label label="att" required/>
+        <el-input v-model="form.att"></el-input>
       </el-form-item>
 
-      <el-form-item>
-        <input-label label="" optional/>
-        <el-input></el-input>
+      <el-form-item prop="att">
+        <input-label label="att" optional/>
+        <el-input v-model="form.att"></el-input>
       </el-form-item>
 
-      <el-form-item>
+      <el-form-item prop="att">
         <el-col :span="11">
           <el-form-item>
-            <input-label label="" required/>
-            <el-input></el-input>
+            <input-label label="att" required/>
+            <el-input v-model="form.att"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <el-form-item>
-            <input-label label="" optional/>
-            <el-input></el-input>
+          <el-form-item prop="att">
+            <input-label label="att" optional/>
+            <el-input v-model="form.att"></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -61,18 +61,35 @@
         isEdit: false,
         isLoading: false,
         dialogFormVisible: false,
-        form: {},
-        formRules: {}
+        form: {
+          att: null
+        },
+        formRules: {
+          att: [
+            // {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
+            // {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
+            // {min: 1, message: this.$t("common.entity.validation.minlength", {min: 1}), trigger: "blur"},
+            // {type: 'email', message: this.$t("common.entity.validation.email"), trigger: "blur"},
+            // {
+            //   pattern: "^(09|03|07|08|05)+([0-9]{8})$",
+            //   message: this.$t("common.entity.validation.pattern", {pattern: "^(09|03|07|08|05)+([0-9]{8})$"}),
+            //   trigger: "blur"
+            // },
+            // {type: 'number', min: 1, message: this.$t("common.entity.validation.min", {min: 1}), trigger: "blur"}
+          ]
+        }
       };
     },
     methods: {
       create() {
         this.form = {};
         this.isEdit = false;
+        this.show();
       },
       edit(entity) {
         this.isEdit = true;
         this.form = AppUtils.deepCopy(entity);
+        this.show();
       },
       show() {
         this.dialogFormVisible = true;

@@ -3,8 +3,6 @@ import PosOrderService from "@/service/pos/pos.order.service";
 import NotificationUtils from "@/utils/notification.util";
 import MessageBoxUtils from "@/utils/message-box.util";
 import PosOrderProductService from "@/service/pos/pos.order-product.service";
-import Constants from "@/utils/constants";
-import MessageUtils from "@/utils/message.util";
 
 const orderStatus = {
   CREATED: "CREATED",
@@ -140,31 +138,27 @@ const actions = {
         resolve();
       }).catch(error => {
         reject();
-        NotificationUtils.error(error.message || error.data.message);
+        NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
       });
     });
   },
   async updateOrder({state, commit}) {
-    try {
-      const patt = new RegExp(Constants.PHONE_REGEX);
-      if (state.currentOrder.customerPhone && !patt.test(state.currentOrder.customerPhone)) {
-        MessageUtils.error("Số điện thoại không hợp lệ");
-        return;
-      }
+    return new Promise((resolve, reject) => {
       let posOrderUpdate = {
         orderGuid: state.currentOrder.guid,
-        customerName: state.currentOrder.customerName,
-        customerPhone: state.currentOrder.customerPhone,
         listOrderProduct: state.unsavedOrderProduct
       };
-      const {data} = await PosOrderService.updateOrder(posOrderUpdate);
-      commit("SET_CURRENT_ORDER", data);
-      commit("SET_SAVED_ORDER_PRODUCT", data.listOrderProduct);
-      commit("SET_UNSAVED_ORDER_PRODUCT", []);
-      NotificationUtils.success("Lưu đơn thành công");
-    } catch (error) {
-      NotificationUtils.error(error.message || error.data.message);
-    }
+      PosOrderService.updateOrder(posOrderUpdate).then(response => {
+        commit("SET_CURRENT_ORDER", response.data);
+        commit("SET_SAVED_ORDER_PRODUCT", response.data.listOrderProduct);
+        commit("SET_UNSAVED_ORDER_PRODUCT", []);
+        NotificationUtils.success("Lưu đơn thành công");
+        resolve();
+      }).catch(error => {
+        reject(error);
+        NotificationUtils.error(error.message || error.data.message);
+      });
+    });
   },
   async completeOrder({state, commit}, payload) {
     return new Promise((resolve, reject) => {
@@ -174,18 +168,18 @@ const actions = {
         totalCharge: payload.totalCharge,
       };
       PosOrderService.purchaseOrder(purchaseOrder).then(function () {
-        NotificationUtils.success("Thanh toán thành công");
-        commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: "EMPTY"});
-        commit("RESET_ORDER");
+        // commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: "EMPTY"});
+        // commit("RESET_ORDER");
         resolve();
       }, function (error) {
-        NotificationUtils.error(error.message || error.data.message);
+        NotificationUtils.error("Thanh toán không thành công, vui lòng thử lại");
         reject();
       });
     });
   },
-  executePosPrint({state}, payload) {
-
+  printDone({commit, state}) {
+    commit("CHANGE_SEAT_STATUS", {seatGuid: state.selectedSeat.guid, status: "EMPTY"});
+    commit("RESET_ORDER");
   },
   async changeOrderSeat({state, commit}, {newSeatGuid, storeGuid}) {
     const dto = {

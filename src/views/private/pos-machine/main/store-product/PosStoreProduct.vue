@@ -1,6 +1,6 @@
 <template>
   <el-container class="full-size" direction="vertical">
-    <el-header class="padding-0-10 bg-yellowgreen" height="42px">
+    <el-header class="padding-0-5 bg-yellowgreen" height="42px">
       <el-row :gutter="10" class="full-size" type="flex" align="middle">
         <el-col :span="10">
           <el-autocomplete

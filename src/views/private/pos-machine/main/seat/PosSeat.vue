@@ -1,9 +1,9 @@
 <template>
   <el-container class="full-size" direction="vertical">
-    <el-header class="padding-0-10 bg-yellowgreen" height="42px">
+    <el-header class="padding-0-5 bg-yellowgreen" height="42px">
       <el-row :gutter="10" class="full-size" type="flex" align="middle">
         <el-col :span="18">
-          <el-radio-group fill="#159550" v-model="displaySeatType" size="mini">
+          <el-radio-group fill="#159550" v-model="displaySeatType" size="small">
             <el-radio-button label="ALL">Tất cả</el-radio-button>
             <el-radio-button label="EMPTY">Còn trống</el-radio-button>
             <el-radio-button label="NON_EMPTY">Đang dùng</el-radio-button>

@@ -5,7 +5,8 @@
       <el-divider class="margin-0 bg-success" v-if="currentOrder.guid"></el-divider>
       <main-body/>
       <el-divider class="margin-0 bg-success" v-if="currentOrder.guid"></el-divider>
-      <bottom-toolbar />
+      <bottom-toolbar/>
+      <el-divider class="margin-0 bg-success" v-if="currentOrder.guid"></el-divider>
     </el-container>
   </el-main>
 </template>

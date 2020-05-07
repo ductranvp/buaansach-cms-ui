@@ -1,5 +1,5 @@
 <template>
-  <el-footer v-if="currentOrder.guid" class="bg-success" height="auto">
+  <el-footer v-show="currentOrder.guid" class="bg-success" height="auto">
     <basic-purchase @showAdvancedPurchase="showAdvancedPurchase" ref="basicPurchase"/>
     <advanced-purchase ref="advancedPurchaseDrawer"/>
   </el-footer>

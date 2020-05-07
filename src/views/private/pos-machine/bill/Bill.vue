@@ -149,13 +149,14 @@
         htmlContent += "</html>";
         return htmlContent;
       },
-      printBill(customerCharge) {
+      printBill(customerCharge, callback) {
         let html = this.getHtmlContent(customerCharge);
         let doc = document.getElementById('bill_frame').contentWindow.document;
         doc.open();
         doc.write(html);
         doc.close();
         document.getElementById("bill_frame").contentWindow.print();
+        if (callback) callback();
       },
     }
   };
