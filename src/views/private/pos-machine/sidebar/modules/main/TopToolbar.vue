@@ -24,9 +24,6 @@
             <el-dropdown-item @click.native="changeOrderSeat">
               <span>Chuyển bàn</span>
             </el-dropdown-item>
-<!--            <el-dropdown-item command="orderHistory">-->
-<!--              <span>Lịch sử</span>-->
-<!--            </el-dropdown-item>-->
             <el-dropdown-item @click.native="cancelOrder">
               <span>Hủy đơn</span>
             </el-dropdown-item>
@@ -41,6 +38,7 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/modules/main/ChangeOrderSeatDialog";
+  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "TopToolbar",
@@ -59,7 +57,12 @@
           inputType: 'textarea'
         }).then(cb => {
           if (cb.value) {
-            vm.$store.dispatch("posMachine/cancelOrder", cb.value);
+            try {
+              vm.$store.dispatch("posMachine/cancelOrder", cb.value);
+              NotificationUtils.success("Hủy đơn thành công");
+            } catch (e) {
+              NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
+            }
           } else {
             MessageUtils.error("Bạn phải nhập lí do hủy đơn");
           }

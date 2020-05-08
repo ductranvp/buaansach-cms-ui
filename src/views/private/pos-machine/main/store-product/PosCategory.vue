@@ -1,13 +1,13 @@
 <template>
   <el-container class="full-size">
-    <el-header class="padding-0-10 bg-yellowgreen" height="42px">
+    <el-header class="padding-0-10 bg-yellowgreen" height="40px">
       <el-row class="full-size" type="flex" align="middle">
         <span class="text-bold">Danh Mục</span>
       </el-row>
     </el-header>
     <el-main class="full-size">
-      <el-menu class="full-height" :default-active="currentCategoryGuid">
-        <el-menu-item index="all" @click="changeCategory('all')">
+      <el-menu class="full-height" :default-active="selectedCategory.guid">
+        <el-menu-item :index="defaultCategory.guid" @click="changeCategory(defaultCategory.guid)">
           <span>Tất cả</span>
         </el-menu-item>
         <el-menu-item v-for="category in allCategories" :key="category.guid" :index="category.guid"
@@ -21,17 +21,21 @@
 
 <script>
   import {mapState} from "vuex";
+  import Constants from "@/utils/constants";
 
   export default {
     name: "PosCategory",
     computed: {
       ...mapState({
         allCategories: state => state.posMachine.allCategories,
-        currentCategoryGuid: state => state.posMachine.currentCategoryGuid
+        defaultCategory: state => state.posMachine.defaultCategory,
+        selectedCategory: state => state.posMachine.selectedCategory,
       })
     },
     data() {
-      return {};
+      return {
+        defaultCategoryGuid: Constants.DEFAULT_CATEGORY_GUID
+      };
     },
     methods: {
       changeCategory(categoryGuid) {

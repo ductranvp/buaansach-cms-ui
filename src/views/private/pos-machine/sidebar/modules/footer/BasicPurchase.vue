@@ -229,18 +229,21 @@
         }
         const payload = {
           paymentMethod: "CASH",
+          paymentNote: null,
           totalCharge: this.totalCharge,
           customerCharge: this.customerCharge,
         };
         try {
           await vm.$store.dispatch("posMachine/completeOrder", payload);
           vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(this.customerCharge * 1000)), function () {
+            // this function is called when print is done;
             vm.$store.dispatch("posMachine/printDone", payload);
             vm.customerCharge = null;
             NotificationUtils.success("Thanh toán thành công");
           });
         } catch (error) {
-          // do nothing
+          console.log(error);
+          NotificationUtils.error("Thanh toán không thành công, vui lòng thử lại");
         }
 
       }

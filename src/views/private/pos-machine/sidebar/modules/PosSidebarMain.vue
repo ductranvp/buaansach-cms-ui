@@ -1,7 +1,7 @@
 <template>
   <el-main class="full-size">
     <el-container class="full-size" direction="vertical">
-      <top-toolbar v-if="currentOrder.guid"/>
+      <top-toolbar v-show="currentOrder.guid"/>
       <el-divider class="margin-0 bg-success" v-if="currentOrder.guid"></el-divider>
       <main-body/>
       <el-divider class="margin-0 bg-success" v-if="currentOrder.guid"></el-divider>

@@ -1,16 +1,10 @@
-import PosSeatService from "@/service/pos/pos.seat.service";
-import NotificationUtils from "@/utils/notification.util";
-import PosStoreProductService from "@/service/pos/pos.store-product.service";
-import PosCategoryService from "@/service/pos/pos.category.service";
-import PosAreaService from "@/service/pos/pos.area.service";
-
-import PosSeatStore from "@/store/pos-machine/modules/pos.seat.store";
-import PosCategoryStore from "@/store/pos-machine/modules/pos.category.store";
-import PosAreaStore from "@/store/pos-machine/modules/pos.area.store";
-import PosStoreProductStore from "@/store/pos-machine/modules/pos.store-product.store";
-import PosOrderStore from "@/store/pos-machine/order/pos.order.store";
-import PosStoreStore from "@/store/pos-machine/modules/pos.store.store";
-import PosStoreService from "@/service/pos/pos.store.service";
+import PosSeatStore from "@/store/pos-machine/part/pos.seat.store";
+import PosCategoryStore from "@/store/pos-machine/part/pos.category.store";
+import PosAreaStore from "@/store/pos-machine/part/pos.area.store";
+import PosStoreProductStore from "@/store/pos-machine/part/pos.store-product.store";
+import PosOrderStore from "@/store/pos-machine/part/pos.order.store";
+import PosStoreStore from "@/store/pos-machine/part/pos.store.store";
+import PosOrderProductStore from "@/store/pos-machine/part/pos.order-product.store";
 
 const state = {
   ready: false,
@@ -19,6 +13,7 @@ const state = {
   ...PosCategoryStore.state,
   ...PosStoreProductStore.state,
   ...PosOrderStore.state,
+  ...PosOrderProductStore.state,
   ...PosStoreStore.state,
 };
 const mutations = {
@@ -30,6 +25,7 @@ const mutations = {
   ...PosCategoryStore.mutations,
   ...PosStoreProductStore.mutations,
   ...PosOrderStore.mutations,
+  ...PosOrderProductStore.mutations,
   ...PosStoreStore.mutations,
 };
 const actions = {
@@ -38,45 +34,20 @@ const actions = {
   ...PosCategoryStore.actions,
   ...PosStoreProductStore.actions,
   ...PosOrderStore.actions,
+  ...PosOrderProductStore.actions,
   ...PosStoreStore.actions,
   async initState({state, commit, dispatch}, storeGuid) {
-    try {
-      commit("SET_READY", false);
-
-      const storeData = await PosStoreService.getStore(storeGuid);
-      commit("SET_CURRENT_STORE", storeData.data);
-
-      const seatData = await PosSeatService.getListSeatByStoreGuid(storeGuid);
-      commit("SET_SEAT", seatData.data);
-
-      const areaData = await PosAreaService.getListAreaWithoutSeatByStoreGuid(storeGuid);
-      commit("SET_AREA", areaData.data);
-
-      const categoryData = await PosCategoryService.getListPosCategoryDTO();
-      commit("SET_CATEGORY", categoryData.data);
-
-      const storeProductData = await PosStoreProductService.getListProductByStoreGuid(storeGuid);
-      commit("SET_STORE_PRODUCT", storeProductData.data);
-
-      dispatch("parseData");
-      commit("SET_READY", true);
-    } catch (error) {
-      NotificationUtils.error(error.message || error.data.message, 0);
-    }
+    commit("SET_READY", false);
+    const store = dispatch("getCurrentStore", storeGuid);
+    const area = dispatch("getAllArea", storeGuid);
+    const category = dispatch("getAllCategory", storeGuid);
+    await Promise.all([store, area, category]);
+    commit("SET_READY", true);
+    dispatch("parseData");
   },
   parseData({state, dispatch}) {
-    dispatch("changeDisplaySeat", state.currentAreaGuid);
-    dispatch("changeDisplayStoreProduct", state.currentCategoryGuid);
-
-    if (state.displaySeats.length) {
-      if (state.currentSeatGuid) {
-        const savedSeat = state.allSeats.find(seat => seat.guid === state.currentSeatGuid);
-        if (savedSeat) dispatch("selectSeat", savedSeat);
-        else dispatch("selectSeat", state.displaySeats[0]);
-      } else {
-        dispatch("selectSeat", state.displaySeats[0]);
-      }
-    }
+    dispatch("changeArea", state.defaultArea.guid);
+    dispatch("changeCategory", state.defaultCategory.guid);
   },
 };
 

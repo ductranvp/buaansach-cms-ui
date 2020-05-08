@@ -31,12 +31,6 @@
     data() {
       return {askBeforeLeave: false};
     },
-    watch: {
-      stompClient: function (val) {
-        if (this.stompClient)
-          this.stompClient.subscribe("/topic/pos/" + this.$route.params.storeGuid, this.onMessageReceived);
-      }
-    },
     mounted() {
       if (this.askBeforeLeave) {
         window.onbeforeunload = function (event) {
@@ -47,8 +41,8 @@
     beforeDestroy() {
       window.onbeforeunload = null;
     },
-    created() {
-      this.$store.dispatch("posMachine/initState", this.$route.params.storeGuid);
+    async created() {
+      await this.$store.dispatch("posMachine/initState", this.$route.params.storeGuid);
     }
   };
 </script>

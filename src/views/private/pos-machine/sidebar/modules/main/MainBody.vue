@@ -111,7 +111,7 @@
                 <el-input v-model="form.customerPhone"></el-input>
               </el-form-item>
               <el-form-item>
-                <el-button class="full-width" type="warning" @click="createOrder"  :loading="isLoading">Tạo đơn
+                <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">Tạo đơn
                 </el-button>
               </el-form-item>
             </el-form>
@@ -148,15 +148,16 @@
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
+        orderProductStatus: state => state.posMachine.orderProductStatus,
+        seatStatus: state => state.posMachine.seatStatus,
+        seatServiceStatus: state => state.posMachine.seatServiceStatus,
       })
     },
     data() {
       return {
         isLoading: false,
         form: {
-          seatGuid: null,
           customerPhone: null,
-          recreateFromOrderGuid: null,
         },
         formRules: {
           customerPhone: [
@@ -179,17 +180,15 @@
         this.scrollToEnd();
       },
     },
-    // updated() {
-    //   this.scrollToEnd();
-    // },
     methods: {
       resetForm() {
         this.form = {};
       },
       scrollToEnd() {
         let container = document.querySelector(".scroll");
-        let scrollHeight = container.scrollHeight;
-        container.scrollTop = scrollHeight;
+        if (container) {
+          container.scrollTop = container.scrollHeight;
+        }
       },
     }
   };

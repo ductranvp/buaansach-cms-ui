@@ -1,5 +1,5 @@
 <template>
-  <el-header class="bg-success padding-10" height="50px">
+  <el-header class="bg-success" height="40px">
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
         <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">

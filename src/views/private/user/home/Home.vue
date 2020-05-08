@@ -68,7 +68,7 @@
     data() {
       return {
         isLoading: false,
-        openNewTab: true,
+        openNewTab: false,
         storeUser: [],
       };
     },

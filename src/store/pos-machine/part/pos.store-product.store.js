@@ -6,10 +6,9 @@ const state = {
   displayStoreProducts: [],
 };
 const mutations = {
-  SET_STORE_PRODUCT(state, allStoreProducts) {
+  SET_ALL_STORE_PRODUCT(state, allStoreProducts) {
     state.allStoreProducts = allStoreProducts;
   },
-
   SET_DISPLAY_STORE_PRODUCT(state, displayStoreProducts) {
     state.displayStoreProducts = displayStoreProducts;
   },
@@ -17,9 +16,11 @@ const mutations = {
 const actions = {
   changeDisplayStoreProduct({state, commit}, categoryGuid) {
     let displayStoreProducts;
-    if (categoryGuid === Constants.DEFAULT_CATEGORY) displayStoreProducts = state.allStoreProducts;
-    else displayStoreProducts = state.allStoreProducts.filter(product => product.categoryGuid === categoryGuid);
-    commit("SET_CURRENT_CATEGORY", categoryGuid);
+    if (categoryGuid === Constants.DEFAULT_CATEGORY_GUID) displayStoreProducts = state.allStoreProducts;
+    else {
+      const cat = state.allCategories.find(category => category.guid === categoryGuid);
+      displayStoreProducts = cat.listStoreProduct;
+    }
     commit("SET_DISPLAY_STORE_PRODUCT", displayStoreProducts);
   },
 };

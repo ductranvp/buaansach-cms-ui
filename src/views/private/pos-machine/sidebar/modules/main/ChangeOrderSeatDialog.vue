@@ -47,13 +47,14 @@
 
 <script>
   import {mapState} from "vuex";
+  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "ChangeOrderSeatDialog",
     computed: {
       ...mapState({
         allAreas: state => state.posMachine.allAreas,
-        allSeats: state => state.posMachine.allSeats,
+        selectedArea: state => state.posMachine.selectedArea
       })
     },
     data() {
@@ -74,7 +75,8 @@
     },
     methods: {
       changeAreaGuid(areaGuid) {
-        this.emptySeats = this.allSeats.filter(seat => seat.areaGuid === areaGuid && seat.seatStatus === 'EMPTY');
+        const selectedArea = this.allAreas.find(area => area.guid === areaGuid);
+        this.emptySeats = selectedArea.listSeat.filter(seat => seat.seatStatus === 'EMPTY');
       },
       show() {
         this.dialogFormVisible = true;
@@ -97,16 +99,17 @@
         this.$refs.changeOrderSeatForm.validate(async valid => {
           if (valid) {
             vm.isLoading = true;
-            const payload = {
-              storeGuid: vm.$route.params.storeGuid,
-              newSeatGuid: vm.form.selectedSeatGuid,
-            };
-            vm.$store.dispatch("posMachine/changeOrderSeat", payload).then(function () {
-              vm.isLoading = false;
+            try {
+              await vm.$store.dispatch("posMachine/changeOrderSeat", vm.form.selectedSeatGuid);
+              await vm.$store.dispatch("posMachine/getAllArea", vm.$route.params.storeGuid);
+              await vm.$store.dispatch("posMachine/changeArea", vm.selectedArea.guid);
               vm.hide();
-            }).catch(function () {
               vm.isLoading = false;
-            });
+              NotificationUtils.success("Chuyển bàn thành công");
+            } catch (error) {
+              vm.isLoading = false;
+              NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
+            }
           }
         });
       }

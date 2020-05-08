@@ -2,7 +2,8 @@
   <el-footer height="40px">
     <el-row style="overflow: hidden" class="full-size" type="flex" align="middle" v-if="currentOrder.guid">
       <el-col class="full-height">
-        <el-button :loading="isLoading" type="info" class="no-border no-border-radius full-size text-small"
+        <el-button :disabled="!unsavedOrderProduct.length" :loading="isLoading" type="info"
+                   class="no-border no-border-radius full-size text-small"
                    @click="updateOrder"
                    size="small">
           <i class="fas el-icon-fa-save"></i>
@@ -15,6 +16,7 @@
 
 <script>
   import {mapState} from "vuex";
+  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "BottomToolbar",
@@ -33,7 +35,12 @@
       async updateOrder() {
         const vm = this;
         vm.isLoading = true;
-        await this.$store.dispatch("posMachine/updateOrder");
+        try {
+          await this.$store.dispatch("posMachine/updateOrder");
+          NotificationUtils.success("Lưu đơn thành công");
+        } catch (error) {
+          NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+        }
         vm.isLoading = false;
       },
     }

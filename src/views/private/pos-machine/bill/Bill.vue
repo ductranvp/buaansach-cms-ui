@@ -16,7 +16,6 @@
         currentStore: state => state.posMachine.currentStore,
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
-        orderDiscount: state => state.posMachine.orderDiscount,
         totalCharge: state => {
           return state.posMachine.savedOrderProduct
             .filter(item => item.orderProductStatus.indexOf("CANCELLED") === -1)
@@ -107,10 +106,10 @@
         return tableContent;
       },
       getBillSummary(customerCharge) {
-        const payAmount = this.totalCharge - this.orderDiscount;
+        const payAmount = this.totalCharge - this.currentOrder.orderDiscount;
         let tableContent = "<table>";
         tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.totalCharge) + "</td></tr>";
-        tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.orderDiscount) + "</td></tr>";
+        tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.currentOrder.orderDiscount) + "</td></tr>";
         tableContent += "</table>";
         tableContent += "<div class='divider'></div>";
         tableContent += "<table>";
