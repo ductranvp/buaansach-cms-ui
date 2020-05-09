@@ -1,5 +1,6 @@
 /* Store module pattern */
 import MessageBoxUtils from "@/utils/message-box.util";
+import PosSeatService from "@/service/pos/pos.seat.service";
 
 const state = {
   selectedSeat: {},
@@ -43,6 +44,14 @@ const actions = {
       dispatch("getSeatOrderInfo", seat.guid);
     }
   },
+  async reloadSeat({state, commit}, seatGuid) {
+    const {data} = await PosSeatService.getSeat(seatGuid);
+    commit("CHANGE_SEAT_STATUS", {
+      targetSeat: data,
+      seatStatus: data.seatStatus,
+      seatServiceStatus: data.seatServiceStatus,
+    });
+  }
 };
 
 const PosSeatStore = {

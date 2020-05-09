@@ -24,9 +24,17 @@
     computed: {
       ...mapState({
         stompClient: state => state.websocket.stompClient,
-        allSeats: state => state.posMachine.allSeats,
+        allAreas: state => state.posMachine.allAreas,
         ready: state => state.posMachine.ready,
         currentStore: state => state.posMachine.currentStore,
+        selectedSeat: state => state.posMachine.selectedSeat,
+        allSeats: state => {
+          let arr = [];
+          state.posMachine.allAreas.forEach(area => {
+            arr = arr.concat(area.listSeat);
+          });
+          return arr;
+        }
       })
     },
     data() {

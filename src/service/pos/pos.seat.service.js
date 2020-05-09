@@ -5,7 +5,9 @@ const PosSeatService = {
   getListSeatByStoreGuid(params) {
     return request.get(baseUrl + "/list-by-store/" + params);
   },
-
+  getSeat(params){
+    return request.get(baseUrl + "/get/" + params);
+  }
 };
 
 export default PosSeatService;

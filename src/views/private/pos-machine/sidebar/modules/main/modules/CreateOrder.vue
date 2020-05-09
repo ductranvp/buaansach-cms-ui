@@ -1,7 +1,7 @@
 <template>
   <el-row class="full-size" type="flex" align="middle" justify="center">
     <el-col :span="14">
-      <el-form ref="createOrderForm" :model="form" :rules="formRules">
+      <el-form onsubmit="return false" ref="createOrderForm" :model="form" :rules="formRules">
         <el-form-item>
           <el-alert style="line-height: 28px;" type="warning" :closable="false">
             <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>
@@ -9,7 +9,7 @@
         </el-form-item>
         <el-form-item prop="customerPhone">
           <input-label label="SĐT khách hàng" optional/>
-          <el-input v-model="form.customerPhone"></el-input>
+          <el-input @keypress.enter.native="createOrder" v-model="form.customerPhone"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">Tạo đơn

@@ -7,6 +7,8 @@
         <el-row class="full-size">
           <el-col class="full-height">
             <el-autocomplete
+              @keypress.enter.native="updateCustomerPhone"
+              @keypress.esc.native="cancelEditCustomerPhone"
               ref="customerPhone"
               :class="isEditCustomerPhone ? 'edit-phone' : ''"
               class="full-size"
@@ -113,7 +115,8 @@
       <el-footer height="auto">
         <el-row type="flex" align="middle">
           <el-col :span="20">
-            <el-button type="success" @click="completeOrder(customerPay)" class="full-width text-large padding-20-10">
+            <el-button :disabled="currentOrder.orderStatus === 'CREATED'" type="success"
+                       @click="completeOrder(customerPay)" class="full-width text-large padding-20-10">
               <i class="el-icon-printer"></i>
               <span>Thanh toán: </span>
               <span v-if="payAmount > 0">{{payAmount | priceAppend }}</span>

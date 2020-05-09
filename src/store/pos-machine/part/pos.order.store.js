@@ -41,7 +41,6 @@ const actions = {
       listOrderProduct: state.unsavedOrderProduct
     };
     const {data} = await PosOrderService.updateOrder(posOrderUpdate);
-    console.log(data);
     commit("SET_CURRENT_ORDER", data);
     commit("SET_SAVED_ORDER_PRODUCT", data.listOrderProduct);
     commit("SET_UNSAVED_ORDER_PRODUCT", []);
@@ -50,6 +49,10 @@ const actions = {
       seatStatus: state.seatStatus.NON_EMPTY,
       seatServiceStatus: state.seatServiceStatus.UNFINISHED
     });
+  },
+  async receiveOrder({state, dispatch}) {
+    await PosOrderService.receiveOrder(state.currentOrder.guid);
+    dispatch("getSeatOrderInfo", state.selectedSeat.guid);
   },
   async completeOrder({state, commit}, payload) {
     const posPurchaseOrder = {
@@ -93,7 +96,7 @@ const actions = {
     commit("RESET_ORDER");
     commit("RESET_ORDER_PRODUCT");
   },
-  async getSeatOrderInfo({commit}, seatGuid) {
+  async getSeatOrderInfo({commit, dispatch}, seatGuid) {
     try {
       commit("SET_CUSTOMER_PAY", 0);
       const {data} = await PosOrderService.getSeatCurrentOrder(seatGuid);
@@ -108,6 +111,7 @@ const actions = {
     } catch (error) {
       NotificationUtils.error("Lấy thông tin đơn hàng thất bại, vui lòng thử lại");
     }
+    dispatch("reloadSeat", seatGuid);
   },
 };
 
