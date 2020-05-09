@@ -26,6 +26,14 @@ const mutations = {
       state.unsavedOrderProduct.push(orderProduct);
     }
   },
+  SET_ORDER_PRODUCT_NOTE(state, {orderProduct, note}) {
+    const idx = state.unsavedOrderProduct.findIndex(item => item.productGuid === orderProduct.productGuid);
+    if (idx !== -1) {
+      const temp = state.unsavedOrderProduct[idx];
+      temp.orderProductNote = note;
+      state.unsavedOrderProduct.splice(idx, 1, temp);
+    }
+  },
   SET_ORDER_PRODUCT_STATUS(state, {orderProduct, status}) {
     const idx = state.savedOrderProduct.findIndex(item => item.guid === orderProduct.guid);
     if (idx !== -1) {

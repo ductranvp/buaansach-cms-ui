@@ -1,11 +1,11 @@
 <template>
   <el-container v-loading="!ready" class="full-size" direction="horizontal">
     <el-aside width="450px" class="aside">
-      <pos-machine-sidebar/>
+      <pos-machine-sidebar v-loading="currentStore.storeStatus ==='CLOSED'"/>
     </el-aside>
     <el-container class="full-size" direction="vertical">
       <pos-machine-header/>
-      <pos-machine-main class="hidden-sm-and-down"/>
+      <pos-machine-main v-loading="currentStore.storeStatus ==='CLOSED'" class="hidden-sm-and-down"/>
     </el-container>
   </el-container>
 </template>
@@ -26,6 +26,7 @@
         stompClient: state => state.websocket.stompClient,
         allSeats: state => state.posMachine.allSeats,
         ready: state => state.posMachine.ready,
+        currentStore: state => state.posMachine.currentStore,
       })
     },
     data() {

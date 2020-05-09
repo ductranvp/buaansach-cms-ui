@@ -11,7 +11,8 @@
         <h1>{{selectedSeat.seatName}} - {{selectedSeat.areaName}}</h1>
       </el-col>
       <el-col class="text-right">
-        <el-button :loading="isRefreshing" @click="refreshSeatOrder" type="success" size="small">
+        <el-button v-if="selectedSeat.currentOrderGuid" :loading="isRefreshing" @click="refreshSeatOrder" type="success"
+                   size="small">
           <i class="el-icon-refresh"></i>
           <span>Làm mới</span>
         </el-button>

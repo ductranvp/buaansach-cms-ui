@@ -115,7 +115,6 @@
     },
     data() {
       return {
-        customerPay: null,
         drawerVisible: false,
         direction: 'ltr',
         voucherCode: null,
@@ -186,7 +185,7 @@
         this.resetForm();
       },
       resetForm() {
-        this.customerPay = null;
+        this.voucherCode = null;
       },
       beforeClose(done) {
         this.resetForm();
