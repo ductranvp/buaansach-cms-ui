@@ -60,40 +60,61 @@
                 <div class="value">{{ item.customerName }}</div>
                 <span class="link">{{ item.customerPhone }}</span>
               </div>
-
             </template>
           </el-autocomplete>
         </el-col>
       </el-row>
-      <el-divider class="margin-0 full-width bg-info"></el-divider>
+      <el-divider class="margin-0 full-width bg-success"></el-divider>
     </el-header>
     <el-main class="full-size">
-      <el-row type="flex" align="middle" class="full-size">
-        <el-col :span="11" class="full-height">
-          <el-input v-model="customerCharge" placeholder="Khách đưa">
-            <i slot="prefix" class="el-input__icon el-icon-money"></i>
-            <el-button class="full-size" style="color: #606266" disabled slot="suffix">
-              <span>x1000</span>
+      <el-container direction="vertical">
+        <el-row type="flex" align="middle" style="height: 40px">
+          <el-col :span="12" class="full-height">
+            <el-input v-model="customerPay" placeholder="Khách đưa">
+              <i slot="prefix" class="el-input__icon el-icon-money"></i>
+              <el-button class="full-size" style="color: #606266" disabled slot="suffix">
+                <span>x1000</span>
+              </el-button>
+            </el-input>
+          </el-col>
+          <el-col :span="12" class="full-height">
+            <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
+              <i class="el-icon-money"></i>
+              <span>Trả lại: </span>
+              <span v-if="customerPay*1000 > payAmount">{{customerPay*1000 - payAmount | priceAppend}}</span>
+              <span v-else>0</span>
             </el-button>
-          </el-input>
-        </el-col>
-        <el-col class="full-height text-center bg-light" :span="2">
-          <el-divider class="margin-0 bg-success full-height" direction="vertical"></el-divider>
-        </el-col>
-        <el-col :span="11" class="full-height">
-          <el-button style="color: #606266" disabled class="full-size text-left">
-            <span v-if="totalCharge && customerCharge*1000 >= totalCharge">Trả lại:  {{customerCharge*1000 - totalCharge | priceAppend}}</span>
-          </el-button>
-        </el-col>
-      </el-row>
+          </el-col>
+        </el-row>
+        <el-divider class="margin-0 full-width bg-success"></el-divider>
+        <el-row type="flex" align="middle" style="height: 40px">
+          <el-col :span="12" class="full-height">
+            <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
+              <i class="el-icon-money"></i>
+              <span>Tổng: </span>
+              <span v-if="totalAmount > 0">{{totalAmount | priceAppend}}</span>
+              <span v-else>0</span>
+            </el-button>
+          </el-col>
+          <el-col :span="12" class="full-height">
+            <el-button style="color: #606266;  padding: 12px 10px" disabled class="full-size text-left">
+              <i class="el-icon-discount"></i>
+              <span>Giảm giá: </span>
+              <span v-if="discountAmount > 0">{{discountAmount | priceAppend}}</span>
+              <span v-else>0</span>
+            </el-button>
+          </el-col>
+        </el-row>
+      </el-container>
     </el-main>
     <el-footer height="auto">
       <el-row type="flex" align="middle">
         <el-col :span="20">
-          <el-button type="success" @click="completeOrder" class="full-width text-large padding-20-10">
+          <el-button type="success" @click="completeOrder(customerPay)" class="full-width text-large padding-20-10">
             <i class="el-icon-printer"></i>
             <span>Thanh toán: </span>
-            <span>{{totalCharge | priceAppend }}</span>
+            <span v-if="payAmount > 0">{{payAmount | priceAppend }}</span>
+            <span v-else>0</span>
           </el-button>
         </el-col>
         <el-col :span="4">
@@ -125,27 +146,49 @@
     components: {CreateCustomerDialog, Bill},
     computed: {
       ...mapState({
-        totalCharge: state => {
-          return state.posMachine.savedOrderProduct
-            .filter(item => item.orderProductStatus.indexOf("CANCELLED") === -1)
-            .map(item => item.orderProductPrice * item.orderProductQuantity)
-            .reduce((prev, curr) => prev + curr, 0);
-        },
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
-        currentOrder: state => state.posMachine.currentOrder
+        selectedSeat: state => state.posMachine.selectedSeat,
+        currentOrder: state => state.posMachine.currentOrder,
+        totalAmount: state => state.posMachine.currentOrder.totalAmount,
+        discountAmount: state => {
+          let amount = 0;
+          let discount = state.posMachine.currentOrder.orderDiscount;
+          let discountType = state.posMachine.currentOrder.orderDiscountType;
+          if (discount) {
+            if (discountType === "VALUE") {
+              amount = discount;
+            } else {
+              amount = (Math.floor(amount * discount / 100));
+            }
+          }
+          return amount > 0 ? amount : 0;
+        },
+        payAmount: state => {
+          let amount = state.posMachine.currentOrder.totalAmount;
+          let discount = state.posMachine.currentOrder.orderDiscount;
+          let discountType = state.posMachine.currentOrder.orderDiscountType;
+          if (discount) {
+            if (discountType === "VALUE") {
+              amount = amount - discount;
+            } else {
+              amount = amount - (Math.floor(amount * discount / 100));
+            }
+          }
+          return amount > 0 ? amount : 0;
+        },
       })
     },
     data() {
       return {
+        customerPay: null,
         backupCustomerPhone: null,
-        customerCharge: null,
         isEditCustomerPhone: false
       };
     },
     watch: {
       currentOrder: function () {
-        this.customerCharge = null;
+        this.customerPay = null;
       }
     },
     methods: {
@@ -205,7 +248,7 @@
         vm.backupCustomerPhone = null;
         vm.isEditCustomerPhone = false;
       },
-      async completeOrder() {
+      async completeOrder(customerPay) {
         const vm = this;
         if (this.unsavedOrderProduct.length) {
           MessageUtils.error("Đơn hàng có sản phẩm chưa được lưu");
@@ -219,30 +262,27 @@
           MessageUtils.error("Số điện thoại khách chưa được lưu");
           return;
         }
-        if (this.customerCharge === null || this.customerCharge === "") {
+        if (customerPay === null || customerPay === "") {
           MessageUtils.error("Vui lòng nhập số tiền khách đưa");
           return;
         }
-        if (this.customerCharge * 1000 < this.totalCharge) {
+        if (customerPay * 1000 < this.payAmount) {
           MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền thanh toán");
           return;
         }
         const payload = {
           paymentMethod: "CASH",
           paymentNote: null,
-          totalCharge: this.totalCharge,
-          customerCharge: this.customerCharge,
         };
         try {
           await vm.$store.dispatch("posMachine/completeOrder", payload);
-          vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(this.customerCharge * 1000)), function () {
+          vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(customerPay * 1000)), function () {
             // this function is called when print is done;
-            vm.$store.dispatch("posMachine/printDone", payload);
-            vm.customerCharge = null;
+            vm.$store.dispatch("posMachine/printDone");
+            vm.customerPay = null;
             NotificationUtils.success("Thanh toán thành công");
           });
         } catch (error) {
-          console.log(error);
           NotificationUtils.error("Thanh toán không thành công, vui lòng thử lại");
         }
 

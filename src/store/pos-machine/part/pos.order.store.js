@@ -7,8 +7,13 @@ const state = {
   currentOrder: {},
   orderStatus: PosOrderStoreUtil.orderStatus,
   paymentMethods: PosOrderStoreUtil.paymentMethods,
+  customerPay: null,
 };
+
 const mutations = {
+  SET_CUSTOMER_PAY(state, customerPay) {
+    state.customerPay = customerPay;
+  },
   SET_CURRENT_ORDER(state, currentOrder) {
     state.currentOrder = currentOrder;
   },
@@ -36,6 +41,7 @@ const actions = {
       listOrderProduct: state.unsavedOrderProduct
     };
     const {data} = await PosOrderService.updateOrder(posOrderUpdate);
+    console.log(data);
     commit("SET_CURRENT_ORDER", data);
     commit("SET_SAVED_ORDER_PRODUCT", data.listOrderProduct);
     commit("SET_UNSAVED_ORDER_PRODUCT", []);
@@ -50,7 +56,6 @@ const actions = {
       orderGuid: state.currentOrder.guid,
       paymentMethod: payload.paymentMethod,
       paymentNote: payload.paymentNote,
-      totalCharge: payload.totalCharge,
     };
     await PosOrderService.purchaseOrder(posPurchaseOrder);
   },
@@ -90,6 +95,7 @@ const actions = {
   },
   async getSeatOrderInfo({commit}, seatGuid) {
     try {
+      commit("SET_CUSTOMER_PAY", 0);
       const {data} = await PosOrderService.getSeatCurrentOrder(seatGuid);
       if (data.guid) {
         commit("SET_CURRENT_ORDER", data);

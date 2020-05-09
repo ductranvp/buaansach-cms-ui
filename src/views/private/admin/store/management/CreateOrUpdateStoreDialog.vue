@@ -24,6 +24,7 @@
           <el-form-item prop="storeName">
             <input-label :label="$t('private.adminStoreManagementPage.store.storeName')" required/>
             <el-input
+              ref="storeName"
               v-model="form.storeName"
               maxlength="100"
               show-word-limit

@@ -5,7 +5,7 @@ import NotificationUtils from "@/utils/notification.util";
 const mixinMethod = {
   methods: {
     dialogOpened() {
-      this.$refs.storeCode.focus();
+      this.$refs.storeName.focus();
     },
     create() {
       this.isEdit = false;

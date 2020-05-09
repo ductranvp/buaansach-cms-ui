@@ -106,6 +106,11 @@
         <div v-else class="full-size">
           <el-row class="full-size" type="flex" align="middle" justify="center">
             <el-form ref="createOrderForm" :model="form" :rules="formRules">
+              <el-form-item>
+                <el-alert style="width: 250px; line-height: 28px;" type="warning" :closable="false">
+                  <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>
+                </el-alert>
+              </el-form-item>
               <el-form-item prop="customerPhone">
                 <input-label label="SĐT khách hàng" optional/>
                 <el-input v-model="form.customerPhone"></el-input>

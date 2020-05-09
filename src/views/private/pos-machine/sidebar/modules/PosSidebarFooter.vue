@@ -1,7 +1,7 @@
 <template>
   <el-footer v-show="currentOrder.guid" class="bg-success" height="auto">
     <basic-purchase @showAdvancedPurchase="showAdvancedPurchase" ref="basicPurchase"/>
-    <advanced-purchase ref="advancedPurchaseDrawer"/>
+    <advanced-purchase v-if="currentOrder.guid" ref="advancedPurchaseDrawer"/>
   </el-footer>
 </template>
 
@@ -21,7 +21,7 @@
     methods: {
       showAdvancedPurchase() {
         this.$refs.advancedPurchaseDrawer.show();
-      },
+      }
     }
   };
 </script>

@@ -16,7 +16,7 @@
         currentStore: state => state.posMachine.currentStore,
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
-        totalCharge: state => {
+        totalAmount: state => {
           return state.posMachine.savedOrderProduct
             .filter(item => item.orderProductStatus.indexOf("CANCELLED") === -1)
             .map(item => item.orderProductPrice * item.orderProductQuantity)
@@ -105,17 +105,17 @@
         tableContent += "</table>";
         return tableContent;
       },
-      getBillSummary(customerCharge) {
-        const payAmount = this.totalCharge - this.currentOrder.orderDiscount;
+      getBillSummary(customerPay) {
+        const payAmount = this.totalAmount - this.currentOrder.orderDiscount;
         let tableContent = "<table>";
-        tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.totalCharge) + "</td></tr>";
+        tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.totalAmount) + "</td></tr>";
         tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.currentOrder.orderDiscount) + "</td></tr>";
         tableContent += "</table>";
         tableContent += "<div class='divider'></div>";
         tableContent += "<table>";
         tableContent += "<tr><th>THANH TOÁN</th><td class='text-right'>" + this.formatPrice(payAmount) + "</td></tr>";
-        tableContent += "<tr><th>TIỀN KHÁCH ĐƯA</th><td class='text-right'>" + this.formatPrice(customerCharge) + "</td></tr>";
-        tableContent += "<tr><th>TIỀN TRẢ LẠI</th><td class='text-right'>" + this.formatPrice(customerCharge - payAmount) + "</td></tr>";
+        tableContent += "<tr><th>TIỀN KHÁCH ĐƯA</th><td class='text-right'>" + this.formatPrice(customerPay) + "</td></tr>";
+        tableContent += "<tr><th>TIỀN TRẢ LẠI</th><td class='text-right'>" + this.formatPrice(customerPay - payAmount) + "</td></tr>";
         tableContent += "<tr><td colspan='2'><div class='text-center'>(Giá đã bao gồm thuế GTGT)</div></td></tr>";
         tableContent += "</table>";
         return tableContent;
@@ -128,28 +128,28 @@
         head += "</head>";
         return head;
       },
-      getBillBody(customerCharge) {
+      getBillBody(customerPay) {
         let body = "<body>";
         body += this.getBasicInfo();
         body += this.getBillMeta();
         body += "<div class='divider'></div>";
         body += this.getBillProduct();
         body += "<div class='divider'></div>";
-        body += this.getBillSummary(customerCharge);
+        body += this.getBillSummary(customerPay);
         body += "<div class='divider'></div>";
         body += "<h4 class='text-center'>CẢM ƠN QUÝ KHÁCH!</h4>";
         body += "</body>";
         return body;
       },
-      getHtmlContent(customerCharge) {
+      getHtmlContent(customerPay) {
         let htmlContent = "<html lang='en'>";
         htmlContent += this.getBillHead();
-        htmlContent += this.getBillBody(customerCharge);
+        htmlContent += this.getBillBody(customerPay);
         htmlContent += "</html>";
         return htmlContent;
       },
-      printBill(customerCharge, callback) {
-        let html = this.getHtmlContent(customerCharge);
+      printBill(customerPay, callback) {
+        let html = this.getHtmlContent(customerPay);
         let doc = document.getElementById('bill_frame').contentWindow.document;
         doc.open();
         doc.write(html);

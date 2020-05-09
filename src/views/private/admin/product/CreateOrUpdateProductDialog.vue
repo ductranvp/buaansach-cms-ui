@@ -245,8 +245,7 @@
         done();
       },
       onOpened() {
-        if (this.isEdit) this.$refs.productName.focus();
-        else this.$refs.productCode.focus();
+        this.$refs.productName.focus();
       },
       submit() {
         this.$refs.productForm.validate(async valid => {
