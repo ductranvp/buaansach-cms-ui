@@ -16,11 +16,32 @@
         currentStore: state => state.posMachine.currentStore,
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
-        totalAmount: state => {
-          return state.posMachine.savedOrderProduct
-            .filter(item => item.orderProductStatus.indexOf("CANCELLED") === -1)
-            .map(item => item.orderProductPrice * item.orderProductQuantity)
-            .reduce((prev, curr) => prev + curr, 0);
+        totalAmount: state => state.posMachine.currentOrder.totalAmount,
+        discountAmount: state => {
+          let amount = 0;
+          let discount = state.posMachine.currentOrder.orderDiscount;
+          let discountType = state.posMachine.currentOrder.orderDiscountType;
+          if (discount) {
+            if (discountType === "VALUE") {
+              amount = discount;
+            } else {
+              amount = (Math.floor(amount * discount / 100));
+            }
+          }
+          return amount > 0 ? amount : 0;
+        },
+        payAmount: state => {
+          let amount = state.posMachine.currentOrder.totalAmount;
+          let discount = state.posMachine.currentOrder.orderDiscount;
+          let discountType = state.posMachine.currentOrder.orderDiscountType;
+          if (discount) {
+            if (discountType === "VALUE") {
+              amount = amount - discount;
+            } else {
+              amount = amount - (Math.floor(amount * discount / 100));
+            }
+          }
+          return amount > 0 ? amount : 0;
         },
       })
     },
@@ -55,15 +76,11 @@
         return info;
       },
       getDate() {
-        // const date = new Date();
-        // return date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
         return this.$moment().format("DD/MM/YYYY HH:mm");
       },
       getBillMeta() {
-        const order = this.currentOrder;
-        const date = new Date();
         let meta = "<table>";
-        meta += "<tr><td>Mã đơn: " + order.orderCode + "</td></tr>";
+        meta += "<tr><td>Mã đơn: " + this.currentOrder.orderCode + "</td></tr>";
         meta += "<tr><td>Ngày bán: " + this.getDate() + "</td></tr>";
         meta += "</table>";
         return meta;
@@ -106,16 +123,15 @@
         return tableContent;
       },
       getBillSummary(customerPay) {
-        const payAmount = this.totalAmount - this.currentOrder.orderDiscount;
         let tableContent = "<table>";
         tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.totalAmount) + "</td></tr>";
-        tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.currentOrder.orderDiscount) + "</td></tr>";
+        tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.discountAmount) + "</td></tr>";
         tableContent += "</table>";
         tableContent += "<div class='divider'></div>";
         tableContent += "<table>";
-        tableContent += "<tr><th>THANH TOÁN</th><td class='text-right'>" + this.formatPrice(payAmount) + "</td></tr>";
+        tableContent += "<tr><th>THANH TOÁN</th><td class='text-right'>" + this.formatPrice(this.payAmount) + "</td></tr>";
         tableContent += "<tr><th>TIỀN KHÁCH ĐƯA</th><td class='text-right'>" + this.formatPrice(customerPay) + "</td></tr>";
-        tableContent += "<tr><th>TIỀN TRẢ LẠI</th><td class='text-right'>" + this.formatPrice(customerPay - payAmount) + "</td></tr>";
+        tableContent += "<tr><th>TIỀN TRẢ LẠI</th><td class='text-right'>" + this.formatPrice(customerPay - this.payAmount) + "</td></tr>";
         tableContent += "<tr><td colspan='2'><div class='text-center'>(Giá đã bao gồm thuế GTGT)</div></td></tr>";
         tableContent += "</table>";
         return tableContent;

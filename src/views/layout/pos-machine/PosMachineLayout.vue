@@ -54,8 +54,6 @@
   }
 
   .aside {
-    /*box-shadow: 3px 0 5px rgba(0, 0, 0, .24);*/
     background-color: #fff;
-    /*z-index: 2;*/
   }
 </style>

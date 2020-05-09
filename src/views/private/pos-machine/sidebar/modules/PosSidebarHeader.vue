@@ -35,9 +35,12 @@
     },
     methods: {
       async refreshSeatOrder() {
-        this.isRefreshing = true;
-        await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
-        this.isRefreshing = false;
+        const vm = this;
+        vm.isRefreshing = true;
+        await vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
+        setTimeout(function () {
+          vm.isRefreshing = false;
+        }, 1000);
       }
     }
   };

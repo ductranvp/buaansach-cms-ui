@@ -1,7 +1,7 @@
 <template>
   <el-card shadow="never" style="line-height: 1.5">
     <div slot="header">
-      <span>About</span>
+      <span>Tài khoản</span>
     </div>
     <el-container direction="vertical">
       <el-row type="flex" justify="center">

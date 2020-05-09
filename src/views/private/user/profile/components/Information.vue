@@ -1,5 +1,5 @@
 <template>
-  <p>Information</p>
+  <p>Chưa có dữ liệu</p>
 </template>
 
 <script>

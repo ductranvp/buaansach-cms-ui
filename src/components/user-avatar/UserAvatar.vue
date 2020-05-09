@@ -1,4 +1,4 @@
-<UserAvatar>
+<template>
   <div :style="{ width: size + 'px', height: size + 'px' }" class="pointer">
     <el-tooltip
       :content="user.firstName + ' ' + user.lastName"
@@ -9,53 +9,49 @@
       <el-avatar
         :shape="shape"
         :size="size"
-        :src="user.imageUrl"
-        v-if="user.imageUrl != null && user.imageUrl !== ''"
+        :src="user.imageUrl ? user.imageUrl : circleUrl"
       >
-      </el-avatar>
-      <el-avatar
-        :shape="shape"
-        :size="size"
-        :style="{ fontSize: size * 0.4 + 'px' }"
-        v-else
-      >
-        <span>{{ user.firstName[0] }}</span>
       </el-avatar>
     </el-tooltip>
   </div>
-</UserAvatar>
+</template>
 
 <script>
-export default {
-  name: "Avatar",
-  props: {
-    user: Object,
-    isRouter: {
-      type: Boolean,
-      default: true
+  export default {
+    name: "Avatar",
+    props: {
+      user: Object,
+      isRouter: {
+        type: Boolean,
+        default: false
+      },
+      showTooltip: {
+        type: Boolean,
+        default: true
+      },
+      size: {
+        type: Number,
+        default: 100
+      },
+      shape: {
+        type: String,
+        default: "circle"
+      }
     },
-    showTooltip: {
-      type: Boolean,
-      default: true
+    data() {
+      return {
+        circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
+      };
     },
-    size: {
-      type: Number,
-      default: 100
+    created() {
+      console.log(this.user);
     },
-    shape: {
-      type: String,
-      default: "circle"
-    }
-  },
-  created() {
-    console.log(this.user);
-  },
-  methods: {}
-};
+    methods: {}
+  };
 </script>
 
 <style scoped>
-.pointer {
-  cursor: pointer;
-}
+  .pointer {
+    cursor: pointer;
+  }
 </style>

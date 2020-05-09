@@ -6,10 +6,10 @@
           <i class="el-icon-s-home"></i>
           <span class="hidden-md-and-down">Trang chủ</span>
         </el-button>
-        <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">
-          <i class="el-icon-s-data"></i>
-          <span class="hidden-md-and-down">Báo cáo</span>
-        </el-button>
+        <!--        <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">-->
+        <!--          <i class="el-icon-s-data"></i>-->
+        <!--          <span class="hidden-md-and-down">Báo cáo</span>-->
+        <!--        </el-button>-->
       </el-col>
 
       <el-col :span="8">
@@ -48,7 +48,7 @@
           </el-row>
 
           <el-row class="padding-0-10" type="flex" align="middle">
-            <el-avatar :size="24" :src="circleUrl"></el-avatar>
+            <el-avatar :size="24" :src="currentUser.imageUrl? currentUser.imageUrl : circleUrl"></el-avatar>
           </el-row>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
@@ -63,13 +63,9 @@
                 <i class="el-icon-menu"></i>
               </el-button>
               <el-dropdown-menu class="padding-0" slot="dropdown">
-                <el-dropdown-item command="">
+                <el-dropdown-item command="profilePage">
                   <i class="el-icon-user padding-right-10"></i>
                   <span>Tài khoản</span>
-                </el-dropdown-item>
-                <el-dropdown-item command="">
-                  <i class="el-icon-key padding-right-10"></i>
-                  <span>Đổi mật khẩu</span>
                 </el-dropdown-item>
                 <el-divider class="margin-0"></el-divider>
                 <el-dropdown-item command="logout">

@@ -1,133 +1,135 @@
 <template>
   <el-container class="full-size" direction="vertical">
-    <el-header height="auto">
-      <el-row class="full-size">
-        <el-col class="full-height">
-          <el-autocomplete
-            ref="customerPhone"
-            :class="isEditCustomerPhone ? 'edit-phone' : ''"
-            class="full-size"
-            popper-class="my-autocomplete"
-            placement="top-start"
-            :popper-append-to-body="true"
-            :trigger-on-focus="false"
-            :debounce="300"
-            :disabled="!isEditCustomerPhone"
-            v-model="currentOrder.customerPhone"
-            :fetch-suggestions="queryCustomer"
-            placeholder="SĐT Khách hàng"
-            :maxlength="10"
-            @select="handleSelect">
-            <i slot="prefix" class="el-input__icon el-icon-phone"></i>
-            <el-row class="full-size" type="flex" align="middle" slot="suffix">
-              <div v-if="isEditCustomerPhone">
-                <el-tooltip class="item" effect="dark" content="Lưu" placement="top">
-                  <el-button @click="updateCustomerPhone" class="full-size margin-0">
-                    <i class="fas el-icon-fa-check"></i>
-                  </el-button>
-                </el-tooltip>
+    <bill ref="billPage" style="visibility: hidden"/>
+    <create-customer-dialog ref="customerDialog"/>
+    <el-container class="full-size" direction="vertical" id="basic_purchase">
+      <el-header height="auto">
+        <el-row class="full-size">
+          <el-col class="full-height">
+            <el-autocomplete
+              ref="customerPhone"
+              :class="isEditCustomerPhone ? 'edit-phone' : ''"
+              class="full-size"
+              popper-class="my-autocomplete"
+              placement="top-start"
+              :popper-append-to-body="true"
+              :trigger-on-focus="false"
+              :debounce="300"
+              :disabled="!isEditCustomerPhone"
+              v-model="currentOrder.customerPhone"
+              :fetch-suggestions="queryCustomer"
+              placeholder="SĐT Khách hàng"
+              :maxlength="10"
+              @select="handleSelect">
+              <i slot="prefix" class="el-input__icon el-icon-phone"></i>
+              <el-row class="full-size" type="flex" align="middle" slot="suffix">
+                <div v-if="isEditCustomerPhone">
+                  <el-tooltip class="item" effect="dark" content="Lưu" placement="top">
+                    <el-button @click="updateCustomerPhone" class="full-size margin-0">
+                      <i class="fas el-icon-fa-check"></i>
+                    </el-button>
+                  </el-tooltip>
 
-              </div>
-              <div v-if="isEditCustomerPhone">
-                <el-tooltip class="item" effect="dark" content="Hủy" placement="top">
-                  <el-button @click="cancelEditCustomerPhone" class="full-size margin-0">
-                    <i class="fas el-icon-fa-times"></i>
-                  </el-button>
-                </el-tooltip>
+                </div>
+                <div v-if="isEditCustomerPhone">
+                  <el-tooltip class="item" effect="dark" content="Hủy" placement="top">
+                    <el-button @click="cancelEditCustomerPhone" class="full-size margin-0">
+                      <i class="fas el-icon-fa-times"></i>
+                    </el-button>
+                  </el-tooltip>
 
-              </div>
-              <div v-else>
-                <el-tooltip class="item" effect="dark" content="Sửa" placement="top">
-                  <el-button @click="editCustomerPhone" class="full-size margin-0">
-                    <i class="fas el-icon-fa-edit"></i>
-                  </el-button>
-                </el-tooltip>
+                </div>
+                <div v-else>
+                  <el-tooltip class="item" effect="dark" content="Sửa" placement="top">
+                    <el-button @click="editCustomerPhone" class="full-size margin-0">
+                      <i class="fas el-icon-fa-edit"></i>
+                    </el-button>
+                  </el-tooltip>
 
-              </div>
-              <div>
-                <el-tooltip class="item" effect="dark" content="Thêm Khách Hàng" placement="top">
-                  <el-button @click="createCustomer" class="full-size">
-                    <i class="fas el-icon-fa-user-plus"></i>
-                  </el-button>
-                </el-tooltip>
-              </div>
-            </el-row>
-            <template slot-scope="{ item }">
-              <div v-if="!item.customerPhone">
-                <div class="value">Không tìm thấy khách hàng</div>
-              </div>
-              <div v-else>
-                <div class="value">{{ item.customerName }}</div>
-                <span class="link">{{ item.customerPhone }}</span>
-              </div>
-            </template>
-          </el-autocomplete>
-        </el-col>
-      </el-row>
-      <el-divider class="margin-0 full-width bg-success"></el-divider>
-    </el-header>
-    <el-main class="full-size">
-      <el-container direction="vertical">
-        <el-row type="flex" align="middle" style="height: 40px">
-          <el-col :span="12" class="full-height">
-            <el-input v-model="customerPay" placeholder="Khách đưa">
-              <i slot="prefix" class="el-input__icon el-icon-money"></i>
-              <el-button class="full-size" style="color: #606266" disabled slot="suffix">
-                <span>x1000</span>
-              </el-button>
-            </el-input>
-          </el-col>
-          <el-col :span="12" class="full-height">
-            <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
-              <i class="el-icon-money"></i>
-              <span>Trả lại: </span>
-              <span v-if="customerPay*1000 > payAmount">{{customerPay*1000 - payAmount | priceAppend}}</span>
-              <span v-else>0</span>
-            </el-button>
+                </div>
+                <div>
+                  <el-tooltip class="item" effect="dark" content="Thêm Khách Hàng" placement="top">
+                    <el-button @click="createCustomer" class="full-size">
+                      <i class="fas el-icon-fa-user-plus"></i>
+                    </el-button>
+                  </el-tooltip>
+                </div>
+              </el-row>
+              <template slot-scope="{ item }">
+                <div v-if="!item.customerPhone">
+                  <div class="value">Không tìm thấy khách hàng</div>
+                </div>
+                <div v-else>
+                  <div class="value">{{ item.customerName }}</div>
+                  <span class="link">{{ item.customerPhone }}</span>
+                </div>
+              </template>
+            </el-autocomplete>
           </el-col>
         </el-row>
         <el-divider class="margin-0 full-width bg-success"></el-divider>
-        <el-row type="flex" align="middle" style="height: 40px">
-          <el-col :span="12" class="full-height">
-            <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
-              <i class="el-icon-money"></i>
-              <span>Tổng: </span>
-              <span v-if="totalAmount > 0">{{totalAmount | priceAppend}}</span>
+      </el-header>
+      <el-main class="full-size">
+        <el-container direction="vertical">
+          <el-row type="flex" align="middle" style="height: 40px">
+            <el-col :span="12" class="full-height">
+              <el-input v-model="customerPay" placeholder="Khách đưa">
+                <i slot="prefix" class="el-input__icon el-icon-money"></i>
+                <el-button class="full-size" style="color: #606266" disabled slot="suffix">
+                  <span>x1000</span>
+                </el-button>
+              </el-input>
+            </el-col>
+            <el-col :span="12" class="full-height">
+              <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
+                <i class="el-icon-money"></i>
+                <span>Trả lại: </span>
+                <span v-if="customerPay*1000 > payAmount">{{customerPay*1000 - payAmount | priceAppend}}</span>
+                <span v-else>0</span>
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-divider class="margin-0 full-width bg-success"></el-divider>
+          <el-row type="flex" align="middle" style="height: 40px">
+            <el-col :span="12" class="full-height">
+              <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
+                <i class="el-icon-money"></i>
+                <span>Tổng: </span>
+                <span v-if="totalAmount > 0">{{totalAmount | priceAppend}}</span>
+                <span v-else>0</span>
+              </el-button>
+            </el-col>
+            <el-col :span="12" class="full-height">
+              <el-button style="color: #606266;  padding: 12px 10px" disabled class="full-size text-left">
+                <i class="el-icon-discount"></i>
+                <span>Giảm giá: </span>
+                <span v-if="discountAmount > 0">{{discountAmount | priceAppend}}</span>
+                <span v-else>0</span>
+              </el-button>
+            </el-col>
+          </el-row>
+        </el-container>
+      </el-main>
+      <el-footer height="auto">
+        <el-row type="flex" align="middle">
+          <el-col :span="20">
+            <el-button type="success" @click="completeOrder(customerPay)" class="full-width text-large padding-20-10">
+              <i class="el-icon-printer"></i>
+              <span>Thanh toán: </span>
+              <span v-if="payAmount > 0">{{payAmount | priceAppend }}</span>
               <span v-else>0</span>
             </el-button>
           </el-col>
-          <el-col :span="12" class="full-height">
-            <el-button style="color: #606266;  padding: 12px 10px" disabled class="full-size text-left">
-              <i class="el-icon-discount"></i>
-              <span>Giảm giá: </span>
-              <span v-if="discountAmount > 0">{{discountAmount | priceAppend}}</span>
-              <span v-else>0</span>
-            </el-button>
+          <el-col :span="4">
+            <el-tooltip class="item" effect="dark" content="Khuyến mãi" placement="top">
+              <el-button type="warning" class="text-large full-width padding-20-10" @click="showAdvancedPurchase">
+                <i class="fas el-icon-fa-tags"></i>
+              </el-button>
+            </el-tooltip>
           </el-col>
         </el-row>
-      </el-container>
-    </el-main>
-    <el-footer height="auto">
-      <el-row type="flex" align="middle">
-        <el-col :span="20">
-          <el-button type="success" @click="completeOrder(customerPay)" class="full-width text-large padding-20-10">
-            <i class="el-icon-printer"></i>
-            <span>Thanh toán: </span>
-            <span v-if="payAmount > 0">{{payAmount | priceAppend }}</span>
-            <span v-else>0</span>
-          </el-button>
-        </el-col>
-        <el-col :span="4">
-          <el-tooltip class="item" effect="dark" content="Khuyến mãi" placement="top">
-            <el-button type="warning" class="text-large full-width padding-20-10" @click="showAdvancedPurchase">
-              <i class="fas el-icon-fa-tags"></i>
-            </el-button>
-          </el-tooltip>
-        </el-col>
-      </el-row>
-      <bill ref="billPage" style="visibility: hidden"/>
-      <create-customer-dialog ref="customerDialog"/>
-    </el-footer>
+      </el-footer>
+    </el-container>
   </el-container>
 </template>
 
@@ -299,17 +301,17 @@
     font-size: 28px
   }
 
-  /deep/ .el-input__inner {
+  /deep/ #basic_purchase .el-input__inner {
     border: 0;
     border-radius: 0;
   }
 
-  /deep/ .el-button {
+  /deep/ #basic_purchase .el-button {
     border: 0;
     border-radius: 0;
   }
 
-  /deep/ .el-input__suffix {
+  /deep/ #basic_purchase .el-input__suffix {
     right: 0;
   }
 

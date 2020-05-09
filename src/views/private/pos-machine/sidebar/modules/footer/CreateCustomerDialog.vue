@@ -127,13 +127,4 @@
 </script>
 
 <style scoped>
-  /deep/ .el-button {
-    border: 1px solid #DCDFE6 !important;
-    border-radius: 4px !important;
-  }
-
-  /deep/ .el-input__inner {
-    border-radius: 4px !important;
-    border: 1px solid #DCDFE6 !important;
-  }
 </style>

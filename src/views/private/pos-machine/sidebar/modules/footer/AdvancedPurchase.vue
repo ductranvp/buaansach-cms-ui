@@ -18,11 +18,17 @@
             <el-row type="flex" align="bottom">
               <el-col :span="11">
                 <input-label label="Mã giảm giá" optional/>
-                <el-input v-if="!currentOrder.orderVoucherCode" v-model="voucherCode"></el-input>
-                <el-input v-else disabled v-model="currentOrder.orderVoucherCode"></el-input>
+                <el-input v-if="!currentOrder.hasVoucher" v-model="voucherCode"></el-input>
+                <el-button v-else
+                           disabled
+                           class="full-width"
+                           type="success"
+                           plain>
+                  <span>Đã áp dụng</span>
+                </el-button>
               </el-col>
               <el-col :span="11" :offset="2">
-                <el-button v-if="!currentOrder.orderVoucherCode" @click="applyVoucher"
+                <el-button v-if="!currentOrder.hasVoucher" @click="applyVoucher"
                            class="full-width"
                            type="success"
                            plain>
@@ -33,20 +39,20 @@
             </el-row>
           </el-form-item>
         </el-form>
-        <el-row style="line-height: 28px" v-if="currentOrder.orderVoucherCode">
+        <el-row style="line-height: 28px" v-if="currentOrder.hasVoucher">
           <el-alert :closable="false">
-            <div>Tên voucher: {{voucherCodeInfo.voucherName}}</div>
-            <div v-if="voucherCodeInfo.voucherDiscountType === 'VALUE'">
-              <span>Giảm giá: {{voucherCodeInfo.voucherDiscount |priceAppend}}</span>
+            <div>Tên mã giảm giá: {{currentOrder.voucherName}}</div>
+            <div v-if="currentOrder.voucherDiscountType === 'VALUE'">
+              <span>Giảm giá: {{currentOrder.voucherDiscount |priceAppend}}</span>
             </div>
-            <div v-if="voucherCodeInfo.voucherDiscountType === 'PERCENT'">
-              <span>Giảm giá: {{voucherCodeInfo.voucherDiscount}}%</span>
+            <div v-if="currentOrder.voucherDiscountType === 'PERCENT'">
+              <span>Giảm giá: {{currentOrder.voucherDiscount}}%</span>
             </div>
-            <div v-if="voucherCodeInfo.customerPhone">
-              <span>Áp dụng cho SĐT: {{voucherCodeInfo.customerPhone}}</span>
+            <div v-if="currentOrder.voucherCustomerPhone">
+              <span>Áp dụng cho SĐT: {{currentOrder.voucherCustomerPhone}}</span>
             </div>
-            <div v-if="voucherCodeInfo.createdDate">
-              <span>Ngày tạo: {{voucherCodeInfo.createdDate | moment("HH:mm - DD/MM/YYYY")}}</span>
+            <div v-if="currentOrder.voucherCreatedDate">
+              <span>Ngày tạo: {{currentOrder.voucherCreatedDate | moment("HH:mm - DD/MM/YYYY")}}</span>
             </div>
           </el-alert>
         </el-row>
@@ -113,14 +119,9 @@
         drawerVisible: false,
         direction: 'ltr',
         voucherCode: null,
-        voucherCodeInfo: {}
       };
     },
     methods: {
-      async getVoucherInfo(voucherCode) {
-        const {data} = await PosVoucherCodeService.getVoucherCodeInfo(voucherCode);
-        this.voucherCodeInfo = data;
-      },
       async applyVoucher() {
         if (this.voucherCode) {
           let payload = {
@@ -130,25 +131,24 @@
           };
           try {
             await PosVoucherCodeService.applyVoucher(payload);
-            this.getVoucherInfo(this.voucherCode);
           } catch (e) {
             const message = e.message || e.data.message;
-            let errorMsg = "Mã voucher không khả dụng";
+            let errorMsg = "Mã giảm giá không khả dụng";
             switch (message) {
               case 'disabled':
-                errorMsg = "Mã đã bị vô hiệu hóa";
+                errorMsg = "Mã giảm giá đã bị vô hiệu hóa";
                 break;
               case 'invalid':
-                errorMsg = "Mã không hợp lệ";
+                errorMsg = "Mã giảm giá không hợp lệ";
                 break;
               case 'expired':
-                errorMsg = "Mã đã hết hạn";
+                errorMsg = "Mã giảm giá đã hết hạn";
                 break;
               case 'maxUsed':
-                errorMsg = "Mã đã hết lượt sử dụng";
+                errorMsg = "Mã giảm giá đã hết lượt sử dụng";
                 break;
               case 'invalidStore':
-                errorMsg = "Mã không hợp lệ";
+                errorMsg = "Mã giảm giá không hợp lệ";
                 break;
             }
             NotificationUtils.error(errorMsg);
@@ -179,8 +179,6 @@
         }
       },
       show() {
-        if (this.currentOrder.orderVoucherCode)
-          this.getVoucherInfo(this.currentOrder.orderVoucherCode);
         this.drawerVisible = true;
       },
       hide() {

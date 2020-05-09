@@ -6,13 +6,13 @@
     <el-col :span="18" :xs="24">
       <el-card shadow="never">
         <el-tabs v-model="activeTab">
-          <el-tab-pane label="Activity" name="activity">
+          <el-tab-pane label="Hoạt động" name="activity">
             <activity />
           </el-tab-pane>
-          <el-tab-pane label="Information" name="info">
+          <el-tab-pane label="Cập nhật" name="info">
             <information />
           </el-tab-pane>
-          <el-tab-pane label="Change Password" name="password">
+          <el-tab-pane label="Đổi mật khẩu" name="password">
             <change-password />
           </el-tab-pane>
         </el-tabs>

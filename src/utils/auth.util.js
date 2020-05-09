@@ -35,6 +35,7 @@ function logout() {
   /*routeName is the route that we want to redirect to when logged out*/
   store.dispatch("user/logout").then(() => {
     localStorage.clear();
+    sessionStorage.clear();
     router.push("/login").catch(() => {
     });
   });

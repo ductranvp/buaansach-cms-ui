@@ -25,7 +25,7 @@
                    :body-style="{ padding: '0px' }"
                    @click.native="addOrderProduct(storeProduct)"
                    shadow="never">
-            <img :src="storeProduct.productImageUrl" class="store-product-image">
+            <el-image :src="storeProduct.productImageUrl" class="store-product-image"/>
             <el-divider class="full-width margin-0"></el-divider>
             <div class="padding-5 text-small">
               <div>{{storeProduct.productCode}}</div>
@@ -84,9 +84,6 @@
             MessageUtils.error("Vui lòng chọn một bàn ăn!");
           }
         }
-      },
-      changeDisplayStoreProductSize(value) {
-        localStorage.setItem("displayStoreProductSize", value);
       },
       queryStoreProduct(keyword, cb) {
         keyword = keyword.trim();

@@ -83,7 +83,9 @@
         vm.isRefreshing = true;
         await vm.$store.dispatch("posMachine/getAllArea", vm.$route.params.storeGuid);
         await vm.$store.dispatch("posMachine/changeArea", vm.selectedArea.guid);
-        vm.isRefreshing = false;
+        setTimeout(function () {
+          vm.isRefreshing = false;
+        }, 1000);
       },
       changeSeat(seat) {
         if (this.selectedSeat.guid !== seat.guid)

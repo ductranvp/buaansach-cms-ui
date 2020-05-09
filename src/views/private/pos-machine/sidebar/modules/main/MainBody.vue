@@ -13,10 +13,10 @@
                 <el-row class="full-size" type="flex" align="middle">
                   <el-col :span="8" class="text-small">
                     <span>{{item.productName}}</span><br>
-                    <span>{{item.orderProductPrice | priceAppend("₫")}}</span>
+                    <span>{{item.orderProductPrice | priceAppend}}</span>
                   </el-col>
                   <el-col :span="6">
-                    <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend("₫")}}</span>
+                    <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
                   </el-col>
                   <el-col :span="10" class="padding-left-10 text-right">
                     <template v-if="item.orderProductStatus === 'PREPARING'">
@@ -105,21 +105,23 @@
         <!--show when order is not created -->
         <div v-else class="full-size">
           <el-row class="full-size" type="flex" align="middle" justify="center">
-            <el-form ref="createOrderForm" :model="form" :rules="formRules">
-              <el-form-item>
-                <el-alert style="width: 250px; line-height: 28px;" type="warning" :closable="false">
-                  <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>
-                </el-alert>
-              </el-form-item>
-              <el-form-item prop="customerPhone">
-                <input-label label="SĐT khách hàng" optional/>
-                <el-input v-model="form.customerPhone"></el-input>
-              </el-form-item>
-              <el-form-item>
-                <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">Tạo đơn
-                </el-button>
-              </el-form-item>
-            </el-form>
+            <el-col :span="14">
+              <el-form ref="createOrderForm" :model="form" :rules="formRules">
+                <el-form-item>
+                  <el-alert style="line-height: 28px;" type="warning" :closable="false">
+                    <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>
+                  </el-alert>
+                </el-form-item>
+                <el-form-item prop="customerPhone">
+                  <input-label label="SĐT khách hàng" optional/>
+                  <el-input v-model="form.customerPhone"></el-input>
+                </el-form-item>
+                <el-form-item>
+                  <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">Tạo đơn
+                  </el-button>
+                </el-form-item>
+              </el-form>
+            </el-col>
           </el-row>
         </div>
 
@@ -128,7 +130,7 @@
       <!--show when seat is not selected -->
       <el-main v-else class="full-size">
         <el-row class="full-size" type="flex" justify="center" align="middle">
-          <el-col :span="18">
+          <el-col :span="14">
             <el-alert :closable="false" center effect="dark" type="warning">
               <span slot="title">Hãy chọn 1 bàn ăn</span>
             </el-alert>

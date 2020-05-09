@@ -76,7 +76,7 @@
       changePosSize(value) {
         if (value > 90) this.posSize = 90;
         if (value < 10) this.posSize = 10;
-        localStorage.setItem("posSize", this.posSize);
+        localStorage.setItem("posMainSize", this.posSize);
       }
     }
   };
