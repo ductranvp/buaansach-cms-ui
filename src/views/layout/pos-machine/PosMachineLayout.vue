@@ -23,7 +23,6 @@
     mixins: [WebSocketHandler],
     computed: {
       ...mapState({
-        stompClient: state => state.websocket.stompClient,
         allAreas: state => state.posMachine.allAreas,
         ready: state => state.posMachine.ready,
         currentStore: state => state.posMachine.currentStore,

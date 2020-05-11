@@ -55,6 +55,7 @@
         selectedCategory: state => state.posMachine.selectedCategory,
         selectedSeat: state => state.posMachine.selectedSeat,
         currentOrder: state => state.posMachine.currentOrder,
+        orderStatus: state => state.posMachine.orderStatus,
       })
     },
     data() {
@@ -75,15 +76,19 @@
     },
     methods: {
       addOrderProduct(storeProduct) {
-        if (this.selectedSeat.guid && this.currentOrder.guid) {
-          this.$store.dispatch("posMachine/addOrderProduct", {storeProduct: storeProduct});
-        } else {
-          if (this.selectedSeat.guid) {
-            MessageUtils.error("Vui lòng tạo đơn trước khi chọn món!");
-          } else {
-            MessageUtils.error("Vui lòng chọn một bàn ăn!");
-          }
+        if (!this.selectedSeat.guid) {
+          MessageUtils.error("Vui lòng chọn một bàn ăn!");
+          return;
         }
+        if (!this.currentOrder.guid) {
+          MessageUtils.error("Vui lòng tạo đơn trước khi chọn món!");
+          return;
+        }
+        if (this.currentOrder.orderStatus === this.orderStatus.CREATED) {
+          MessageUtils.error("Vui lòng tiếp nhận đơn trước khi thêm món!");
+          return;
+        }
+        this.$store.dispatch("posMachine/addOrderProduct", {storeProduct: storeProduct});
       },
       queryStoreProduct(keyword, cb) {
         keyword = keyword.trim();

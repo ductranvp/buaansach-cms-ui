@@ -13,23 +13,27 @@
           <el-col :span="6">
             <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
           </el-col>
-          <el-col :span="10" class="padding-left-10 text-right">
-            <template v-if="item.orderProductStatus === 'PREPARING'">
-              <el-row type="flex" align="middle" justify="end">
-                <el-button @click="serveOrderProduct(item)" type="success" size="small">Đã phục vụ</el-button>
-              </el-row>
-            </template>
-            <el-button disabled plain class="margin-right-10" size="small" type="success"
-                       v-else-if="item.orderProductStatus === 'SERVED'">
-              <span>Hoàn tất</span>
-            </el-button>
-            <el-button disabled plain class="margin-right-10" size="small" type="danger" v-else>
-              <span>Đã hủy</span>
-            </el-button>
-          </el-col>
+          <template v-if="currentOrder.orderStatus !== 'CREATED'">
+            <el-col :span="10" class="padding-left-10 text-right">
+              <template v-if="item.orderProductStatus === 'PREPARING'">
+                <el-row type="flex" align="middle" justify="end">
+                  <el-button @click="serveOrderProduct(item)" type="success" size="small">Đã phục vụ</el-button>
+                </el-row>
+              </template>
+              <el-button disabled plain class="margin-right-10" size="small" type="success"
+                         v-else-if="item.orderProductStatus === 'SERVED'">
+                <span>Hoàn tất</span>
+              </el-button>
+              <el-button disabled plain class="margin-right-10" size="small" type="danger" v-else>
+                <span>Đã hủy</span>
+              </el-button>
+            </el-col>
+          </template>
         </el-row>
         <el-button
-          v-if="item.orderProductStatus !== 'SERVED' && item.orderProductStatus.indexOf('CANCELLED') === -1"
+          v-if="item.orderProductStatus !== 'SERVED' &&
+          item.orderProductStatus.indexOf('CANCELLED') === -1 &&
+          currentOrder.orderStatus !== 'CREATED'"
           @click="cancelOrderProduct(item)" type="text"
           class="padding-10 text-info text-very-large">
           <i class="el-icon-close"></i>
@@ -56,6 +60,7 @@
     computed: {
       ...mapState({
         selectedSeat: state => state.posMachine.selectedSeat,
+        currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         orderProductStatus: state => state.posMachine.orderProductStatus,
         seatStatus: state => state.posMachine.seatStatus,

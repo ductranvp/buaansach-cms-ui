@@ -1,7 +1,6 @@
 <template>
   <div style="width: 0; height: 0; visibility: hidden">
     <iframe id="bill_frame" width="0" height="0" frameborder="0">
-
     </iframe>
   </div>
 </template>
@@ -57,6 +56,9 @@
         style += ".text-center {text-align: center;}";
         style += ".text-left {text-align: center;}";
         style += ".text-right {text-align: right;}";
+        style += ".pl-2 {padding-left: 2px;}";
+        style += ".logo {width: 35px; height: 28px; padding-right: 5px}";
+        style += ".flex-center {display:flex; flex-direction: row; align-items: center; justify-content: center}";
         style += ".divider {border-top: 1px dashed black}";
         style += "table {font-size: 8pt;width: 100%;}";
         style += "th {text-align: left;}";
@@ -67,11 +69,17 @@
       getBasicInfo() {
         const store = this.currentStore;
         let info = "";
-        info += "<h4 class='text-center' style='margin-bottom: 0px !important;'>BỮA ĂN SẠCH</h4>";
+        info += "<div class='flex-center'>";
+        info += "<img class='logo' src='/logo_print.png' >";
+        info += "<div>";
+        info += "<h4 class='text-center' style='margin-bottom: 0 !important;'>BỮA ĂN SẠCH</h4>";
         info += "<div class='text-center' style='margin-bottom: 5px'><em>buaansach.com.vn</em></div>";
-        info += "<div><b>Cửa hàng: </b>" + store.storeName + "</div>";
-        info += "<div><b>Địa chỉ: </b>" + store.storeAddress + "</div>";
-        info += "<div><b>Điện thoại: </b>" + store.storeOwnerPhone + "</div>";
+        info += "</div>";
+        info += "</div>";
+
+        info += "<div class='pl-2'><b>Cửa hàng: </b>" + store.storeName + "</div>";
+        info += "<div class='pl-2'><b>Địa chỉ: </b>" + store.storeAddress + "</div>";
+        info += "<div class='pl-2'><b>Điện thoại: </b>" + store.storeOwnerPhone + "</div>";
         info += "<h4 class='text-center'>HÓA ĐƠN BÁN HÀNG</h4>";
         return info;
       },
@@ -166,12 +174,19 @@
       },
       printBill(customerPay, callback) {
         let html = this.getHtmlContent(customerPay);
-        let doc = document.getElementById('bill_frame').contentWindow.document;
+        let billFrame = document.getElementById('bill_frame');
+        let doc = billFrame.contentWindow.document;
+        billFrame.onload = null;
+        billFrame.onload = onLoad;
+
+        function onLoad() {
+          document.getElementById("bill_frame").contentWindow.print();
+          if (callback) callback();
+        }
+
         doc.open();
         doc.write(html);
         doc.close();
-        document.getElementById("bill_frame").contentWindow.print();
-        if (callback) callback();
       },
     }
   };

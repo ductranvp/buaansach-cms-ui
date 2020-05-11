@@ -1,6 +1,6 @@
 <template>
   <el-container class="full-size" direction="vertical">
-    <bill ref="billPage" style="visibility: hidden"/>
+    <bill ref="billPage"/>
     <create-customer-dialog ref="customerDialog"/>
     <el-container class="full-size" direction="vertical" id="basic_purchase">
       <el-header height="auto">
@@ -281,6 +281,7 @@
         };
         try {
           await vm.$store.dispatch("posMachine/completeOrder", payload);
+          console.log("prinnt");
           vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(customerPay * 1000)), function () {
             // this function is called when print is done;
             vm.$store.dispatch("posMachine/printDone");

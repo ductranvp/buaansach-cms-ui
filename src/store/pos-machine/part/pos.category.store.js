@@ -4,6 +4,8 @@ import PosCategoryService from "@/service/pos/pos.category.service";
 const defaultCategoryEntity = {
   guid: "all",
   categoryName: "Tất cả",
+  categoryImageUrl: null,
+  categoryPosition: null,
   listStoreProduct: [],
 };
 
