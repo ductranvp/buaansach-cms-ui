@@ -36,6 +36,13 @@ const MessageBoxUtils = {
       })
       .catch(() => {
       });
+  },
+  async confirmPromise(message) {
+    await MessageBox.confirm(message, i18n.t("app.messageBox.confirmTitle") + "", {
+      confirmButtonText: i18n.t("app.messageBox.okBtn"),
+      cancelButtonText: i18n.t("app.messageBox.cancelBtn"),
+      type: "warning"
+    });
   }
 };
 export default MessageBoxUtils;

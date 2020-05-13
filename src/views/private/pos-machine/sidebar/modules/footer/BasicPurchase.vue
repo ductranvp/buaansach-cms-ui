@@ -145,6 +145,7 @@
   import NotificationUtils from "@/utils/notification.util";
   import PosOrderService from "@/service/pos/pos.order.service";
   import CreateCustomerDialog from "@/views/private/pos-machine/sidebar/modules/footer/CreateCustomerDialog";
+  import MessageBoxUtils from "@/utils/message-box.util";
 
   export default {
     name: "BasicPurchase",
@@ -204,6 +205,19 @@
         this.$emit("showAdvancedPurchase");
       },
       async updateCustomerPhone() {
+        if (this.backupCustomerPhone === this.currentOrder.customerPhone) {
+          this.isEditCustomerPhone = false;
+          return;
+        }
+        let willVoucherBeCancelled = false;
+        if (this.currentOrder.voucherCustomerPhone != null) {
+          try {
+            await MessageBoxUtils.confirmPromise("Thay đổi số điện thoại sẽ hủy mã voucher, tiếp tục?");
+            willVoucherBeCancelled = true;
+          } catch (e) {
+            return;
+          }
+        }
         const patt = new RegExp(Constants.PHONE_REGEX);
         if (this.currentOrder.customerPhone && !patt.test(this.currentOrder.customerPhone)) {
           MessageUtils.error("Số điện thoại không hợp lệ");
@@ -222,6 +236,13 @@
           this.isEditCustomerPhone = false;
         } catch (e) {
           MessageUtils.error("Số điện thoại không tồn tại trong hệ thống. Vui lòng Thêm Khách Khàng trước");
+        }
+        if (willVoucherBeCancelled){
+          try {
+            await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
+          } catch (e) {
+            NotificationUtils.error("Lỗi tải lại dữ liệu đơn hàng");
+          }
         }
       },
       async queryCustomer(customerPhone, cb) {
