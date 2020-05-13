@@ -4,8 +4,14 @@ import * as SockJS from "sockjs-client";
 import * as Stomp from "webstomp-client";
 import Constants from "@/utils/constants";
 
-const state = {};
-const mutations = {};
+const state = {
+  stompClient: null,
+};
+const mutations = {
+  SET_STOMP_CLIENT(state, client) {
+    state.stompClient = client;
+  }
+};
 const actions = {
   connect({state, commit, dispatch}, {onSuccess, onError}) {
     let url = Constants.SERVER_API_URL + "/websocket?access_token=" + AuthUtils.getToken();
@@ -15,9 +21,11 @@ const actions = {
     stompClient.connect(
       {},
       function (frame) {
+        commit("SET_STOMP_CLIENT", stompClient);
         onSuccess(stompClient);
       },
       function (error) {
+        commit("SET_STOMP_CLIENT", null);
         onError(error);
         setTimeout(() => {
           dispatch("connect", {

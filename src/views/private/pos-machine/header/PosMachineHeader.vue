@@ -3,13 +3,9 @@
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
         <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">
-          <i class="el-icon-s-home"></i>
-          <span class="hidden-md-and-down">Trang chủ</span>
+          <i class="el-icon-s-data"></i>
+          <span class="hidden-md-and-down">Báo cáo</span>
         </el-button>
-        <!--        <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">-->
-        <!--          <i class="el-icon-s-data"></i>-->
-        <!--          <span class="hidden-md-and-down">Báo cáo</span>-->
-        <!--        </el-button>-->
       </el-col>
 
       <el-col :span="8">

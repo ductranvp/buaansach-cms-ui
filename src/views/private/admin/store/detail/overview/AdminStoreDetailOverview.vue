@@ -3,13 +3,13 @@
     <el-row class="full-size" :gutter="10">
       <el-col :md="10" :sm="24">
         <div class="text-center">
-          <el-image v-if="adminCurrentStore.storeImageUrl" class="store-image" :src="adminCurrentStore.storeImageUrl"
+          <el-image v-show="adminCurrentStore.storeImageUrl" class="store-image" :src="adminCurrentStore.storeImageUrl"
                     fit="cover" :preview-src-list="[adminCurrentStore.storeImageUrl]">
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
             </div>
           </el-image>
-          <el-image v-else class="store-image-error" fit="cover">
+          <el-image v-show="!adminCurrentStore.storeImageUrl" class="store-image-error" fit="cover">
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
             </div>

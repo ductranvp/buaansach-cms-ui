@@ -2,12 +2,12 @@
   <div class="sidebar-logo-container" :class="{'collapse':collapse}">
     <transition name="sidebarLogoFade">
       <router-link v-if="collapse" key="collapse" class="sidebar-logo-link" to="/">
-        <img v-if="logo" src="../../../../../assets/images/logo.jpg" class="sidebar-logo">
+        <img v-if="logo" src="/logo_square.png" class="sidebar-logo">
         <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link>
       <router-link v-else key="expand" class="sidebar-logo-link" to="/">
         <el-row class="padding-0-10" type="flex" align="middle">
-          <img v-if="logo" src="../../../../../assets/images/logo.jpg" class="sidebar-logo">
+          <img v-if="logo" src="/logo_square.png" class="sidebar-logo">
           <h1 class="sidebar-title">{{ title }} </h1>
         </el-row>
       </router-link>

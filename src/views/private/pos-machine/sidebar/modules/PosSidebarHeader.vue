@@ -2,10 +2,11 @@
   <el-header class="bg-success" height="40px">
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col>
-        <!--        <el-button type="success" size="small">-->
-        <!--          <i class="el-icon-lock"></i>-->
-        <!--          <span>Khóa bàn</span>-->
-        <!--        </el-button>-->
+        <div class="padding-left-10">
+          <router-link to="/">
+            <img alt="logo" src="/logo_square.png" class="logo">
+          </router-link>
+        </div>
       </el-col>
       <el-col v-if="selectedSeat.seatName" class="text-center text-light">
         <h1>{{selectedSeat.seatName}} - {{selectedSeat.areaName}}</h1>
@@ -48,5 +49,8 @@
 </script>
 
 <style scoped>
-
+  .logo {
+    height: 32px;
+    width: 32px;
+  }
 </style>

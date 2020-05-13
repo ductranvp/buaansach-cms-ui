@@ -1,17 +1,23 @@
 import NotificationUtils from "@/utils/notification.util";
 import AuthUtils from "@/utils/auth.util";
 import {Notification} from "element-ui";
+import {mapState} from "vuex";
 
 const WebSocketHandler = {
+  computed: {
+    ...mapState({
+      stompClient: state => state.websocket.stompClient,
+      currentStore: state => state.posMachine.currentStore
+    })
+  },
   data() {
     return {
       errorMessage: null,
       subscription: null,
-      stompClient: null,
     };
   },
   async created() {
-    if (AuthUtils.getToken())
+    if (this.stompClient === null && AuthUtils.getToken())
       await this.$store.dispatch("websocket/connect", {
         onSuccess: this.onConnectSuccess,
         onError: this.onConnectError,
@@ -29,7 +35,8 @@ const WebSocketHandler = {
         this.errorMessage.close();
         setTimeout(() => NotificationUtils.success("Kết nối lại thành công, tải lại trang để đảm bảo dữ liệu mới nhất"), 300);
       }
-      this.subscription = stompClient.subscribe("/topic/pos/" + this.$route.params.storeGuid, this.onMessageReceived);
+      const storeGuid = this.currentStore.guid || this.$route.params.storeGuid;
+      this.subscription = stompClient.subscribe("/topic/pos/" + storeGuid, this.onMessageReceived);
     },
     onConnectError(error) {
       if (!this.errorMessage) {
@@ -50,10 +57,10 @@ const WebSocketHandler = {
       const data = JSON.parse(payload.body);
       const seatData = this.allSeats.find(seat => seat.guid === data.payload.seatGuid);
       switch (data.message) {
-        case "CREATE_ORDER":
+        case "GUEST_CREATE_ORDER":
           NotificationUtils.info(seatData.seatName + " " + seatData.areaName + " đã tạo đơn hàng");
           break;
-        case "UPDATE_ORDER":
+        case "GUEST_UPDATE_ORDER":
           NotificationUtils.info(seatData.seatName + " " + seatData.areaName + " đã mọi món");
           break;
       }

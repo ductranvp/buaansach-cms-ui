@@ -1,17 +1,20 @@
 <template>
-  <el-header class="bg-success" height="60px">
+  <el-header class="bg-success" height="50px">
     <el-row class="full-size padding-0-10" type="flex" align="middle">
       <el-col>
         <router-link to="/">
-          <img src="../../../../assets/images/logo.jpg" class="logo">
+          <img src="/logo_square.png" class="logo">
         </router-link>
-        <el-button type="success" @click="goto('homePage')">
+        <el-button class="padding-10" type="success" @click="goto('homePage')">
           <span>BỮA ĂN SẠCH</span>
         </el-button>
       </el-col>
       <el-col class="text-right">
         <el-button type="success" v-if="hasAnyRole(['ROLE_ADMIN'])" @click="goto('adminDashboardPage')">
           <span>Quản trị viên</span>
+        </el-button>
+        <el-button type="success" @click="goto('profilePage')">
+          <span>Tài Khoản</span>
         </el-button>
         <el-button type="success" @click="goto('logout')">
           <span>Đăng xuất</span>
@@ -46,9 +49,8 @@
 
 <style scoped>
   .logo {
-    border: 2px solid gray;
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     vertical-align: middle;
   }
 </style>
