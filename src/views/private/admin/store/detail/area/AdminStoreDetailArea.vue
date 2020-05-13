@@ -8,6 +8,11 @@
                       v-model="form.areaName">
             </el-input>
           </el-form-item>
+          <el-form-item prop="areaType">
+            <el-select placeholder="Loại khu vực" v-model="form.areaType">
+              <el-option v-for="type in areaTypes" :label="type.label" :value="type.value" :key="type.value"></el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item>
             <el-color-picker
               v-model="form.areaColor"
@@ -163,6 +168,7 @@
         areas: [],
         form: {
           areaName: null,
+          areaType: "IN_STORE",
           areaColor: "#ffffff",
           autoCreateSeat: true,
           numberOfSeats: null,
@@ -170,6 +176,13 @@
         },
         formRules: {
           areaName: [
+            {
+              required: true,
+              message: this.$t("common.entity.validation.required"),
+              trigger: "blur"
+            }
+          ],
+          areaType: [
             {
               required: true,
               message: this.$t("common.entity.validation.required"),
@@ -192,6 +205,10 @@
           'hsl(181, 100%, 37%)',
           'hsla(209, 100%, 56%, 0.73)',
           '#c7158577'
+        ],
+        areaTypes: [
+          {label: "Trong quán", value: "IN_STORE"},
+          {label: "Ngoài quán", value: "OUT_STORE"},
         ]
       };
     },
@@ -249,6 +266,7 @@
         this.form = {
           autoCreateSeat: true,
           areaColor: "#ffffff",
+          areaType: "IN_STORE",
         };
         this.$refs.areaForm.clearValidate();
         this.$refs.areaForm.resetFields();

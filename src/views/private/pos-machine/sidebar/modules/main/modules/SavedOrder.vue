@@ -63,14 +63,9 @@
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         orderProductStatus: state => state.posMachine.orderProductStatus,
-        seatStatus: state => state.posMachine.seatStatus,
-        seatServiceStatus: state => state.posMachine.seatServiceStatus,
       })
     },
     methods: {
-      trimOrderNote(orderNote) {
-        return orderNote.substring(0, 50);
-      },
       async serveOrderProduct(product) {
         const vm = this;
         if (vm.$route.params.storeGuid) {
@@ -78,21 +73,9 @@
             await vm.$store.dispatch("posMachine/serveOrderProduct",
               {orderProduct: product, storeGuid: vm.$route.params.storeGuid});
             NotificationUtils.success("Cập nhật thành công", 1000);
-            this.checkOrderProductStatus();
           } catch (error) {
             NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
           }
-        }
-      },
-      checkOrderProductStatus() {
-        const temp = this.savedOrderProduct.filter(od => od.orderProductStatus === this.orderProductStatus.CREATED ||
-          od.orderProductStatus === this.orderProductStatus.PREPARING);
-        if (!temp.length) {
-          this.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
-            targetSeat: this.selectedSeat,
-            seatStatus: this.seatStatus.NON_EMPTY,
-            seatServiceStatus: this.seatServiceStatus.FINISHED
-          });
         }
       },
       cancelOrderProduct(product) {

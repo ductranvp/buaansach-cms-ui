@@ -65,7 +65,18 @@ const actions = {
     if (item) quantity = Number(item.orderProductQuantity) + 1;
     commit("SET_ORDER_PRODUCT_QUANTITY", {orderProduct, quantity});
   },
-  async serveOrderProduct({state, commit}, {orderProduct, storeGuid}) {
+  checkOrderProductStatus({state, commit}) {
+    const temp = state.savedOrderProduct.filter(od => od.orderProductStatus === state.orderProductStatus.CREATED ||
+      od.orderProductStatus === state.orderProductStatus.PREPARING);
+    if (!temp.length) {
+      commit("CHANGE_SEAT_STATUS", {
+        targetSeat: state.selectedSeat,
+        seatStatus: state.seatStatus.NON_EMPTY,
+        seatServiceStatus: state.seatServiceStatus.FINISHED
+      });
+    }
+  },
+  async serveOrderProduct({state, commit, dispatch}, {orderProduct, storeGuid}) {
     let orderProductChange = {
       storeGuid: storeGuid,
       orderProductGuid: orderProduct.guid,
@@ -75,6 +86,24 @@ const actions = {
       orderProduct: orderProduct,
       status: state.orderProductStatus.SERVED
     });
+    dispatch("checkOrderProductStatus");
+  },
+  async serveAllOrderProduct({state, commit, dispatch}) {
+    const listPreparingOrderProduct = state.savedOrderProduct
+      .filter(item => item.orderProductStatus === state.orderProductStatus.PREPARING);
+    let orderProductServeDto = {
+      storeGuid: state.currentStore.guid,
+      orderGuid: state.currentOrder.guid,
+      listOrderProductGuid: listPreparingOrderProduct.map(item => item.guid)
+    };
+    await PosOrderProductService.serveAllOrderProduct(orderProductServeDto);
+    listPreparingOrderProduct.forEach(orderProduct => {
+      commit("SET_ORDER_PRODUCT_STATUS", {
+        orderProduct: orderProduct,
+        status: state.orderProductStatus.SERVED
+      });
+    });
+    dispatch("checkOrderProductStatus");
   },
   async cancelOrderProduct({state, commit}, {orderProduct, cancelReason, storeGuid}) {
     try {

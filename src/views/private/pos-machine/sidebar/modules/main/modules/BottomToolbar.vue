@@ -22,13 +22,29 @@
             </el-button>
           </el-col>
         </el-row>
-        <el-button v-else :disabled="!unsavedOrderProduct.length" :loading="isLoading" type="info"
-                   class="no-border no-border-radius full-size text-small"
-                   @click="updateOrder"
-                   size="small">
-          <i class="fas el-icon-fa-save"></i>
-          <span>Lưu danh sách</span>
-        </el-button>
+
+        <el-row type="flex" align="middle" class="full-size" v-else>
+          <el-col class="full-height">
+            <el-button :loading="isLoading" type="success"
+                       class="no-border no-border-radius full-size text-small"
+                       :disabled="isAllOrderProductDone"
+                       @click="serveAllOrderProduct"
+                       size="small">
+              <i class="fas el-icon-fa-check"></i>
+              <span>Xong tất cả</span>
+            </el-button>
+          </el-col>
+          <el-col class="full-height">
+            <el-button :disabled="!unsavedOrderProduct.length" :loading="isLoading"
+                       type="warning"
+                       class="no-border no-border-radius full-size text-small"
+                       @click="updateOrder"
+                       size="small">
+              <i class="fas el-icon-fa-save"></i>
+              <span>Lưu danh sách</span>
+            </el-button>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </el-footer>
@@ -45,6 +61,10 @@
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
+        isAllOrderProductDone: state => {
+          const temp = state.posMachine.savedOrderProduct.filter(item => item.orderProductStatus === state.posMachine.orderProductStatus.PREPARING);
+          return temp.length === 0;
+        },
       })
     },
     data() {
@@ -94,6 +114,17 @@
         }
         vm.isLoading = false;
       },
+      async serveAllOrderProduct() {
+        const vm = this;
+        vm.isLoading = true;
+        try {
+          await this.$store.dispatch("posMachine/serveAllOrderProduct");
+          NotificationUtils.success("Cập nhật thành công");
+        } catch (error) {
+          NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+        }
+        vm.isLoading = false;
+      }
     }
   };
 </script>
