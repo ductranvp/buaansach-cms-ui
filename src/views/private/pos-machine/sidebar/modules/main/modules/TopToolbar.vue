@@ -5,12 +5,22 @@
       <el-col :span="18" class="text-small">
         <el-row :gutter="10" type="flex" align="middle">
           <el-col>
-            <el-tag type="info" effect="dark" size="medium">Mã đơn: {{currentOrder.orderCode}}</el-tag>
+            <el-tag type="info" effect="dark" size="medium">Mã: {{currentOrder.orderCode}}</el-tag>
           </el-col>
           <el-col>
             <el-tag type="info" effect="dark" size="medium">
               <span>Giờ vào: {{currentOrder.orderCheckinTime | moment("HH:mm")}}</span>
             </el-tag>
+          </el-col>
+          <el-col>
+            <el-tooltip content="Làm mới">
+              <el-button :loading="isRefreshing" @click="refreshSeatOrder"
+                         type="success"
+                         plain
+                         size="mini">
+                <i class="el-icon-refresh"></i>
+              </el-button>
+            </el-tooltip>
           </el-col>
         </el-row>
       </el-col>
@@ -46,9 +56,23 @@
     computed: {
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
+        selectedSeat: state => state.posMachine.selectedSeat,
       })
     },
+    data() {
+      return {
+        isRefreshing: false,
+      };
+    },
     methods: {
+      async refreshSeatOrder() {
+        const vm = this;
+        vm.isRefreshing = true;
+        await vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
+        setTimeout(function () {
+          vm.isRefreshing = false;
+        }, 1000);
+      },
       cancelOrder() {
         const vm = this;
         this.$prompt("Nhập lí do hủy đơn (bắt buộc)", "Xác nhận hủy đơn", {

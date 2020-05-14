@@ -31,6 +31,17 @@ const mutations = {
         }
       });
   },
+  TOGGLE_LOCK(state, targetSeat) {
+    state.allAreas.forEach(area => {
+      if (area.guid === targetSeat.areaGuid) {
+        const idx = area.listSeat.findIndex(seat => seat.guid === targetSeat.guid);
+        if (idx !== -1) {
+          area.listSeat[idx].seatLocked = !area.listSeat[idx].seatLocked;
+          area.listSeat.splice(idx, 1, area.listSeat[idx]);
+        }
+      }
+    });
+  }
 };
 const actions = {
   selectSeat({state, commit, dispatch}, seat) {
@@ -51,6 +62,10 @@ const actions = {
       seatStatus: data.seatStatus,
       seatServiceStatus: data.seatServiceStatus,
     });
+  },
+  async toggleLock({state, commit}) {
+    await PosSeatService.toggleLock(state.selectedSeat.guid);
+    commit("TOGGLE_LOCK", state.selectedSeat);
   }
 };
 

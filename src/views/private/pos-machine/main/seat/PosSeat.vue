@@ -31,8 +31,9 @@
                   <el-card :body-style="{padding: '0'}"
                            :style="{borderColor: area.areaColor, boxShadow: selectedSeat.guid === seat.guid ? '0 0 1px 2px ' + area.areaColor : ''}"
                            :class="[
-                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'FINISHED' ? 'bg-warning' : '',
-                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'UNFINISHED' ? 'bg-danger' : '']"
+                           seat.seatLocked ? 'bg-info' : '',
+                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'FINISHED' && !seat.seatLocked ? 'bg-warning' : '',
+                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'UNFINISHED' && !seat.seatLocked ? 'bg-danger' : '']"
                            class="pointer" shadow="never" @click.native="changeSeat(seat)">
                     <div class="text-center text-small padding-10-5">
                       <span>{{seat.seatName}}</span>

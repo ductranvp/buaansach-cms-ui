@@ -2,21 +2,30 @@
   <el-header class="bg-success" height="40px">
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col>
-        <div class="padding-left-10">
+        <div class="padding-0-10">
           <router-link to="/">
             <img alt="logo" src="/logo_square.png" class="logo">
           </router-link>
         </div>
       </el-col>
       <el-col v-if="selectedSeat.seatName" class="text-center text-light">
-        <h1>{{selectedSeat.seatName}} - {{selectedSeat.areaName}}</h1>
+        <div>
+          <h1>{{selectedSeat.seatName}} - {{selectedSeat.areaName}}</h1>
+        </div>
       </el-col>
-      <el-col class="text-right">
-        <el-button v-if="selectedSeat.currentOrderGuid" :loading="isRefreshing" @click="refreshSeatOrder" type="success"
-                   size="small">
-          <i class="el-icon-refresh"></i>
-          <span>Làm mới</span>
-        </el-button>
+      <el-col>
+        <el-row v-if="selectedSeat.guid" type="flex" align="middle" justify="end">
+          <el-button v-if="!selectedSeat.seatLocked" :loading="isLocking" @click="toggleLock" type="success"
+                     size="small">
+            <i class="el-icon-lock"></i>
+            <span>Khóa</span>
+          </el-button>
+          <el-button v-else :loading="isLocking" @click="toggleLock" type="success"
+                     size="small">
+            <i class="el-icon-unlock"></i>
+            <span>Mở khóa</span>
+          </el-button>
+        </el-row>
       </el-col>
     </el-row>
   </el-header>
@@ -33,15 +42,17 @@
       })
     },
     data() {
-      return {isRefreshing: false};
+      return {
+        isLocking: false
+      };
     },
     methods: {
-      async refreshSeatOrder() {
+      async toggleLock() {
         const vm = this;
-        vm.isRefreshing = true;
-        await vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
+        vm.isLocking = true;
+        await vm.$store.dispatch("posMachine/toggleLock");
         setTimeout(function () {
-          vm.isRefreshing = false;
+          vm.isLocking = false;
         }, 1000);
       }
     }

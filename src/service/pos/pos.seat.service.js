@@ -7,6 +7,9 @@ const PosSeatService = {
   },
   getSeat(params){
     return request.get(baseUrl + "/get/" + params);
+  },
+  toggleLock(params){
+    return request.put(baseUrl + "/toggle-lock/" + params);
   }
 };
 
