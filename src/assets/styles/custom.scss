@@ -48,6 +48,10 @@
   cursor: pointer;
 }
 
+.pointer-disabled {
+  cursor: not-allowed;
+}
+
 .bg-yellowgreen{
   color: white !important;
   background: #9acd32 !important;

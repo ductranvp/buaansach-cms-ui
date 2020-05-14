@@ -17,12 +17,12 @@
             <el-col :span="10" class="padding-left-10 text-right">
               <template v-if="item.orderProductStatus === 'PREPARING'">
                 <el-row type="flex" align="middle" justify="end">
-                  <el-button @click="serveOrderProduct(item)" type="success" size="small">Đã phục vụ</el-button>
+                  <el-button @click="serveOrderProduct(item)" type="success" size="small">Xong</el-button>
                 </el-row>
               </template>
               <el-button disabled plain class="margin-right-10" size="small" type="success"
                          v-else-if="item.orderProductStatus === 'SERVED'">
-                <span>Hoàn tất</span>
+                <span>Đã phục vụ</span>
               </el-button>
               <el-button disabled plain class="margin-right-10" size="small" type="danger" v-else>
                 <span>Đã hủy</span>

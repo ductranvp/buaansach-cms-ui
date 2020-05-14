@@ -5,7 +5,9 @@ const PosStoreProductService = {
   getListProductByStoreGuid(params) {
     return request.get(baseUrl + "/list-by-store/" + params);
   },
-
+  changeStoreProductStatus(payload) {
+    return request.put(baseUrl + "/change-status", payload);
+  }
 };
 
 export default PosStoreProductService;

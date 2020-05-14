@@ -75,7 +75,7 @@
         <el-container direction="vertical">
           <el-row type="flex" align="middle" style="height: 40px">
             <el-col :span="12" class="full-height">
-              <el-input v-model="customerPay" placeholder="Khách đưa">
+              <el-input @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay" placeholder="Khách đưa">
                 <i slot="prefix" class="el-input__icon el-icon-money"></i>
                 <el-button class="full-size" style="color: #606266" disabled slot="suffix">
                   <span>x1000</span>
