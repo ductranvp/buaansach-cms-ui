@@ -5,6 +5,7 @@ import i18n from "@/i18n";
 
 function redirectBasedOnRole() {
   if (store.getters.roles.includes(Roles.ADMIN)) return "/admin";
+  if (store.getters.roles.includes(Roles.MANAGER)) return "/manager";
   else return "/home";
 }
 

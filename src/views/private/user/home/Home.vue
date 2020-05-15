@@ -91,7 +91,6 @@
           this.storeUser = [];
           const {data} = await StoreUserService.getListStoreUserByUser();
           this.storeUser = data;
-          console.log(data);
           this.isLoading = false;
         } catch (error) {
           this.isLoading = false;

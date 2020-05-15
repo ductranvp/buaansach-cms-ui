@@ -6,6 +6,7 @@ import PartnerRoutes from "@/router/private-routes/partner.routes";
 import UserRoutes from "@/router/private-routes/user.routes";
 import Roles from "@/config/security/roles";
 import PosStoreService from "@/service/pos/pos.store.service";
+import ManagerRoutes from "@/router/private-routes/manager.routes";
 
 Vue.use(VueRouter);
 
@@ -27,6 +28,12 @@ const router = new VueRouter({
       component: () => import("@/views/layout/admin/AdminLayout"),
       redirect: "/admin/dashboard",
       children: [...AdminRoutes]
+    },
+    {
+      path: "/manager",
+      component: () => import("@/views/layout/manager/ManagerLayout"),
+      redirect: "/manager/customer-voucher-code",
+      children: [...ManagerRoutes]
     },
     /* For partner to manage stores */
     {

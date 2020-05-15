@@ -15,12 +15,12 @@
   import PosMachineHeader from "@/views/private/pos-machine/header/PosMachineHeader";
   import PosMachineMain from "@/views/private/pos-machine/main/PosMachineMain";
   import {mapState} from "vuex";
-  import WebSocketHandler from "@/views/layout/pos-machine/websocket.handler";
+  import PosWebsocket from "@/views/layout/pos-machine/pos.websocket";
 
   export default {
     name: "PosMachineLayout",
     components: {PosMachineMain, PosMachineHeader, PosMachineSidebar},
-    mixins: [WebSocketHandler],
+    mixins: [PosWebsocket],
     computed: {
       ...mapState({
         allAreas: state => state.posMachine.allAreas,

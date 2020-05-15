@@ -3,40 +3,42 @@
     <el-row id="action" type="flex">
       <el-col :span="20">
         <el-form ref="areaForm" :rules="formRules" :model="form" :inline="true">
-          <el-form-item prop="areaName">
-            <el-input :placeholder="$t('private.adminStoreDetailAreaPage.form.areaName')"
-                      v-model="form.areaName">
-            </el-input>
-          </el-form-item>
-          <el-form-item prop="areaType">
-            <el-select placeholder="Loại khu vực" v-model="form.areaType">
-              <el-option v-for="type in areaTypes" :label="type.label" :value="type.value" :key="type.value"></el-option>
-            </el-select>
-          </el-form-item>
-          <el-form-item>
-            <el-color-picker
-              v-model="form.areaColor"
-              show-alpha
-              :predefine="predefineColors">
-            </el-color-picker>
-          </el-form-item>
-          <el-form-item>
-            <el-input :disabled="!form.autoCreateSeat" type="number"
-                      :placeholder="$t('private.adminStoreDetailAreaPage.form.numberOfSeats')"
-                      v-model="form.numberOfSeats">
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-input :disabled="!form.autoCreateSeat"
-                      :placeholder="$t('private.adminStoreDetailAreaPage.form.seatPrefix')"
-                      v-model="form.seatPrefix">
-            </el-input>
-          </el-form-item>
-          <el-form-item>
-            <el-checkbox v-model="form.autoCreateSeat" @change="changeCheckbox">
-              <span>{{$t("private.adminStoreDetailAreaPage.form.autoCreateSeat")}}</span>
-            </el-checkbox>
-          </el-form-item>
+          <el-row type="flex" align="top">
+            <el-form-item prop="areaName">
+              <el-input :placeholder="$t('private.adminStoreDetailAreaPage.form.areaName')"
+                        v-model="form.areaName">
+              </el-input>
+            </el-form-item>
+            <el-form-item prop="areaType">
+              <el-select placeholder="Loại khu vực" v-model="form.areaType">
+                <el-option v-for="type in areaTypes" :label="type.label" :value="type.value" :key="type.value"></el-option>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-color-picker
+                v-model="form.areaColor"
+                show-alpha
+                :predefine="predefineColors">
+              </el-color-picker>
+            </el-form-item>
+            <el-form-item>
+              <el-input :disabled="!form.autoCreateSeat" type="number"
+                        :placeholder="$t('private.adminStoreDetailAreaPage.form.numberOfSeats')"
+                        v-model="form.numberOfSeats">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-input :disabled="!form.autoCreateSeat"
+                        :placeholder="$t('private.adminStoreDetailAreaPage.form.seatPrefix')"
+                        v-model="form.seatPrefix">
+              </el-input>
+            </el-form-item>
+            <el-form-item>
+              <el-checkbox v-model="form.autoCreateSeat" @change="changeCheckbox">
+                <span>{{$t("private.adminStoreDetailAreaPage.form.autoCreateSeat")}}</span>
+              </el-checkbox>
+            </el-form-item>
+          </el-row>
         </el-form>
       </el-col>
       <el-col :span="4" class="text-right">

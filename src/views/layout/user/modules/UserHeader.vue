@@ -13,6 +13,9 @@
         <el-button type="success" v-if="hasAnyRole(['ROLE_ADMIN'])" @click="goto('adminDashboardPage')">
           <span>Quản trị viên</span>
         </el-button>
+        <el-button type="success" v-if="hasAnyRole(['ROLE_MANAGER'])" @click="goto('managerCustomerVoucherCodePage')">
+          <span>Quản lý</span>
+        </el-button>
         <el-button type="success" @click="goto('profilePage')">
           <span>Tài Khoản</span>
         </el-button>

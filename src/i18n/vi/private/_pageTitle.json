@@ -21,6 +21,10 @@
       "adminStoreDetailSettingPage": "Cài Đặt - Cửa Hàng",
       "adminStoreDetailSalePage": "Khuyến Mãi - Cửa Hàng"
     },
+    "manager": {
+      "managerDashboardPage": "Bảng điều khiển",
+      "managerCustomerVoucherCodePage": "Mã khuyến mãi khách hàng"
+    },
     "posPage": "Bán Hàng",
     "user": {
       "homePage": "Trang Chủ",

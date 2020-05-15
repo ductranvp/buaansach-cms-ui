@@ -125,6 +125,7 @@
       },
       // eslint-disable-next-line no-unused-vars
       onFilterChange(filter) {
+        console.log('change');
         this.renderTable();
       },
       onSortChange(sort) {
