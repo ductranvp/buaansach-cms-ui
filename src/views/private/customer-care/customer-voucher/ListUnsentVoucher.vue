@@ -44,7 +44,7 @@
       </el-row>
     </div>
     <div class="margin-top-10">
-      <raw-data-table :data="listUnsentVoucher" show-audit :custom-audit="['createdDate']">
+      <raw-data-table highlight-current-row :data="listUnsentVoucher" show-audit :custom-audit="['createdDate']">
         <el-table-column width="300px" prop="customerPhone" label="SĐT Khách">
           <template slot-scope="{row}">
             <el-row :gutter="10" type="flex" align="middle">
@@ -83,7 +83,7 @@
           </template>
         </el-table-column>
         <el-table-column prop="voucherCodeSentStatus" label="Thao tác">
-          <template slot-scope="{row}" v-if="row.voucherCodeSentStatus === 'UNSET'">
+          <template slot-scope="{row}" v-show="row.voucherCodeSentStatus === 'UNSET'">
             <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success" plain
                        size="small">
               <span>Đã gửi</span>
@@ -99,7 +99,8 @@
 </template>
 
 <script>
-  import CustomerCareCustomerVoucherCodeService from "@/service/customer-care/customer-care.customer-voucher-code.service";
+  import CustomerCareCustomerVoucherCodeService
+    from "@/service/customer-care/customer-care.customer-voucher-code.service";
   import CustomerCareVoucherCodeService from "@/service/customer-care/customer-care.voucher-code.service";
   import NotificationUtils from "@/utils/notification.util";
   import RawDataTable from "@/components/raw-table-data/RawDataTable";

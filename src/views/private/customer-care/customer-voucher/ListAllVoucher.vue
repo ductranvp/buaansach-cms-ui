@@ -38,6 +38,7 @@
     </div>
     <div class="margin-top-10">
       <data-table
+        highlight-current-row
         ref="customerVoucherCodeTable"
         :fetch-data="fetchData"
         show-audit
@@ -67,16 +68,16 @@
         </el-table-column>
 
         <el-table-column v-if="columns.voucherCode.display" prop="voucherCode"
-                         :label="columns.customerCode.label"></el-table-column>
+                         :label="columns.voucherCode.label"></el-table-column>
 
         <el-table-column v-if="columns.voucherCodeSentStatus.display" prop="voucherCodeSentStatus"
                          :label="columns.voucherCodeSentStatus.label">
           <template slot-scope="{row}">
-            <el-tag type="success" v-if="row.voucherCodeSentStatus === 'SENT'">Đã gửi</el-tag>
-            <el-tooltip v-else-if="row.voucherCodeSentStatus === 'ARCHIVED'" content="Khi lưu trữ, mã voucher sẽ không sử dụng được">
+            <el-tag type="success" v-show="row.voucherCodeSentStatus === 'SENT'">Đã gửi</el-tag>
+            <el-tooltip v-show="row.voucherCodeSentStatus === 'ARCHIVED'" content="Khi lưu trữ, mã voucher sẽ không sử dụng được">
               <el-tag type="info">Đã lưu trữ</el-tag>
             </el-tooltip>
-            <el-tag type="danger" v-else>Chưa đặt</el-tag>
+            <el-tag type="danger" v-show="row.voucherCodeSentStatus === 'UNSET'">Chưa đặt</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="voucherCodeSent" label="Thao tác" width="180px">

@@ -1,13 +1,21 @@
 import NotificationUtils from "@/utils/notification.util";
 import AuthUtils from "@/utils/auth.util";
 import {mapState} from "vuex";
+import MessageUtils from "@/utils/message.util";
 
 const PosWebsocket = {
   computed: {
     ...mapState({
       posStompClient: state => state.websocket.posStompClient,
       currentStore: state => state.posMachine.currentStore,
-      posSubscription: state => state.websocket.posSubscription
+      posSubscription: state => state.websocket.posSubscription,
+      allSeats: state => {
+        let arr = [];
+        state.posMachine.allAreas.forEach(area => {
+          arr = arr.concat(area.listSeat);
+        });
+        return arr;
+      }
     })
   },
   async created() {
@@ -37,13 +45,25 @@ const PosWebsocket = {
     },
     async onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
-      const seatData = this.allSeats.find(seat => seat.guid === data.payload.seatGuid);
+      const seatData = this.allSeats.find(seat => seat.guid === data.payload);
+      const id = (new Date()).getTime() + "" + seatData.guid;
+      const notification = {
+        id: id,
+        title: "Gọi món",
+        content: seatData.seatName + " " + seatData.areaName + " đã mọi món",
+        time: new Date(),
+        status: "UNSEEN",
+        watched: false,
+        seat: seatData
+      };
+
       switch (data.message) {
         case "GUEST_CREATE_ORDER":
-          NotificationUtils.info(seatData.seatName + " " + seatData.areaName + " đã tạo đơn hàng");
+          // NotificationUtils.info(seatData.seatName + " " + seatData.areaName + " đã tạo đơn hàng");
           break;
         case "GUEST_UPDATE_ORDER":
-          NotificationUtils.info(seatData.seatName + " " + seatData.areaName + " đã mọi món");
+          this.$store.commit("posMachine/ADD_NOTIFICATION", notification);
+          MessageUtils.info(seatData.seatName + " " + seatData.areaName + " đã gọi món");
           break;
       }
       if (this.selectedSeat.guid === seatData.guid) {

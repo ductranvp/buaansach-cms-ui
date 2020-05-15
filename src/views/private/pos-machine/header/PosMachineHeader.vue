@@ -32,15 +32,8 @@
 
       <el-col :span="8">
         <el-row type="flex" align="middle" justify="end">
-          <el-row type="flex" align="middle">
-            <el-dropdown trigger="click">
-              <el-button class="icon-button" type="success">
-                <i class="el-icon-message-solid"></i>
-              </el-button>
-              <el-dropdown-menu class="padding-0" slot="dropdown">
-
-              </el-dropdown-menu>
-            </el-dropdown>
+          <el-row type="flex" align="middle" class="padding-right-10">
+            <pos-notification/>
           </el-row>
 
           <el-row class="padding-0-10" type="flex" align="middle">
@@ -83,13 +76,15 @@
   import {mapState} from "vuex";
   import NotificationUtils from "@/utils/notification.util";
   import PosStoreService from "@/service/pos/pos.store.service";
+  import PosNotification from "@/views/private/pos-machine/header/notification/PosNotification";
 
   export default {
     name: "PosMachineHeader",
+    components: {PosNotification},
     computed: {
       ...mapState({
         currentUser: state => state.user.info,
-        currentStore: state => state.posMachine.currentStore
+        currentStore: state => state.posMachine.currentStore,
       })
     },
     data() {

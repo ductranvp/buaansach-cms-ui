@@ -2,6 +2,7 @@
   <div v-loading="isLoading">
     <el-table
       class="full-width"
+      :highlight-current-row="highlightCurrentRow"
       :data="tableData"
       :sortable="true"
       :default-sort="defaultSort"
@@ -55,6 +56,7 @@
   export default {
     name: "RawDataTable",
     props: {
+      highlightCurrentRow: Boolean,
       showIndex: Boolean,
       showAudit: Boolean,
       customAudit: {
