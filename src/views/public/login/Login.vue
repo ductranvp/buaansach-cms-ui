@@ -1,5 +1,5 @@
 <template>
-  <el-container class="full-size login-container">
+  <el-container class="full-size login-container bg-success">
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
         <el-form ref="loginForm" class="full-size" :model="loginForm" :rules="loginRules">
@@ -29,7 +29,7 @@
             <div>
               <el-button
                 :loading="isLoading"
-                type="primary"
+                type="warning"
                 style="width: 100%"
                 @click="handleLogin"
               >
@@ -135,7 +135,7 @@
   .login-container {
     min-height: 100%;
     width: 100%;
-    background-color: #2d3a4b;
+    /*background-color: #2d3a4b;*/
     overflow: hidden;
   }
 

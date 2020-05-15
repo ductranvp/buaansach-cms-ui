@@ -1,10 +1,10 @@
 <template>
-  <p>ManagerDashboard</p>
+  <p>CustomerCareDashboard</p>
 </template>
 
 <script>
     export default {
-        name: "ManagerDashboard"
+        name: "CustomerCareDashboard"
     };
 </script>
 

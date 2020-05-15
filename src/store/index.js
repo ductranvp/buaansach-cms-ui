@@ -8,6 +8,7 @@ import AdminStoreModule from "./admin/admin-store";
 import AdminSettingModule from "./admin/admin-setting";
 import WebSocketModule from "./websocket/websocket.store";
 import PosMachineModule from "./pos-machine/pos-machine.store";
+import CustomerCareModule from "./customer-care/customer-care.store";
 
 Vue.use(Vuex);
 
@@ -19,7 +20,8 @@ const store = new Vuex.Store({
     adminStore: AdminStoreModule,
     adminSetting: AdminSettingModule,
     websocket: WebSocketModule,
-    posMachine: PosMachineModule
+    posMachine: PosMachineModule,
+    customerCare: CustomerCareModule
   },
   getters
 });

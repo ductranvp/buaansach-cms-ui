@@ -1,10 +1,10 @@
 import request from "@/config/request";
 
-const baseUrl = "api/v1/manager/voucher-code";
-const ManagerVoucherCodeService = {
+const baseUrl = "api/v1/customer-care/voucher-code";
+const CustomerCareVoucherCodeService = {
   updateVoucherCode(payload) {
     return request.put(baseUrl + "/update-voucher-code", payload);
   },
 };
 
-export default ManagerVoucherCodeService;
+export default CustomerCareVoucherCodeService;

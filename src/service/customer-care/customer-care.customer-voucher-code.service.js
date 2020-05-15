@@ -1,7 +1,7 @@
 import request from "@/config/request";
 
-const baseUrl = "api/v1/manager/customer-voucher-code";
-const ManagerCustomerVoucherCodeService = {
+const baseUrl = "api/v1/customer-care/customer-voucher-code";
+const CustomerCareCustomerVoucherCodeService = {
   getListCustomerCode(params) {
     return request.get(baseUrl + "/list", {
       params: params
@@ -12,4 +12,4 @@ const ManagerCustomerVoucherCodeService = {
   }
 };
 
-export default ManagerCustomerVoucherCodeService;
+export default CustomerCareCustomerVoucherCodeService;

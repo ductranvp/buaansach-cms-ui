@@ -14,7 +14,7 @@
 </template>
 
 <script>
-  import mixinSidebarData from "@/views/layout/admin/modules/admin-side-bar.data";
+  import mixinSidebarData from "@/views/layout/admin/modules/admin-sidebar.data";
   import {mapState} from "vuex";
   import SidebarLogo from "@/views/layout/admin/modules/components/SidebarLogo";
   import SidebarItem from "@/views/layout/admin/modules/components/SidebarItem";

@@ -12,11 +12,11 @@
 </template>
 
 <script>
-  import ListUnsentVoucher from "@/views/private/manager/customer-voucher/ListUnsentVoucher";
-  import ListAllVoucher from "@/views/private/manager/customer-voucher/ListAllVoucher";
+  import ListUnsentVoucher from "@/views/private/customer-care/customer-voucher/ListUnsentVoucher";
+  import ListAllVoucher from "@/views/private/customer-care/customer-voucher/ListAllVoucher";
 
   export default {
-    name: "ManagerCustomerVoucherCode",
+    name: "CustomerCareCustomerVoucherCode",
     components: {ListAllVoucher, ListUnsentVoucher},
     created() {
 
@@ -26,6 +26,7 @@
         activeName: 'listUnsentVoucher',
       };
     },
+    methods: {}
   };
 </script>
 

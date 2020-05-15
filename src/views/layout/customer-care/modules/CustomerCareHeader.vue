@@ -27,7 +27,7 @@
   import hasAnyRole from "@/utils/has-any-role";
 
   export default {
-    name: "ManagerHeader",
+    name: "CustomerCareHeader",
     methods: {
       goto(routeName) {
         if (routeName === "logout") {

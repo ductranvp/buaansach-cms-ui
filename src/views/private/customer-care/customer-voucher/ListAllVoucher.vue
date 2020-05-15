@@ -73,7 +73,9 @@
                          :label="columns.voucherCodeSentStatus.label">
           <template slot-scope="{row}">
             <el-tag type="success" v-if="row.voucherCodeSentStatus === 'SENT'">Đã gửi</el-tag>
-            <el-tag type="success" v-if="row.voucherCodeSentStatus === 'ARCHIVED'">Đã lưu trữ</el-tag>
+            <el-tooltip v-else-if="row.voucherCodeSentStatus === 'ARCHIVED'" content="Khi lưu trữ, mã voucher sẽ không sử dụng được">
+              <el-tag type="info">Đã lưu trữ</el-tag>
+            </el-tooltip>
             <el-tag type="danger" v-else>Chưa đặt</el-tag>
           </template>
         </el-table-column>
@@ -93,11 +95,11 @@
 </template>
 
 <script>
-  import ManagerCustomerVoucherCodeService from "@/service/manager/manager.customer-voucher-code.service";
-  import ManagerVoucherCodeService from "@/service/manager/manager.voucher-code.service";
+  import CustomerCareCustomerVoucherCodeService from "@/service/customer-care/customer-care.customer-voucher-code.service";
+  import CustomerCareVoucherCodeService from "@/service/customer-care/customer-care.voucher-code.service";
   import NotificationUtils from "@/utils/notification.util";
   import DataTable from "@/components/data-table/DataTable";
-  import ManagerCustomerService from "@/service/manager/manager.customer.service";
+  import CustomerCareCustomerService from "@/service/customer-care/customer-care.customer.service";
 
   export default {
     name: "ListAllVoucher",
@@ -132,7 +134,7 @@
     },
     methods: {
       async getUnsentVoucher() {
-        const {data} = await ManagerCustomerVoucherCodeService.getUnsentVoucher();
+        const {data} = await CustomerCareCustomerVoucherCodeService.getUnsentVoucher();
         this.listUnsentVoucher = data;
       },
       onSearch() {
@@ -149,11 +151,11 @@
         }
       },
       fetchData(params) {
-        return ManagerCustomerVoucherCodeService.getListCustomerCode(params);
+        return CustomerCareCustomerVoucherCodeService.getListCustomerCode(params);
       },
       async updateVoucher(row, status) {
         try {
-          await ManagerVoucherCodeService.updateVoucherCode({
+          await CustomerCareVoucherCodeService.updateVoucherCode({
             voucherCode: row.voucherCode,
             voucherCodeSentStatus: status
           });
@@ -164,7 +166,7 @@
       },
       async updateCustomer(row) {
         try {
-          await ManagerCustomerService.updateCustomer({
+          await CustomerCareCustomerService.updateCustomer({
             customerPhone: row.customerPhone,
             customerZaloStatus: row.customerZaloStatus
           });

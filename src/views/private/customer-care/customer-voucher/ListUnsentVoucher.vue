@@ -99,11 +99,11 @@
 </template>
 
 <script>
-  import ManagerCustomerVoucherCodeService from "@/service/manager/manager.customer-voucher-code.service";
-  import ManagerVoucherCodeService from "@/service/manager/manager.voucher-code.service";
+  import CustomerCareCustomerVoucherCodeService from "@/service/customer-care/customer-care.customer-voucher-code.service";
+  import CustomerCareVoucherCodeService from "@/service/customer-care/customer-care.voucher-code.service";
   import NotificationUtils from "@/utils/notification.util";
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
-  import ManagerCustomerService from "@/service/manager/manager.customer.service";
+  import CustomerCareCustomerService from "@/service/customer-care/customer-care.customer.service";
   import MessageUtils from "@/utils/message.util";
 
   export default {
@@ -179,7 +179,7 @@
       async getUnsentVoucher() {
         try {
           this.isLoading = true;
-          const {data} = await ManagerCustomerVoucherCodeService.getUnsentVoucher();
+          const {data} = await CustomerCareCustomerVoucherCodeService.getUnsentVoucher();
           this.isLoading = false;
           this.listUnsentVoucher = data;
         } catch (error) {
@@ -190,7 +190,7 @@
       async updateVoucher(row, status) {
         try {
           this.$set(row, 'isSending', true);
-          await ManagerVoucherCodeService.updateVoucherCode({
+          await CustomerCareVoucherCodeService.updateVoucherCode({
             voucherCode: row.voucherCode,
             voucherCodeSentStatus: status
           });
@@ -203,7 +203,7 @@
       },
       async updateCustomer(row) {
         try {
-          await ManagerCustomerService.updateCustomer({
+          await CustomerCareCustomerService.updateCustomer({
             customerPhone: row.customerPhone,
             customerZaloStatus: row.customerZaloStatus
           });

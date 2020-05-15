@@ -10,7 +10,6 @@
       "adminTrackerPage": "Giám Sát Hệ Thống",
       "adminSettingPage": "Cài Đặt",
       "adminVoucherPage": "Quản Lý Mã Giảm Giá",
-
       "adminStoreDetailPage": "Chi Tiết - Cửa Hàng",
       "adminStoreProductPage": "Sản Phẩm - Cửa Hàng",
       "adminStoreDetailOverviewPage": "Thông tin - Cửa Hàng",
@@ -21,9 +20,9 @@
       "adminStoreDetailSettingPage": "Cài Đặt - Cửa Hàng",
       "adminStoreDetailSalePage": "Khuyến Mãi - Cửa Hàng"
     },
-    "manager": {
-      "managerDashboardPage": "Bảng điều khiển",
-      "managerCustomerVoucherCodePage": "Mã khuyến mãi khách hàng"
+    "customerCare": {
+      "customerCareDashboardPage": "Bảng điều khiển",
+      "customerCareCustomerVoucherCodePage": "Mã khuyến mãi khách hàng"
     },
     "posPage": "Bán Hàng",
     "user": {

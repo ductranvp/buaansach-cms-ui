@@ -20,9 +20,9 @@
       "adminStoreDetailSettingPage": "Setting - Store",
       "adminStoreDetailSalePage": "Sale - Store"
     },
-    "manager": {
-      "managerDashboardPage": "Dashboard",
-      "managerCustomerVoucherCodePage": "Customer Voucher Code"
+    "customerCare": {
+      "customerCareDashboardPage": "Dashboard",
+      "customerCareCustomerVoucherCodePage": "Customer Voucher Code"
     },
     "posPage": "POS",
     "user": {

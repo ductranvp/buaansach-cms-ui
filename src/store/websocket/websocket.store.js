@@ -9,25 +9,25 @@ import NotificationUtils from "@/utils/notification.util";
 const state = {
   posStompClient: null,
   posSubscription: null,
-  managerStompClient: null,
-  managerSubscription: null,
+  customerCareStompClient: null,
+  customerCareSubscription: null,
   error: null,
 };
 const mutations = {
   SET_POS_STOMP_CLIENT(state, client) {
     state.posStompClient = client;
   },
-  SET_MANAGER_STOMP_CLIENT(state, client) {
-    state.managerStompClient = client;
+  SET_CUSTOMER_CARE_STOMP_CLIENT(state, client) {
+    state.customerCareStompClient = client;
   },
   SET_ERROR(state) {
     if (state.posSubscription){
       state.posSubscription.unsubscribe();
       state.posSubscription = null;
     }
-    if (state.managerSubscription){
-      state.managerSubscription.unsubscribe();
-      state.managerSubscription = null;
+    if (state.customerCareSubscription){
+      state.customerCareSubscription.unsubscribe();
+      state.customerCareSubscription = null;
     }
     if (!state.error) {
       state.error = Notification.error({
@@ -49,8 +49,8 @@ const mutations = {
   SET_POS_SUBSCRIPTION(state, posSubscription) {
     state.posSubscription = posSubscription;
   },
-  SET_MANAGER_SUBSCRIPTION(state, managerSubscription) {
-    state.managerSubscription = managerSubscription;
+  SET_CUSTOMER_CARE_SUBSCRIPTION(state, customerCareSubscription) {
+    state.customerCareSubscription = customerCareSubscription;
   },
 };
 const actions = {
@@ -83,28 +83,28 @@ const actions = {
       }
     );
   },
-  managerConnect({state, commit, dispatch}, {onSuccess, onError}) {
+  customerCareConnect({state, commit, dispatch}, {onSuccess, onError}) {
     let url = Constants.SERVER_API_URL + "/websocket?access_token=" + AuthUtils.getToken();
     let options = {debug: false, protocols: ['v12.stomp']};
     let socket = new SockJS(url);
-    let managerStompClient = Stomp.over(socket, options);
-    managerStompClient.connect(
+    let customerCareStompClient = Stomp.over(socket, options);
+    customerCareStompClient.connect(
       {},
       function (frame) {
         if (state.error){
           commit("CLEAR_ERROR");
         }
-        commit("SET_MANAGER_STOMP_CLIENT", managerStompClient);
-        onSuccess(managerStompClient);
+        commit("SET_CUSTOMER_CARE_STOMP_CLIENT", customerCareStompClient);
+        onSuccess(customerCareStompClient);
       },
       function (error) {
         if (!state.error){
           commit("SET_ERROR");
         }
-        commit("SET_MANAGER_STOMP_CLIENT", null);
+        commit("SET_CUSTOMER_CARE_STOMP_CLIENT", null);
         onError(error);
         setTimeout(() => {
-          dispatch("managerConnect", {
+          dispatch("customerCareConnect", {
             onSuccess: onSuccess,
             onError: onError
           });
