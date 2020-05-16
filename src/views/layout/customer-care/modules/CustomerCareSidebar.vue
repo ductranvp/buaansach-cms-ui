@@ -21,7 +21,7 @@
         <template v-for="noti in listNotification">
           <el-alert :closable="false" class="pointer full-width padding-5-10"
                     :type="noti.status ==='UNSEEN' ? 'warning' : ''"
-                    :key="noti">
+                    :key="noti.customerPhone">
             <el-row class="full-size" type="flex" align="middle">
               <el-col @click.native="seenNotification(noti)">
                 <div class="padding-10-0 text-small">
@@ -40,8 +40,8 @@
       <el-footer height="auto">
         <el-row class="bg-light" type="flex" align="middle" justify="start">
           <el-button @click="clearSeenNotifications" plain class="full-width no-border-radius no-border" type="info">
-            <i class="el-icon-delete"></i>
-            <span>Xóa Thông Báo Đã Đọc</span>
+            <i class="fas el-icon-fa-eraser"></i>
+            <span>Xóa Đã Xem</span>
           </el-button>
         </el-row>
         <el-row class="bg-light" type="flex" align="middle" justify="start">

@@ -11,9 +11,9 @@
 </template>
 
 <script>
-  import PosMachineSidebar from "@/views/private/pos-machine/sidebar/PosMachineSidebar";
-  import PosMachineHeader from "@/views/private/pos-machine/header/PosMachineHeader";
-  import PosMachineMain from "@/views/private/pos-machine/main/PosMachineMain";
+  import PosMachineSidebar from "@/views/private/pos-machine/PosMachineSidebar";
+  import PosMachineHeader from "@/views/private/pos-machine/PosMachineHeader";
+  import PosMachineMain from "@/views/private/pos-machine/PosMachineMain";
   import {mapState} from "vuex";
   import PosWebsocket from "@/views/layout/pos-machine/pos.websocket";
 

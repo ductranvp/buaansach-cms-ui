@@ -1,5 +1,5 @@
 <template>
-  <el-container class="full-size reset-container">
+  <el-container class="full-size reset-container bg-success">
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
         <el-form ref="resetPasswordForm" :model="form" :rules="formRules">
@@ -11,7 +11,7 @@
             <div>
               <el-button
                 :loading="isLoading"
-                type="primary"
+                type="warning"
                 style="width: 100%"
                 @click="submit"
               >

@@ -12,9 +12,9 @@
 </template>
 
 <script>
-  import TopToolbar from "@/views/private/pos-machine/sidebar/modules/main/modules/TopToolbar";
-  import MainBodyLayout from "@/views/private/pos-machine/sidebar/modules/main/MainBodyLayout";
-  import BottomToolbar from "@/views/private/pos-machine/sidebar/modules/main/modules/BottomToolbar";
+  import TopToolbar from "@/views/private/pos-machine/sidebar/main/modules/TopToolbar";
+  import MainBodyLayout from "@/views/private/pos-machine/sidebar/main/MainBodyLayout";
+  import BottomToolbar from "@/views/private/pos-machine/sidebar/main/modules/BottomToolbar";
   import {mapState} from "vuex";
 
   export default {

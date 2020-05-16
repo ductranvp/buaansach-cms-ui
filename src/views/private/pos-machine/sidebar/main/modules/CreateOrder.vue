@@ -59,6 +59,7 @@
         this.$refs.createOrderForm.validate(async valid => {
           if (valid) {
             vm.isLoading = true;
+            if (!this.form.customerPhone || this.form.customerPhone.trim() === "") this.form.customerPhone = null;
             try {
               await this.$store.dispatch("posMachine/createOrder", this.form.customerPhone);
               NotificationUtils.success("Tạo đơn thành công");

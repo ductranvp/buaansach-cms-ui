@@ -144,7 +144,7 @@
   import MessageUtils from "@/utils/message.util";
   import NotificationUtils from "@/utils/notification.util";
   import PosOrderService from "@/service/pos/pos.order.service";
-  import CreateCustomerDialog from "@/views/private/pos-machine/sidebar/modules/footer/CreateCustomerDialog";
+  import CreateCustomerDialog from "@/views/private/pos-machine/sidebar/footer/CreateCustomerDialog";
   import MessageBoxUtils from "@/utils/message-box.util";
 
   export default {

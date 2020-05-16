@@ -7,8 +7,8 @@
 
 <script>
   import {mapState} from "vuex";
-  import AdvancedPurchase from "@/views/private/pos-machine/sidebar/modules/footer/AdvancedPurchase";
-  import BasicPurchase from "@/views/private/pos-machine/sidebar/modules/footer/BasicPurchase";
+  import AdvancedPurchase from "@/views/private/pos-machine/sidebar/footer/AdvancedPurchase";
+  import BasicPurchase from "@/views/private/pos-machine/sidebar/footer/BasicPurchase";
 
   export default {
     name: "PosSidebarFooter",

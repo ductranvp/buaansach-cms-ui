@@ -61,6 +61,15 @@ const router = new VueRouter({
       }
     },
     {
+      path: "/sale-report/:storeGuid",
+      name: "saleReportPage",
+      component: () => import("@/views/private/pos-machine/header/sale-report/SaleReport"),
+      meta: {
+        title: "private.pageTitle.saleReportPage",
+        roles: [Roles.USER]
+      }
+    },
+    {
       path: "*",
       redirect: "/not-found",
     }

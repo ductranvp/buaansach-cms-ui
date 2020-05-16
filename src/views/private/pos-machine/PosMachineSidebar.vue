@@ -7,9 +7,9 @@
 </template>
 
 <script>
-  import PosSidebarMain from "@/views/private/pos-machine/sidebar/modules/PosSidebarMain";
-  import PosSidebarHeader from "@/views/private/pos-machine/sidebar/modules/PosSidebarHeader";
-  import PosSidebarFooter from "@/views/private/pos-machine/sidebar/modules/PosSidebarFooter";
+  import PosSidebarMain from "@/views/private/pos-machine/sidebar/PosSidebarMain";
+  import PosSidebarHeader from "@/views/private/pos-machine/sidebar/PosSidebarHeader";
+  import PosSidebarFooter from "@/views/private/pos-machine/sidebar/PosSidebarFooter";
 
   export default {
     name: "PosMachineSidebar",

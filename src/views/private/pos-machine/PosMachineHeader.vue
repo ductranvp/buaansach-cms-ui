@@ -2,9 +2,9 @@
   <el-header class="bg-success" height="40px">
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
-        <el-button class="hidden-sm-and-down" size="small" type="success" @click="goto('homePage')">
+        <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">
           <i class="el-icon-s-data"></i>
-          <span class="hidden-md-and-down">Báo cáo</span>
+          <span class="hidden-md-and-down">Thống kê</span>
         </el-button>
       </el-col>
 
@@ -93,6 +93,9 @@
       };
     },
     methods: {
+      gotoReport() {
+        this.$router.push({name: 'saleReportPage', params: {storeGuid: this.$route.params.storeGuid}});
+      },
       goto(routeName) {
         if (!routeName) return;
         if (routeName === "logout") {

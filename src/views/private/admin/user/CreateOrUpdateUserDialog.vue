@@ -168,6 +168,7 @@
         roles: [
           {label: "Admin", value: "ROLE_ADMIN"},
           {label: "Manager", value: "ROLE_MANAGER"},
+          {label: "Customer Care", value: "ROLE_CUSTOMER_CARE"},
           {label: "User", value: "ROLE_USER"}
         ]
       };

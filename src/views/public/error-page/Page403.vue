@@ -1,10 +1,10 @@
 <template>
-  <el-container class="full-size error-container" direction="vertical">
+  <el-container class="full-size error-container bg-success" direction="vertical">
     <el-row type="flex" align="middle" justify="center" class="full-size column">
       <span class="error-code">403</span>
       <span class="error-description padding-20 text-center" v-if="!errorMessage">Rất tiếc! Bạn không có quyền truy cập trang này.</span>
       <span class="error-description padding-20 text-center" v-else v-html="errorMessage"></span>
-      <el-button type="primary" @click="()=>{this.$router.push('/home')}">Về trang chủ</el-button>
+      <el-button type="warning" @click="()=>{this.$router.push('/home')}">Về trang chủ</el-button>
     </el-row>
   </el-container>
 </template>

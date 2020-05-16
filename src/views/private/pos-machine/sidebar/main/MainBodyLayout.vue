@@ -29,9 +29,9 @@
 
 <script>
   import {mapState} from "vuex";
-  import SavedOrder from "@/views/private/pos-machine/sidebar/modules/main/modules/SavedOrder";
-  import UnsavedOrder from "@/views/private/pos-machine/sidebar/modules/main/modules/UnsavedOrder";
-  import CreateOrder from "@/views/private/pos-machine/sidebar/modules/main/modules/CreateOrder";
+  import SavedOrder from "@/views/private/pos-machine/sidebar/main/modules/SavedOrder";
+  import UnsavedOrder from "@/views/private/pos-machine/sidebar/main/modules/UnsavedOrder";
+  import CreateOrder from "@/views/private/pos-machine/sidebar/main/modules/CreateOrder";
 
   export default {
     name: "MainBodyLayout",

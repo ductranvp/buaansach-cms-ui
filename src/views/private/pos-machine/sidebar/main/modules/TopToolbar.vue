@@ -47,7 +47,7 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
-  import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/modules/main/ChangeOrderSeatDialog";
+  import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/main/ChangeOrderSeatDialog";
   import NotificationUtils from "@/utils/notification.util";
 
   export default {

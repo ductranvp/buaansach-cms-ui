@@ -10,7 +10,7 @@ export function lowercase(value) {
 export function priceAppend(value, unit) {
   if (unit) unit = " " + unit;
   else unit = "";
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + unit;
+  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + "₫";
 }
 
 export function pricePrepend(value, unit) {

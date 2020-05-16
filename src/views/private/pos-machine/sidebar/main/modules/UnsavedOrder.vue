@@ -41,10 +41,10 @@
         <el-row class="full-size" type="flex" align="middle">
           <el-col :span="8" class="text-small">
             <span>{{item.productName}}</span><br>
-            <span>{{item.orderProductPrice | priceAppend("₫")}}</span>
+            <span>{{item.orderProductPrice | priceAppend}}</span>
           </el-col>
           <el-col :span="8">
-            <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend("₫")}}</span>
+            <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
           </el-col>
           <el-col :span="8" class="padding-left-10 text-right">
             <el-tag type="info">Chưa lưu</el-tag>

@@ -70,14 +70,15 @@
         <el-table-column v-if="columns.voucherCode.display" prop="voucherCode"
                          :label="columns.voucherCode.label"></el-table-column>
 
+        <el-table-column v-if="columns.voucherCodeUsageCount.display" prop="voucherCodeUsageCount"
+                         :label="columns.voucherCodeUsageCount.label"></el-table-column>
+
         <el-table-column v-if="columns.voucherCodeSentStatus.display" prop="voucherCodeSentStatus"
                          :label="columns.voucherCodeSentStatus.label">
           <template slot-scope="{row}">
-            <el-tag type="success" v-show="row.voucherCodeSentStatus === 'SENT'">Đã gửi</el-tag>
-            <el-tooltip v-show="row.voucherCodeSentStatus === 'ARCHIVED'" content="Khi lưu trữ, mã voucher sẽ không sử dụng được">
-              <el-tag type="info">Đã lưu trữ</el-tag>
-            </el-tooltip>
-            <el-tag type="danger" v-show="row.voucherCodeSentStatus === 'UNSET'">Chưa đặt</el-tag>
+            <el-tag type="success" v-if="row.voucherCodeSentStatus === 'SENT'">Đã gửi</el-tag>
+            <el-tag v-else-if="row.voucherCodeSentStatus === 'ARCHIVED'" type="info">Đã lưu trữ</el-tag>
+            <el-tag type="danger" v-else>Chưa đặt</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="voucherCodeSent" label="Thao tác" width="180px">
@@ -96,7 +97,8 @@
 </template>
 
 <script>
-  import CustomerCareCustomerVoucherCodeService from "@/service/customer-care/customer-care.customer-voucher-code.service";
+  import CustomerCareCustomerVoucherCodeService
+    from "@/service/customer-care/customer-care.customer-voucher-code.service";
   import CustomerCareVoucherCodeService from "@/service/customer-care/customer-care.voucher-code.service";
   import NotificationUtils from "@/utils/notification.util";
   import DataTable from "@/components/data-table/DataTable";
@@ -119,6 +121,7 @@
           customerZaloStatus: {label: 'Trạng thái Zalo', display: true},
           voucherCode: {label: 'Mã voucher', display: true},
           voucherCodeSentStatus: {label: 'Trạng thái voucher', display: true},
+          voucherCodeUsageCount: {label: 'Lượt sử dụng', display: true},
         },
         customerZaloStatus: [
           {label: "Chưa biết", value: "UNKNOWN"},

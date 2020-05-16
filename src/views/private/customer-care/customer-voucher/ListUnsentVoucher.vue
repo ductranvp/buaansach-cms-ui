@@ -10,7 +10,7 @@
             </el-row>
             <el-col>
               <div>
-                <el-input ref="messageTemplate" :readonly="!isEdit" type="textarea" rows="4" v-model="messageComputed"
+                <el-input ref="messageTemplate" :readonly="!isEdit" type="textarea" rows="5" v-model="messageComputed"
                           placeholder="Mẫu tin nhắn gửi khách">
                 </el-input>
               </div>
@@ -113,9 +113,10 @@
     data() {
       return {
         isEdit: false,
-        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã voucher giảm giá 30k.\n" +
-          "(Áp dụng khi thanh toán đơn với số điện thoại của quý khách).\n" +
-          "Mã voucher: {code}\n" +
+        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá 30k.\n" +
+          "(Áp dụng khi thanh toán với số điện thoại của quý khách)\n" +
+          "Mã giảm giá: {code}\n" +
+          "Quý khách vui lòng đưa nhân viên xem tin nhắn để sử dụng mã.\n" +
           "Cảm ơn quý khách!",
         messageComputed: null,
         isLoading: false,
@@ -139,6 +140,7 @@
     methods: {
       resetTemplate() {
         this.messageComputed = this.messageTemplate;
+        localStorage.setItem("messageTemplate", JSON.stringify(this.messageComputed));
       },
       hideRow(row) {
         const idx = this.listUnsentVoucher.findIndex(item => item.customerPhone === row.customerPhone);
@@ -199,6 +201,7 @@
           this.hideRow(row);
           NotificationUtils.success("Cập nhật thành công");
         } catch (error) {
+          this.$set(row, 'isSending', false);
           NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
         }
       },

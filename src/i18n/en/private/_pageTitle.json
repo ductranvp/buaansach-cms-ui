@@ -25,6 +25,7 @@
       "customerCareCustomerVoucherCodePage": "Customer Voucher Code"
     },
     "posPage": "POS",
+    "saleReportPage": "Sale Report",
     "user": {
       "homePage": "Home",
       "profilePage": "Profile"
