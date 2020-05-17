@@ -19,6 +19,7 @@ request.interceptors.request.use(
     // do something before request is sent
     const token = AuthUtils.getToken();
     if (token) config.headers["Authorization"] = `Bearer ${token}`;
+    config.url += "?cacheBuster=" + (new Date()).getTime();
     return config;
   },
   function (error) {

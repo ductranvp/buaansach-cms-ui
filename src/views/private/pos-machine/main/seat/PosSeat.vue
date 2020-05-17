@@ -3,7 +3,7 @@
     <el-header class="bg-yellowgreen" height="36px">
       <el-row class="full-size" type="flex" align="middle">
         <el-col class="padding-left-5">
-          <el-radio-group class="full-height" :fill="color.INFO" v-model="displaySeatStatus" size="mini">
+          <el-radio-group class="full-height" :fill="color.WARNING" v-model="displaySeatStatus" size="mini">
             <el-radio-button class="full-height no-border-radius" v-for="status in seatStatus" :key="status.value"
                              :label="status.value">
               <span>{{status.label}}</span>
@@ -11,8 +11,8 @@
           </el-radio-group>
         </el-col>
         <div class="text-right padding-right-5">
-          <el-button :loading="isRefreshing" size="mini" @click="refreshSeat">
-            <span>Làm mới</span>
+          <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshSeat">
+            <span v-if="!isRefreshing"><i class="el-icon-refresh"></i><span>Làm mới</span></span>
           </el-button>
         </div>
       </el-row>

@@ -12,6 +12,7 @@
         <el-row class="hidden-md-and-down" type="flex" align="middle" justify="center">
           <el-dropdown trigger="click" @command="changeStoreStatus">
             <el-button size="small" type="success">
+              <i class="fas el-icon-fa-store"></i>
               <span v-if="currentStore.storeName" class="text-light text-bold">{{currentStore.storeCode}} - {{currentStore.storeName}}</span>
             </el-button>
             <el-dropdown-menu class="padding-0" slot="dropdown">

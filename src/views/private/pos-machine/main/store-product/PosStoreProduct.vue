@@ -10,6 +10,7 @@
             :fetch-suggestions="queryStoreProduct"
             placeholder="Mã hoặc tên sản phẩm"
             :debounce="filterDebounce"
+            prefix-icon="el-icon-search"
             :trigger-on-focus="false">
           </el-autocomplete>
         </el-col>

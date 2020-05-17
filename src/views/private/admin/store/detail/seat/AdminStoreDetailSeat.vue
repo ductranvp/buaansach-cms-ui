@@ -63,8 +63,7 @@
         colSize: 3,
         displayType: "SEAT",
         sortType: "NAME",
-        seatPrefixUrl: "http://192.168.2.2:4000/seat=",
-        // seatPrefixUrl: Constants.CLIENT_SEAT_PREFIX_URL,
+        seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
         areas: [],
         seats: [],
       };
@@ -79,7 +78,7 @@
     },
     methods: {
       goto(seatGuid) {
-        let routeData = "http://192.168.2.2:4000/order/seat=" + seatGuid;
+        let routeData = this.seatPrefixUrl + seatGuid;
         window.open(routeData, '_blank');
       },
       async getSeats() {

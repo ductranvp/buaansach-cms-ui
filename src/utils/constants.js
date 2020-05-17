@@ -1,7 +1,6 @@
 const Constants = {
-    SERVER_API_URL: "http://localhost",
-    // SERVER_API_URL: "http://192.168.2.2",
-    CLIENT_SEAT_PREFIX_URL: "http://localhost:3000/order/pos=",
+    SERVER_API_URL: process.env.VUE_APP_SERVER_API_URL,
+    CUSTOMER_UI_SEAT_PREFIX_URL: process.env.VUE_APP_CUSTOMER_UI_URL + "/order/seat=",
     APP_TITLE: "app.pageTitle",
     DEFAULT_LANGUAGE: "vi",
     DEFAULT_AREA_GUID: "all",
