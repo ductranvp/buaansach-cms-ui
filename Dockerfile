@@ -8,6 +8,8 @@ RUN npm run build
 
 # production stage
 FROM nginx:stable-alpine as production-stage
+ENV TZ 'Asia/Ho_Chi_Minh'
+
 COPY --from=build-stage /app/dist /app
 EXPOSE 80
 CMD ["nginx", "-g", "daemon off;"]
