@@ -17,7 +17,7 @@
           </el-button>
         </el-row>
       </el-header>
-      <el-main class="full-size bg-light">
+      <el-main class="full-size bg-white">
         <template v-for="noti in listNotification">
           <el-alert :closable="false" class="pointer full-width padding-5-10"
                     :type="noti.status ==='UNSEEN' ? 'warning' : ''"
@@ -38,13 +38,13 @@
         </template>
       </el-main>
       <el-footer height="auto">
-        <el-row class="bg-light" type="flex" align="middle" justify="start">
+        <el-row class="bg-white" type="flex" align="middle" justify="start">
           <el-button @click="clearSeenNotifications" plain class="full-width no-border-radius no-border" type="info">
             <i class="fas el-icon-fa-eraser"></i>
             <span>Xóa Đã Xem</span>
           </el-button>
         </el-row>
-        <el-row class="bg-light" type="flex" align="middle" justify="start">
+        <el-row class="bg-white" type="flex" align="middle" justify="start">
           <el-button @click="clearAllNotification" plain class="full-width no-border-radius no-border" type="danger">
             <i class="el-icon-delete"></i>
             <span>Xóa Tất Cả</span>

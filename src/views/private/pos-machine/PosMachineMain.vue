@@ -82,14 +82,14 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   /deep/ .el-slider__bar {
     background: transparent;
   }
 
   /deep/ .el-slider__button {
-    border: solid 2px #159550;
-    background: #159550;
+    border: solid 2px $--color-success;
+    background: $--color-success;
     width: 8px;
     height: 8px;
   }

@@ -83,12 +83,16 @@
   background: $--color-info !important;
 }
 
+.bg-white {
+  background: $--color-white !important;
+}
+
 .bg-light {
-  background: white !important;
+  background: $--color-light !important;
 }
 
 .bg-dark {
-  background: darkgray !important;
+  background: $--color-dark !important;
 }
 
 .text-primary {
@@ -112,11 +116,11 @@
 }
 
 .text-light {
-  color: #fff !important;
+  color: $--color-light !important;
 }
 
 .text-dark {
-  color: #000 !important;
+  color: $--color-dark !important;
 }
 
 .show-vertical-scroll {
@@ -138,6 +142,11 @@
 .text-small {
   font-size: 14px !important;
 }
+
+.text-normal {
+  font-size: 15px !important;
+}
+
 .text-medium {
   font-size: 16px !important;
 }
