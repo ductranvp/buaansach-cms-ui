@@ -130,7 +130,6 @@
             try {
               vm.isLoading = true;
               vm.form.storeGuid = vm.$route.params.storeGuid;
-              console.log(JSON.parse(JSON.stringify(vm.form)));
               if (vm.isEdit) {
                 const {data} = await AdminStoreProductService.updateStoreProduct(vm.form);
                 vm.$emit("onUpdated", data);

@@ -28,7 +28,8 @@
                    shadow="never">
             <div style="position: relative"
                  :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'pointer-disabled' : ''">
-              <el-image :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'grayscale' : ''"  @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productImageUrl"
+              <el-image :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'grayscale' : ''"
+                        @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productImageUrl"
                         class="store-product-image">
               </el-image>
               <div v-if="storeProduct.storeProductStatus === 'UNAVAILABLE'"
@@ -134,8 +135,6 @@
         cb([]);
       },
       async changeStoreProductStatus(storeProductGuid, storeProductStatus) {
-        console.log(storeProductGuid);
-        console.log(storeProductStatus);
         const payload = {
           storeProductGuid: storeProductGuid,
           storeProductStatus: storeProductStatus,
@@ -163,7 +162,7 @@
     display: block;
   }
 
-  .grayscale{
+  .grayscale {
     filter: grayscale(100%);
   }
 </style>

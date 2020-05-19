@@ -237,7 +237,7 @@
         } catch (e) {
           MessageUtils.error("Số điện thoại không tồn tại trong hệ thống. Vui lòng Thêm Khách Khàng trước");
         }
-        if (willVoucherBeCancelled){
+        if (willVoucherBeCancelled) {
           try {
             await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
           } catch (e) {
@@ -302,7 +302,6 @@
         };
         try {
           await vm.$store.dispatch("posMachine/completeOrder", payload);
-          console.log("prinnt");
           vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(customerPay * 1000)), function () {
             // this function is called when print is done;
             vm.$store.dispatch("posMachine/printDone");

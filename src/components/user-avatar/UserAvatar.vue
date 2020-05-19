@@ -44,7 +44,6 @@
       };
     },
     created() {
-      console.log(this.user);
     },
     methods: {}
   };

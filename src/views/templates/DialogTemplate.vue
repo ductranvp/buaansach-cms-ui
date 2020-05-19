@@ -110,7 +110,7 @@
         this.$refs.dialogForm.validate(valid => {
           if (valid) {
             try {
-              console.log("submit");
+              // do something
             } catch (error) {
               NotificationUtils.error(error.message || error.data.message);
             }

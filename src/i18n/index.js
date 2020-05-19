@@ -25,7 +25,6 @@ const i18n = new VueI18n({
 });
 
 i18n.changeLanguage = lang => {
-  console.log("Switch language to: " + lang);
   currentLang = lang;
   i18n.locale = lang;
   switch (lang) {
