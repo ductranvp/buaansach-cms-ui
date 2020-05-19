@@ -96,7 +96,6 @@
         this.isEdit = true;
         this.productNotInStore = [];
         this.form = AppUtils.deepCopy(storeProduct);
-        console.log(this.form);
         this.show();
       },
       async getProductNotInStore() {
@@ -139,7 +138,7 @@
                 const {data} = await AdminStoreProductService.addStoreProduct(vm.form);
                 vm.$emit("onCreated", data);
               }
-              NotificationUtils.success("Cập nhật thành công");
+              NotificationUtils.success(vm.$t("common.entity.save.success"));
               vm.isLoading = false;
               vm.hide();
             } catch (error) {

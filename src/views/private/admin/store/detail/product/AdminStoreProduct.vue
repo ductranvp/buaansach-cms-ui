@@ -12,7 +12,7 @@
       <raw-data-table ref="storeProductTable"
                       show-audit
                       :custom-audit="['createdBy', 'createdDate']"
-                      :default-sort="{prop: 'productPosition', order: 'descending'}"
+                      :default-sort="{prop: 'productPosition', order: 'ascending'}"
                       :data="storeProducts">
         <el-table-column prop="productName" label="Tên sản phẩm"></el-table-column>
         <el-table-column prop="productPrice" label="Giá bán"></el-table-column>
@@ -43,6 +43,7 @@
             </el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="productPosition" sortable label="Thứ tự"></el-table-column>
         <template slot="action">
           <el-table-column label="Thao tác" width="160px">
             <template slot-scope="{row}">

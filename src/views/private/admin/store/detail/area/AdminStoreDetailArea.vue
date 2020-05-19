@@ -5,13 +5,13 @@
         <el-form ref="areaForm" :rules="formRules" :model="form" :inline="true">
           <el-row type="flex" align="top">
             <el-form-item prop="areaName">
-              <el-input :placeholder="$t('private.adminStoreDetailAreaPage.form.areaName')"
-                        v-model="form.areaName">
+              <el-input :placeholder="$t('private.adminStoreDetailAreaPage.form.areaName')" v-model="form.areaName">
               </el-input>
             </el-form-item>
             <el-form-item prop="areaType">
-              <el-select placeholder="Loại khu vực" v-model="form.areaType">
-                <el-option v-for="type in areaTypes" :label="type.label" :value="type.value" :key="type.value"></el-option>
+              <el-select :placeholder="$t('private.adminStoreDetailAreaPage.form.areaType')" v-model="form.areaType">
+                <el-option v-for="type in areaTypes" :label="type.label" :value="type.value"
+                           :key="type.value"></el-option>
               </el-select>
             </el-form-item>
             <el-form-item>
@@ -116,7 +116,7 @@
                 <el-button plain type="info" size="mini" @click="row.edit = false">
                   <span>{{$t("common.entity.action.cancel")}}</span>
                 </el-button>
-                <el-button plain type="primary" size="mini" @click="confirmEditArea(row)">
+                <el-button :loading="isLoading" plain type="primary" size="mini" @click="confirmEditArea(row)">
                   <span>{{$t("common.entity.action.save")}}</span>
                 </el-button>
               </div>
@@ -168,13 +168,14 @@
       return {
         isLoading: false,
         areas: [],
-        form: {
+        form: { // AdminCreateAreaDTO
+          storeGuid: null,
           areaName: null,
           areaType: "IN_STORE",
-          areaColor: "#ffffff",
-          autoCreateSeat: true,
-          numberOfSeats: null,
+          areaColor: "#90ee90",
           seatPrefix: null,
+          numberOfSeats: null,
+          autoCreateSeat: true,
         },
         formRules: {
           areaName: [
@@ -295,13 +296,16 @@
       async confirmEditArea(row) {
         const vm = this;
         try {
+          vm.isLoading = true;
           const {data: area} = await AdminAreaService.updateArea(row);
+          vm.isLoading = false;
           area.edit = false;
           Object.keys(area).forEach(key => {
             row[key] = area[key];
           });
           NotificationUtils.success(vm.$t("common.entity.save.success"));
         } catch (error) {
+          vm.isLoading = false;
           NotificationUtils.error(error.message || error.data.message);
         }
       },
@@ -313,11 +317,12 @@
             vm.isLoading = true;
             const {data: area} = await AdminAreaService.createArea(vm.form);
             vm.isLoading = false;
-            this.$set(area, 'edit', false);
-            this.areas.push(area);
-            this.resetForm();
+            vm.$set(area, 'edit', false);
+            vm.areas.push(area);
+            vm.resetForm();
             NotificationUtils.success(vm.$t("common.entity.save.success"));
           } catch (error) {
+            vm.isLoading = false;
             NotificationUtils.error(error.message || error.data.message);
           }
         }

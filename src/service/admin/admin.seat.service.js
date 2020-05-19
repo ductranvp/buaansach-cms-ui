@@ -8,12 +8,12 @@ const AdminSeatService = {
   updateSeat(payload) {
     return request.put(baseUrl + "/update", payload);
   },
-  getListSeatByAreaGuid(areaGuid) {
-    return request.get(baseUrl + "/list-by-area/" + areaGuid);
-  },
-  getListSeatByStoreGuid(storeGuid) {
-    return request.get(baseUrl + "/list-by-store/" + storeGuid);
-  },
+  // getListSeatByAreaGuid(areaGuid) {
+  //   return request.get(baseUrl + "/list-by-area/" + areaGuid);
+  // },
+  // getListSeatByStoreGuid(storeGuid) {
+  //   return request.get(baseUrl + "/list-by-store/" + storeGuid);
+  // },
   deleteSeat(seatGuid) {
     return request.delete(baseUrl + "/delete/" + seatGuid);
   }

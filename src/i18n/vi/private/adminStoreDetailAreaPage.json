@@ -1,12 +1,11 @@
 {
   "adminStoreDetailAreaPage": {
-    "seatEntityName": "chỗ ngồi",
-    "areaEntityName": "khu vực",
     "form": {
       "areaName": "Tên khu vực",
       "areaColor": "Màu khu vực",
+      "areaType": "Loại khu vực",
       "numberOfSeats": "Số lượng chỗ ngồi",
-      "autoCreateSeat": "Tự tạo số chỗ ngồi tương ứng",
+      "autoCreateSeat": "Tự đánh số chỗ ngồi",
       "seatPrefix": "Tiền tố, ví dụ: Bàn, Ghế...",
       "submitBtn": "Thêm khu vực"
     },

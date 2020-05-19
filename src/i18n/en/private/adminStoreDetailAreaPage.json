@@ -3,6 +3,7 @@
     "form": {
       "areaName": "Area Name",
       "areaColor": "Area Color",
+      "areaType": "Area Type",
       "numberOfSeats": "Number of Seats",
       "autoCreateSeat": "Auto Create Seat",
       "seatPrefix": "Seat Prefix",
