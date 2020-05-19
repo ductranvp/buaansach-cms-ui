@@ -16,9 +16,9 @@
     </el-row>
     <el-row>
       <raw-data-table ref="categoryTable" :data="categories"
-                      :default-sort="{prop: 'categoryPosition', order: 'descending'}" show-index show-audit>
+                      :default-sort="{prop: 'categoryPosition', order: 'ascending'}" show-index show-audit>
         <el-table-column label="Tên Danh Mục" prop="categoryName"></el-table-column>
-        <!--        <el-table-column label="Thứ tự" prop="categoryPosition" sortable></el-table-column>-->
+        <el-table-column label="Thứ tự" prop="categoryPosition" sortable></el-table-column>
         <template slot="action">
           <el-table-column label="Thao tác">
             <template slot-scope="{row}">
@@ -54,6 +54,7 @@
           guid: null,
           categoryName: null,
           categoryDescription: null,
+          categoryImageUrl: null,
           categoryPosition: null,
         },
         formRules: {
@@ -96,7 +97,7 @@
           try {
             await AdminCategoryService.deleteCategory(category.guid);
             vm.categories = vm.categories.filter(cat => cat.guid !== category.guid);
-            NotificationUtils.success("Xóa danh mục thành công");
+            NotificationUtils.success(vm.$t("common.entity.delete.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
