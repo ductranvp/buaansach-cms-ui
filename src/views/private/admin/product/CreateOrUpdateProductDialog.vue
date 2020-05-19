@@ -202,7 +202,7 @@
         ],
         productDisplay: [
           {label: "Mặc định", value: "DEFAULT"},
-          {label: "Hiện trên trang order", value: "ORDER_PAGE"},
+          {label: "Nổi bật", value: "HIGHLIGHT"},
         ]
       };
     },

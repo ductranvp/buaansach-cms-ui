@@ -6,7 +6,7 @@
           <el-input
             placeholder="Tìm theo mã hoặc tên sản phẩm"
             v-model="searchKey"
-            @key.enter="onSearch"
+            @keyup.enter.native="onSearch"
           >
             <el-button
               slot="append"
