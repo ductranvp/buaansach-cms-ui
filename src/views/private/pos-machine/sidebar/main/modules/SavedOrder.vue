@@ -1,8 +1,11 @@
 <template>
   <div id="saved_order">
-    <el-card :body-style="{padding: '10px 0px'}" shadow="never"
+    <el-card :body-style="{position: 'relative', padding: '12px 0px'}" shadow="never"
              v-for="(item) in savedOrderProduct"
              :key="item.guid">
+      <el-tag style="position: absolute; top: 0; left:0" size="mini" type="info" class="no-border-radius">
+        <span>{{item.createdDate | moment("HH:mm")}}</span>
+      </el-tag>
       <el-row type="flex" align="middle" style="height: 48px">
         <div class="text-bold text-very-large padding-0-20">{{item.orderProductQuantity}}</div>
         <el-row class="full-size" type="flex" align="middle">
@@ -107,5 +110,9 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+  }
+
+  /deep/ .el-card {
+    border-bottom: 0;
   }
 </style>
