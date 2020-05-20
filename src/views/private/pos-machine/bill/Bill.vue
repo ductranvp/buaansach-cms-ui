@@ -57,7 +57,7 @@
         style += ".text-left {text-align: center;}";
         style += ".text-right {text-align: right;}";
         style += ".pl-2 {padding-left: 2px;}";
-        style += ".logo {width: 35px; height: 28px; padding-right: 5px}";
+        style += ".logo {width: 42px; height: 34px; padding-right: 5px}";
         style += ".flex-center {display:flex; flex-direction: row; align-items: center; justify-content: center}";
         style += ".divider {border-top: 1px dashed black}";
         style += "table {font-size: 8pt;width: 100%;}";
@@ -70,7 +70,7 @@
         const store = this.currentStore;
         let info = "";
         info += "<div class='flex-center'>";
-        info += "<img class='logo' src='/logo_print.png' >";
+        info += "<img class='logo' src='/logo_print.svg' >";
         info += "<div>";
         info += "<h4 class='text-center' style='margin-bottom: 0 !important;'>BỮA ĂN SẠCH</h4>";
         info += "<div class='text-center' style='margin-bottom: 5px'><em>buaansach.com.vn</em></div>";

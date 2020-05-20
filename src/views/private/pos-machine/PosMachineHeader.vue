@@ -1,5 +1,6 @@
 <template>
   <el-header class="bg-success" height="40px">
+    <check-printer ref="checkPrinter"/>
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
         <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">
@@ -57,6 +58,16 @@
                   <i class="el-icon-user padding-right-10"></i>
                   <span>Tài khoản</span>
                 </el-dropdown-item>
+                <el-dropdown-item @click.native="checkPrinter">
+                  <i class="el-icon-printer padding-right-10"></i>
+                  <span>Kiểm tra máy in</span>
+                  <span></span>
+                </el-dropdown-item>
+                <el-dropdown-item @click.native="downloadTeamViewer">
+                  <i class="el-icon-s-promotion padding-right-10"></i>
+                  <span>Tải TeamViewer</span>
+                  <span></span>
+                </el-dropdown-item>
                 <el-divider class="margin-0"></el-divider>
                 <el-dropdown-item command="logout">
                   <i class="el-icon-switch-button padding-right-10"></i>
@@ -78,10 +89,11 @@
   import NotificationUtils from "@/utils/notification.util";
   import PosStoreService from "@/service/pos/pos.store.service";
   import PosNotification from "@/views/private/pos-machine/header/notification/PosNotification";
+  import CheckPrinter from "@/views/private/pos-machine/CheckPrinter";
 
   export default {
     name: "PosMachineHeader",
-    components: {PosNotification},
+    components: {CheckPrinter, PosNotification},
     computed: {
       ...mapState({
         currentUser: state => state.user.info,
@@ -94,6 +106,13 @@
       };
     },
     methods: {
+      downloadTeamViewer() {
+        let win = window.open("https://download.teamviewer.com/full", '_blank');
+        win.focus();
+      },
+      checkPrinter() {
+        this.$refs.checkPrinter.printTest();
+      },
       gotoReport() {
         this.$router.push({name: 'saleReportPage', params: {storeGuid: this.$route.params.storeGuid}});
       },
