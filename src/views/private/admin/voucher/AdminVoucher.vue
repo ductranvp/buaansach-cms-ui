@@ -59,6 +59,13 @@
         </el-table-column>
         <el-table-column label="Số lượng mã" prop="numberVoucherCode">
         </el-table-column>
+        <el-table-column label="Giảm giá" prop="voucherDiscount"></el-table-column>
+        <el-table-column label="Giảm theo" prop="voucherDiscountType">
+          <template slot-scope="{row}">
+            <el-tag type="primary" v-if="row.voucherDiscountType === 'VALUE'">Giá trị</el-tag>
+            <el-tag type="primary" v-else>Phần trăm</el-tag>
+          </template>
+        </el-table-column>
         <template slot="action">
           <el-table-column>
             <template slot-scope="{row}">
@@ -68,7 +75,7 @@
         </template>
       </raw-data-table>
     </el-row>
-    <create-or-update-voucher-dialog @voucherCreated="onVoucherCreated"  ref="voucherDialog"/>
+    <create-or-update-voucher-dialog @voucherCreated="onVoucherCreated" ref="voucherDialog"/>
     <list-voucher-code-dialog ref="listVoucherCodeDialog"/>
     <generate-voucher-inventory-dialog @inventoryUpdated="getVoucherInventoryStatus" ref="voucherInventoryDialog"/>
   </el-container>
