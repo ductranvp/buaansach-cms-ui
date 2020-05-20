@@ -209,6 +209,7 @@
           this.isEditCustomerPhone = false;
           return;
         }
+        /* when order has apply voucher code, if change customer phone, voucher will be remove */
         let willVoucherBeCancelled = false;
         if (this.currentOrder.voucherCustomerPhone != null) {
           try {
@@ -218,15 +219,25 @@
             return;
           }
         }
+
+        /* validate phone number*/
         const patt = new RegExp(Constants.PHONE_REGEX);
         if (this.currentOrder.customerPhone && !patt.test(this.currentOrder.customerPhone)) {
           MessageUtils.error("Số điện thoại không hợp lệ");
           return;
         }
+
+        /* check if phone existed or not */
         try {
           if (this.currentOrder.customerPhone) {
             await PosCustomerService.getCustomerByPhone(this.currentOrder.customerPhone);
           }
+        } catch (e) {
+          MessageUtils.error("Số điện thoại không tồn tại trong hệ thống. Vui lòng Thêm Khách Khàng trước");
+        }
+
+        /* perform update customer phone */
+        try {
           await PosOrderService.changeCustomerPhone({
             seatGuid: this.currentOrder.seatGuid,
             orderGuid: this.currentOrder.guid,
@@ -235,8 +246,10 @@
           NotificationUtils.success("Cập nhật SĐT thành công");
           this.isEditCustomerPhone = false;
         } catch (e) {
-          MessageUtils.error("Số điện thoại không tồn tại trong hệ thống. Vui lòng Thêm Khách Khàng trước");
+          MessageUtils.error("Lưu SĐT không thành công!");
         }
+
+        /* reload seat order info when voucher has been cancelled */
         if (willVoucherBeCancelled) {
           try {
             await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
