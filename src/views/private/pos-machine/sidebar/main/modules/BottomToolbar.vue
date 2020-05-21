@@ -85,7 +85,7 @@
               vm.$store.dispatch("posMachine/cancelOrder", cb.value);
               NotificationUtils.success("Hủy đơn thành công");
             } catch (e) {
-              NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
+              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
           } else {
             MessageUtils.error("Bạn phải nhập lí do hủy đơn");
@@ -96,34 +96,33 @@
         try {
           this.isLoading = true;
           this.$store.dispatch("posMachine/receiveOrder");
-          NotificationUtils.success("Tiếp nhận đơn thành công");
           this.isLoading = false;
         } catch (error) {
           this.isLoading = false;
-          NotificationUtils.error("Tiếp nhận đơn thất bại, vui lòng thử lại");
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
       },
       async updateOrder() {
         const vm = this;
-        vm.isLoading = true;
         try {
+          vm.isLoading = true;
           await this.$store.dispatch("posMachine/updateOrder");
-          NotificationUtils.success("Lưu đơn thành công");
+          vm.isLoading = false;
         } catch (error) {
-          NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+          vm.isLoading = false;
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
-        vm.isLoading = false;
       },
       async serveAllOrderProduct() {
         const vm = this;
-        vm.isLoading = true;
         try {
+          vm.isLoading = true;
           await this.$store.dispatch("posMachine/serveAllOrderProduct");
-          NotificationUtils.success("Cập nhật thành công");
+          vm.isLoading = false;
         } catch (error) {
-          NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+          vm.isLoading = false;
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
-        vm.isLoading = false;
       }
     }
   };

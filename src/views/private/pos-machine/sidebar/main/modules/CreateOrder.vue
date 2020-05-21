@@ -22,7 +22,7 @@
 
 <script>
   import {mapState} from "vuex";
-  import NotificationUtils from "@/utils/notification.util";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "CreateOrder",
@@ -58,15 +58,15 @@
         const vm = this;
         this.$refs.createOrderForm.validate(async valid => {
           if (valid) {
-            vm.isLoading = true;
             if (!this.form.customerPhone || this.form.customerPhone.trim() === "") this.form.customerPhone = null;
             try {
+              vm.isLoading = true;
               await this.$store.dispatch("posMachine/createOrder", this.form.customerPhone);
-              NotificationUtils.success("Tạo đơn thành công");
+              vm.isLoading = false;
             } catch (error) {
-              NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+              vm.isLoading = false;
+              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
-            vm.isLoading = false;
           }
         });
       },

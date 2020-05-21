@@ -8,7 +8,7 @@ const Constants = {
     PHONE_REGEX: "^(09|03|07|08|05)+([0-9]{8})$",
     COLOR: {
       PRIMARY: "#409EFF",
-      SUCCESS: "#1c952f",
+      SUCCESS: "#07a651",
       WARNING: "#e6a23c",
       DANGER: "#f56c6c",
       INFO: "#909399",

@@ -47,7 +47,7 @@
 
 <script>
   import {mapState} from "vuex";
-  import NotificationUtils from "@/utils/notification.util";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "ChangeOrderSeatDialog",
@@ -105,10 +105,10 @@
               await vm.$store.dispatch("posMachine/changeArea", vm.selectedArea.guid);
               vm.hide();
               vm.isLoading = false;
-              NotificationUtils.success("Chuyển bàn thành công");
+              MessageUtils.success("Chuyển bàn thành công!");
             } catch (error) {
               vm.isLoading = false;
-              NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
+              MessageUtils.error("Chuyển bàn không thành công!");
             }
           }
         });

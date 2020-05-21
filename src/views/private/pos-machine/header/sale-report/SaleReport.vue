@@ -99,6 +99,7 @@
   import PosSaleReportService from "@/service/pos/pos.sale-report.service";
   import PosStoreUserService from "@/service/pos/pos.store-user-service";
   import hasAnyRole from "@/utils/has-any-role";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "SaleReport",
@@ -192,19 +193,31 @@
         this.form.storeGuid = this.$route.params.storeGuid;
         this.form.startDate = this.dateRange[0];
         this.form.endDate = this.dateRange[1];
-        const {data} = await PosSaleReportService.getCurrentUserSaleReport(this.form);
-        this.reportData = data;
+        try {
+          const {data} = await PosSaleReportService.getCurrentUserSaleReport(this.form);
+          this.reportData = data;
+        } catch (error) {
+          MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
+        }
       },
       async getSaleReport() {
         this.form.storeGuid = this.$route.params.storeGuid;
         this.form.startDate = this.dateRange[0];
         this.form.endDate = this.dateRange[1];
-        const {data} = await PosSaleReportService.getSaleReport(this.form);
-        this.reportData = data;
+        try {
+          const {data} = await PosSaleReportService.getSaleReport(this.form);
+          this.reportData = data;
+        } catch (e) {
+          MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
+        }
       },
       async getListStoreUser() {
-        const {data} = await PosStoreUserService.getStoreUser(this.$route.params.storeGuid);
-        this.listStoreUser = data;
+        try {
+          const {data} = await PosStoreUserService.getStoreUser(this.$route.params.storeGuid);
+          this.listStoreUser = data;
+        } catch (e) {
+          MessageUtils.error("Lỗi tải danh sách nhân viên, vui lòng thử lại sau!");
+        }
       }
     }
   };

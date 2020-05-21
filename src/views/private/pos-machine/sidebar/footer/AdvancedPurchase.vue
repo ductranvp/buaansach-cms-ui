@@ -5,6 +5,7 @@
     :visible.sync="drawerVisible"
     :direction="direction"
     :show-close="false"
+    @opened="onOpened"
     :before-close="beforeClose">
     <el-container class="full-size" direction="vertical">
       <el-header height="40px" class="bg-success">
@@ -13,12 +14,15 @@
         </el-row>
       </el-header>
       <el-main class="full-size padding-20">
-        <el-form>
+        <el-form onsubmit="return false">
           <el-form-item>
             <el-row type="flex" align="bottom">
               <el-col :span="11">
                 <input-label label="Mã giảm giá" optional/>
-                <el-input v-if="!currentOrder.hasVoucher" v-model="voucherCode"></el-input>
+                <el-input ref="voucherCode"
+                          v-if="!currentOrder.hasVoucher"
+                          @keyup.native.enter="applyVoucher"
+                          v-model="voucherCode"></el-input>
                 <el-button v-else
                            disabled
                            class="full-width"
@@ -28,7 +32,9 @@
                 </el-button>
               </el-col>
               <el-col :span="11" :offset="2">
-                <el-button v-if="!currentOrder.hasVoucher" @click="applyVoucher"
+                <el-button v-if="!currentOrder.hasVoucher"
+                           @click="applyVoucher"
+                           :loading="isLoading"
                            class="full-width"
                            type="success"
                            plain>
@@ -74,7 +80,6 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import PosVoucherCodeService from "@/service/pos/pos.voucher-code.service";
-  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "AdvancedPurchase",
@@ -115,12 +120,16 @@
     },
     data() {
       return {
+        isLoading: false,
         drawerVisible: false,
         direction: 'ltr',
         voucherCode: null,
       };
     },
     methods: {
+      onOpened() {
+        this.$refs.voucherCode.focus();
+      },
       async applyVoucher() {
         if (this.voucherCode) {
           let payload = {
@@ -129,8 +138,11 @@
             voucherCode: this.voucherCode,
           };
           try {
+            this.isLoading = true;
             await PosVoucherCodeService.applyVoucher(payload);
+            this.isLoading = false;
           } catch (e) {
+            this.isLoading = false;
             const message = e.message || e.data.message;
             let errorMsg = "Mã giảm giá không khả dụng";
             switch (message) {
@@ -150,13 +162,13 @@
                 errorMsg = "Mã giảm giá không hợp lệ";
                 break;
             }
-            NotificationUtils.error(errorMsg);
+            MessageUtils.error(errorMsg);
           }
 
           try {
             await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
           } catch (e) {
-            NotificationUtils.error("Lỗi tải lại dữ liệu đơn hàng, vui lòng tải lại trang");
+            MessageUtils.error("Lỗi tải lại dữ liệu đơn hàng, vui lòng tải lại trang");
           }
         } else {
           MessageUtils.error("Vui lòng nhập mã voucher");
@@ -169,12 +181,12 @@
         try {
           await PosVoucherCodeService.cancelVoucher(payload);
         } catch (e) {
-          NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+          MessageUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
         }
         try {
           await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
         } catch (e) {
-          NotificationUtils.error("Lỗi tải lại dữ liệu đơn hàng");
+          MessageUtils.error("Lỗi tải lại dữ liệu đơn hàng");
         }
       },
       show() {

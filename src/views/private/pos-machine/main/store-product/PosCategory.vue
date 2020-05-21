@@ -45,14 +45,14 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .el-menu-item {
     height: 42px;
     line-height: 42px;
   }
 
   .el-menu-item.is-active {
-    background: #e6a23c;
+    background: $--color-warning;
     color: white;
     font-weight: 700;
   }

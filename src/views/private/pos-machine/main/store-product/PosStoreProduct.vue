@@ -78,7 +78,6 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
-  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "PosStoreProduct",
@@ -142,7 +141,7 @@
         try {
           await this.$store.dispatch("posMachine/changeStoreProductStatus", payload);
         } catch (e) {
-          NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
       }
     }

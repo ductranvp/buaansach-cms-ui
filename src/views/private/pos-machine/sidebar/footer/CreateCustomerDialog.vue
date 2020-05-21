@@ -42,8 +42,8 @@
 
 <script>
   import AppUtils from "@/utils/app.util";
-  import NotificationUtils from "@/utils/notification.util";
   import PosCustomerService from "@/service/pos/pos.customer.service";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "CreateCustomerDialog",
@@ -112,12 +112,12 @@
             try {
               vm.isLoading = true;
               await PosCustomerService.createCustomer(vm.form);
-              NotificationUtils.success("Thêm khách hàng thành công");
+              MessageUtils.success("Thêm khách hàng thành công");
               vm.isLoading = false;
               this.hide();
             } catch (error) {
               vm.isLoading = false;
-              NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
           }
         });

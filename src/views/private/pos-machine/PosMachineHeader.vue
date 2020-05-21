@@ -86,10 +86,10 @@
   import AuthUtils from "@/utils/auth.util";
   import MessageBoxUtils from "@/utils/message-box.util";
   import {mapState} from "vuex";
-  import NotificationUtils from "@/utils/notification.util";
   import PosStoreService from "@/service/pos/pos.store.service";
   import PosNotification from "@/views/private/pos-machine/header/notification/PosNotification";
   import CheckPrinter from "@/views/private/pos-machine/CheckPrinter";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "PosMachineHeader",
@@ -138,7 +138,7 @@
             this.$store.commit("posMachine/CHANGE_STORE_STATUS", status);
           }
         } catch (e) {
-          NotificationUtils.error(e.message || e.data.message);
+          MessageUtils.error("Đổi trạng thái cửa hàng không thành công!");
         }
       }
     }

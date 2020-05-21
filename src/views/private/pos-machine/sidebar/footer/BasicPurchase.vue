@@ -7,8 +7,8 @@
         <el-row class="full-size">
           <el-col class="full-height">
             <el-autocomplete
-              @keypress.enter.native="updateCustomerPhone"
-              @keypress.esc.native="cancelEditCustomerPhone"
+              @keyup.enter.native="updateCustomerPhone"
+              @keyup.esc.native="cancelEditCustomerPhone"
               ref="customerPhone"
               :class="isEditCustomerPhone ? 'edit-phone' : ''"
               class="full-size"
@@ -20,7 +20,7 @@
               :disabled="!isEditCustomerPhone"
               v-model="currentOrder.customerPhone"
               :fetch-suggestions="queryCustomer"
-              placeholder="SĐT Khách hàng"
+              placeholder="SĐT Khách hàng (F4)"
               :maxlength="10"
               @select="handleSelect">
               <i slot="prefix" class="el-input__icon el-icon-phone"></i>
@@ -75,7 +75,8 @@
         <el-container direction="vertical">
           <el-row type="flex" align="middle" style="height: 40px">
             <el-col :span="12" class="full-height">
-              <el-input @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay" placeholder="Khách đưa">
+              <el-input ref="customerPay" @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay"
+                        placeholder="Khách đưa (F8)">
                 <i slot="prefix" class="el-input__icon el-icon-money"></i>
                 <el-button class="full-size" style="color: #606266" disabled slot="suffix">
                   <span>x1000</span>
@@ -124,7 +125,7 @@
             </el-button>
           </el-col>
           <el-col :span="4">
-            <el-tooltip class="item" effect="dark" content="Khuyến mãi" placement="top">
+            <el-tooltip class="item" effect="dark" content="Khuyến mãi (F9)" placement="top">
               <el-button type="warning" class="text-large full-width padding-20-10" @click="showAdvancedPurchase">
                 <i class="fas el-icon-fa-tags"></i>
               </el-button>
@@ -142,10 +143,10 @@
   import PosCustomerService from "@/service/pos/pos.customer.service";
   import Constants from "@/utils/constants";
   import MessageUtils from "@/utils/message.util";
-  import NotificationUtils from "@/utils/notification.util";
   import PosOrderService from "@/service/pos/pos.order.service";
   import CreateCustomerDialog from "@/views/private/pos-machine/sidebar/footer/CreateCustomerDialog";
   import MessageBoxUtils from "@/utils/message-box.util";
+  import hotkeys from "hotkeys-js";
 
   export default {
     name: "BasicPurchase",
@@ -191,6 +192,22 @@
         backupCustomerPhone: null,
         isEditCustomerPhone: false
       };
+    },
+    mounted() {
+      const vm = this;
+      hotkeys.filter = function (event) {
+        return true;
+      };
+      hotkeys('f4', 'posMachine', function (event, handler) {
+        vm.editCustomerPhone();
+      });
+      hotkeys('f8', 'posMachine', function (event, handler) {
+        vm.$refs.customerPay.focus();
+      });
+      hotkeys('f9', 'posMachine', function (event, handler) {
+        vm.showAdvancedPurchase();
+      });
+      hotkeys.setScope("posMachine");
     },
     watch: {
       currentOrder: function () {
@@ -243,10 +260,9 @@
             orderGuid: this.currentOrder.guid,
             newCustomerPhone: this.currentOrder.customerPhone
           });
-          NotificationUtils.success("Cập nhật SĐT thành công");
           this.isEditCustomerPhone = false;
         } catch (e) {
-          MessageUtils.error("Lưu SĐT không thành công!");
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
 
         /* reload seat order info when voucher has been cancelled */
@@ -254,7 +270,7 @@
           try {
             await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
           } catch (e) {
-            NotificationUtils.error("Lỗi tải lại dữ liệu đơn hàng");
+            MessageUtils.error("Lỗi tải lại dữ liệu đơn hàng");
           }
         }
       },
@@ -319,10 +335,10 @@
             // this function is called when print is done;
             vm.$store.dispatch("posMachine/printDone");
             vm.customerPay = null;
-            NotificationUtils.success("Thanh toán thành công");
+            MessageUtils.success("Thanh toán thành công");
           });
         } catch (error) {
-          NotificationUtils.error("Thanh toán không thành công, vui lòng thử lại");
+          MessageUtils.error("Thanh toán không thành công, vui lòng thử lại");
         }
 
       }

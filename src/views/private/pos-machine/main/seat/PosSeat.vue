@@ -52,6 +52,7 @@
 <script>
   import {mapState} from "vuex";
   import Constants from "@/utils/constants";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "PosSeat",
@@ -81,12 +82,16 @@
     methods: {
       async refreshSeat() {
         const vm = this;
-        vm.isRefreshing = true;
-        await vm.$store.dispatch("posMachine/getAllArea", vm.$route.params.storeGuid);
-        await vm.$store.dispatch("posMachine/changeArea", vm.selectedArea.guid);
-        setTimeout(function () {
-          vm.isRefreshing = false;
-        }, 1000);
+        try {
+          vm.isRefreshing = true;
+          await vm.$store.dispatch("posMachine/getAllArea", vm.$route.params.storeGuid);
+          await vm.$store.dispatch("posMachine/changeArea", vm.selectedArea.guid);
+          setTimeout(function () {
+            vm.isRefreshing = false;
+          }, 1000);
+        } catch (e) {
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        }
       },
       changeSeat(seat) {
         if (this.selectedSeat.guid !== seat.guid)

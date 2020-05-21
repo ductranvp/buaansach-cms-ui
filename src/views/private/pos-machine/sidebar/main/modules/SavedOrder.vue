@@ -20,7 +20,8 @@
             <el-col :span="10" class="padding-left-10 text-right">
               <template v-if="item.orderProductStatus === 'PREPARING'">
                 <el-row type="flex" align="middle" justify="end">
-                  <el-button @click="serveOrderProduct(item)" type="success" size="small">Xong</el-button>
+                  <el-button :loading="isLoading" @click="serveOrderProduct(item)" type="success" size="small">Xong
+                  </el-button>
                 </el-row>
               </template>
               <el-button disabled plain class="margin-right-10" size="small" type="success"
@@ -55,7 +56,6 @@
 
 <script>
   import {mapState} from "vuex";
-  import NotificationUtils from "@/utils/notification.util";
   import MessageUtils from "@/utils/message.util";
 
   export default {
@@ -68,16 +68,23 @@
         orderProductStatus: state => state.posMachine.orderProductStatus,
       })
     },
+    data() {
+      return {
+        isLoading: false
+      };
+    },
     methods: {
       async serveOrderProduct(product) {
         const vm = this;
         if (vm.$route.params.storeGuid) {
           try {
+            vm.isLoading = true;
             await vm.$store.dispatch("posMachine/serveOrderProduct",
               {orderProduct: product, storeGuid: vm.$route.params.storeGuid});
-            NotificationUtils.success("Cập nhật thành công", 1000);
+            vm.isLoading = false;
           } catch (error) {
-            NotificationUtils.error("Đã xảy ra lỗi, vui lòng thử lại");
+            vm.isLoading = false;
+            MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
           }
         }
       },

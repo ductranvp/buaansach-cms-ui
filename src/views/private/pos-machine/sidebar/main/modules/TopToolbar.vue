@@ -3,25 +3,33 @@
     <change-order-seat-dialog ref="changeSeatDialog"/>
     <el-row v-if="currentOrder.guid" class="full-size padding-0-10" type="flex" align="middle" justify="center">
       <el-col :span="18" class="text-small">
-        <el-row :gutter="10" type="flex" align="middle">
-          <el-col>
-            <el-tag type="info" effect="dark" size="medium">Mã: {{currentOrder.orderCode}}</el-tag>
-          </el-col>
-          <el-col>
-            <el-tag type="info" effect="dark" size="medium">
-              <span>Giờ vào: {{currentOrder.orderCheckinTime | moment("HH:mm")}}</span>
-            </el-tag>
-          </el-col>
-          <el-col>
+        <el-row type="flex" align="middle">
+          <div class="padding-right-10">
+            <el-tooltip content="Mã đơn">
+              <el-tag type="info" effect="dark" size="medium">
+                <i class="el-icon-tickets"></i>
+                <span>{{currentOrder.orderCode}}</span>
+              </el-tag>
+            </el-tooltip>
+          </div>
+          <div class="padding-right-10">
+            <el-tooltip content="Giờ vào">
+              <el-tag type="info" effect="dark" size="medium">
+                <i class="el-icon-time padding-right-5"></i>
+                <span>{{currentOrder.orderCheckinTime | moment("HH:mm")}}</span>
+              </el-tag>
+            </el-tooltip>
+          </div>
+          <div>
             <el-tooltip content="Làm mới">
               <el-button :loading="isRefreshing" @click="refreshSeatOrder"
                          type="success"
                          plain
                          size="mini">
-                <i class="el-icon-refresh"></i>
+                <i v-if="!isRefreshing" class="el-icon-refresh"></i>
               </el-button>
             </el-tooltip>
-          </el-col>
+          </div>
         </el-row>
       </el-col>
       <el-col :span="6" class="text-right">
@@ -48,7 +56,6 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/main/ChangeOrderSeatDialog";
-  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "TopToolbar",
@@ -67,11 +74,15 @@
     methods: {
       async refreshSeatOrder() {
         const vm = this;
-        vm.isRefreshing = true;
-        await vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
-        setTimeout(function () {
-          vm.isRefreshing = false;
-        }, 1000);
+        try {
+          vm.isRefreshing = true;
+          await vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
+          setTimeout(function () {
+            vm.isRefreshing = false;
+          }, 1000);
+        } catch (e) {
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        }
       },
       cancelOrder() {
         const vm = this;
@@ -83,9 +94,9 @@
           if (cb.value) {
             try {
               vm.$store.dispatch("posMachine/cancelOrder", cb.value);
-              NotificationUtils.success("Hủy đơn thành công");
+              MessageUtils.success("Hủy đơn thành công");
             } catch (e) {
-              NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
+              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
           } else {
             MessageUtils.error("Bạn phải nhập lí do hủy đơn");

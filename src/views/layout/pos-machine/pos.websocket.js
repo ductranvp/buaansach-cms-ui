@@ -1,4 +1,3 @@
-import NotificationUtils from "@/utils/notification.util";
 import AuthUtils from "@/utils/auth.util";
 import {mapState} from "vuex";
 import MessageUtils from "@/utils/message.util";

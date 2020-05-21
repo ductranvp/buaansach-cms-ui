@@ -33,6 +33,7 @@
 
 <script>
   import {mapState} from "vuex";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "PosSidebarHeader",
@@ -49,11 +50,15 @@
     methods: {
       async toggleLock() {
         const vm = this;
-        vm.isLocking = true;
-        await vm.$store.dispatch("posMachine/toggleLock");
-        setTimeout(function () {
-          vm.isLocking = false;
-        }, 1000);
+        try {
+          vm.isLocking = true;
+          await vm.$store.dispatch("posMachine/toggleLock");
+          setTimeout(function () {
+            vm.isLocking = false;
+          }, 1000);
+        } catch (e) {
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        }
       }
     }
   };
