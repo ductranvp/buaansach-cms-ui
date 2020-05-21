@@ -12,7 +12,7 @@
     "@chenfengyuan/vue-qrcode": "^1.0.2",
     "axios": "^0.19.2",
     "core-js": "^3.6.4",
-    "element-ui": "^2.13.0",
+    "element-ui": "^2.13.2",
     "hotkeys-js": "^3.7.6",
     "nprogress": "^0.2.0",
     "sockjs-client": "^1.4.0",
