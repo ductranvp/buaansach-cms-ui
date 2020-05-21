@@ -54,7 +54,7 @@
           <el-col :span="12">
             <el-card shadow="never">
               <div class="padding-20 bg-info text-light">
-                <span class="text-bold">Số đơn đã tạo</span>
+                <span class="text-bold">Số đơn đã tạo/tiếp nhận</span>
                 <br>
                 <span class="text-very-large text-bold">{{reportData.totalOrderCount}}</span>
               </div>

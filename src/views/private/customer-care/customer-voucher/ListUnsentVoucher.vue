@@ -45,7 +45,7 @@
     </div>
     <div class="margin-top-10">
       <raw-data-table highlight-current-row :data="listUnsentVoucher" show-audit :custom-audit="['createdDate']">
-        <el-table-column width="300px" prop="customerPhone" label="SĐT Khách">
+        <el-table-column width="250px" prop="customerPhone" label="SĐT Khách">
           <template slot-scope="{row}">
             <el-row :gutter="10" type="flex" align="middle">
               <el-col>

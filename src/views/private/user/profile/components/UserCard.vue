@@ -13,10 +13,10 @@
       <el-divider class="margin-15-0" />
       <el-row>
         <div>
-          <span>Email: {{ user.email }}</span>
+          <span>Ngày tạo: {{ user.createdDate | moment("HH:mm - DD/MM/YYYY") }}</span>
         </div>
         <div>
-          <span>Phone: {{ user.phone }}</span>
+          <span>Cập nhật cuối: {{ user.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}</span>
         </div>
       </el-row>
     </el-container>

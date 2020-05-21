@@ -79,10 +79,10 @@
           confirmButtonText: 'Hủy đơn',
           cancelButtonText: 'Đóng',
           inputType: 'textarea'
-        }).then(cb => {
+        }).then(async cb => {
           if (cb.value) {
             try {
-              vm.$store.dispatch("posMachine/cancelOrder", cb.value);
+              await vm.$store.dispatch("posMachine/cancelOrder", cb.value);
               NotificationUtils.success("Hủy đơn thành công");
             } catch (e) {
               MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
@@ -92,10 +92,10 @@
           }
         });
       },
-      receiveOrder() {
+      async receiveOrder() {
         try {
           this.isLoading = true;
-          this.$store.dispatch("posMachine/receiveOrder");
+          await this.$store.dispatch("posMachine/receiveOrder");
           this.isLoading = false;
         } catch (error) {
           this.isLoading = false;

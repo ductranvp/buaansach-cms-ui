@@ -26,7 +26,7 @@
                     :options="{ width: colSize*40 }"></qrcode>
           </div>
           <div class="text-center">
-            <span>{{seat.seatName}} - {{seat.areaName}}</span>
+            <span class="text-normal">{{seat.seatName}} - {{seat.areaName}}</span>
           </div>
         </el-card>
       </el-col>

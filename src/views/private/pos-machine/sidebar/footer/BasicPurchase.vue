@@ -27,7 +27,7 @@
               <el-row class="full-size" type="flex" align="middle" slot="suffix">
                 <div v-if="isEditCustomerPhone">
                   <el-tooltip class="item" effect="dark" content="Lưu" placement="top">
-                    <el-button @click="updateCustomerPhone" class="full-size margin-0">
+                    <el-button :loading="isLoading" @click="updateCustomerPhone" class="full-size margin-0">
                       <i class="fas el-icon-fa-check"></i>
                     </el-button>
                   </el-tooltip>
@@ -116,7 +116,7 @@
       <el-footer height="auto">
         <el-row type="flex" align="middle">
           <el-col :span="20">
-            <el-button :disabled="currentOrder.orderStatus === 'CREATED'" type="success"
+            <el-button :loading="isLoading" :disabled="currentOrder.orderStatus === 'CREATED'" type="success"
                        @click="completeOrder(customerPay)" class="full-width text-large padding-20-10">
               <i class="el-icon-printer"></i>
               <span>Thanh toán: </span>
@@ -188,6 +188,7 @@
     },
     data() {
       return {
+        isLoading: false,
         customerPay: null,
         backupCustomerPhone: null,
         isEditCustomerPhone: false
@@ -243,7 +244,7 @@
           MessageUtils.error("Số điện thoại không hợp lệ");
           return;
         }
-
+        this.isLoading = true;
         /* check if phone existed or not */
         try {
           if (this.currentOrder.customerPhone) {
@@ -261,7 +262,9 @@
             newCustomerPhone: this.currentOrder.customerPhone
           });
           this.isEditCustomerPhone = false;
+          this.isLoading = false;
         } catch (e) {
+          this.isLoading = false;
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
 
@@ -330,7 +333,9 @@
           paymentNote: null,
         };
         try {
+          this.isLoading = true;
           await vm.$store.dispatch("posMachine/completeOrder", payload);
+          this.isLoading = false;
           vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(customerPay * 1000)), function () {
             // this function is called when print is done;
             vm.$store.dispatch("posMachine/printDone");
@@ -338,6 +343,7 @@
             MessageUtils.success("Thanh toán thành công");
           });
         } catch (error) {
+          this.isLoading = false;
           MessageUtils.error("Thanh toán không thành công, vui lòng thử lại");
         }
 

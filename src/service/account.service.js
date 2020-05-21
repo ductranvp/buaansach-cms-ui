@@ -9,8 +9,9 @@ const AccountService = {
   getAccountInfo() {
     return request.get(baseUrl + "/info");
   },
-  updateAccount(payload) {
-    return request.put(baseUrl + "/update", payload, CoreService.formDataConfig);
+  updateAccount(payload, image) {
+    const formData = CoreService.processFormDataWithImage(payload, image);
+    return request.put(baseUrl + "/update", formData, CoreService.formDataConfig);
   },
   changePassword(payload) {
     return request.post(baseUrl + "/change-password", payload);
