@@ -2,13 +2,45 @@
   <el-container class="full-size" direction="vertical">
     <el-header class="bg-yellowgreen" height="36px">
       <el-row class="full-size" type="flex" align="middle">
-        <el-col class="padding-left-5">
-          <el-radio-group class="full-height" :fill="color.WARNING" v-model="displaySeatStatus" size="mini">
-            <el-radio-button class="full-height no-border-radius" v-for="status in seatStatus" :key="status.value"
-                             :label="status.value">
-              <span>{{status.label}}</span>
-            </el-radio-button>
-          </el-radio-group>
+        <el-col class="padding-left-5 hidden-sm-and-down">
+          <el-row type="flex" align="middle">
+            <el-radio-group class="full-height" :fill="color.WARNING" v-model="displaySeatStatus" size="mini">
+              <el-radio-button class="full-height no-border-radius" v-for="status in seatStatus" :key="status.value"
+                               :label="status.value">
+                <span>{{status.label}}</span>
+              </el-radio-button>
+            </el-radio-group>
+
+            <el-popover
+              ref="guidePopover"
+              placement="bottom"
+              width="250"
+              trigger="click">
+              <div>
+                <el-row class="padding-bottom-5" type="flex" align="middle">
+                  <el-button size="medium"></el-button>
+                  <span class="padding-left-10">Còn trống</span>
+                </el-row>
+                <el-row class="padding-bottom-5" type="flex" align="middle">
+                  <el-button size="medium" type="warning"></el-button>
+                  <span class="padding-left-10">Đang dùng, đã phục vụ xong</span>
+                </el-row>
+                <el-row class="padding-bottom-5" type="flex" align="middle">
+                  <el-button size="medium" type="danger"></el-button>
+                  <span class="padding-left-10">Đang dùng, chưa phục vụ xong</span>
+                </el-row>
+                <el-row type="flex" align="middle">
+                  <el-button size="medium" type="info"></el-button>
+                  <span class="padding-left-10">Đã khóa</span>
+
+                </el-row>
+              </div>
+            </el-popover>
+
+            <el-button v-popover:guidePopover class="bg-yellowgreen no-border" size="mini">
+              <span><i class="el-icon-help"></i><span>Hướng dẫn</span></span>
+            </el-button>
+          </el-row>
         </el-col>
         <div class="text-right padding-right-5">
           <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshSeat">

@@ -13,20 +13,40 @@
             </el-tooltip>
           </div>
           <div class="padding-right-10">
-            <el-tooltip content="Giờ vào">
+            <el-tooltip :content="'Giờ vào: ' + $moment(currentOrder.orderCheckinTime).format('HH:mm DD/MM/YYYY')">
               <el-tag type="info" effect="dark" size="medium">
                 <i class="el-icon-time padding-right-5"></i>
                 <span>{{currentOrder.orderCheckinTime | moment("HH:mm")}}</span>
               </el-tag>
             </el-tooltip>
           </div>
-          <div>
+          <div class="padding-right-10">
             <el-tooltip content="Làm mới">
               <el-button :loading="isRefreshing" @click="refreshSeatOrder"
                          type="success"
                          plain
                          size="mini">
                 <i v-if="!isRefreshing" class="el-icon-refresh"></i>
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div>
+            <el-popover
+              ref="qrPopover"
+              placement="bottom"
+              width="150"
+              trigger="click">
+              <div>
+                <qrcode class="pointer" @click.native="goto(selectedSeat.guid)" :value="seatPrefixUrl + selectedSeat.guid"
+                        :options="{ width: 150 }"></qrcode>
+              </div>
+            </el-popover>
+            <el-tooltip content="QR Code">
+              <el-button v-popover:qrPopover
+                         type="success"
+                         plain
+                         size="mini">
+                <i class="fas el-icon-fa-qrcode"></i>
               </el-button>
             </el-tooltip>
           </div>
@@ -56,6 +76,7 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/main/ChangeOrderSeatDialog";
+  import Constants from "@/utils/constants";
 
   export default {
     name: "TopToolbar",
@@ -68,10 +89,15 @@
     },
     data() {
       return {
+        seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
         isRefreshing: false,
       };
     },
     methods: {
+      goto(seatGuid) {
+        let routeData = this.seatPrefixUrl + seatGuid;
+        window.open(routeData, '_blank');
+      },
       async refreshSeatOrder() {
         const vm = this;
         try {
@@ -111,5 +137,4 @@
 </script>
 
 <style scoped>
-
 </style>

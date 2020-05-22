@@ -1,26 +1,30 @@
 <template>
   <el-header class="bg-success" height="50px">
     <el-row class="full-size padding-0-10" type="flex" align="middle">
-      <el-col>
+      <el-row type="flex" align="middle">
         <router-link to="/">
           <img src="/logo_square.png" class="logo">
         </router-link>
         <el-button class="padding-10" type="success" @click="goto('homePage')">
-          <span>BỮA ĂN SẠCH</span>
+          <span class="hidden-xs-only">BỮA ĂN SẠCH</span>
         </el-button>
-      </el-col>
+      </el-row>
       <el-col class="text-right">
         <el-button type="success" v-if="hasAnyRole(['ROLE_ADMIN'])" @click="goto('adminDashboardPage')">
-          <span>Quản trị viên</span>
+          <i class="el-icon-s-tools"></i>
+          <span class="hidden-sm-and-down">Quản trị viên</span>
         </el-button>
         <el-button type="success" v-if="hasAnyRole(['ROLE_CUSTOMER_CARE'])" @click="goto('customerCareCustomerVoucherCodePage')">
-          <span>Chăm sóc khách hàng</span>
+          <i class="fas el-icon-fa-comment"></i>
+          <span class="hidden-sm-and-down">Chăm sóc khách hàng</span>
         </el-button>
         <el-button type="success" @click="goto('profilePage')">
-          <span>Tài Khoản</span>
+          <i class="el-icon-user-solid"></i>
+          <span class="hidden-sm-and-down">Tài Khoản</span>
         </el-button>
         <el-button type="success" @click="goto('logout')">
-          <span>Đăng xuất</span>
+          <i class="fas el-icon-fa-sign-out-alt"></i>
+          <span class="hidden-sm-and-down">Đăng xuất</span>
         </el-button>
       </el-col>
     </el-row>

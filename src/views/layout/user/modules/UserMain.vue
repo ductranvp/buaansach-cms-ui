@@ -1,5 +1,5 @@
 <template>
-  <el-main class="padding-10">
+  <el-main>
     <router-view />
   </el-main>
 </template>
