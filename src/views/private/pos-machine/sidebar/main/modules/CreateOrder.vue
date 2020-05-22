@@ -3,6 +3,11 @@
     <el-col :span="14">
       <el-form onsubmit="return false" ref="createOrderForm" :model="form" :rules="formRules">
         <el-form-item>
+          <el-row type="flex" align="middle" justify="center">
+            <qrcode class="pointer" @click.native="goto(selectedSeat.guid)" :value="seatPrefixUrl + selectedSeat.guid"></qrcode>
+          </el-row>
+        </el-form-item>
+        <el-form-item>
           <el-alert style="line-height: 28px;" type="warning" :closable="false">
             <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>
           </el-alert>
@@ -23,16 +28,19 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
+  import Constants from "@/utils/constants";
 
   export default {
     name: "CreateOrder",
     computed: {
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
+        selectedSeat: state => state.posMachine.selectedSeat,
       })
     },
     data() {
       return {
+        seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
         isLoading: false,
         form: {
           customerPhone: null,
@@ -54,6 +62,10 @@
       },
     },
     methods: {
+      goto(seatGuid) {
+        let routeData = this.seatPrefixUrl + seatGuid;
+        window.open(routeData, '_blank');
+      },
       createOrder() {
         const vm = this;
         this.$refs.createOrderForm.validate(async valid => {
