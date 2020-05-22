@@ -1,40 +1,70 @@
 <template>
   <el-container direction="vertical">
     <div>
-      <el-row type="flex" align="top" justify="end">
-        <el-col :span="20">
-          <el-row type="flex" align="top">
-            <el-row>
-              <el-tag>{code}: Mã code</el-tag>
-              <el-tag>{phone}: Số điện thoại</el-tag>
-            </el-row>
-            <el-col>
-              <div>
-                <el-input ref="messageTemplate" :readonly="!isEdit" type="textarea" rows="5" v-model="messageComputed"
-                          placeholder="Mẫu tin nhắn gửi khách">
-                </el-input>
-              </div>
-            </el-col>
-            <div class="padding-left-10">
-              <div v-if="isEdit">
-                <el-button type="success" @click="saveMessageTemplate">Lưu</el-button>
-              </div>
-              <div class="padding-top-10" v-if="isEdit">
-                <el-button @click="cancelEditMessageTemplate" type="info">Hủy</el-button>
-              </div>
-              <template v-else>
-                <div>
-                  <el-button @click="isEdit = true">Đổi mẫu</el-button>
-                </div>
-                <div class="padding-top-10">
-                  <el-button @click="resetTemplate">Reset</el-button>
-                </div>
-              </template>
-            </div>
-          </el-row>
+      <el-row type="flex" align="top">
+        <el-col :md="20" :xs="20">
+          <div>
+            <el-input ref="messageTemplate" :readonly="!isEdit" type="textarea" rows="5" v-model="messageComputed"
+                      placeholder="Mẫu tin nhắn gửi khách">
+            </el-input>
+          </div>
         </el-col>
-        <el-col :span="4" class="text-right">
+        <el-col :md="4" :xs="4" class="padding-left-10">
+          <div v-if="isEdit">
+            <el-button class="full-width" size="small" type="success" @click="saveMessageTemplate">
+              <i class="fas el-icon-fa-save"></i>
+              <span class="hidden-xs-only">Lưu</span>
+            </el-button>
+          </div>
+          <div class="padding-top-10" v-if="isEdit">
+            <el-button class="full-width" size="small" @click="cancelEditMessageTemplate" type="info">
+              <i class="el-icon-close"></i>
+              <span class="hidden-xs-only">Hủy</span>
+            </el-button>
+          </div>
+          <template v-else>
+            <div>
+              <el-button class="full-width" type="warning" size="small" @click="isEdit = true">
+                <i class="el-icon-edit"></i>
+                <span class="hidden-xs-only">Đổi mẫu</span>
+              </el-button>
+            </div>
+            <div class="padding-top-10">
+              <el-button class="full-width" size="small" @click="resetTemplate">
+                <i class="el-icon-refresh-right"></i>
+                <span class="hidden-xs-only">Mặc định</span>
+              </el-button>
+            </div>
+            <div class="padding-top-10">
+              <el-popover
+                ref="infoPopover"
+                placement="bottom"
+                width="200"
+                trigger="click">
+                <div>
+                  <el-row class="padding-bottom-5" type="flex" align="middle">
+                    <el-tag size="medium">{code}</el-tag>
+                    <span class="padding-left-10">Mã voucher code</span>
+                  </el-row>
+                  <el-row class="padding-bottom-5" type="flex" align="middle">
+                    <el-tag size="medium">{phone}</el-tag>
+                    <span class="padding-left-10">Số điện thoại khách</span>
+                  </el-row>
+                </div>
+              </el-popover>
+
+              <el-button class="full-width" v-popover:infoPopover type="info" size="small" @click="resetTemplate">
+                <i class="el-icon-help"></i>
+                <span class="hidden-xs-only">Hướng dẫn</span>
+              </el-button>
+            </div>
+          </template>
+        </el-col>
+      </el-row>
+      <el-row class="padding-top-10">
+        <el-col class="text-right">
           <el-button
+            size="small"
             :loading="isLoading"
             @click="getUnsentVoucher"
             icon="el-icon-refresh">
@@ -45,20 +75,20 @@
     </div>
     <div class="margin-top-10">
       <raw-data-table highlight-current-row :data="listUnsentVoucher" show-audit :custom-audit="['createdDate']">
-        <el-table-column width="250px" prop="customerPhone" label="SĐT Khách">
+        <el-table-column width="190px" prop="customerPhone" label="SĐT Khách">
           <template slot-scope="{row}">
             <el-row :gutter="10" type="flex" align="middle">
               <el-col>
                 <el-input size="small" :ref="row.customerPhone" readonly v-model="row.customerPhone"></el-input>
               </el-col>
-              <el-col>
-                <el-button size="small" @click="copyCustomerPhone(row)">Copy</el-button>
-              </el-col>
+              <el-button size="small" @click="copyCustomerPhone(row)">
+                <span>Copy</span>
+              </el-button>
             </el-row>
           </template>
         </el-table-column>
         <!--        <el-table-column prop="customerName" label="Tên khách hàng"></el-table-column>-->
-        <el-table-column prop="customerZaloStatus" label="Trạng thái Zalo">
+        <el-table-column width="130px" prop="customerZaloStatus" label="Trạng thái Zalo">
           <template slot-scope="{row}">
             <el-select size="small" @change="updateCustomer(row)" v-model="row.customerZaloStatus">
               <el-option v-for="status in customerZaloStatus"
@@ -68,11 +98,11 @@
             </el-select>
           </template>
         </el-table-column>
-        <el-table-column prop="voucherCode" label="Mã voucher">
+        <el-table-column width="225px" prop="voucherCode" label="Mã voucher">
           <template slot-scope="{row}">
             <el-row :gutter="10" type="flex" align="middle">
               <el-col>
-                <span>{{row.voucherCode}}</span>
+                <span>{{row.voucherCode | uppercase}}</span>
               </el-col>
               <el-col>
                 <el-button @click="copyMessage(row)" v-if="!row.voucherCodeSent" type="success" plain size="small">
@@ -82,13 +112,13 @@
             </el-row>
           </template>
         </el-table-column>
-        <el-table-column prop="voucherCodeSentStatus" label="Thao tác">
+        <el-table-column width="200px" prop="voucherCodeSentStatus" label="Thao tác">
           <template slot-scope="{row}" v-show="row.voucherCodeSentStatus === 'UNSET'">
-            <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success" plain
+            <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success"
                        size="small">
               <span>Đã gửi</span>
             </el-button>
-            <el-button :loading="row.isSending" @click="updateVoucher(row, 'ARCHIVED')" type="info" plain size="small">
+            <el-button :loading="row.isSending" @click="updateVoucher(row, 'ARCHIVED')" type="info" size="small">
               <span>Lưu trữ</span>
             </el-button>
           </template>
@@ -169,14 +199,14 @@
         this.isEdit = false;
       },
       cancelEditMessageTemplate() {
-        this.messageTemplate = JSON.parse(localStorage.getItem("messageTemplate"));
+        this.messageTemplate = localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : this.messageTemplate;
         this.messageComputed = this.messageTemplate;
         this.isEdit = false;
       },
       computedMessage(row) {
         let temp = this.messageTemplate;
         temp = temp.replace("{phone}", row.customerPhone);
-        temp = temp.replace("{code}", row.voucherCode);
+        temp = temp.replace("{code}", row.voucherCode.toUpperCase());
         this.messageComputed = temp;
       },
       async getUnsentVoucher() {

@@ -48,13 +48,13 @@
         <el-table-column v-if="columns.customerCode.display" prop="customerCode"
                          :label="columns.customerCode.label"></el-table-column>
 
-        <el-table-column v-if="columns.customerPhone.display" prop="customerPhone"
+        <el-table-column width="100px" v-if="columns.customerPhone.display" prop="customerPhone"
                          :label="columns.customerPhone.label"></el-table-column>
 
-        <el-table-column v-if="columns.customerName.display" prop="customerName"
+        <el-table-column width="150px" v-if="columns.customerName.display" prop="customerName"
                          :label="columns.customerName.label"></el-table-column>
 
-        <el-table-column v-if="columns.customerZaloStatus.display" prop="customerZaloStatus"
+        <el-table-column width="130px" v-if="columns.customerZaloStatus.display" prop="customerZaloStatus"
                          :label="columns.customerZaloStatus.label">
 
           <template slot-scope="{row}">
@@ -67,13 +67,17 @@
           </template>
         </el-table-column>
 
-        <el-table-column v-if="columns.voucherCode.display" prop="voucherCode"
-                         :label="columns.voucherCode.label"></el-table-column>
+        <el-table-column width="100px" v-if="columns.voucherCode.display" prop="voucherCode"
+                         :label="columns.voucherCode.label">
+          <template slot-scope="{row}">
+            <span>{{row.voucherCode | uppercase}}</span>
+          </template>
+        </el-table-column>
 
-        <el-table-column v-if="columns.voucherCodeUsageCount.display" prop="voucherCodeUsageCount"
+        <el-table-column width="110px" v-if="columns.voucherCodeUsageCount.display" prop="voucherCodeUsageCount"
                          :label="columns.voucherCodeUsageCount.label"></el-table-column>
 
-        <el-table-column v-if="columns.voucherCodeSentStatus.display" prop="voucherCodeSentStatus"
+        <el-table-column width="140px" v-if="columns.voucherCodeSentStatus.display" prop="voucherCodeSentStatus"
                          :label="columns.voucherCodeSentStatus.label">
           <template slot-scope="{row}">
             <el-tag type="success" v-if="row.voucherCodeSentStatus === 'SENT'">Đã gửi</el-tag>
@@ -81,12 +85,13 @@
             <el-tag type="danger" v-else>Chưa đặt</el-tag>
           </template>
         </el-table-column>
+
         <el-table-column prop="voucherCodeSent" label="Thao tác" width="180px">
           <template slot-scope="{row}">
-            <el-button @click="updateVoucher(row, 'SENT')" type="success" plain size="small">
+            <el-button @click="updateVoucher(row, 'SENT')" type="success" size="small">
               <span>Đã gửi</span>
             </el-button>
-            <el-button @click="updateVoucher(row, 'ARCHIVED')" type="info" plain size="small">
+            <el-button @click="updateVoucher(row, 'ARCHIVED')" type="info" size="small">
               <span>Lưu trữ</span>
             </el-button>
           </template>

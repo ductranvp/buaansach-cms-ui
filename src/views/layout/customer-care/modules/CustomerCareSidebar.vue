@@ -5,7 +5,7 @@
         <el-row class="full-size padding-0-10" type="flex" align="middle" justify="center">
           <el-col>
             <el-badge :hidden="listUnseen.length === 0" :value="listUnseen.length" class="item">
-              <el-button class="padding-5" size="small" type="success">
+              <el-button class="padding-5" size="medium" type="success">
                 <i class="el-icon-message-solid"></i>
                 <span>Thông báo</span>
               </el-button>

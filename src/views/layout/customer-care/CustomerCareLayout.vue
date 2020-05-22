@@ -1,10 +1,10 @@
 <template>
   <el-container class="container" direction="horizontal">
     <el-container class="main-container" direction="vertical">
-      <CustomerCareHeader class="header"/>
+      <CustomerCareHeader @show-sidebar="toggleSidebar" class="header"/>
       <CustomerCareMain class="main"/>
     </el-container>
-    <CustomerCareSidebar class="sidebar"/>
+    <CustomerCareSidebar v-if="showSidebar" class="sidebar"/>
   </el-container>
 </template>
 
@@ -19,6 +19,16 @@
     mixins: [CustomerCareWebsocket],
     components: {CustomerCareMain, CustomerCareHeader, CustomerCareSidebar},
     created() {
+    },
+    data() {
+      return {
+        showSidebar: false,
+      };
+    },
+    methods: {
+      toggleSidebar(value) {
+        this.showSidebar = value;
+      }
     }
   };
 </script>

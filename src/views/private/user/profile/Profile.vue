@@ -1,24 +1,28 @@
 <template>
-  <el-row :gutter="20" class="padding-20">
-    <el-col :span="6" :xs="24" class="margin-bottom-20">
-      <user-card :user="user"/>
-    </el-col>
-    <el-col :span="18" :xs="24">
-      <el-card shadow="never">
-        <el-tabs v-model="activeTab">
-          <!--          <el-tab-pane label="Hoạt động" name="activity">-->
-          <!--            <activity />-->
-          <!--          </el-tab-pane>-->
-          <el-tab-pane label="Cập nhật" name="info">
-            <information/>
-          </el-tab-pane>
-          <el-tab-pane label="Đổi mật khẩu" name="password">
-            <change-password/>
-          </el-tab-pane>
-        </el-tabs>
-      </el-card>
-    </el-col>
-  </el-row>
+  <el-container class="full-size">
+    <el-main class="full-size padding-10">
+      <el-row :gutter="20">
+        <el-col :span="6" :xs="24" class="margin-bottom-10">
+          <user-card :user="user"/>
+        </el-col>
+        <el-col :span="18" :xs="24">
+          <el-card shadow="never">
+            <el-tabs v-model="activeTab">
+              <!--          <el-tab-pane label="Hoạt động" name="activity">-->
+              <!--            <activity />-->
+              <!--          </el-tab-pane>-->
+              <el-tab-pane label="Cập nhật" name="info">
+                <information/>
+              </el-tab-pane>
+              <el-tab-pane label="Đổi mật khẩu" name="password">
+                <change-password/>
+              </el-tab-pane>
+            </el-tabs>
+          </el-card>
+        </el-col>
+      </el-row>
+    </el-main>
+  </el-container>
 </template>
 
 <script>
