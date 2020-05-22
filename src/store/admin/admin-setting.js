@@ -1,7 +1,7 @@
 /* Store module pattern */
 const state = {
   adminSidebarCollapse: localStorage.getItem('adminSidebarCollapse') ?
-    JSON.parse(localStorage.getItem('adminSidebarCollapse')) : true
+    JSON.parse(localStorage.getItem('adminSidebarCollapse')) : false
 };
 const mutations = {
   TOGGLE_ADMIN_SIDEBAR(state) {
