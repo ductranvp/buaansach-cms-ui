@@ -11,6 +11,14 @@
       </el-radio-group>
       <el-row type="flex" align="middle">
         <el-col :span="12">
+          <div>Canh lề:</div>
+        </el-col>
+        <el-col :span="12">
+          <el-input-number v-model="marginSize" :min="0" :step="1" step-strictly :max="4"></el-input-number>
+        </el-col>
+      </el-row>
+      <el-row type="flex" align="middle">
+        <el-col :span="12">
           <div>{{$t("private.adminStoreDetailSeatPage.density")}}</div>
         </el-col>
         <el-col :span="12">
@@ -22,11 +30,14 @@
       <el-col class="margin-bottom-10" :span="colSize" v-for="seat in seats" :key="seat.guid">
         <el-card shadow="never">
           <div class="text-center">
-            <qrcode class="pointer" @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid"
-                    :options="{ width: colSize*40 }"></qrcode>
+            <qrcode :ref="seat.guid" class="pointer" @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid"
+                    :options="{ width: colSize*40, margin: marginSize }" tag="img"></qrcode>
           </div>
           <div class="text-center">
             <span class="text-normal">{{seat.seatName}} - {{seat.areaName}}</span>
+            <div class="padding-top-5">
+              <el-button @click="downloadImage(seat)" size="mini" class="full-width">Tải xuống</el-button>
+            </div>
           </div>
         </el-card>
       </el-col>
@@ -61,6 +72,7 @@
     data() {
       return {
         colSize: 3,
+        marginSize: 4,
         displayType: "SEAT",
         sortType: "NAME",
         seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
@@ -77,6 +89,14 @@
       },
     },
     methods: {
+      downloadImage(seat) {
+        let link = document.createElement("a"); //Create <a>
+        link.href = this.$refs[seat.guid][0].$el.currentSrc; //Image Base64 Goes here
+        link.download = seat.seatName + " - " + seat.areaName + ".png"; //File name Here
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      },
       goto(seatGuid) {
         let routeData = this.seatPrefixUrl + seatGuid;
         window.open(routeData, '_blank');
