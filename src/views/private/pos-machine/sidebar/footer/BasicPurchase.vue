@@ -158,6 +158,7 @@
         selectedSeat: state => state.posMachine.selectedSeat,
         currentOrder: state => state.posMachine.currentOrder,
         totalAmount: state => state.posMachine.currentOrder.totalAmount,
+        orderProductStatus: state => state.posMachine.orderProductStatus,
         discountAmount: state => {
           let amount = 0;
           let discount = state.posMachine.currentOrder.orderDiscount;
@@ -312,10 +313,20 @@
           MessageUtils.error("Đơn hàng có sản phẩm chưa được lưu");
           return;
         }
+
         if (!this.savedOrderProduct.length) {
           MessageUtils.error("Chưa có sản phẩm nào trong đơn hàng");
           return;
         }
+
+        const listPreparingOrderProduct = this.savedOrderProduct
+          .filter(item => item.orderProductStatus === this.orderProductStatus.PREPARING);
+
+        if (listPreparingOrderProduct.length > 0) {
+          MessageUtils.error("Đơn hàng có sản phẩm chưa được phục vụ");
+          return;
+        }
+
         if (this.isEditCustomerPhone) {
           MessageUtils.error("Số điện thoại khách chưa được lưu");
           return;

@@ -56,5 +56,6 @@
 
   .aside {
     background-color: #fff;
+    overflow: hidden;
   }
 </style>
