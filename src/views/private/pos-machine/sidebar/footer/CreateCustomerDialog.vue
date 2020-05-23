@@ -10,10 +10,15 @@
   >
     <el-form ref="dialogForm" :model="form" :rules="formRules">
       <el-form-item prop="customerName">
-        <input-label label="Tên khách hàng" optional/>
+        <input-label label="Tên khách hàng" required/>
         <el-input ref="customerName" v-model="form.customerName"></el-input>
       </el-form-item>
-
+      <el-form-item prop="customerGender" required>
+        <input-label label="Giới tính"/>
+        <el-radio v-model="form.customerGender" v-for="gen in genders" :label="gen.value" :key="gen.value">
+          <span>{{gen.label}}</span>
+        </el-radio>
+      </el-form-item>
       <el-form-item prop="customerPhone">
         <input-label label="SĐT khách hàng" required/>
         <el-row :gutter="10" type="flex" align="middle">
@@ -55,9 +60,16 @@
         dialogFormVisible: false,
         form: {
           customerName: null,
+          customerGender: "MALE",
           customerPhone: null,
         },
         formRules: {
+          customerName: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
+          ],
+          customerGender: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
+          ],
           customerPhone: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
             {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
@@ -67,13 +79,18 @@
               trigger: "blur"
             }
           ],
-        }
+        },
+        genders: [
+          {label: "Nam", value: "MALE"},
+          {label: "Nữ", value: "FEMALE"},
+          {label: "Khác", value: "UNDEFINED"},
+        ]
       };
     },
     methods: {
       create() {
         this.isCopied = false;
-        this.form = {};
+        this.form = {customerGender: "MALE"};
         this.isEdit = false;
         this.show();
       },

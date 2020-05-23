@@ -1,21 +1,21 @@
 <template>
   <el-row class="full-size" type="flex" align="middle" justify="center">
-    <el-col :span="14">
+    <el-col :span="10">
       <el-form onsubmit="return false" ref="createOrderForm" :model="form" :rules="formRules">
         <el-form-item>
           <el-row type="flex" align="middle" justify="center">
             <qrcode class="pointer" @click.native="goto(selectedSeat.guid)" :value="seatPrefixUrl + selectedSeat.guid"></qrcode>
           </el-row>
         </el-form-item>
-        <el-form-item>
-          <el-alert style="line-height: 28px;" type="warning" :closable="false">
-            <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>
-          </el-alert>
-        </el-form-item>
-        <el-form-item prop="customerPhone">
-          <input-label label="SĐT khách hàng" optional/>
-          <el-input @keypress.enter.native="createOrder" v-model="form.customerPhone"></el-input>
-        </el-form-item>
+<!--        <el-form-item>-->
+<!--          <el-alert style="line-height: 28px;" type="warning" :closable="false">-->
+<!--            <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>-->
+<!--          </el-alert>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item prop="customerPhone">-->
+<!--          <input-label label="SĐT khách hàng" optional/>-->
+<!--          <el-input @keypress.enter.native="createOrder" v-model="form.customerPhone"></el-input>-->
+<!--        </el-form-item>-->
         <el-form-item>
           <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">Tạo đơn
           </el-button>
@@ -70,7 +70,8 @@
         const vm = this;
         this.$refs.createOrderForm.validate(async valid => {
           if (valid) {
-            if (!this.form.customerPhone || this.form.customerPhone.trim() === "") this.form.customerPhone = null;
+            // dont create customer here
+            this.form.customerPhone = null;
             try {
               vm.isLoading = true;
               await this.$store.dispatch("posMachine/createOrder", this.form.customerPhone);
