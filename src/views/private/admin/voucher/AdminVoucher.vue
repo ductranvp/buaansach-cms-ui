@@ -70,11 +70,13 @@
           <el-table-column>
             <template slot-scope="{row}">
               <el-button type="primary" size="small" @click="viewVoucherCode(row)">Xem</el-button>
+              <el-button type="primary" size="small" @click="updateVoucher(row)">Sửa</el-button>
             </template>
           </el-table-column>
         </template>
       </raw-data-table>
     </el-row>
+    <admin-update-voucher-basic @voucherUpdatedBasic="voucherUpdatedBasic" ref="updateVoucherDialog"/>
     <create-or-update-voucher-dialog @voucherCreated="onVoucherCreated" ref="voucherDialog"/>
     <list-voucher-code-dialog ref="listVoucherCodeDialog"/>
     <generate-voucher-inventory-dialog @inventoryUpdated="getVoucherInventoryStatus" ref="voucherInventoryDialog"/>
@@ -90,10 +92,14 @@
   import GenerateVoucherInventoryDialog from "@/views/private/admin/voucher/GenerateVoucherInventoryDialog";
   import AdminVoucherInventoryService from "@/service/admin/admin.voucher-inventory.service";
   import AdminStoreService from "@/service/admin/admin.store.service";
+  import AdminUpdateVoucherBasic from "@/views/private/admin/voucher/AdminUpdateVoucherBasic";
 
   export default {
     name: "AdminVoucher",
-    components: {GenerateVoucherInventoryDialog, ListVoucherCodeDialog, CreateOrUpdateVoucherDialog, RawDataTable},
+    components: {
+      AdminUpdateVoucherBasic,
+      GenerateVoucherInventoryDialog, ListVoucherCodeDialog, CreateOrUpdateVoucherDialog, RawDataTable
+    },
     data() {
       return {
         listVoucher: [],
@@ -123,6 +129,17 @@
       },
       createVoucher() {
         this.$refs.voucherDialog.create();
+      },
+      voucherUpdatedBasic(voucher) {
+        const idx = this.listVoucher.findIndex(item => item.guid === voucher.guid);
+        this.listVoucher[idx].voucherName = voucher.voucherName;
+        this.listVoucher[idx].voucherDescription = voucher.voucherDescription;
+        this.listVoucher[idx].voucherDiscount = voucher.voucherDiscount;
+        this.listVoucher[idx].voucherDiscountType = voucher.voucherDiscountType;
+        this.listVoucher.splice(idx, 1, this.listVoucher[idx]);
+      },
+      updateVoucher(row) {
+        this.$refs.updateVoucherDialog.edit(row);
       },
       generateVoucherInventory() {
         this.$refs.voucherInventoryDialog.create();

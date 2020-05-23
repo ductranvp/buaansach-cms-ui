@@ -92,13 +92,14 @@
         totalAmount: state => state.posMachine.currentOrder.totalAmount,
         discountAmount: state => {
           let amount = 0;
+          let total = state.posMachine.currentOrder.totalAmount;
           let discount = state.posMachine.currentOrder.orderDiscount;
           let discountType = state.posMachine.currentOrder.orderDiscountType;
           if (discount) {
             if (discountType === "VALUE") {
               amount = discount;
             } else {
-              amount = (Math.floor(amount * discount / 100));
+              amount = (Math.floor(total * discount / 100));
             }
           }
           return amount > 0 ? amount : 0;

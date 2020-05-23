@@ -7,7 +7,10 @@ const AdminVoucherService = {
     return request.post(baseUrl + "/create", payload);
   },
   updateVoucher(payload) {
-    return request.put(baseUrl + "/create", payload);
+    return request.put(baseUrl + "/update", payload);
+  },
+  updateVoucherBasic(payload) {
+    return request.put(baseUrl + "/update-basic", payload);
   },
   getListVoucher(params) {
     return request.get(baseUrl + "/list", {

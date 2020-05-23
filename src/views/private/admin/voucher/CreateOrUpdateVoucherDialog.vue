@@ -16,7 +16,7 @@
         <el-col :span="11" :offset="2">
           <el-form-item prop="numberVoucherCode">
             <input-label label="Số lượng mã" required/>
-            <el-input :disabled="form.useCustomCode" v-model.number="form.numberVoucherCode"></el-input>
+            <el-input v-model.number="form.numberVoucherCode"></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
