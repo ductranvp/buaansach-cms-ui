@@ -125,17 +125,9 @@
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
       },
-      async changeSeat(seat) {
-        if (this.selectedSeat.guid !== seat.guid) {
-          try {
-            this.$store.commit("posMachine/SET_IS_LOADING_SEAT_ORDER", true);
-            await this.$store.dispatch("posMachine/selectSeat", seat);
-            this.$store.commit("posMachine/SET_IS_LOADING_SEAT_ORDER", false);
-          } catch (error) {
-            this.$store.commit("posMachine/SET_IS_LOADING_SEAT_ORDER", false);
-            MessageUtils.error("Tải thông tin đơn hàng thất bại");
-          }
-        }
+      changeSeat(seat) {
+        if (this.selectedSeat.guid !== seat.guid)
+          this.$store.dispatch("posMachine/selectSeat", seat);
       }
     }
   };

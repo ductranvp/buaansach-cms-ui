@@ -1,5 +1,5 @@
 <template>
-  <el-container v-loading="isLoadingSeatOrder" class="full-size pos-order-layout" direction="vertical">
+  <el-container class="full-size pos-order-layout" direction="vertical">
     <pos-sidebar-header/>
     <pos-sidebar-main class="pos-oder-main"/>
     <pos-sidebar-footer/>
@@ -10,16 +10,10 @@
   import PosSidebarMain from "@/views/private/pos-machine/sidebar/PosSidebarMain";
   import PosSidebarHeader from "@/views/private/pos-machine/sidebar/PosSidebarHeader";
   import PosSidebarFooter from "@/views/private/pos-machine/sidebar/PosSidebarFooter";
-  import {mapState} from "vuex";
 
   export default {
     name: "PosMachineSidebar",
     components: {PosSidebarFooter, PosSidebarHeader, PosSidebarMain},
-    computed: {
-      ...mapState({
-        isLoadingSeatOrder: state => state.posMachine.isLoadingSeatOrder,
-      }),
-    },
     data() {
       return {};
     }
