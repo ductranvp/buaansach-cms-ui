@@ -12,9 +12,13 @@ const state = {
   seatServiceStatus: {
     FINISHED: "FINISHED",
     UNFINISHED: "UNFINISHED",
-  }
+  },
+  isLoadingSeatOrder: false,
 };
 const mutations = {
+  SET_IS_LOADING_SEAT_ORDER(state, status) {
+    state.isLoadingSeatOrder = status;
+  },
   SET_SELECTED_SEAT(state, selectedSeat) {
     state.selectedSeat = selectedSeat;
   },
