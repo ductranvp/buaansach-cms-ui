@@ -44,4 +44,6 @@ workflows:
       # - build
       - deploy-staging
       - deploy-production:
+          requires:
+            - deploy-staging
           type: approval
