@@ -1,6 +1,6 @@
 version: 2.1
 jobs:
-  deploy-staging:
+  build-staging:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -13,13 +13,20 @@ jobs:
             TAG=staging
             docker build --build-arg MODE=$TAG -t $DOCKER_REGISTRY/cms-ui:$TAG .
             docker push $DOCKER_REGISTRY/cms-ui:$TAG
-
+  deploy-staging:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - run:
+          name: Setup ssh
+          command: ssh-keyscan $STAGING_DOMAIN >> ~/.ssh/known_hosts
       - run:
           name: Deploy
           command: |
             TAG=staging
             ssh root@$STAGING_DOMAIN "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-staging.yml up -d --force-recreate --build cmsui"
-  deploy-production:
+
+  build-production:
     machine:
       image: ubuntu-1604:201903-01
     steps:
@@ -32,7 +39,13 @@ jobs:
             TAG=production
             docker build --build-arg MODE=$TAG -t $DOCKER_REGISTRY/cms-ui:$TAG .
             docker push $DOCKER_REGISTRY/cms-ui:$TAG
-
+  deploy-production:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - run:
+          name: Setup ssh
+          command: ssh-keyscan $PRODUCTION_DOMAIN >> ~/.ssh/known_hosts
       - run:
           name: Deploy
           command: |
@@ -42,11 +55,17 @@ workflows:
   build-and-deploy:
     jobs:
       # - build
-      # - deploy-staging
-      # - hold:
-      #     type: approval
-      #     requires:
-      #       - deploy-staging
-      - deploy-production
-        # requires:
-        #   - hold
+      - build-staging
+      - deploy-staging:
+          requires:
+            - build-staging
+      - hold:
+          type: approval
+          requires:
+            - deploy-staging
+      - build-production:
+          requires:
+            - hold
+      - deploy-production:
+          requires:
+            - build-production
