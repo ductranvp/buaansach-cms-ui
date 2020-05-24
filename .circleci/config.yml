@@ -11,7 +11,7 @@ jobs:
           command: |
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY
             TAG=staging
-            docker build --build-arg MODE=staging -t $DOCKER_REGISTRY/cms-ui:$TAG .
+            docker build --build-arg MODE=$TAG -t $DOCKER_REGISTRY/cms-ui:$TAG .
             docker push $DOCKER_REGISTRY/cms-ui:$TAG
 
       - run:
@@ -19,9 +19,31 @@ jobs:
           command: |
             TAG=staging
             # ssh root@$STAGING_DOMAIN
-            ssh root@$DOCKER_REGISTRY "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG"
+            ssh root@$DOCKER_REGISTRY "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-staging.yml up -d --force-recreate --build cmsui"
+  deploy-production:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+
+      - run:
+          name: Build docker
+          command: |
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY
+            TAG=production
+            docker build --build-arg MODE=$TAG -t $DOCKER_REGISTRY/cms-ui:$TAG .
+            docker push $DOCKER_REGISTRY/cms-ui:$TAG
+
+      - run:
+          name: Deploy
+          command: |
+            TAG=production
+            # ssh root@$PRODUCTION_DOMAIN
+            ssh root@$DOCKER_REGISTRY "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-production.yml up -d --force-recreate --build cmsui"
 workflows:
   build-and-test:
     jobs:
       # - build
       - deploy-staging
+      - deploy-production:
+          type: approval
