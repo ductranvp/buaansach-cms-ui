@@ -1,17 +1,39 @@
 version: 2.1
-orbs:
-  node: circleci/node@1.1.6
 jobs:
-  build-and-test:
-    executor:
-      name: node/default
+  build:
+    machine:
+      image: ubuntu-1604:201903-01
     steps:
       - checkout
-      - node/with-cache:
-          steps:
-            - run: npm install
-            - run: npm test
+      # ... steps for building/testing app ...
+      # build and push Docker image
+      - run: |
+          echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB
+          TAG=0.1.$CIRCLE_BUILD_NUM
+          docker build -t $DOCKER_HUB/customer-ui:$TAG .
+          docker push $DOCKER_HUB/customer-ui:$TAG
+  deploy-staging:
+    machine:
+      image: ubuntu-1604:201903-01
+    steps:
+      - checkout
+
+      - run:
+          name: Build docker
+          command: |
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            docker build --build-arg MODE=staging -t $DOCKER_HUB/customer-ui:$TAG .
+            docker push $DOCKER_HUB/customer-ui:$TAG
+
+      - run:
+          name: Build docker
+          command: |
+            TAG=0.1.$CIRCLE_BUILD_NUM
+            # ssh root@$STAGING_DOMAIN
+            ssh root@$DOCKER_HUB "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB && docker pull $DOCKER_HUB/cms-ui:$TAG"
 workflows:
-    build-and-test:
-      jobs:
-        - build-and-test
+  build-and-test:
+    jobs:
+      # - build
+      - deploy-staging
