@@ -9,17 +9,17 @@ jobs:
       - run:
           name: Build docker
           command: |
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY
             TAG=staging
-            docker build --build-arg MODE=staging -t $DOCKER_HUB/cms-ui:$TAG .
-            docker push $DOCKER_HUB/cms-ui:$TAG
+            docker build --build-arg MODE=staging -t $DOCKER_REGISTRY/cms-ui:$TAG .
+            docker push $DOCKER_REGISTRY/cms-ui:$TAG
 
       - run:
           name: Deploy
           command: |
             TAG=staging
             # ssh root@$STAGING_DOMAIN
-            ssh root@$DOCKER_HUB "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_HUB && docker pull $DOCKER_HUB/cms-ui:$TAG"
+            ssh root@$DOCKER_REGISTRY "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG"
 workflows:
   build-and-test:
     jobs:
