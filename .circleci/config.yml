@@ -41,7 +41,7 @@ jobs:
             # ssh root@$PRODUCTION_DOMAIN
             ssh root@$DOCKER_REGISTRY "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-production.yml up -d --force-recreate --build cmsui"
 workflows:
-  build-and-test:
+  build-and-deploy:
     jobs:
       # - build
       - deploy-staging
