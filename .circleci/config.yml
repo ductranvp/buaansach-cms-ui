@@ -18,8 +18,7 @@ jobs:
           name: Deploy
           command: |
             TAG=staging
-            # ssh root@$STAGING_DOMAIN
-            ssh root@$DOCKER_REGISTRY "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-staging.yml up -d --force-recreate --build cmsui"
+            ssh root@$STAGING_DOMAIN "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-staging.yml up -d --force-recreate --build cmsui"
   deploy-production:
     machine:
       image: ubuntu-1604:201903-01
@@ -38,8 +37,7 @@ jobs:
           name: Deploy
           command: |
             TAG=production
-            # ssh root@$PRODUCTION_DOMAIN
-            ssh root@$DOCKER_REGISTRY "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-production.yml up -d --force-recreate --build cmsui"
+            ssh root@$PRODUCTION_DOMAIN "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-production.yml up -d --force-recreate --build cmsui"
 workflows:
   build-and-deploy:
     jobs:
