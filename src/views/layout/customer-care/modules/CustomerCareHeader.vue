@@ -48,7 +48,7 @@
     },
     data() {
       return {
-        showSidebar: false,
+        showSidebar: true,
       };
     },
     methods: {

@@ -1,6 +1,27 @@
 <template>
   <el-container direction="vertical">
     <div>
+      <el-row type="flex" align="top" class="text-normal padding-bottom-10">
+        <div>
+          <el-tag>
+            <span>Voucher đăng ký lần đầu</span>
+          </el-tag>
+        </div>
+        <div class="padding-left-10">
+          <el-tag>
+            <span>Giảm giá: </span>
+            <span v-if="firstRegisterVoucher.voucherDiscountType === 'VALUE'">{{firstRegisterVoucher.voucherDiscount | priceAppend}}</span>
+            <span v-if="firstRegisterVoucher.voucherDiscountType === 'PERCENT'">{{firstRegisterVoucher.voucherDiscount}}%</span>
+          </el-tag>
+        </div>
+        <div class="padding-left-10">
+          <el-tag>
+            <span>Loại giảm giá: </span>
+            <span v-if="firstRegisterVoucher.voucherDiscountType === 'VALUE'">Giá trị</span>
+            <span v-if="firstRegisterVoucher.voucherDiscountType === 'PERCENT'">Phần trăm</span>
+          </el-tag>
+        </div>
+      </el-row>
       <el-row type="flex" align="top">
         <el-col :md="20" :xs="20">
           <div>
@@ -24,7 +45,7 @@
           </div>
           <template v-else>
             <div>
-              <el-button class="full-width" type="warning" size="small" @click="isEdit = true">
+              <el-button class="full-width" type="warning" size="small" @click="editMessage">
                 <i class="el-icon-edit"></i>
                 <span class="hidden-xs-only">Đổi mẫu</span>
               </el-button>
@@ -37,11 +58,18 @@
             </div>
             <div class="padding-top-10">
               <el-popover
-                ref="infoPopover"
                 placement="bottom"
                 width="200"
                 trigger="click">
+                <el-button slot="reference" class="full-width" type="info" size="small">
+                  <i class="el-icon-help"></i>
+                  <span class="hidden-xs-only">Hướng dẫn</span>
+                </el-button>
                 <div>
+                  <el-row class="padding-bottom-5" type="flex" align="middle">
+                    <el-tag size="medium">{value}</el-tag>
+                    <span class="padding-left-10">Giá trị voucher</span>
+                  </el-row>
                   <el-row class="padding-bottom-5" type="flex" align="middle">
                     <el-tag size="medium">{code}</el-tag>
                     <span class="padding-left-10">Mã voucher code</span>
@@ -52,11 +80,6 @@
                   </el-row>
                 </div>
               </el-popover>
-
-              <el-button class="full-width" v-popover:infoPopover type="info" size="small" @click="resetTemplate">
-                <i class="el-icon-help"></i>
-                <span class="hidden-xs-only">Hướng dẫn</span>
-              </el-button>
             </div>
           </template>
         </el-col>
@@ -136,6 +159,7 @@
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
   import CustomerCareCustomerService from "@/service/customer-care/customer-care.customer.service";
   import MessageUtils from "@/utils/message.util";
+  import PosVoucherService from "@/store/pos-machine/part/pos.voucher.service";
 
   export default {
     name: "ListUnsentVoucher",
@@ -143,13 +167,19 @@
     data() {
       return {
         isEdit: false,
-        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá 30k.\n" +
+        isLoading: false,
+        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá {value}\n" +
           "(Áp dụng khi thanh toán với số điện thoại của quý khách)\n" +
           "Mã giảm giá: {code}\n" +
-          "Quý khách vui lòng đưa nhân viên xem tin nhắn để sử dụng mã.\n" +
+          "Quý khách vui lòng đọc SĐT và đưa nhân viên xem tin nhắn khi thanh toán để sử dụng mã.\n" +
+          "Cảm ơn quý khách!",
+        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá {value}\n" +
+          "(Áp dụng khi thanh toán với số điện thoại của quý khách)\n" +
+          "Mã giảm giá: {code}\n" +
+          "Quý khách vui lòng đọc SĐT và đưa nhân viên xem tin nhắn khi thanh toán để sử dụng mã.\n" +
           "Cảm ơn quý khách!",
         messageComputed: null,
-        isLoading: false,
+        discountValue: "",
         customerZaloStatus: [
           {label: "Chưa biết", value: "UNKNOWN"},
           {label: "Có Zalo", value: "EXIST"},
@@ -160,17 +190,41 @@
           {label: "Đã gửi", value: "SENT"},
           {label: "Đã lưu trữ", value: "ARCHIVED"},
         ],
-        listUnsentVoucher: []
+        listUnsentVoucher: [],
+        firstRegisterVoucher: {}
       };
     },
-    created() {
+    async created() {
+      await this.getFirstRegisterVoucherInfo();
       this.getUnsentVoucher();
       this.messageComputed = this.messageTemplate;
     },
     methods: {
+      async getFirstRegisterVoucherInfo() {
+        try {
+          const {data} = await PosVoucherService.getFirstRegisterVoucher();
+          this.firstRegisterVoucher = data;
+          switch (this.firstRegisterVoucher.voucherDiscountType) {
+            case "VALUE":
+              this.discountValue = this.formatPrice(this.firstRegisterVoucher.voucherDiscount);
+              break;
+            case "PERCENT":
+              this.discountValue = this.firstRegisterVoucher.voucherDiscount + "%";
+              break;
+          }
+        } catch (e) {
+          MessageUtils.error("Lấy thông tin voucher thất bại");
+        }
+      },
+      formatPrice(value, unit) {
+        if (unit) unit = " " + unit;
+        else unit = "₫";
+        return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + unit;
+      },
       resetTemplate() {
-        this.messageComputed = this.messageTemplate;
-        localStorage.setItem("messageTemplate", JSON.stringify(this.messageComputed));
+        localStorage.removeItem("messageTemplate");
+        this.messageTemplate = this.defaultTemplate;
+        this.messageComputed = this.defaultTemplate;
       },
       hideRow(row) {
         const idx = this.listUnsentVoucher.findIndex(item => item.customerPhone === row.customerPhone);
@@ -193,10 +247,14 @@
           MessageUtils.success("Đã copy");
         }, 100);
       },
+      editMessage() {
+        this.isEdit = true;
+        this.messageComputed = this.messageTemplate;
+      },
       saveMessageTemplate() {
-        localStorage.setItem("messageTemplate", JSON.stringify(this.messageComputed));
-        this.messageTemplate = this.messageComputed;
         this.isEdit = false;
+        this.messageTemplate = this.messageComputed;
+        localStorage.setItem("messageTemplate", JSON.stringify(this.messageComputed));
       },
       cancelEditMessageTemplate() {
         this.messageTemplate = localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : this.messageTemplate;
@@ -205,6 +263,7 @@
       },
       computedMessage(row) {
         let temp = this.messageTemplate;
+        temp = temp.replace("{value}", this.discountValue);
         temp = temp.replace("{phone}", row.customerPhone);
         temp = temp.replace("{code}", row.voucherCode.toUpperCase());
         this.messageComputed = temp;
