@@ -5,10 +5,9 @@
       <el-col :span="18" class="text-small">
         <el-row type="flex" align="middle">
           <div class="padding-right-10">
-            <el-tooltip content="Mã đơn">
+            <el-tooltip :content="'Mã đơn: ' + currentOrder.orderCode">
               <el-tag type="info" effect="dark" size="medium">
                 <i class="el-icon-tickets"></i>
-                <span>{{currentOrder.orderCode}}</span>
               </el-tag>
             </el-tooltip>
           </div>
@@ -21,16 +20,6 @@
             </el-tooltip>
           </div>
           <div class="padding-right-10">
-            <el-tooltip content="Làm mới">
-              <el-button :loading="isRefreshing" @click="refreshSeatOrder"
-                         type="success"
-                         plain
-                         size="mini">
-                <i v-if="!isRefreshing" class="el-icon-refresh"></i>
-              </el-button>
-            </el-tooltip>
-          </div>
-          <div>
             <el-popover
               ref="qrPopover"
               placement="bottom"
@@ -47,6 +36,17 @@
                          plain
                          size="mini">
                 <i class="fas el-icon-fa-qrcode"></i>
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div>
+            <el-tooltip content="Làm mới">
+              <el-button :loading="isRefreshing" @click="refreshSeatOrder"
+                         type="success"
+                         plain
+                         size="mini">
+                <i v-if="!isRefreshing" class="el-icon-refresh"></i>
+                <span>Làm mới (F8)</span>
               </el-button>
             </el-tooltip>
           </div>
@@ -77,6 +77,7 @@
   import MessageUtils from "@/utils/message.util";
   import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/main/ChangeOrderSeatDialog";
   import Constants from "@/utils/constants";
+  import hotkeys from "hotkeys-js";
 
   export default {
     name: "TopToolbar",
@@ -92,6 +93,18 @@
         seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
         isRefreshing: false,
       };
+    },
+    mounted() {
+      const vm = this;
+      hotkeys.filter = function (event) {
+        return true;
+      };
+      hotkeys('f8', 'posMachine', function (event, handler) {
+        if (vm.currentOrder.guid && !vm.isRefreshing){
+          vm.refreshSeatOrder();
+        }
+      });
+      hotkeys.setScope("posMachine");
     },
     methods: {
       goto(seatGuid) {

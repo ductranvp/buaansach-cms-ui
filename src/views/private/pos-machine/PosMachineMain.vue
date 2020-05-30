@@ -51,21 +51,6 @@
       if (this.posSize < 10) this.posSize = 10;
       if (this.posSize > 90) this.posSize = 90;
     },
-    mounted() {
-      const vm = this;
-      hotkeys.filter = function (event) {
-        return true;
-      };
-      hotkeys('alt+a', 'posMachine', function (event, handler) {
-        vm.posSize = 10;
-        localStorage.setItem("posMainSize", 10 + "");
-      });
-      hotkeys('alt+s', 'posMachine', function (event, handler) {
-        vm.posSize = 90;
-        localStorage.setItem("posMainSize", 90 + "");
-      });
-      hotkeys.setScope("posMachine");
-    },
     beforeDestroy() {
       hotkeys.deleteScope('posMachine');
     },

@@ -20,7 +20,8 @@
     },
     methods: {
       showAdvancedPurchase() {
-        this.$refs.advancedPurchaseDrawer.show();
+        if (this.$refs.advancedPurchaseDrawer)
+          this.$refs.advancedPurchaseDrawer.show();
       }
     }
   };

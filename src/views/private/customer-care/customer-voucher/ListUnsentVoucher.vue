@@ -137,13 +137,17 @@
         </el-table-column>
         <el-table-column width="200px" prop="voucherCodeSentStatus" label="Thao tác">
           <template slot-scope="{row}" v-show="row.voucherCodeSentStatus === 'UNSET'">
-            <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success"
-                       size="small">
-              <span>Đã gửi</span>
-            </el-button>
-            <el-button :loading="row.isSending" @click="updateVoucher(row, 'ARCHIVED')" type="info" size="small">
-              <span>Lưu trữ</span>
-            </el-button>
+            <el-tooltip content="Mã sẽ được kích hoạt">
+              <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success"
+                         size="small">
+                <span>Đã gửi</span>
+              </el-button>
+            </el-tooltip>
+            <el-tooltip content="Mã sẽ bị vô hiệu hóa">
+              <el-button :loading="row.isSending" @click="updateVoucher(row, 'ARCHIVED')" type="info" size="small">
+                <span>Lưu trữ</span>
+              </el-button>
+            </el-tooltip>
           </template>
         </el-table-column>
       </raw-data-table>
@@ -168,15 +172,15 @@
       return {
         isEdit: false,
         isLoading: false,
-        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá {value}\n" +
-          "(Áp dụng khi thanh toán với số điện thoại của quý khách)\n" +
-          "Mã giảm giá: {code}\n" +
-          "Quý khách vui lòng đọc SĐT và đưa nhân viên xem tin nhắn khi thanh toán để sử dụng mã.\n" +
+        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã khuyến mãi <u><b>{value}</b></u>\n\n" +
+          "(Áp dụng khi thanh toán cùng với số điện thoại nhận được tin nhắn)\n\n" +
+          "Mã khuyến mãi: <u><b>{code}</b></u>\n\n" +
+          "Quý khách vui lòng đọc số điện thoại và mã khuyến mãi cho nhân viên để áp dụng.\n\n" +
           "Cảm ơn quý khách!",
-        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá {value}\n" +
-          "(Áp dụng khi thanh toán với số điện thoại của quý khách)\n" +
-          "Mã giảm giá: {code}\n" +
-          "Quý khách vui lòng đọc SĐT và đưa nhân viên xem tin nhắn khi thanh toán để sử dụng mã.\n" +
+        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã khuyến mãi <u><b>{value}</b></u>\n\n" +
+          "(Áp dụng khi thanh toán cùng với số điện thoại nhận được tin nhắn)\n\n" +
+          "Mã khuyến mãi: <u><b>{code}</b></u>\n\n" +
+          "Quý khách vui lòng đọc số điện thoại và mã khuyến mãi cho nhân viên để áp dụng.\n\n" +
           "Cảm ơn quý khách!",
         messageComputed: null,
         discountValue: "",

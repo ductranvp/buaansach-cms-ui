@@ -44,7 +44,7 @@
         </el-col>
         <div class="text-right padding-right-5">
           <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshSeat">
-            <span v-if="!isRefreshing"><i class="el-icon-refresh"></i><span>Làm mới</span></span>
+            <span><i class="el-icon-refresh"  v-if="!isRefreshing"></i><span>Làm mới (F9)</span></span>
           </el-button>
         </div>
       </el-row>
@@ -85,6 +85,7 @@
   import {mapState} from "vuex";
   import Constants from "@/utils/constants";
   import MessageUtils from "@/utils/message.util";
+  import hotkeys from "hotkeys-js";
 
   export default {
     name: "PosSeat",
@@ -110,6 +111,18 @@
           {label: "Đang dùng", value: "NON_EMPTY"},
         ]
       };
+    },
+    mounted() {
+      const vm = this;
+      hotkeys.filter = function (event) {
+        return true;
+      };
+      hotkeys('f9', 'posMachine', function (event, handler) {
+        if (!vm.isRefreshing) {
+          vm.refreshSeat();
+        }
+      });
+      hotkeys.setScope("posMachine");
     },
     methods: {
       async refreshSeat() {

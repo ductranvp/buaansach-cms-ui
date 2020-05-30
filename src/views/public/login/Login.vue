@@ -16,9 +16,14 @@
               v-model="loginForm.password"
               prefix-icon="el-icon-lock"
               type="password"
-              show-password
               @keyup.enter.native="handleLogin"
             ></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-alert style="line-height: 24px" type="error" :closable="false">
+              <span slot="title">Lưu ý:</span>
+              <span>Không lưu mật khẩu nếu dùng chung máy tính</span>
+            </el-alert>
           </el-form-item>
           <!--          <el-form-item prop="rememberMe">-->
           <!--            <el-checkbox v-model="loginForm.rememberMe" class="full-width">-->

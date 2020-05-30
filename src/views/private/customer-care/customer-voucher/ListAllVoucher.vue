@@ -54,6 +54,17 @@
         <el-table-column width="150px" v-if="columns.customerName.display" prop="customerName"
                          :label="columns.customerName.label"></el-table-column>
 
+        <el-table-column width="150px" v-if="columns.customerGender.display" prop="customerGender"
+                         :label="columns.customerGender.label">
+
+          <template slot-scope="{row}">
+            <el-tag v-if="row.customerGender === 'MALE'">Nam</el-tag>
+            <el-tag v-else-if="row.customerGender === 'FEMALE'">Nữ</el-tag>
+            <el-tag v-else>Chưa biết</el-tag>
+          </template>
+
+        </el-table-column>
+
         <el-table-column width="130px" v-if="columns.customerZaloStatus.display" prop="customerZaloStatus"
                          :label="columns.customerZaloStatus.label">
 
@@ -88,12 +99,19 @@
 
         <el-table-column prop="voucherCodeSent" label="Thao tác" width="180px">
           <template slot-scope="{row}">
-            <el-button @click="updateVoucher(row, 'SENT')" type="success" size="small">
-              <span>Đã gửi</span>
-            </el-button>
-            <el-button @click="updateVoucher(row, 'ARCHIVED')" type="info" size="small">
-              <span>Lưu trữ</span>
-            </el-button>
+            <el-tooltip content="Mã sẽ được kích hoạt">
+              <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success" size="small">
+                <span>Đã gửi</span>
+              </el-button>
+            </el-tooltip>
+
+            <el-tooltip content="Mã sẽ bị vô hiệu hóa">
+              <el-button :loading="row.isSending" @click="updateVoucher(row, 'ARCHIVED')" type="info" size="small">
+                <span>Lưu trữ</span>
+              </el-button>
+            </el-tooltip>
+
+
           </template>
         </el-table-column>
       </data-table>
@@ -122,6 +140,7 @@
         columns: {
           customerCode: {label: 'Mã khách hàng', display: false},
           customerName: {label: 'Tên khách', display: false},
+          customerGender: {label: 'Giới tính', display: false},
           customerPhone: {label: 'SĐT khách', display: true},
           customerZaloStatus: {label: 'Trạng thái Zalo', display: true},
           voucherCode: {label: 'Mã voucher', display: true},
@@ -164,12 +183,15 @@
       },
       async updateVoucher(row, status) {
         try {
+          this.$set(row, 'isSending', true);
           await CustomerCareVoucherCodeService.updateVoucherCode({
             voucherCode: row.voucherCode,
             voucherCodeSentStatus: status
           });
+          this.$set(row, 'isSending', false);
           this.$set(row, 'voucherCodeSentStatus', status);
         } catch (e) {
+          this.$set(row, 'isSending', false);
           NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
         }
       },

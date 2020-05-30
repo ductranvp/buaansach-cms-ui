@@ -1,5 +1,5 @@
 <template>
-  <el-dropdown trigger="click">
+  <el-dropdown :hide-on-click="false" trigger="click">
     <el-tooltip content="Thông báo">
       <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
         <el-button class="icon-button" type="success">

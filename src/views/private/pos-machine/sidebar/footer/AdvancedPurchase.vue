@@ -68,7 +68,7 @@
           <el-button @click="hide" type="warning"
                      class="no-border-radius no-border full-width text-large padding-20-10">
             <i class="el-icon-close"></i>
-            <span>Đóng</span>
+            <span>Đóng (Esc)</span>
           </el-button>
         </el-row>
       </el-footer>

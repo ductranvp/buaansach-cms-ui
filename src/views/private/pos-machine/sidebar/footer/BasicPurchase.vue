@@ -20,7 +20,7 @@
               :disabled="!isEditCustomerPhone"
               v-model="currentOrder.customerPhone"
               :fetch-suggestions="queryCustomer"
-              placeholder="SĐT Khách hàng (F4)"
+              placeholder="SĐT Khách hàng (F2)"
               :maxlength="10"
               @select="handleSelect">
               <i slot="prefix" class="el-input__icon el-icon-phone"></i>
@@ -76,7 +76,7 @@
           <el-row type="flex" align="middle" style="height: 40px">
             <el-col :span="12" class="full-height">
               <el-input ref="customerPay" @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay"
-                        placeholder="Khách đưa (F8)">
+                        placeholder="Khách đưa (F4)">
                 <i slot="prefix" class="el-input__icon el-icon-money"></i>
                 <el-button class="full-size" style="color: #606266" disabled slot="suffix">
                   <span>x1000</span>
@@ -125,7 +125,7 @@
             </el-button>
           </el-col>
           <el-col :span="4">
-            <el-tooltip class="item" effect="dark" content="Khuyến mãi (F9)" placement="top">
+            <el-tooltip class="item" effect="dark" content="Khuyến mãi (F7)" placement="top">
               <el-button type="warning" class="text-large full-width padding-20-10" @click="showAdvancedPurchase">
                 <i class="fas el-icon-fa-tags"></i>
               </el-button>
@@ -201,13 +201,13 @@
       hotkeys.filter = function (event) {
         return true;
       };
-      hotkeys('f4', 'posMachine', function (event, handler) {
+      hotkeys('f2', 'posMachine', function (event, handler) {
         vm.editCustomerPhone();
       });
-      hotkeys('f8', 'posMachine', function (event, handler) {
+      hotkeys('f4', 'posMachine', function (event, handler) {
         vm.$refs.customerPay.focus();
       });
-      hotkeys('f9', 'posMachine', function (event, handler) {
+      hotkeys('f7', 'posMachine', function (event, handler) {
         vm.showAdvancedPurchase();
       });
       hotkeys.setScope("posMachine");
@@ -246,7 +246,6 @@
           MessageUtils.error("Số điện thoại không hợp lệ");
           return;
         }
-        this.isLoading = true;
         /* check if phone existed or not */
         try {
           if (this.currentOrder.customerPhone) {
@@ -254,8 +253,10 @@
           }
         } catch (e) {
           MessageUtils.error("Số điện thoại không tồn tại trong hệ thống. Vui lòng Thêm Khách Khàng trước");
+          return;
         }
 
+        this.isLoading = true;
         /* perform update customer phone */
         try {
           await PosOrderService.changeCustomerPhone({
