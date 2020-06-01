@@ -12,7 +12,7 @@
             </el-tooltip>
           </div>
           <div class="padding-right-10">
-            <el-tooltip :content="'Giờ vào: ' + $moment(currentOrder.orderCheckinTime).format('HH:mm DD/MM/YYYY')">
+            <el-tooltip :content="'Giờ vào: ' + $moment(currentOrder.orderCheckinTime).format('HH:mm:ss DD/MM/YYYY')">
               <el-tag type="info" effect="dark" size="medium">
                 <i class="el-icon-time padding-right-5"></i>
                 <span>{{currentOrder.orderCheckinTime | moment("HH:mm")}}</span>
@@ -26,7 +26,8 @@
               width="150"
               trigger="click">
               <div>
-                <qrcode class="pointer" @click.native="goto(selectedSeat.guid)" :value="seatPrefixUrl + selectedSeat.guid"
+                <qrcode class="pointer" @click.native="goto(selectedSeat.guid)"
+                        :value="seatPrefixUrl + selectedSeat.guid"
                         :options="{ width: 150 }"></qrcode>
               </div>
             </el-popover>
@@ -40,15 +41,13 @@
             </el-tooltip>
           </div>
           <div>
-            <el-tooltip content="Làm mới">
-              <el-button :loading="isRefreshing" @click="refreshSeatOrder"
-                         type="success"
-                         plain
-                         size="mini">
-                <i v-if="!isRefreshing" class="el-icon-refresh"></i>
-                <span>Làm mới (F8)</span>
-              </el-button>
-            </el-tooltip>
+            <el-button :loading="isRefreshing" @click="refreshSeatOrder"
+                       type="success"
+                       plain
+                       size="mini">
+              <i v-if="!isRefreshing" class="el-icon-refresh"></i>
+              <span>Làm mới (F8)</span>
+            </el-button>
           </div>
         </el-row>
       </el-col>
@@ -100,7 +99,7 @@
         return true;
       };
       hotkeys('f8', 'posMachine', function (event, handler) {
-        if (vm.currentOrder.guid && !vm.isRefreshing){
+        if (vm.currentOrder.guid && !vm.isRefreshing) {
           vm.refreshSeatOrder();
         }
       });

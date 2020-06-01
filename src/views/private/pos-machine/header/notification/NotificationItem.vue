@@ -6,7 +6,10 @@
         <b>{{data.content}}</b>
       </div>
       <div>
-        <el-tag size="mini" type="info">{{data.time | moment("HH:mm")}}</el-tag>
+        <el-tooltip :content="$moment(data.time).format('HH:mm:ss DD/MM/YYYY')">
+          <el-tag size="mini" type="info">{{data.time | moment("HH:mm:ss")}}</el-tag>
+        </el-tooltip>
+
         <el-tag class="margin-left-10" v-if="data.status === 'UNSEEN'" size="mini" type="info">Chưa xem</el-tag>
         <el-tag class="margin-left-10" v-else size="mini" type="info">Đã xem</el-tag>
       </div>

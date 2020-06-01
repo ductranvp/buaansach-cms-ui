@@ -4,7 +4,9 @@
              v-for="(item) in savedOrderProduct"
              :key="item.guid">
       <el-tag style="position: absolute; top: 0; left:0" size="mini" type="info" class="no-border-radius">
-        <span>{{item.createdDate | moment("HH:mm")}}</span>
+        <el-tooltip :content="$moment(item.createdDate).format('HH:mm:ss DD/MM/YYYY')">
+          <span>{{item.createdDate | moment("HH:mm:ss")}}</span>
+        </el-tooltip>
       </el-tag>
       <el-row type="flex" align="middle" style="height: 48px">
         <div class="text-bold text-very-large padding-0-20">{{item.orderProductQuantity}}</div>
