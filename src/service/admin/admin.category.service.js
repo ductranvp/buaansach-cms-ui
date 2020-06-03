@@ -20,6 +20,12 @@ const AdminCategoryService = {
   },
   deleteCategory(categoryGuid) {
     return request.delete(baseUrl + "/delete/" + categoryGuid);
+  },
+  updateCategoryPosition(payload){
+    return request.put(baseUrl + "/update-position", payload);
+  },
+  updateListCategoryPosition(payload){
+    return request.put(baseUrl + "/update-list-position", payload);
   }
 };
 

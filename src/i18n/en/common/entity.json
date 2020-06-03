@@ -22,7 +22,8 @@
       "lock": "Lock",
       "unlock": "Unlock",
       "manage": "Manage",
-      "search": "Search"
+      "search": "Search",
+      "close": "Close"
     },
     "dialog": {
       "title": "Create or update {entityName}"

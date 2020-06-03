@@ -1,7 +1,8 @@
 <template>
   <el-container direction="vertical">
+    <sort-category-dialog @hasChange="hasChange" ref="sortDialog" />
     <el-row>
-      <el-col :span="20">
+      <el-col :span="12">
         <el-form onsubmit="return false" ref="categoryForm" :rules="formRules" :model="form" :inline="true">
           <el-form-item prop="categoryName">
             <el-input @keypress.enter.native="submit" placeholder="Nhập tên danh mục"
@@ -12,6 +13,11 @@
             <span>Thêm Danh Mục</span>
           </el-button>
         </el-form>
+      </el-col>
+      <el-col :span="12" class="text-right">
+        <el-button type="primary" @click="showSortDialog">
+          <span>Sắp Xếp</span>
+        </el-button>
       </el-col>
     </el-row>
     <el-row>
@@ -43,10 +49,11 @@
   import NotificationUtils from "@/utils/notification.util";
   import MessageBoxUtils from "@/utils/message-box.util";
   import AppUtils from "@/utils/app.util";
+  import SortCategoryDialog from "@/views/private/admin/category/SortCategoryDialog";
 
   export default {
     name: "AdminCategory",
-    components: {RawDataTable},
+    components: {SortCategoryDialog, RawDataTable},
     data() {
       return {
         categories: [],
@@ -71,6 +78,11 @@
       async getCategory() {
         const {data} = await AdminCategoryService.getAllCategory();
         this.categories = data;
+      },
+      hasChange(value){
+        if (value){
+          this.getCategory();
+        }
       },
       editCategory(category) {
         const vm = this;
@@ -121,6 +133,9 @@
             }
           }
         });
+      },
+      showSortDialog(){
+        this.$refs.sortDialog.show(this.categories);
       }
     }
   };
