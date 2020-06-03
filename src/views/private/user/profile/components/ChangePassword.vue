@@ -37,6 +37,7 @@
 <script>
   import NotificationUtils from "@/utils/notification.util";
   import AccountService from "@/service/account.service";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "ChangePassword",
@@ -82,17 +83,17 @@
         this.$refs["changePasswordForm"].validate(async valid => {
           if (valid) {
             if (vm.form.newPassword !== vm.form.confirm)
-              NotificationUtils.error("Nhập lại mật khẩu không khớp");
+              MessageUtils.error("Nhập lại mật khẩu không khớp");
             else {
               vm.isLoading = true;
               AccountService.changePassword(vm.form)
                 .then(() => {
-                  NotificationUtils.success("Đổi mật khẩu thành công");
+                  MessageUtils.success("Đổi mật khẩu thành công");
                   vm.isLoading = false;
                   vm.resetForm();
                 })
                 .catch(error => {
-                  NotificationUtils.error(error.data.message || error.message);
+                  MessageUtils.error(error.data.message || error.message);
                   vm.isLoading = false;
                   vm.resetForm();
                 });

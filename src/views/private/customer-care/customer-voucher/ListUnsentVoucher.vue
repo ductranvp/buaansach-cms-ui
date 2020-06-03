@@ -292,7 +292,6 @@
           });
           this.$set(row, 'isSending', false);
           this.hideRow(row);
-          NotificationUtils.success("Cập nhật thành công");
         } catch (error) {
           this.$set(row, 'isSending', false);
           NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");

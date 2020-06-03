@@ -229,7 +229,6 @@
               };
               const {data} = await AdminSeatService.createSeat(seatEntity);
               row.listSeat.push(data);
-              NotificationUtils.success(vm.$t("common.entity.save.success"));
             } catch (error) {
               NotificationUtils.error(error.message || error.data.message);
             }
@@ -241,7 +240,6 @@
           try {
             await AdminSeatService.deleteSeat(seat.guid);
             row.listSeat = row.listSeat.filter(s => s.guid !== seat.guid);
-            NotificationUtils.success(vm.$t("common.entity.save.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
@@ -258,7 +256,6 @@
             try {
               seat.seatName = val.value;
               await AdminSeatService.updateSeat(seat);
-              NotificationUtils.success(vm.$t("common.entity.save.success"));
             } catch (error) {
               seat.seatName = originalSeatName;
               NotificationUtils.error(error.message || error.data.message);
@@ -268,7 +265,7 @@
       resetForm() {
         this.form = {
           autoCreateSeat: true,
-          areaColor: "#ffffff",
+          areaColor: "#90ee90",
           areaType: "IN_STORE",
         };
         this.$refs.areaForm.clearValidate();
@@ -280,7 +277,6 @@
           try {
             await AdminAreaService.deleteArea(row.guid);
             vm.areas = vm.areas.filter(area => area.guid !== row.guid);
-            NotificationUtils.success(vm.$t("common.entity.delete.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
@@ -303,7 +299,6 @@
           Object.keys(area).forEach(key => {
             row[key] = area[key];
           });
-          NotificationUtils.success(vm.$t("common.entity.save.success"));
         } catch (error) {
           vm.isLoading = false;
           NotificationUtils.error(error.message || error.data.message);
@@ -320,7 +315,6 @@
             vm.$set(area, 'edit', false);
             vm.areas.push(area);
             vm.resetForm();
-            NotificationUtils.success(vm.$t("common.entity.save.success"));
           } catch (error) {
             vm.isLoading = false;
             NotificationUtils.error(error.message || error.data.message);

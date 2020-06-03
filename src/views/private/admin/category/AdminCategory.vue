@@ -96,7 +96,6 @@
             try {
               const {data} = await AdminCategoryService.updateCategory(category);
               AppUtils.setAttrs(vm, category, data);
-              NotificationUtils.success("Sửa danh mục thành công");
             } catch (error) {
               category.categoryName = originalName;
               NotificationUtils.error(error.message || error.data.message);
@@ -109,7 +108,6 @@
           try {
             await AdminCategoryService.deleteCategory(category.guid);
             vm.categories = vm.categories.filter(cat => cat.guid !== category.guid);
-            NotificationUtils.success(vm.$t("common.entity.delete.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
@@ -126,7 +124,6 @@
             try {
               const {data} = await AdminCategoryService.createCategory(this.form);
               this.categories.push(data);
-              NotificationUtils.success("Thêm danh mục thành công");
               this.resetForm();
             } catch (error) {
               NotificationUtils.error(error.message || error.data.message);

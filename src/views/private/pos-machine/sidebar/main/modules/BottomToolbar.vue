@@ -83,7 +83,7 @@
           if (cb.value) {
             try {
               await vm.$store.dispatch("posMachine/cancelOrder", cb.value);
-              NotificationUtils.success("Hủy đơn thành công");
+              MessageUtils.success("Hủy đơn thành công");
             } catch (e) {
               MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }

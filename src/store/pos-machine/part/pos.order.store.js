@@ -2,6 +2,7 @@
 import PosOrderService from "@/service/pos/pos.order.service";
 import NotificationUtils from "@/utils/notification.util";
 import PosOrderStoreUtil from "@/store/pos-machine/util/pos.order.store.util";
+import MessageUtils from "@/utils/message.util";
 
 const state = {
   currentOrder: {},
@@ -109,7 +110,7 @@ const actions = {
         commit("RESET_ORDER_PRODUCT");
       }
     } catch (error) {
-      NotificationUtils.error("Lấy thông tin đơn hàng thất bại, vui lòng thử lại");
+      MessageUtils.error("Lấy thông tin đơn hàng thất bại, vui lòng thử lại");
     }
     dispatch("reloadSeat", seatGuid);
   },

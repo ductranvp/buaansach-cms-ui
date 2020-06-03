@@ -211,7 +211,6 @@
             try {
               vm.isLoading = true;
               await AdminUserService.createUser(vm.form);
-              NotificationUtils.success("Cập nhật thành công");
               vm.isLoading = false;
               vm.hide();
             } catch (error) {

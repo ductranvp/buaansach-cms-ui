@@ -2,6 +2,7 @@
 import PosOrderStoreUtil from "@/store/pos-machine/util/pos.order.store.util";
 import PosOrderProductService from "@/service/pos/pos.order-product.service";
 import NotificationUtils from "@/utils/notification.util";
+import MessageUtils from "@/utils/message.util";
 
 const state = {
   savedOrderProduct: [],
@@ -113,13 +114,13 @@ const actions = {
         orderProductCancelReason: cancelReason
       };
       await PosOrderProductService.cancelOrderProduct(orderProductChange);
-      NotificationUtils.success("Hủy món thành công");
+      MessageUtils.success("Hủy món thành công");
       commit("SET_ORDER_PRODUCT_STATUS", {
         orderProduct: orderProduct,
         status: state.orderProductStatus.CANCELLED_BY_EMPLOYEE
       });
     } catch (error) {
-      NotificationUtils.error(error.message || error.data.message);
+      MessageUtils.error(error.message || error.data.message);
     }
   }
 };

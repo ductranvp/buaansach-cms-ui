@@ -76,6 +76,7 @@
   import DataTable from "@/components/data-table/DataTable";
   import {mapState} from "vuex";
   import NotificationUtils from "@/utils/notification.util";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "AdminUserManagement",
@@ -141,12 +142,12 @@
               };
               try {
                 await AdminUserService.changePassword(payload);
-                NotificationUtils.success("Đổi mật khẩu thành công");
+                MessageUtils.success("Đổi mật khẩu thành công");
               } catch (error) {
-                NotificationUtils.error(error.message || error.data.message);
+                MessageUtils.error(error.message || error.data.message);
               }
             } else {
-              NotificationUtils.error("Mật khẩu phải có độ dài 4-100 kí tự");
+              MessageUtils.error("Mật khẩu phải có độ dài 4-100 kí tự");
             }
           })
           .catch(() => {

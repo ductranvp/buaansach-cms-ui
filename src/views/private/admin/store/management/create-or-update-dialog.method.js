@@ -56,7 +56,6 @@ const mixinMethod = {
             }
             vm.isLoading = false;
             vm.$emit("storeSaved");
-            NotificationUtils.success(vm.$t("common.entity.save.success"));
             vm.hide();
           } catch (error) {
             vm.isLoading = false;

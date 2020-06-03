@@ -134,6 +134,11 @@
               this.hide();
             } catch (error) {
               vm.isLoading = false;
+              const msg = error.message || error.data.message;
+              if (msg.includes("customerPhoneExist")){
+                MessageUtils.error("Khách hàng đã tồn tại trên hệ thống!");
+                return;
+              }
               MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
           }

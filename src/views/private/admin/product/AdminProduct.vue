@@ -172,7 +172,6 @@
           try {
             await AdminProductService.deleteProduct(product.guid);
             vm.reloadTableData();
-            NotificationUtils.success(vm.$t("common.entity.delete.success"));
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }

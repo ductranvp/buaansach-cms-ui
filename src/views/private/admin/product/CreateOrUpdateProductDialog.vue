@@ -262,7 +262,6 @@
               }
               this.isLoading = false;
               this.$emit("productSaved");
-              NotificationUtils.success(this.$t("common.entity.save.success"));
               this.hide();
             } catch (error) {
               this.isLoading = false;
