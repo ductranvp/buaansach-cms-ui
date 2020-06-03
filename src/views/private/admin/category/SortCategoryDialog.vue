@@ -8,22 +8,28 @@
     :destroy-on-close="true">
     <el-container v-loading="isLoading" class="full-width">
       <el-header height="auto">
-        <el-row class="padding-10-20 bg-primary text-light text-bold text-large" type="flex" align="middle">
-          <el-col :span="11">
-            <span>Vị trí</span>
+        <el-row class="padding-10 bg-primary text-light text-bold text-large" type="flex" align="middle">
+          <el-col :span="2">
+            <span>STT</span>
           </el-col>
-          <el-col :span="11">
+          <el-col :span="10">
+            <span>Trọng số</span>
+          </el-col>
+          <el-col :span="10">
             <span>Tên danh mục</span>
           </el-col>
         </el-row>
       </el-header>
       <el-main ref="sortable">
-        <el-row class="drag-item" type="flex" align="middle" v-for="category in categories"
+        <el-row class="drag-item" type="flex" align="middle" v-for="(category, index) in categories"
                 :key="category.guid">
-          <el-col :span="11">
+          <el-col :span="2">
+            <div>{{index + 1}}</div>
+          </el-col>
+          <el-col :span="10">
             <div>{{category.categoryPosition}}</div>
           </el-col>
-          <el-col :span="11">
+          <el-col :span="10">
             <div>{{category.categoryName}}</div>
           </el-col>
           <el-col :span="2" class="drag-handler text-right">
@@ -117,7 +123,7 @@
   .drag-item {
     border: 1px solid #eee;
     border-bottom: none;
-    padding: 20px;
+    padding: 10px;
   }
 
   .drag-item:last-child {
