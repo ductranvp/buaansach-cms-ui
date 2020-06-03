@@ -17,6 +17,9 @@ const AdminProductService = {
       params: params
     });
   },
+  getAllProduct() {
+    return request.get(baseUrl + "/list-all");
+  },
   getListProductNotInStore(params) {
     return request.get(baseUrl + "/list-not-in-store/" + params);
   },
@@ -25,6 +28,12 @@ const AdminProductService = {
   },
   deleteProduct(productGuid) {
     return request.delete(baseUrl + "/delete/" + productGuid);
+  },
+  updateProductPosition(payload){
+    return request.put(baseUrl + "/update-position", payload);
+  },
+  updateListProductPosition(payload){
+    return request.put(baseUrl + "/update-list-position", payload);
   }
 };
 

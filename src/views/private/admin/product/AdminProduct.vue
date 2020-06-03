@@ -1,5 +1,6 @@
 <template>
   <el-container class="full-size" direction="vertical">
+    <sort-product-dialog @hasChange="hasChange" ref="sortProductDialog" />
     <div>
       <el-row :gutter="10">
         <el-col :span="10">
@@ -26,6 +27,9 @@
         </el-col>
         <el-col :span="10">
           <el-row type="flex" justify="end">
+            <el-button type="primary" @click="showSortDialog">
+              <span>Sắp xếp</span>
+            </el-button>
             <el-button type="primary" @click="createProduct">
               <span>{{ $t("common.entity.action.create") }}</span>
             </el-button>
@@ -38,10 +42,13 @@
         ref="productTable"
         :fetch-data="fetchData"
         show-audit
-        :default-sort="{prop: 'productPosition', order: 'descending'}"
+        :default-sort="{prop: 'productPosition', order: 'ascending'}"
         :custom-audit="['createdBy', 'createdDate']"
         :filter="filter"
       >
+        <el-table-column type="index" label="STT">
+        </el-table-column>
+
         <el-table-column prop="productCode" label="Mã SP"></el-table-column>
 
         <el-table-column prop="productName" label="Tên sản phẩm"></el-table-column>
@@ -101,10 +108,11 @@
   import NotificationUtils from "@/utils/notification.util";
   import AdminCategoryService from "@/service/admin/admin.category.service";
   import AppUtils from "@/utils/app.util";
+  import SortProductDialog from "@/views/private/admin/product/SortProductDialog";
 
   export default {
     name: "AdminProductManagement",
-    components: {CreateOrUpdateProductDialog, DataTable},
+    components: {SortProductDialog, CreateOrUpdateProductDialog, DataTable},
     data() {
       return {
         isLoading: false,
@@ -130,6 +138,11 @@
           AppUtils.setAttrs(vm, vm.categories, temp);
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);
+        }
+      },
+      hasChange(value){
+        if (value){
+          this.reloadTableData();
         }
       },
       onSearch() {
@@ -164,6 +177,9 @@
             NotificationUtils.error(error.message || error.data.message);
           }
         });
+      },
+      showSortDialog(){
+        this.$refs.sortProductDialog.show();
       }
     }
   };
