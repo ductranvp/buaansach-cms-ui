@@ -12,8 +12,8 @@
         <div class="text-bold text-very-large padding-0-20">{{item.orderProductQuantity}}</div>
         <el-row class="full-size" type="flex" align="middle">
           <el-col :span="8" class="text-small">
-            <span>{{item.productName}}</span><br>
-            <span>{{item.orderProductPrice | priceAppend}}</span>
+            <div>{{item.productName}}</div>
+            <div>{{item.orderProductPrice | priceAppend}}</div>
           </el-col>
           <el-col :span="6">
             <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
@@ -22,7 +22,7 @@
             <el-col :span="10" class="padding-left-10 text-right">
               <template v-if="item.orderProductStatus === 'PREPARING'">
                 <el-row type="flex" align="middle" justify="end">
-                  <el-button :loading="isLoading" @click="serveOrderProduct(item)" type="success" size="small">Xong
+                  <el-button :loading="item.isLoading" @click="serveOrderProduct(item)" type="success" size="small">Xong
                   </el-button>
                 </el-row>
               </template>
@@ -45,8 +45,8 @@
           <i class="el-icon-close"></i>
         </el-button>
       </el-row>
-      <el-row v-if="item.orderProductNote" type="flex" align="middle" class="full-size padding-0-10">
-        <el-tag type="info" class="order-note">
+      <el-row v-if="item.orderProductNote" type="flex" align="middle" class="full-size padding-top-5">
+        <el-tag type="info" class="order-note" size="medium">
           <el-tooltip :content="item.orderProductNote">
             <span>Ghi chú: {{item.orderProductNote}}</span>
           </el-tooltip>
@@ -80,12 +80,12 @@
         const vm = this;
         if (vm.$route.params.storeGuid) {
           try {
-            vm.isLoading = true;
+            vm.$set(product, "isLoading", true);
             await vm.$store.dispatch("posMachine/serveOrderProduct",
               {orderProduct: product, storeGuid: vm.$route.params.storeGuid});
-            vm.isLoading = false;
+            vm.$set(product, "isLoading", false);
           } catch (error) {
-            vm.isLoading = false;
+            vm.$set(product, "isLoading", false);
             MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
           }
         }

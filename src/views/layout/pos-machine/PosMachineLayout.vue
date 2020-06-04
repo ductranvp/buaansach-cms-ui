@@ -23,10 +23,8 @@
     mixins: [PosWebsocket],
     computed: {
       ...mapState({
-        allAreas: state => state.posMachine.allAreas,
         ready: state => state.posMachine.ready,
         currentStore: state => state.posMachine.currentStore,
-        selectedSeat: state => state.posMachine.selectedSeat,
       })
     },
     data() {
