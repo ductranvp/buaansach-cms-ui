@@ -7,6 +7,7 @@ import MessageUtils from "@/utils/message.util";
 const state = {
   currentOrder: {},
   orderStatus: PosOrderStoreUtil.orderStatus,
+  orderType: PosOrderStoreUtil.orderType,
   paymentMethods: PosOrderStoreUtil.paymentMethods,
   customerPay: null,
 };

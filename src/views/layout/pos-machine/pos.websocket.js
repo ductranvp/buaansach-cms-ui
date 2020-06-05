@@ -11,9 +11,11 @@ const PosWebsocket = {
       selectedSeat: state => state.posMachine.selectedSeat,
       allAreas: state => state.posMachine.allAreas,
       allSeats: state => {
-        let arr = [];
+        let arr = {};
         state.posMachine.allAreas.forEach(area => {
-          arr = arr.concat(area.listSeat);
+          area.listSeat.forEach(seat => {
+            arr[seat.guid] = seat;
+          });
         });
         return arr;
       }
@@ -46,7 +48,7 @@ const PosWebsocket = {
     },
     async onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
-      const seatData = this.allSeats.find(seat => seat.guid === data.payload);
+      const seatData = this.allSeats[data.payload];
       const id = (new Date()).getTime() + "" + seatData.guid;
       const notification = {
         id: id,

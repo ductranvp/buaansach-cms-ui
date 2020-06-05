@@ -210,8 +210,10 @@
           '#c7158577'
         ],
         areaTypes: [
-          {label: "Trong quán", value: "IN_STORE"},
-          {label: "Ngoài quán", value: "OUT_STORE"},
+          {label: "Tại quán", value: "IN_STORE"},
+          {label: "Mang về", value: "TAKE_AWAY"},
+          {label: "Đặt online", value: "ONLINE"},
+          {label: "Test", value: "TEST"},
         ]
       };
     },

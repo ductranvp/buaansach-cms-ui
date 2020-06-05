@@ -172,14 +172,14 @@
       return {
         isEdit: false,
         isLoading: false,
-        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã khuyến mãi <u><b>{value}</b></u>\n\n" +
+        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã khuyến mãi {value}\n\n" +
           "(Áp dụng khi thanh toán cùng với số điện thoại nhận được tin nhắn)\n\n" +
-          "Mã khuyến mãi: <u><b>{code}</b></u>\n\n" +
+          "Mã khuyến mãi: {code}\n\n" +
           "Quý khách vui lòng đọc số điện thoại và mã khuyến mãi cho nhân viên để áp dụng.\n\n" +
           "Cảm ơn quý khách!",
-        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã khuyến mãi <u><b>{value}</b></u>\n\n" +
+        messageTemplate: localStorage.getItem("messageTemplate") ? JSON.parse(localStorage.getItem("messageTemplate")) : "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã khuyến mãi {value}\n\n" +
           "(Áp dụng khi thanh toán cùng với số điện thoại nhận được tin nhắn)\n\n" +
-          "Mã khuyến mãi: <u><b>{code}</b></u>\n\n" +
+          "Mã khuyến mãi: {code}\n\n" +
           "Quý khách vui lòng đọc số điện thoại và mã khuyến mãi cho nhân viên để áp dụng.\n\n" +
           "Cảm ơn quý khách!",
         messageComputed: null,

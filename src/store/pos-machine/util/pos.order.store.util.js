@@ -7,6 +7,13 @@ const orderStatus = {
   CANCELLED_BY_SYSTEM: "CANCELLED_BY_SYSTEM",
 };
 
+const orderType = {
+  IN_STORE: "IN_STORE",
+  TAKE_AWAY: "TAKE_AWAY",
+  ONLINE: "ONLINE",
+  TEST: "TEST",
+};
+
 const orderProductStatus = {
   CREATED: "CREATED",
   PREPARING: "PREPARING",
@@ -51,6 +58,7 @@ function storeProductToOrderProduct(state, storeProduct) {
 
 const PosOrderStoreUtil = {
   orderStatus: orderStatus,
+  orderType: orderType,
   orderProductStatus: orderProductStatus,
   paymentMethods: paymentMethods,
   storeProductToOrderProduct: storeProductToOrderProduct

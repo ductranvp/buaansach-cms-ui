@@ -51,47 +51,112 @@
           </el-alert>
         </el-row>
         <el-row :gutter="10" type="flex" align="middle" class="padding-bottom-10">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-card shadow="never">
-              <div class="padding-20 bg-info text-light">
-                <span class="text-bold">Số đơn đã tạo/tiếp nhận</span>
-                <br>
-                <span class="text-very-large text-bold">{{reportData.totalOrderCount}}</span>
-              </div>
+              <el-main class="padding-10-20 bg-info text-light">
+                <el-row>
+                  <span class="text-bold">Số đơn đã tạo / tiếp nhận</span>
+                </el-row>
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <span class="text-very-large text-bold">{{parsedReportData.listTotal.length}}</span>
+                  </el-col>
+                  <el-col class="text-right">
+                    <el-button type="primary" @click="showReportDialog(parsedReportData.listTotal)">Chi tiết</el-button>
+                  </el-col>
+                </el-row>
+              </el-main>
             </el-card>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-card shadow="never">
-              <div class="padding-20 text-light bg-danger">
-                <span class="text-bold">Số đơn bị hủy</span>
-                <br>
-                <span class="text-very-large text-bold">{{reportData.totalCancelledCount}}</span>
-              </div>
+              <el-main class="padding-10-20 bg-info text-light">
+                <el-row>
+                  <span class="text-bold">Số đơn ăn tại quán</span>
+                </el-row>
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <span class="text-very-large text-bold">{{parsedReportData.listInStore.length}}</span>
+                  </el-col>
+                  <el-col class="text-right">
+                    <el-button type="primary" @click="showReportDialog(parsedReportData.listInStore)">Chi tiết</el-button>
+                  </el-col>
+                </el-row>
+              </el-main>
+            </el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card shadow="never">
+              <el-main class="padding-10-20 bg-info text-light">
+                <el-row>
+                  <span class="text-bold">Số đơn mang về</span>
+
+                </el-row>
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <span class="text-very-large text-bold">{{parsedReportData.listTakeAway.length}}</span>
+                  </el-col>
+                  <el-col class="text-right">
+                    <el-button type="primary" @click="showReportDialog(parsedReportData.listTakeAway)">Chi tiết</el-button>
+                  </el-col>
+                </el-row>
+              </el-main>
             </el-card>
           </el-col>
         </el-row>
         <el-row :gutter="10" type="flex" align="middle">
-          <el-col :span="12">
+          <el-col :span="8">
             <el-card shadow="never">
-              <div class="padding-20 bg-warning text-light">
-                <span class="text-bold">Số đơn đã thanh toán</span>
-                <br>
-                <span class="text-very-large text-bold">{{reportData.totalPurchasedCount}}</span>
-              </div>
+              <el-main class="padding-10-20 bg-danger text-light">
+                <el-row>
+                  <span class="text-bold">Số đơn bị hủy</span>
+                </el-row>
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <span class="text-very-large text-bold">{{parsedReportData.listCancelled.length}}</span>
+                  </el-col>
+                  <el-col class="text-right">
+                    <el-button type="primary" @click="showReportDialog(parsedReportData.listCancelled, 'cancelled')">Chi tiết</el-button>
+                  </el-col>
+                </el-row>
+              </el-main>
             </el-card>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <el-card shadow="never">
-              <div class="bg-yellowgreen text-light padding-20">
-                <span class="text-bold">Doanh thu</span>
-                <br>
-                <span class="text-very-large text-bold">{{reportData.totalRevenue | priceAppend}}</span>
-              </div>
+              <el-main class="padding-10-20 bg-yellowgreen text-light">
+                <el-row>
+                  <span class="text-bold">Số đơn đã thanh toán</span>
+                </el-row>
+                <el-row type="flex" align="middle">
+                  <el-col>
+                    <span class="text-very-large text-bold">{{parsedReportData.listPurchased.length}}</span>
+                  </el-col>
+                  <el-col class="text-right">
+                    <el-button type="primary" @click="showReportDialog(parsedReportData.listPurchased)">Chi tiết</el-button>
+                  </el-col>
+                </el-row>
+              </el-main>
+            </el-card>
+          </el-col>
+          <el-col :span="8">
+            <el-card shadow="never">
+              <el-main class="padding-10-20 bg-success text-light">
+                <el-row>
+                  <span class="text-bold">Doanh thu</span>
+                </el-row>
+                <el-row type="flex" align="middle" style="height: 40px">
+                  <el-col>
+                    <span class="text-very-large text-bold">{{parsedReportData.totalRevenue | priceAppend}}</span>
+                  </el-col>
+                </el-row>
+              </el-main>
             </el-card>
           </el-col>
         </el-row>
       </div>
     </el-main>
+    <sale-report-dialog ref="reportDialog" />
   </el-container>
 </template>
 
@@ -100,9 +165,18 @@
   import PosStoreUserService from "@/service/pos/pos.store-user-service";
   import hasAnyRole from "@/utils/has-any-role";
   import MessageUtils from "@/utils/message.util";
+  import {mapState} from "vuex";
+  import SaleReportDialog from "@/views/private/pos-machine/header/sale-report/SaleReportDialog";
 
   export default {
     name: "SaleReport",
+    components: {SaleReportDialog},
+    computed: {
+      ...mapState({
+        orderStatus: state => state.posMachine.orderStatus,
+        orderType: state => state.posMachine.orderType,
+      })
+    },
     data() {
       const defaultEnd = new Date();
       const defaultStart = new Date();
@@ -155,16 +229,23 @@
           STORE_WAITER: "STORE_WAITER",
           STORE_CASHIER: "STORE_CASHIER",
         },
-        reportData: {
-          totalRevenue: null,
-          totalOrderCount: null,
-          totalPurchasedCount: null,
-          totalCancelledCount: null,
+        reportData: {},
+        parsedReportData: {
+          totalRevenue: 0,
+          listTotal: [],
+          listCancelled: [],
+          listPurchased: [],
+          listInStore: [],
+          listTakeAway: [],
+          listOnline: [],
         },
         currentStoreUserRole: null,
       };
     },
     async created() {
+      this.isLoading = true;
+      /* get all area for display seat - area on order report */
+      await this.$store.dispatch("posMachine/getAllArea", this.$route.params.storeGuid);
       await this.getCurrentStoreUserRole();
       if (["STORE_MANAGER", "STORE_OWNER"].includes(this.currentStoreUserRole)) {
         this.getListStoreUser();
@@ -172,6 +253,9 @@
       this.handleGetReport();
     },
     methods: {
+      showReportDialog(data, type){
+        this.$refs.reportDialog.show(data, type);
+      },
       async getCurrentStoreUserRole() {
         const {data} = await PosStoreUserService.getCurrentStoreUserRole(this.$route.params.storeGuid);
         this.currentStoreUserRole = data;
@@ -183,7 +267,7 @@
         } else {
           await this.getCurrentUserSaleReport();
         }
-        setTimeout(() => this.isLoading = false, 500);
+        setTimeout(() => this.isLoading = false, 300);
       },
       hasAnyRole: hasAnyRole,
       goBack() {
@@ -196,9 +280,22 @@
         try {
           const {data} = await PosSaleReportService.getCurrentUserSaleReport(this.form);
           this.reportData = data;
+          this.parseReportData();
         } catch (error) {
           MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
         }
+      },
+      parseReportData() {
+        this.parsedReportData = {};
+        this.parsedReportData.listTotal = this.reportData;
+        this.parsedReportData.listPurchased = this.reportData.filter(item => item.orderStatus === this.orderStatus.PURCHASED);
+        this.parsedReportData.listCancelled = this.reportData.filter(item => item.orderStatus.includes("CANCELLED"));
+        this.parsedReportData.listInStore = this.reportData.filter(item => item.orderType === this.orderType.IN_STORE);
+        this.parsedReportData.listTakeAway = this.reportData.filter(item => item.orderType === this.orderType.TAKE_AWAY);
+        this.parsedReportData.listOnline = this.reportData.filter(item => item.orderType === this.orderType.ONLINE);
+        this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) =>{
+          return acc + item.totalAmount;
+        }, 0);
       },
       async getSaleReport() {
         this.form.storeGuid = this.$route.params.storeGuid;
@@ -207,6 +304,7 @@
         try {
           const {data} = await PosSaleReportService.getSaleReport(this.form);
           this.reportData = data;
+          this.parseReportData();
         } catch (e) {
           MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
         }
