@@ -62,7 +62,7 @@
                     <span class="text-very-large text-bold">{{parsedReportData.listTotal.length}}</span>
                   </el-col>
                   <el-col class="text-right">
-                    <el-button type="primary" @click="showReportDialog(parsedReportData.listTotal)">Chi tiết</el-button>
+                    <el-button @click="showReportDialog(parsedReportData.listTotal)">Chi tiết</el-button>
                   </el-col>
                 </el-row>
               </el-main>
@@ -79,7 +79,7 @@
                     <span class="text-very-large text-bold">{{parsedReportData.listInStore.length}}</span>
                   </el-col>
                   <el-col class="text-right">
-                    <el-button type="primary" @click="showReportDialog(parsedReportData.listInStore)">Chi tiết</el-button>
+                    <el-button @click="showReportDialog(parsedReportData.listInStore)">Chi tiết</el-button>
                   </el-col>
                 </el-row>
               </el-main>
@@ -97,15 +97,16 @@
                     <span class="text-very-large text-bold">{{parsedReportData.listTakeAway.length}}</span>
                   </el-col>
                   <el-col class="text-right">
-                    <el-button type="primary" @click="showReportDialog(parsedReportData.listTakeAway)">Chi tiết</el-button>
+                    <el-button @click="showReportDialog(parsedReportData.listTakeAway)">Chi tiết</el-button>
                   </el-col>
                 </el-row>
               </el-main>
             </el-card>
           </el-col>
         </el-row>
-        <el-row :gutter="10" type="flex" align="middle">
-          <el-col :span="8">
+
+        <el-row :gutter="10" type="flex" align="middle" class="padding-bottom-10">
+          <el-col :span="12">
             <el-card shadow="never">
               <el-main class="padding-10-20 bg-danger text-light">
                 <el-row>
@@ -116,13 +117,13 @@
                     <span class="text-very-large text-bold">{{parsedReportData.listCancelled.length}}</span>
                   </el-col>
                   <el-col class="text-right">
-                    <el-button type="primary" @click="showReportDialog(parsedReportData.listCancelled, 'cancelled')">Chi tiết</el-button>
+                    <el-button @click="showReportDialog(parsedReportData.listCancelled, 'cancelled')">Chi tiết</el-button>
                   </el-col>
                 </el-row>
               </el-main>
             </el-card>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="12">
             <el-card shadow="never">
               <el-main class="padding-10-20 bg-yellowgreen text-light">
                 <el-row>
@@ -133,13 +134,29 @@
                     <span class="text-very-large text-bold">{{parsedReportData.listPurchased.length}}</span>
                   </el-col>
                   <el-col class="text-right">
-                    <el-button type="primary" @click="showReportDialog(parsedReportData.listPurchased)">Chi tiết</el-button>
+                    <el-button @click="showReportDialog(parsedReportData.listPurchased, 'purchased')">Chi tiết</el-button>
                   </el-col>
                 </el-row>
               </el-main>
             </el-card>
           </el-col>
-          <el-col :span="8">
+        </el-row>
+        <el-row :gutter="10" type="flex" align="middle">
+          <el-col :span="12">
+            <el-card shadow="never">
+              <el-main class="padding-10-20 bg-warning text-light">
+                <el-row>
+                  <span class="text-bold">Khuyến mãi</span>
+                </el-row>
+                <el-row type="flex" align="middle" style="height: 40px">
+                  <el-col>
+                    <span class="text-very-large text-bold">{{parsedReportData.totalDiscount | priceAppend}}</span>
+                  </el-col>
+                </el-row>
+              </el-main>
+            </el-card>
+          </el-col>
+          <el-col :span="12">
             <el-card shadow="never">
               <el-main class="padding-10-20 bg-success text-light">
                 <el-row>
@@ -156,7 +173,7 @@
         </el-row>
       </div>
     </el-main>
-    <sale-report-dialog ref="reportDialog" />
+    <sale-report-dialog v-if="!isLoading" :current-store-user-role="currentStoreUserRole" ref="reportDialog" />
   </el-container>
 </template>
 
@@ -167,6 +184,7 @@
   import MessageUtils from "@/utils/message.util";
   import {mapState} from "vuex";
   import SaleReportDialog from "@/views/private/pos-machine/header/sale-report/SaleReportDialog";
+  import PriceUtils from "@/utils/price.util";
 
   export default {
     name: "SaleReport",
@@ -232,6 +250,7 @@
         reportData: {},
         parsedReportData: {
           totalRevenue: 0,
+          totalDiscount: 0,
           listTotal: [],
           listCancelled: [],
           listPurchased: [],
@@ -293,8 +312,15 @@
         this.parsedReportData.listInStore = this.reportData.filter(item => item.orderType === this.orderType.IN_STORE);
         this.parsedReportData.listTakeAway = this.reportData.filter(item => item.orderType === this.orderType.TAKE_AWAY);
         this.parsedReportData.listOnline = this.reportData.filter(item => item.orderType === this.orderType.ONLINE);
+
         this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) =>{
-          return acc + item.totalAmount;
+          let payAmount = PriceUtils.getPayAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
+          return acc + payAmount;
+        }, 0);
+
+        this.parsedReportData.totalDiscount = this.parsedReportData.listPurchased.reduce((acc, item) =>{
+          let discountAmount = PriceUtils.getDiscountAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
+          return acc + discountAmount;
         }, 0);
       },
       async getSaleReport() {
