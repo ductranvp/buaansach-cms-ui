@@ -1,10 +1,10 @@
 <template>
   <el-dialog
     :visible.sync="dialogFormVisible"
-    :close-on-click-modal="false"
     :before-close="beforeClose"
     :fullscreen="true"
     :show-close="false"
+    :append-to-body="true"
   >
     <div slot="title">
       <el-row type="flex" align="middle">
@@ -32,11 +32,12 @@
             :label="columns[key].label"
             v-if="columns[key].display">
             <template slot-scope="{row}">
-              <el-tag v-if="columns[key].type === 'enum' && columns[key].enum[row[key]]" :type="columns[key].enum[row[key]].color">
+              <el-tag v-if="columns[key].type === 'enum' && columns[key].enum[row[key]]"
+                      :type="columns[key].enum[row[key]].color">
                 <span>{{columns[key].enum[row[key]].label}}</span>
               </el-tag>
               <div v-else-if="columns[key].type === 'time'">
-                <span v-if="row[key]">{{row[key] | moment("HH:mm:ss DD/MM/YYYY")}}</span>
+                <span v-if="row[key]">{{row[key] | moment("HH:mm:ss - DD/MM/YYYY")}}</span>
               </div>
               <div v-else-if="columns[key].type === 'seat'">
                 <span>{{ allSeats[row[key]].seatName}} - {{allSeats[row[key]].areaName}}</span>
@@ -50,7 +51,7 @@
         </template>
         <el-table-column label="Lịch sử" v-if="['STORE_MANAGER', 'STORE_OWNER'].includes(this.currentStoreUserRole)">
           <template slot-scope="{row}">
-            <el-button size="small" type="primary" @click="showHistory(row.orderStatusTimeline)">Xem</el-button>
+            <el-button size="small" type="primary" @click="showOrderHistory(row)">Xem</el-button>
           </template>
         </el-table-column>
       </raw-data-table>
@@ -60,7 +61,7 @@
         <span>{{$t("common.entity.action.close")}}</span>
       </el-button>
     </div>
-    <sale-report-history-dialog :current-store-user-role="currentStoreUserRole" ref="historyDialog" />
+    <order-history-dialog :current-store-user-role="currentStoreUserRole" ref="orderHistoryDialog"/>
   </el-dialog>
 </template>
 
@@ -68,11 +69,11 @@
 
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
   import {mapState} from "vuex";
-  import SaleReportHistoryDialog from "@/views/private/pos-machine/header/sale-report/SaleReportHistoryDialog";
+  import OrderHistoryDialog from "@/views/private/pos-machine/header/sale-report/OrderHistoryDialog";
 
   export default {
-    name: "SaleReportDialog",
-    components: {SaleReportHistoryDialog, RawDataTable},
+    name: "SaleReportDetailDialog",
+    components: {OrderHistoryDialog, RawDataTable},
     props: {
       currentStoreUserRole: String,
     },
@@ -93,8 +94,6 @@
     },
     data() {
       return {
-        isEdit: false,
-        isLoading: false,
         dialogFormVisible: false,
         reportData: [],
         reportType: null,
@@ -141,11 +140,7 @@
       };
     },
     methods: {
-      showHistory(data){
-        this.$refs.historyDialog.show(data);
-      },
       show(data, type) {
-        console.log(this.currentStoreUserRole);
         this.reportType = type;
         this.resetDisplay();
         if (type === 'cancelled') this.columns.orderCancelReason.display = true;
@@ -171,6 +166,9 @@
       beforeClose(done) {
         this.reportData = [];
         done();
+      },
+      showOrderHistory(data) {
+        this.$refs.orderHistoryDialog.show(data);
       },
     }
   };

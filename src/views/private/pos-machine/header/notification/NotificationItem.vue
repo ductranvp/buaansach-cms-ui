@@ -6,7 +6,7 @@
         <b>{{data.content}}</b>
       </div>
       <div>
-        <el-tooltip :content="$moment(data.time).format('HH:mm:ss DD/MM/YYYY')">
+        <el-tooltip :content="$moment(data.time).format('HH:mm:ss - DD/MM/YYYY')">
           <el-tag size="mini" type="info">{{data.time | moment("HH:mm:ss")}}</el-tag>
         </el-tooltip>
 

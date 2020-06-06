@@ -25,7 +25,7 @@
                 size="small"
                 type="datetimerange"
                 :picker-options="pickerOptions"
-                range-separator="-"
+                range-separator="tới"
                 start-placeholder="Ngày bắt đầu"
                 end-placeholder="Ngày kết thúc"
                 align="right">
@@ -117,7 +117,8 @@
                     <span class="text-very-large text-bold">{{parsedReportData.listCancelled.length}}</span>
                   </el-col>
                   <el-col class="text-right">
-                    <el-button @click="showReportDialog(parsedReportData.listCancelled, 'cancelled')">Chi tiết</el-button>
+                    <el-button @click="showReportDialog(parsedReportData.listCancelled, 'cancelled')">Chi tiết
+                    </el-button>
                   </el-col>
                 </el-row>
               </el-main>
@@ -134,7 +135,8 @@
                     <span class="text-very-large text-bold">{{parsedReportData.listPurchased.length}}</span>
                   </el-col>
                   <el-col class="text-right">
-                    <el-button @click="showReportDialog(parsedReportData.listPurchased, 'purchased')">Chi tiết</el-button>
+                    <el-button @click="showReportDialog(parsedReportData.listPurchased, 'purchased')">Chi tiết
+                    </el-button>
                   </el-col>
                 </el-row>
               </el-main>
@@ -173,7 +175,7 @@
         </el-row>
       </div>
     </el-main>
-    <sale-report-dialog v-if="!isLoading" :current-store-user-role="currentStoreUserRole" ref="reportDialog" />
+    <sale-report-detail-dialog v-if="!isLoading" :current-store-user-role="currentStoreUserRole" ref="reportDialog"/>
   </el-container>
 </template>
 
@@ -183,12 +185,12 @@
   import hasAnyRole from "@/utils/has-any-role";
   import MessageUtils from "@/utils/message.util";
   import {mapState} from "vuex";
-  import SaleReportDialog from "@/views/private/pos-machine/header/sale-report/SaleReportDialog";
+  import SaleReportDetailDialog from "@/views/private/pos-machine/header/sale-report/SaleReportDetailDialog";
   import PriceUtils from "@/utils/price.util";
 
   export default {
     name: "SaleReport",
-    components: {SaleReportDialog},
+    components: {SaleReportDetailDialog},
     computed: {
       ...mapState({
         orderStatus: state => state.posMachine.orderStatus,
@@ -215,11 +217,26 @@
               }
             },
             {
+              text: 'Hôm qua',
+              onClick(picker) {
+                const end = new Date();
+                const start = new Date();
+                start.setTime(start.getTime() - 3600 * 1000 * 24);
+                start.setHours(0, 0, 0, 0);
+                end.setHours(0, 0, 0, 0);
+                end.setTime(end.getTime() - 1000);
+                picker.$emit('pick', [start, end]);
+              }
+            },
+            {
               text: '7 ngày trước',
               onClick(picker) {
                 const end = new Date();
                 const start = new Date();
                 start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+                start.setHours(0, 0, 0, 0);
+                end.setHours(0, 0, 0, 0);
+                end.setTime(end.getTime() - 1000);
                 picker.$emit('pick', [start, end]);
               }
             },
@@ -229,6 +246,9 @@
                 const end = new Date();
                 const start = new Date();
                 start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+                start.setHours(0, 0, 0, 0);
+                end.setHours(0, 0, 0, 0);
+                end.setTime(end.getTime() - 1000);
                 picker.$emit('pick', [start, end]);
               }
             }]
@@ -272,7 +292,7 @@
       this.handleGetReport();
     },
     methods: {
-      showReportDialog(data, type){
+      showReportDialog(data, type) {
         this.$refs.reportDialog.show(data, type);
       },
       async getCurrentStoreUserRole() {
@@ -313,12 +333,12 @@
         this.parsedReportData.listTakeAway = this.reportData.filter(item => item.orderType === this.orderType.TAKE_AWAY);
         this.parsedReportData.listOnline = this.reportData.filter(item => item.orderType === this.orderType.ONLINE);
 
-        this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) =>{
+        this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
           let payAmount = PriceUtils.getPayAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
           return acc + payAmount;
         }, 0);
 
-        this.parsedReportData.totalDiscount = this.parsedReportData.listPurchased.reduce((acc, item) =>{
+        this.parsedReportData.totalDiscount = this.parsedReportData.listPurchased.reduce((acc, item) => {
           let discountAmount = PriceUtils.getDiscountAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
           return acc + discountAmount;
         }, 0);
