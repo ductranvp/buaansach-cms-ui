@@ -1,6 +1,7 @@
 <template>
   <el-container class="full-size" direction="vertical">
     <sort-product-dialog @hasChange="hasChange" ref="sortProductDialog" />
+    <import-product-dialog @hasChange="hasChange" ref="importProductDialog" />
     <div>
       <el-row :gutter="10">
         <el-col :span="10">
@@ -27,6 +28,9 @@
         </el-col>
         <el-col :span="10">
           <el-row type="flex" justify="end">
+            <el-button type="primary" @click="showImportDialog">
+              <span>Nhập</span>
+            </el-button>
             <el-button type="primary" @click="showSortDialog">
               <span>Sắp xếp</span>
             </el-button>
@@ -109,10 +113,11 @@
   import AdminCategoryService from "@/service/admin/admin.category.service";
   import AppUtils from "@/utils/app.util";
   import SortProductDialog from "@/views/private/admin/product/SortProductDialog";
+  import ImportProductDialog from "@/views/private/admin/product/ImportProductDialog";
 
   export default {
     name: "AdminProductManagement",
-    components: {SortProductDialog, CreateOrUpdateProductDialog, DataTable},
+    components: {ImportProductDialog, SortProductDialog, CreateOrUpdateProductDialog, DataTable},
     data() {
       return {
         isLoading: false,
@@ -179,6 +184,9 @@
       },
       showSortDialog(){
         this.$refs.sortProductDialog.show();
+      },
+      showImportDialog(){
+        this.$refs.importProductDialog.show();
       }
     }
   };

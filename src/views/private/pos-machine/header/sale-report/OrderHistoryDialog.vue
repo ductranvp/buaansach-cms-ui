@@ -187,7 +187,8 @@
               metaData = arr[3];
             }
             if (arr[0] === "UPDATE_ORDER") {
-              metaData = arr[3] + " sản phẩm.";
+              let temp = arr[3].split("*");
+              metaData = temp[0] + " sản phẩm.";
             }
           }
           let activity = {
