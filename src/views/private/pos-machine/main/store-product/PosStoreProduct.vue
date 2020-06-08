@@ -29,7 +29,7 @@
             <div style="position: relative"
                  :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'pointer-disabled' : ''">
               <el-image :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'grayscale' : ''"
-                        @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productImageUrl"
+                        @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productThumbnailUrl"
                         class="store-product-image">
                 <div slot="error" class="image-error-slot full-size">
                   <i class="el-icon-picture-outline"></i>

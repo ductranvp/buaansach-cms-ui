@@ -112,7 +112,7 @@
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
-          :image-url-prop.sync="form.productImageUrl"
+          :image-url-prop.sync="form.productThumbnailUrl"
         />
       </el-form-item>
 
@@ -213,7 +213,7 @@
         this.$refs.singleImageUploader.clearImage();
       },
       onImageCleared() {
-        this.form.productImageUrl = null;
+        this.form.productThumbnailUrl = null;
       },
       create() {
         this.isEdit = false;

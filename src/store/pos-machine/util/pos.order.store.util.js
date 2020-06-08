@@ -53,6 +53,7 @@ function storeProductToOrderProduct(state, storeProduct) {
     productName: storeProduct.productName,
     productUnit: storeProduct.productUnit,
     productImageUrl: storeProduct.productImageUrl,
+    productThumbnailUrl: storeProduct.productThumbnailUrl,
   };
 }
 
