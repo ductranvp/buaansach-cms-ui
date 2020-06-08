@@ -31,6 +31,9 @@
               <el-image :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'grayscale' : ''"
                         @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productImageUrl"
                         class="store-product-image">
+                <div slot="error" class="image-error-slot full-size">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
               </el-image>
               <div v-if="storeProduct.storeProductStatus === 'UNAVAILABLE'"
                    style="position: relative; margin-top:-32px">
