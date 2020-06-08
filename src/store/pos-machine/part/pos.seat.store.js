@@ -37,6 +37,7 @@ const mutations = {
         const idx = area.listSeat.findIndex(seat => seat.guid === targetSeat.guid);
         if (idx !== -1) {
           area.listSeat[idx].seatLocked = !area.listSeat[idx].seatLocked;
+          state.selectedSeat = area.listSeat[idx];
           area.listSeat.splice(idx, 1, area.listSeat[idx]);
         }
       }

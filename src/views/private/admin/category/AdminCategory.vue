@@ -9,7 +9,7 @@
                       v-model="form.categoryName">
             </el-input>
           </el-form-item>
-          <el-button type="primary" :disabled="!form.categoryName" @click="submit">
+          <el-button type="primary" :loading="isLoading" :disabled="!form.categoryName" @click="submit">
             <span>Thêm Danh Mục</span>
           </el-button>
         </el-form>
@@ -57,6 +57,7 @@
     data() {
       return {
         categories: [],
+        isLoading: false,
         form: {
           guid: null,
           categoryName: null,
@@ -122,10 +123,13 @@
         this.$refs.categoryForm.validate(async valid => {
           if (valid) {
             try {
+              this.isLoading = true;
               const {data} = await AdminCategoryService.createCategory(this.form);
               this.categories.push(data);
               this.resetForm();
+              this.isLoading = false;
             } catch (error) {
+              this.isLoading = false;
               NotificationUtils.error(error.message || error.data.message);
             }
           }

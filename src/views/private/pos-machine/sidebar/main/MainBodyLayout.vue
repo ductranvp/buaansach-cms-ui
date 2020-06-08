@@ -1,5 +1,5 @@
 <template>
-  <el-main class="full-size">
+  <el-main class="full-size" style="position: relative">
     <el-container class="full-size" direction="vertical">
       <el-main v-if="selectedSeat.guid" class="scroll full-size show-vertical-scroll">
         <div v-if="currentOrder.guid" class="full-size">
@@ -24,6 +24,11 @@
       </el-main>
 
     </el-container>
+    <div class="mask" v-if="currentOrder.guid && currentOrder.orderStatus === 'CREATED'">
+      <div class="mask-text">
+        <span>Đang chờ tiếp nhận</span>
+      </div>
+    </div>
   </el-main>
 </template>
 
@@ -60,5 +65,21 @@
 </script>
 
 <style scoped>
-
+  .mask {
+    position: absolute;
+    z-index: 2000;
+    background-color: rgba(230, 162, 60, .2);
+    margin: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+  .mask-text {
+    top: 50%;
+    margin-top: -21px;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+  }
 </style>

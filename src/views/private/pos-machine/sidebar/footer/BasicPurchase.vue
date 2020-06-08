@@ -15,6 +15,7 @@
               popper-class="my-autocomplete"
               placement="top-start"
               :popper-append-to-body="true"
+              :hide-loading="true"
               :trigger-on-focus="false"
               :debounce="300"
               :disabled="!isEditCustomerPhone"
@@ -262,7 +263,7 @@
           await PosOrderService.changeCustomerPhone({
             seatGuid: this.currentOrder.seatGuid,
             orderGuid: this.currentOrder.guid,
-            newCustomerPhone: this.currentOrder.customerPhone
+            newCustomerPhone: this.currentOrder.customerPhone ? this.currentOrder.customerPhone : null,
           });
           this.isEditCustomerPhone = false;
           this.isLoading = false;
@@ -293,7 +294,7 @@
         }
       },
       handleSelect(item) {
-        this.currentOrder.customerPhone = item.customerPhone;
+        this.currentOrder.customerPhone = item.customerPhone ? item.customerPhone : null;
       },
       editCustomerPhone() {
         const vm = this;

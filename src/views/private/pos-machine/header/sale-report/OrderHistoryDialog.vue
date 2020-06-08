@@ -184,7 +184,8 @@
               metaData += " tới " + toSeat.seatName + " - " + toSeat.areaName;
             }
             if (arr[0] === "CHANGE_PHONE") {
-              metaData = arr[3];
+              if (arr[3] === 'null' || !arr[3]) metaData = "";
+              else metaData = arr[3];
             }
             if (arr[0] === "UPDATE_ORDER") {
               let temp = arr[3].split("*");
