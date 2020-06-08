@@ -34,7 +34,7 @@
   display: block;
 }
 
-.text-bold{
+.text-bold {
   font-weight: 700;
 }
 
@@ -58,7 +58,7 @@
   cursor: not-allowed;
 }
 
-.bg-yellowgreen{
+.bg-yellowgreen {
   color: white !important;
   background: #9acd32 !important;
 }
@@ -140,9 +140,16 @@
   text-overflow: ellipsis;
   overflow: hidden;
 }
+
+.no-break-word {
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+
 .text-mini {
   font-size: 12px !important;
 }
+
 .text-small {
   font-size: 14px !important;
 }
@@ -154,10 +161,12 @@
 .text-medium {
   font-size: 16px !important;
 }
+
 .text-large {
   font-size: 18px !important;
 }
-.text-very-large{
+
+.text-very-large {
   font-size: 24px !important;
 }
 

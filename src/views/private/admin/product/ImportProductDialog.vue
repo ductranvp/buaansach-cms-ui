@@ -13,18 +13,13 @@
         <input id="csv" type="file">
       </el-row>
       <el-row class="padding-top-10">
-        <raw-data-table :data="csvData">
+        <raw-data-table :highlight-current-row="true" :data="csvData">
           <el-table-column v-for="key in headerRows" :key="key" :label="key" :prop="key">
             <template slot-scope="{row}">
               <el-input size="mini" v-model="row[key]"></el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="image" label="image">
-            <template slot-scope="{row}">
-              <input type="file" @change="changeProductImage($event, row)"/>
-            </template>
-          </el-table-column>
-          <el-table-column prop="categories" label="categories">
+          <el-table-column v-if="headerRows.length" prop="categories" label="categories">
             <template slot-scope="{row}">
               <el-select size="mini" multiple v-model="row.categories" class="full-width">
                 <el-option v-for="category in categories"
@@ -33,6 +28,11 @@
                            :value="category.guid">
                 </el-option>
               </el-select>
+            </template>
+          </el-table-column>
+          <el-table-column v-if="headerRows.length" prop="image" label="image">
+            <template slot-scope="{row}">
+              <input type="file" @change="changeProductImage($event, row)"/>
             </template>
           </el-table-column>
         </raw-data-table>
@@ -115,7 +115,6 @@
             return item;
           }
         });
-        console.log(validProducts);
         if (!validProducts.length) {
           this.hide();
           return;

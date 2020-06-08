@@ -29,7 +29,7 @@
         <el-col :span="10">
           <el-row type="flex" justify="end">
             <el-button type="primary" @click="showImportDialog">
-              <span>Nhập</span>
+              <span>Nhập từ file CSV</span>
             </el-button>
             <el-button type="primary" @click="showSortDialog">
               <span>Sắp xếp</span>
@@ -45,17 +45,31 @@
       <data-table
         ref="productTable"
         :fetch-data="fetchData"
-        show-audit
         :default-sort="{prop: 'productPosition', order: 'ascending'}"
-        :custom-audit="['createdBy', 'createdDate']"
         :filter="filter"
       >
+        <el-table-column type="expand">
+          <template slot-scope="{row}">
+            <admin-product-row-detail :row="row" />
+          </template>
+        </el-table-column>
+
         <el-table-column type="index" label="STT">
         </el-table-column>
 
         <el-table-column prop="productCode" label="Mã SP"></el-table-column>
 
-        <el-table-column prop="productName" label="Tên sản phẩm"></el-table-column>
+        <el-table-column prop="productName" label="Tên sản phẩm">
+          <template slot-scope="{row}">
+            <span class="no-break-word">{{row.productName}}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column prop="productPrice" label="Giá bán">
+          <template slot-scope="{row}">
+            <span class="no-break-word">{{row.productPrice | priceAppend}}</span>
+          </template>
+        </el-table-column>
 
         <el-table-column min-width="100px" prop="productStatus" label="Trạng thái">
           <template slot-scope="{row}">
@@ -65,8 +79,13 @@
           </template>
         </el-table-column>
 
-        <el-table-column prop="productRootPrice" label="Giá gốc"></el-table-column>
-        <el-table-column prop="productPrice" label="Giá bán"></el-table-column>
+        <el-table-column min-width="100px" prop="productType" label="Loại sản phẩm">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.productType === 'MAIN_PRODUCT'" type="primary">Sản phẩm chính</el-tag>
+            <el-tag v-else type="primary">Sản phẩm phụ</el-tag>
+          </template>
+        </el-table-column>
+
         <el-table-column label="Danh mục">
           <template slot-scope="{row}">
             <el-tag v-for="category in row.categories" :key="category.guid">{{category.categoryName}}</el-tag>
@@ -114,10 +133,11 @@
   import AppUtils from "@/utils/app.util";
   import SortProductDialog from "@/views/private/admin/product/SortProductDialog";
   import ImportProductDialog from "@/views/private/admin/product/ImportProductDialog";
+  import AdminProductRowDetail from "@/views/private/admin/product/AdminProductRowDetail";
 
   export default {
     name: "AdminProductManagement",
-    components: {ImportProductDialog, SortProductDialog, CreateOrUpdateProductDialog, DataTable},
+    components: {AdminProductRowDetail, ImportProductDialog, SortProductDialog, CreateOrUpdateProductDialog, DataTable},
     data() {
       return {
         isLoading: false,
