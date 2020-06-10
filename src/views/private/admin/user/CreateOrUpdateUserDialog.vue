@@ -166,10 +166,10 @@
           {label: "English", value: "en"}
         ],
         roles: [
-          {label: "Admin", value: "ROLE_ADMIN"},
-          {label: "Manager", value: "ROLE_MANAGER"},
-          {label: "Customer Care", value: "ROLE_CUSTOMER_CARE"},
-          {label: "User", value: "ROLE_USER"}
+          {label: "Quản trị viên", value: "ROLE_ADMIN"},
+          {label: "Điều hành viên", value: "ROLE_MODERATOR"},
+          {label: "Chăm sóc khách hàng", value: "ROLE_CUSTOMER_CARE"},
+          {label: "Người dùng", value: "ROLE_USER"}
         ]
       };
     },
@@ -212,6 +212,7 @@
               vm.isLoading = true;
               await AdminUserService.createUser(vm.form);
               vm.isLoading = false;
+              vm.$emit("created");
               vm.hide();
             } catch (error) {
               vm.isLoading = false;

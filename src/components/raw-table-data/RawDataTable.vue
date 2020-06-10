@@ -10,6 +10,9 @@
       :fit="true"
       stripe
       border>
+      <slot name="expand">
+        <!-- action definitions here -->
+      </slot>
 
       <el-table-column v-if="showIndex" type="index" :index="indexMethod" :label="$t('common.entity.audit.index')">
       </el-table-column>
@@ -113,7 +116,7 @@
     },
     methods: {
       indexMethod(index) {
-        return index + 1;
+        return index + 1 + (this.tableConfig.currentPage - 1) * this.tableConfig.pageSize;
       },
       onFilterChange(filter) {
         this.renderTable();

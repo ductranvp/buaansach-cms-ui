@@ -10,12 +10,27 @@
     </el-row>
     <el-row class="margin-top-10">
       <raw-data-table ref="storeProductTable"
-                      show-audit
-                      :custom-audit="['createdBy', 'createdDate']"
+                      show-index
                       :default-sort="{prop: 'productPosition', order: 'ascending'}"
                       :data="storeProducts">
-        <el-table-column prop="productName" label="Tên sản phẩm"></el-table-column>
-        <el-table-column prop="productPrice" label="Giá bán"></el-table-column>
+        <template slot="expand">
+          <el-table-column type="expand">
+            <template slot-scope="{row}">
+              <admin-store-product-row-detail :row="row"/>
+            </template>
+          </el-table-column>
+        </template>
+        <el-table-column prop="productCode" label="Mã SP" width="100px"></el-table-column>
+        <el-table-column prop="productName" label="Tên sản phẩm">
+          <template slot-scope="{row}">
+            <span class="no-break-word">{{row.productName}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="productPrice" label="Giá bán">
+          <template slot-scope="{row}">
+            <span>{{row.productPrice | priceAppend}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="storeProductStatus" label="Kho">
           <template slot-scope="{row}">
 
@@ -43,7 +58,7 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="productPosition" sortable label="Thứ tự"></el-table-column>
+        <!--        <el-table-column prop="productPosition" sortable label="Thứ tự"></el-table-column>-->
         <template slot="action">
           <el-table-column label="Thao tác" width="160px">
             <template slot-scope="{row}">
@@ -69,10 +84,11 @@
   import MessageBoxUtils from "@/utils/message-box.util";
   import AddOrUpdateStoreProductDialog from "@/views/private/admin/store/detail/product/AddOrUpdateStoreProductDialog";
   import AppUtils from "@/utils/app.util";
+  import AdminStoreProductRowDetail from "@/views/private/admin/store/detail/product/AdminStoreProductRowDetail";
 
   export default {
     name: "AdminStoreProduct",
-    components: {AddOrUpdateStoreProductDialog, RawDataTable},
+    components: {AdminStoreProductRowDetail, AddOrUpdateStoreProductDialog, RawDataTable},
     data() {
       return {
         storeProducts: []

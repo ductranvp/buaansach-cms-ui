@@ -1,7 +1,8 @@
 <template>
   <el-row type="flex" align="middle">
     <el-col :span="4" :xs="24">
-      <el-image class="product-image" :src="row.productThumbnailUrl" fit="cover" :preview-src-list="[row.productThumbnailUrl]">
+      <el-image class="expanded-image" :src="row.voucherImageUrl" fit="cover"
+                :preview-src-list="[row.voucherImageUrl]">
         <div slot="error" class="image-error-slot full-size">
           <i class="el-icon-picture-outline"></i>
         </div>
@@ -13,21 +14,15 @@
           <table class="expanded-table">
             <tr>
               <td>Mô tả</td>
-              <td>{{ row.productDescription }}</td>
-            </tr>
-            <tr>
-              <td>Giá gốc</td>
-              <td>{{ row.productRootPrice | priceAppend }}</td>
-            </tr>
-            <tr>
-              <td>Giảm giá</td>
-              <td>{{ row.productDiscount | priceAppend }}</td>
-            </tr>
-            <tr>
-              <td>Hiển thị</td>
               <td>
-                <el-tag v-if="row.productDisplay === 'DEFAULT'" type="primary">Mặc định</el-tag>
-                <el-tag v-if="row.productDisplay === 'HIGHLIGHT'" type="primary">Nổi bật</el-tag>
+                <span class="no-break-word">{{ row.voucherDescription }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td class="text-single-line">Hình thức giảm</td>
+              <td>
+                <el-tag size="medium" v-if="row.voucherDiscountType === 'VALUE'" type="primary">Giá trị</el-tag>
+                <el-tag size="medium" v-if="row.productDisplay === 'PERCENT'" type="primary">Phần trăm</el-tag>
               </td>
             </tr>
           </table>
@@ -62,7 +57,7 @@
 
 <script>
   export default {
-    name: "AdminProductRowDetail",
+    name: "AdminVoucherRowDetail",
     props: {
       row: {
         type: Object,
@@ -73,7 +68,7 @@
 </script>
 
 <style scoped>
-  .product-image {
+  .expanded-image {
     width: 120px;
     height: 120px
   }

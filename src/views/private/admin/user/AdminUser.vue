@@ -4,7 +4,7 @@
       <el-row :gutter="10">
         <el-col :span="10">
           <el-input
-            placeholder="Nhập họ tên hoặc tên đăng nhập của người dùng"
+            placeholder="Tìm theo mã, tên đăng nhập hoặc tên hiển thị"
             v-model="searchKey"
             @keypress.enter.native="onSearch"
           >
@@ -27,16 +27,26 @@
     </div>
     <div class="margin-top-10">
       <data-table
+        show-index
         ref="userTable"
         :fetch-data="fetchData"
         :filter="filter"
-        show-audit
-        :custom-audit="['createdBy', 'createdDate']"
       >
+        <template slot="expand">
+          <el-table-column type="expand">
+            <template slot-scope="{row}">
+              <admin-user-row-detail :row="row"/>
+            </template>
+          </el-table-column>
+        </template>
         <el-table-column prop="login" label="Tên đăng nhập"></el-table-column>
         <el-table-column prop="firstName" label="Tên"></el-table-column>
         <el-table-column prop="lastName" label="Họ"></el-table-column>
-        <el-table-column prop="email" label="Email"></el-table-column>
+        <el-table-column prop="email" label="Email">
+          <template slot-scope="{row}">
+            <span class="no-break-word">{{row.email}}</span>
+          </template>
+        </el-table-column>
         <el-table-column prop="phone" label="SĐT"></el-table-column>
         <el-table-column prop="activated" label="Trạng thái">
           <template slot-scope="{row}">
@@ -49,7 +59,7 @@
             </el-button>
           </template>
         </el-table-column>
-<!--        <el-table-column prop="langKey" label="Ngôn ngữ"></el-table-column>-->
+        <!--        <el-table-column prop="langKey" label="Ngôn ngữ"></el-table-column>-->
         <template slot="action">
           <el-table-column width="130px" label="Thao tác">
             <template slot-scope="{ row }">
@@ -66,7 +76,7 @@
         </template>
       </data-table>
     </div>
-    <create-or-update-user-dialog ref="userDialog"/>
+    <create-or-update-user-dialog @created="reloadTableData" ref="userDialog"/>
   </el-container>
 </template>
 
@@ -77,10 +87,11 @@
   import {mapState} from "vuex";
   import NotificationUtils from "@/utils/notification.util";
   import MessageUtils from "@/utils/message.util";
+  import AdminUserRowDetail from "@/views/private/admin/user/AdminUserRowDetail";
 
   export default {
     name: "AdminUserManagement",
-    components: {DataTable, CreateOrUpdateUserDialog},
+    components: {AdminUserRowDetail, DataTable, CreateOrUpdateUserDialog},
     computed: {
       ...mapState({
         currentUser: state => state.user.info
@@ -104,8 +115,9 @@
       },
       reloadTableData() {
         const vm = this;
+        vm.filter.searchKey = vm.searchKey;
         vm.isLoading = true;
-        this.$refs.userTable.reload(whenDone);
+        vm.$refs.userTable.reload(whenDone);
 
         function whenDone() {
           vm.isLoading = false;

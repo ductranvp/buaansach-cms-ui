@@ -12,6 +12,8 @@
       border
       :size="tableSize"
     >
+      <slot name="expand"></slot>
+
       <el-table-column v-if="showIndex" type="index"
                        :index="indexMethod"
                        :label="$t('common.entity.audit.index')">
@@ -123,7 +125,7 @@
     },
     methods: {
       indexMethod(index) {
-        return index + 1;
+        return index + 1 + (this.tableConfig.currentPage - 1) * this.tableConfig.pageSize;
       },
       // eslint-disable-next-line no-unused-vars
       onFilterChange(filter) {

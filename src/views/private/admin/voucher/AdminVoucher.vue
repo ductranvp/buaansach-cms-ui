@@ -12,65 +12,69 @@
     <el-row class="margin-top-10">
       <raw-data-table ref="voucherTable"
                       :data="listVoucher">
+        <template slot="expand">
+          <el-table-column type="expand">
+            <template slot-scope="{row}">
+              <admin-voucher-row-detail :row="row"/>
+            </template>
+          </el-table-column>
+        </template>
+
         <el-table-column label="Tên Voucher" prop="voucherName"></el-table-column>
-        <el-table-column label="Mô tả" prop="voucherDescription">
-          <template slot-scope="{row}">
-            <el-popover
-              placement="top-start"
-              title="Mô tả"
-              width="200"
-              trigger="hover"
-              :content="row.voucherDescription">
-              <el-button size="small" type="info" slot="reference">Chi tiết</el-button>
-            </el-popover>
-          </template>
-        </el-table-column>
+
         <el-table-column label="Giới hạn thời gian">
           <template slot-scope="{row}">
-            <el-tag v-if="row.timeCondition">
+            <el-tag size="medium" v-if="row.timeCondition">
               <span>{{row.timeCondition.validFrom | moment("DD/MM/YY")}} - {{row.timeCondition.validUntil | moment("DD/MM/YY")}}</span>
             </el-tag>
-            <el-tag v-else>Không giới hạn</el-tag>
+            <el-tag size="medium" v-else>Không</el-tag>
           </template>
         </el-table-column>
+
         <el-table-column label="Giới hạn lượt dùng">
           <template slot-scope="{row}">
-            <el-tag v-if="row.usageCondition">
+            <el-tag size="medium" v-if="row.usageCondition">
               <span>{{row.usageCondition.maxUsage}}</span>
             </el-tag>
-            <el-tag v-else>Không giới hạn</el-tag>
+            <el-tag size="medium" v-else>Không</el-tag>
           </template>
         </el-table-column>
+
         <el-table-column label="Giới hạn cửa hàng">
           <template slot-scope="{row}">
-            <el-tag v-if="row.storeCondition">
+            <el-tag size="medium" v-if="row.storeCondition">
               <span>{{listStore.find(store => store.guid === row.storeCondition.storeGuid).storeCode}} - </span>
               <span>{{listStore.find(store => store.guid === row.storeCondition.storeGuid).storeName}}</span>
             </el-tag>
-            <el-tag v-else>Không giới hạn</el-tag>
+            <el-tag size="medium" v-else>Không</el-tag>
           </template>
         </el-table-column>
+
         <el-table-column label="Trạng thái" prop="voucherEnable">
           <template slot-scope="{row}">
-            <el-button size="small" type="success" @click="toggleVoucher(row)" v-if="row.voucherEnable">Đã kích hoạt
+            <el-button size="mini" type="success" @click="toggleVoucher(row)" v-if="row.voucherEnable">Đã kích hoạt
             </el-button>
-            <el-button size="small" type="danger" @click="toggleVoucher(row)" v-else>Đã khóa</el-button>
+            <el-button size="mini" type="danger" @click="toggleVoucher(row)" v-else>Đã khóa</el-button>
           </template>
         </el-table-column>
+
         <el-table-column label="Số lượng mã" prop="numberVoucherCode">
         </el-table-column>
-        <el-table-column label="Giảm giá" prop="voucherDiscount"></el-table-column>
-        <el-table-column label="Giảm theo" prop="voucherDiscountType">
+
+        <el-table-column label="Giảm giá" prop="voucherDiscount">
           <template slot-scope="{row}">
-            <el-tag type="primary" v-if="row.voucherDiscountType === 'VALUE'">Giá trị</el-tag>
-            <el-tag type="primary" v-else>Phần trăm</el-tag>
+            <span v-if="row.voucherDiscountType === 'VALUE'">{{row.voucherDiscount | priceAppend}}</span>
+            <span v-else>{{row.voucherDiscount}}%</span>
           </template>
         </el-table-column>
+
         <template slot="action">
-          <el-table-column>
+          <el-table-column label="Thao tác">
             <template slot-scope="{row}">
-              <el-button type="primary" size="small" @click="viewVoucherCode(row)">Xem</el-button>
-              <el-button type="primary" size="small" @click="updateVoucher(row)">Sửa</el-button>
+              <el-row type="flex" align="middle">
+                <el-button type="primary" size="mini" @click="viewVoucherCode(row)">Xem</el-button>
+                <el-button type="warning" size="mini" @click="updateVoucher(row)">Sửa</el-button>
+              </el-row>
             </template>
           </el-table-column>
         </template>
@@ -93,10 +97,12 @@
   import AdminVoucherInventoryService from "@/service/admin/admin.voucher-inventory.service";
   import AdminStoreService from "@/service/admin/admin.store.service";
   import AdminUpdateVoucherBasic from "@/views/private/admin/voucher/AdminUpdateVoucherBasic";
+  import AdminVoucherRowDetail from "@/views/private/admin/voucher/AdminVoucherRowDetail";
 
   export default {
     name: "AdminVoucher",
     components: {
+      AdminVoucherRowDetail,
       AdminUpdateVoucherBasic,
       GenerateVoucherInventoryDialog, ListVoucherCodeDialog, CreateOrUpdateVoucherDialog, RawDataTable
     },

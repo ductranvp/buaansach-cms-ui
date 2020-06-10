@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" align="middle">
     <el-col :span="4" :xs="24">
-      <el-image class="product-image" :src="row.productThumbnailUrl" fit="cover" :preview-src-list="[row.productThumbnailUrl]">
+      <el-image class="expanded-image" :src="row.imageUrl" fit="cover" :preview-src-list="[row.imageUrl]">
         <div slot="error" class="image-error-slot full-size">
           <i class="el-icon-picture-outline"></i>
         </div>
@@ -12,22 +12,27 @@
         <el-col :span="11">
           <table class="expanded-table">
             <tr>
-              <td>Mô tả</td>
-              <td>{{ row.productDescription }}</td>
+              <td>Mã người dùng</td>
+              <td>{{ row.code }}</td>
             </tr>
             <tr>
-              <td>Giá gốc</td>
-              <td>{{ row.productRootPrice | priceAppend }}</td>
-            </tr>
-            <tr>
-              <td>Giảm giá</td>
-              <td>{{ row.productDiscount | priceAppend }}</td>
-            </tr>
-            <tr>
-              <td>Hiển thị</td>
+              <td>Giới tính</td>
               <td>
-                <el-tag v-if="row.productDisplay === 'DEFAULT'" type="primary">Mặc định</el-tag>
-                <el-tag v-if="row.productDisplay === 'HIGHLIGHT'" type="primary">Nổi bật</el-tag>
+                <el-tag size="mini" type="primary" v-if="row.gender === 'MALE'">Nam</el-tag>
+                <el-tag size="mini" type="primary" v-else-if="row.gender === 'FEMALE'">Nữ</el-tag>
+                <el-tag size="mini" type="primary" v-else>Chưa biết</el-tag>
+              </td>
+            </tr>
+            <tr>
+              <td>Ngày sinh</td>
+              <td>
+                <span v-if="row.birthday">{{row.birthday | moment("DD/MM/YYYY")}}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Địa chỉ</td>
+              <td>
+                <span class="no-break-word">{{row.address}}</span>
               </td>
             </tr>
           </table>
@@ -62,7 +67,7 @@
 
 <script>
   export default {
-    name: "AdminProductRowDetail",
+    name: "AdminUserRowDetail",
     props: {
       row: {
         type: Object,
@@ -73,9 +78,9 @@
 </script>
 
 <style scoped>
-  .product-image {
-    width: 120px;
-    height: 120px
+  .expanded-image {
+    width: 100px;
+    height: 100px
   }
 
   .expanded-table {

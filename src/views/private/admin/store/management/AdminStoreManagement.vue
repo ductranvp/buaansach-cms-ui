@@ -109,8 +109,9 @@
       },
       reloadTableData() {
         const vm = this;
+        vm.filter.searchKey = vm.searchKey;
         vm.isLoading = true;
-        this.$refs.storeTable.reload(whenDone);
+        vm.$refs.storeTable.reload(whenDone);
 
         function whenDone() {
           vm.isLoading = false;

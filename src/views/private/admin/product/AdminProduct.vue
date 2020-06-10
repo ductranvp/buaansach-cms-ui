@@ -44,18 +44,18 @@
     <div class="margin-top-10">
       <data-table
         ref="productTable"
+        show-index
         :fetch-data="fetchData"
         :default-sort="{prop: 'productPosition', order: 'ascending'}"
         :filter="filter"
       >
-        <el-table-column type="expand">
-          <template slot-scope="{row}">
-            <admin-product-row-detail :row="row" />
-          </template>
-        </el-table-column>
-
-        <el-table-column type="index" label="STT">
-        </el-table-column>
+        <template slot="expand">
+          <el-table-column type="expand">
+            <template slot-scope="{row}">
+              <admin-product-row-detail :row="row" />
+            </template>
+          </el-table-column>
+        </template>
 
         <el-table-column prop="productCode" label="Mã SP"></el-table-column>
 
@@ -174,9 +174,10 @@
         this.filter.searchKey = this.searchKey;
       },
       reloadTableData() {
-        this.isLoading = true;
-        this.$refs.productTable.reload(whenDone);
         const vm = this;
+        vm.filter.searchKey = vm.searchKey;
+        vm.isLoading = true;
+        vm.$refs.productTable.reload(whenDone);
 
         function whenDone() {
           vm.isLoading = false;

@@ -16,12 +16,17 @@
               <td>{{ row.productDescription }}</td>
             </tr>
             <tr>
-              <td>Giá gốc</td>
-              <td>{{ row.productRootPrice | priceAppend }}</td>
+              <td>Giảm giá</td>
+              <td>
+                <span>{{ row.productDiscount | priceAppend }}</span>
+              </td>
             </tr>
             <tr>
-              <td>Giảm giá</td>
-              <td>{{ row.productDiscount | priceAppend }}</td>
+              <td>Loại sản phẩm</td>
+              <td>
+                <el-tag v-if="row.productType === 'MAIN_PRODUCT'" type="primary">Sản phẩm chính</el-tag>
+                <el-tag v-if="row.productDisplay === 'SUB_PRODUCT'" type="primary">Sản phẩm phụ</el-tag>
+              </td>
             </tr>
             <tr>
               <td>Hiển thị</td>
@@ -62,7 +67,7 @@
 
 <script>
   export default {
-    name: "AdminProductRowDetail",
+    name: "AdminStoreProductRowDetail",
     props: {
       row: {
         type: Object,
