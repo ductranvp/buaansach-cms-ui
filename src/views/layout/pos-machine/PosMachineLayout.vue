@@ -1,7 +1,7 @@
 <template>
   <el-container v-loading="!ready" class="full-size" direction="horizontal">
     <el-aside width="450px" class="aside">
-      <pos-machine-sidebar v-loading="currentStore.storeStatus ==='CLOSED'"/>
+      <pos-machine-sidebar v-loading="currentStore.storeStatus ==='CLOSED' || isLoadingOrder"/>
     </el-aside>
     <el-container class="full-size" direction="vertical">
       <pos-machine-header/>
@@ -25,6 +25,7 @@
       ...mapState({
         ready: state => state.posMachine.ready,
         currentStore: state => state.posMachine.currentStore,
+        isLoadingOrder: state => state.posMachine.isLoadingOrder,
       })
     },
     data() {

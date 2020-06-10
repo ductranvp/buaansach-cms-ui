@@ -26,7 +26,8 @@
           <span>Chưa có thông báo</span>
         </el-row>
       </el-dropdown-item>
-      <el-dropdown-item @click.native="clickNotification(noti)" v-else class="padding-0" v-for="(noti, index) in listNotification" :key="index">
+      <el-dropdown-item @click.native="clickNotification(noti)" v-else class="padding-0"
+                        v-for="(noti, index) in listNotification" :key="index">
         <notification-item :data="noti"/>
       </el-dropdown-item>
       <el-row class="bg-success text-light bottom-toolbar" type="flex" align="middle">
@@ -50,12 +51,15 @@
 <script>
   import {mapState} from "vuex";
   import NotificationItem from "@/views/private/pos-machine/header/notification/NotificationItem";
+  import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "PosNotification",
     components: {NotificationItem},
     computed: {
       ...mapState({
+        selectedSeat: state => state.posMachine.selectedSeat,
+        currentStore: state => state.posMachine.currentStore,
         listNotification: state => state.posMachine.allNotifications,
         allAreas: state => state.posMachine.allAreas,
         listUnseen: state => state.posMachine.allNotifications.filter(item => item.status === 'UNSEEN'),
@@ -68,9 +72,15 @@
     },
     methods: {
       clickNotification(notification) {
-        this.$store.dispatch("posMachine/selectSeat", notification.seat);
+        if (this.currentStore.storeStatus ==='CLOSED'){
+          MessageUtils.error("Cửa hàng đã đóng cửa");
+          return;
+        }
+        if (this.selectedSeat.guid !== notification.seat.guid) {
+          this.$store.dispatch("posMachine/selectSeat", notification.seat);
+        }
         this.$store.commit("posMachine/MARK_AS_READ", notification);
-        if(this.deleteWhenClick){
+        if (this.deleteWhenClick) {
           this.$store.commit("posMachine/REMOVE_NOTIFICATION", notification);
         }
       },

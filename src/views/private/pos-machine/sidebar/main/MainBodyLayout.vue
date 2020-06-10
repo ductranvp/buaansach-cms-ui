@@ -26,7 +26,7 @@
     </el-container>
     <div class="mask" v-if="currentOrder.guid && currentOrder.orderStatus === 'CREATED'">
       <div class="mask-text">
-        <span>Đang chờ tiếp nhận</span>
+        <span class="bg-warning text-white padding-10-15 text-bold" style="border-radius: 4px">Đang chờ tiếp nhận</span>
       </div>
     </div>
   </el-main>
@@ -64,7 +64,7 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .mask {
     position: absolute;
     z-index: 2000;

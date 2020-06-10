@@ -49,7 +49,7 @@
         </div>
       </el-row>
     </el-header>
-    <el-main v-loading="isLoading" class="show-vertical-scroll full-size">
+    <el-main v-loading="isLoading || isRefreshing" class="show-vertical-scroll full-size">
       <el-row :gutter="10" class="full-size flex-wrap margin-0 padding-0-5">
         <template v-for="area in allAreas">
           <el-row v-show="area.display" :key="area.guid">
@@ -133,7 +133,7 @@
           await vm.$store.dispatch("posMachine/changeArea", vm.selectedArea.guid);
           setTimeout(function () {
             vm.isRefreshing = false;
-          }, 1000);
+          }, 300);
         } catch (e) {
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }

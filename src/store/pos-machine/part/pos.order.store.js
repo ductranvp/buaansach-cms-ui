@@ -10,6 +10,7 @@ const state = {
   orderType: PosOrderStoreUtil.orderType,
   paymentMethods: PosOrderStoreUtil.paymentMethods,
   customerPay: null,
+  isLoadingOrder: false,
 };
 
 const mutations = {
@@ -21,6 +22,9 @@ const mutations = {
   },
   RESET_ORDER(state) {
     state.currentOrder = {};
+  },
+  SET_IS_LOADING_ORDER(state, status){
+    state.isLoadingOrder = status;
   }
 };
 const actions = {
@@ -101,6 +105,7 @@ const actions = {
   async getSeatOrderInfo({commit, dispatch}, seatGuid) {
     try {
       commit("SET_CUSTOMER_PAY", 0);
+      commit("SET_IS_LOADING_ORDER", true);
       const {data} = await PosOrderService.getSeatCurrentOrder(seatGuid);
       if (data.guid) {
         commit("SET_CURRENT_ORDER", data);
@@ -113,6 +118,7 @@ const actions = {
     } catch (error) {
       MessageUtils.error("Lấy thông tin đơn hàng thất bại, vui lòng thử lại");
     }
+    setTimeout(()=> commit("SET_IS_LOADING_ORDER", false), 300);
     dispatch("reloadSeat", seatGuid);
   },
 };

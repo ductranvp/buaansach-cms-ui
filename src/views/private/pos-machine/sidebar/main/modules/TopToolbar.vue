@@ -117,7 +117,7 @@
           await vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
           setTimeout(function () {
             vm.isRefreshing = false;
-          }, 1000);
+          }, 300);
         } catch (e) {
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }

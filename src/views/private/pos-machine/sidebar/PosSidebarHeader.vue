@@ -55,7 +55,7 @@
           await vm.$store.dispatch("posMachine/toggleLock");
           setTimeout(function () {
             vm.isLocking = false;
-          }, 500);
+          }, 300);
         } catch (e) {
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
