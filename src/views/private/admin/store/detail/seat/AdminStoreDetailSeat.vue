@@ -26,6 +26,12 @@
         </el-col>
       </el-row>
     </el-row>
+    <el-row type="flex" align="middle" justify="center" class="padding-bottom-10">
+      <el-button @click="downloadAll" :loading="isDownloading">
+        <i class="el-icon-download"></i>
+        <span>Tải xuống tất cả</span>
+      </el-button>
+    </el-row>
     <el-row v-if="displayType === 'SEAT'" class="full-size flex-wrap margin-0" :gutter="10" type="flex">
       <el-col class="margin-bottom-10" :span="colSize" v-for="seat in seats" :key="seat.guid">
         <el-card shadow="never">
@@ -71,8 +77,9 @@
     name: "AdminStoreDetailSeat",
     data() {
       return {
-        colSize: 3,
-        marginSize: 4,
+        isDownloading: false,
+        colSize: 4,
+        marginSize: 1,
         displayType: "SEAT",
         sortType: "NAME",
         seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
@@ -90,12 +97,30 @@
     },
     methods: {
       downloadImage(seat) {
+        console.log(seat.seatName + " - " + seat.areaName);
         let link = document.createElement("a"); //Create <a>
         link.href = this.$refs[seat.guid][0].$el.currentSrc; //Image Base64 Goes here
         link.download = seat.seatName + " - " + seat.areaName + ".png"; //File name Here
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
+      },
+      downloadAll(){
+        const vm = this;
+        vm.isDownloading = true;
+        let i = 0;
+        function download(i){
+          if (i < vm.seats.length){
+            setTimeout(()=> {
+              vm.downloadImage(vm.seats[i]);
+              i++;
+              download(i);
+            }, 100);
+          } else {
+            vm.isDownloading = false;
+          }
+        }
+        download(0);
       },
       goto(seatGuid) {
         let routeData = this.seatPrefixUrl + seatGuid;

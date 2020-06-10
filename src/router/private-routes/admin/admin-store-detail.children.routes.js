@@ -13,7 +13,7 @@ const AdminStoreDetailChildren = [
   {
     path: "human",
     name: "adminStoreDetailHumanPage",
-    component: () => import("@/views/private/admin/store/detail/human/AdminStoreDetailHuman"),
+    component: () => import("@/views/private/admin/store/detail/human/AdminStoreUser"),
     meta: {
       title: "private.pageTitle.admin.adminStoreDetailHumanPage",
       roles: [Roles.ADMIN]

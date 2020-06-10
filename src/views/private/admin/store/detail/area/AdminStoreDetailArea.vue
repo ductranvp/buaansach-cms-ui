@@ -92,6 +92,7 @@
         </el-table-column>
         <el-table-column
           prop="areaColor"
+          width="80px"
           :label="$t('private.adminStoreDetailAreaPage.table.areaColor')">
           <template slot-scope="{ row }">
             <el-color-picker
@@ -104,6 +105,7 @@
         </el-table-column>
         <el-table-column
           prop="numberOfSeats"
+          width="100px"
           :label="$t('private.adminStoreDetailAreaPage.table.numberOfSeats')">
           <template slot-scope="{ row }">
             {{ row.listSeat.length }}

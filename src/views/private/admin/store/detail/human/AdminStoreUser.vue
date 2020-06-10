@@ -10,9 +10,15 @@
     </el-row>
     <div class="margin-top-10">
       <raw-data-table ref="storeUserTable"
-                      :data="storeUsers"
-                      show-audit
-                      :custom-audit="['createdDate']">
+                      show-index
+                      :data="storeUsers">
+        <template slot="expand">
+          <el-table-column type="expand">
+            <template slot-scope="{row}">
+              <admin-store-user-row-detail :row="row"/>
+            </template>
+          </el-table-column>
+        </template>
         <el-table-column prop="userCode"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.userCode')">
         </el-table-column>
@@ -103,10 +109,11 @@
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import {mapState} from "vuex";
+  import AdminStoreUserRowDetail from "@/views/private/admin/store/detail/human/AdminStoreUserRowDetail";
 
   export default {
-    name: "AdminStoreDetailHuman",
-    components: {AddStoreUserDialog, RawDataTable, CreateOrUpdateStoreUserDialog},
+    name: "AdminStoreUser",
+    components: {AdminStoreUserRowDetail, AddStoreUserDialog, RawDataTable, CreateOrUpdateStoreUserDialog},
     computed: {
       ...mapState({
         currentUser: state => state.user.info

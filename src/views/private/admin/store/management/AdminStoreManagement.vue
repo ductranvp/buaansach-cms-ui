@@ -19,13 +19,15 @@
       </el-col>
     </el-row>
     <el-row class="margin-top-10">
-      <data-table ref="storeTable" :fetch-data="fetchData" :filter="filter" show-audit
+      <data-table ref="storeTable" show-index :fetch-data="fetchData" :filter="filter" show-audit
                   :custom-audit="['createdBy', 'createdDate']">
-        <el-table-column type="expand">
-          <template slot-scope="{ row }">
-            <admin-store-management-row-detail :row="row"/>
-          </template>
-        </el-table-column>
+        <template slot="expand">
+          <el-table-column type="expand">
+            <template slot-scope="{ row }">
+              <admin-store-management-row-detail :row="row"/>
+            </template>
+          </el-table-column>
+        </template>
 
         <el-table-column prop="storeCode" :label="$t('private.adminStoreManagementPage.store.storeCode')">
           <template slot-scope="{ row }">
