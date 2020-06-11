@@ -13,12 +13,6 @@
         <input-label label="Tên khách hàng" required/>
         <el-input ref="customerName" v-model="form.customerName"></el-input>
       </el-form-item>
-      <el-form-item prop="customerGender" required>
-        <input-label label="Giới tính"/>
-        <el-radio v-model="form.customerGender" v-for="gen in genders" :label="gen.value" :key="gen.value">
-          <span>{{gen.label}}</span>
-        </el-radio>
-      </el-form-item>
       <el-form-item prop="customerPhone">
         <input-label label="SĐT khách hàng" required/>
         <el-row :gutter="10" type="flex" align="middle">
@@ -32,6 +26,12 @@
             <span v-else>Đã copy</span>
           </el-button>
         </el-row>
+      </el-form-item>
+      <el-form-item prop="customerGender" required>
+        <input-label label="Giới tính"/>
+        <el-radio v-model="form.customerGender" v-for="gen in genders" :label="gen.value" :key="gen.value">
+          <span>{{gen.label}}</span>
+        </el-radio>
       </el-form-item>
     </el-form>
     <div slot="footer">

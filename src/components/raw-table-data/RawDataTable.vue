@@ -94,8 +94,8 @@
           totalElements: 0,
           currentPage: 1,
           pageCount: 4,
-          pageSize: 20,
-          pageSizes: [10, 20, 30, 50, 100],
+          pageSize: this.config && this.config.pageSize ? this.config.pageSize : 20,
+          pageSizes: this.config && this.config.pageSizes ? this.config.pageSizes : [10, 20, 30, 50, 100],
           sort: {
             sortDirection: this.defaultSort.order === 'descending' ? "DESC" : "ASC",
             sortField: this.defaultSort.prop,

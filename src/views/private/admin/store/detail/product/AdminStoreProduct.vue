@@ -1,15 +1,16 @@
 <template>
   <el-container class="full-size" direction="vertical">
     <el-row type="flex" align="middle" justify="end">
-      <el-button type="info" @click="addStoreProduct">
+      <el-button :loading="isLoading" type="info" @click="addStoreProduct">
         <span>Thêm sản phẩm</span>
       </el-button>
-      <el-button type="primary" @click="addAllStoreProduct">
+      <el-button :loading="isLoading" type="primary" @click="addAllStoreProduct">
         <span>Cập nhật toàn bộ sản phẩm vào cửa hàng</span>
       </el-button>
     </el-row>
     <el-row class="margin-top-10">
       <raw-data-table ref="storeProductTable"
+                      v-loading="isLoading"
                       show-index
                       :default-sort="{prop: 'productPosition', order: 'ascending'}"
                       :data="storeProducts">
@@ -91,6 +92,7 @@
     components: {AdminStoreProductRowDetail, AddOrUpdateStoreProductDialog, RawDataTable},
     data() {
       return {
+        isLoading: false,
         storeProducts: []
       };
     },
@@ -126,10 +128,13 @@
         const vm = this;
         MessageBoxUtils.confirm("Cập nhật tất cả sản phẩm hiện có vào cửa hàng?", async function () {
           try {
+            vm.isLoading = true;
             const {data} = await AdminStoreProductService.addAllStoreProduct(vm.$route.params.storeGuid);
             vm.storeProducts = data;
             NotificationUtils.success(vm.$t("common.entity.save.success"));
+            vm.isLoading = false;
           } catch (error) {
+            vm.isLoading = false;
             NotificationUtils.error(error.message || error.data.message);
           }
         });

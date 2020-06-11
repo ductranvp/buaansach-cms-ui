@@ -46,7 +46,7 @@ const PosWebsocket = {
     onConnectError(error) {
 
     },
-    async onMessageReceived(payload) {
+    onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
       const seatData = this.allSeats[data.payload];
       const id = (new Date()).getTime() + "" + seatData.guid;
@@ -59,25 +59,35 @@ const PosWebsocket = {
         watched: false,
         seat: seatData
       };
-
       switch (data.message) {
         case "GUEST_CREATE_ORDER":
-          // NotificationUtils.info(seatData.seatName + " " + seatData.areaName + " đã tạo đơn hàng");
+          if (this.selectedSeat.guid === seatData.guid) {
+            this.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
+              this.scrollToEnd();
+            });
+          } else {
+            this.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
+              targetSeat: seatData,
+              seatStatus: "NON_EMPTY",
+              seatServiceStatus: "UNFINISHED"
+            });
+          }
           break;
         case "GUEST_UPDATE_ORDER":
+          if (this.selectedSeat.guid === seatData.guid) {
+            this.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
+              this.scrollToEnd();
+            });
+          } else {
+            this.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
+              targetSeat: seatData,
+              seatStatus: "NON_EMPTY",
+              seatServiceStatus: "UNFINISHED"
+            });
+          }
           this.$store.commit("posMachine/ADD_NOTIFICATION", notification);
           MessageUtils.info(seatData.seatName + " " + seatData.areaName + " đã gọi món");
           break;
-      }
-      if (this.selectedSeat.guid === seatData.guid) {
-        await this.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid);
-        this.scrollToEnd();
-      } else {
-        this.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
-          targetSeat: seatData,
-          seatStatus: "NON_EMPTY",
-          seatServiceStatus: "UNFINISHED"
-        });
       }
     }
   }

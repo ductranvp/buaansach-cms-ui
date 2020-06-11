@@ -8,20 +8,25 @@
     :fullscreen="true"
   >
     <el-main>
-      <el-row>
-        <p>Chọn file CSV</p>
-        <input id="csv" type="file">
+      <el-row type="flex" align="bottom">
+        <el-col>
+          <p>Chọn file CSV</p>
+          <input id="csv" type="file">
+        </el-col>
+        <el-col>
+          <el-checkbox v-model="multipleCategory">Một món thuộc nhiều danh mục</el-checkbox>
+        </el-col>
       </el-row>
       <el-row class="padding-top-10">
-        <raw-data-table :highlight-current-row="true" :data="csvData">
-          <el-table-column v-for="key in headerRows" :key="key" :label="key" :prop="key">
+        <raw-data-table :config="{pageSize: 100}" :highlight-current-row="true" :data="csvData">
+          <el-table-column v-if="headerRows.length" prop="image" label="image">
             <template slot-scope="{row}">
-              <el-input size="mini" v-model="row[key]"></el-input>
+              <input type="file" @change="changeProductImage($event, row)"/>
             </template>
           </el-table-column>
           <el-table-column v-if="headerRows.length" prop="categories" label="categories">
             <template slot-scope="{row}">
-              <el-select size="mini" multiple v-model="row.categories" class="full-width">
+              <el-select size="mini" :multiple="multipleCategory" v-model="row.categories" class="full-width">
                 <el-option v-for="category in categories"
                            :key="category.guid"
                            :label="category.categoryName"
@@ -30,9 +35,9 @@
               </el-select>
             </template>
           </el-table-column>
-          <el-table-column v-if="headerRows.length" prop="image" label="image">
+          <el-table-column v-for="key in headerRows" :key="key" :label="key" :prop="key">
             <template slot-scope="{row}">
-              <input type="file" @change="changeProductImage($event, row)"/>
+              <el-input size="mini" v-model="row[key]"></el-input>
             </template>
           </el-table-column>
         </raw-data-table>
@@ -61,6 +66,7 @@
     components: {RawDataTable},
     data() {
       return {
+        multipleCategory: true,
         isLoading: false,
         dialogFormVisible: false,
         headerRows: [],
@@ -109,12 +115,16 @@
       },
       async submit() {
         const vm = this;
-        const validProducts = this.csvData.filter(item => {
+        let validProducts = [];
+        this.csvData.forEach(item => {
           if (item.productName && item.productStatus && item.productType && item.productDisplay && item.productPrice && item.categories && item.categories.length){
-            item.categories = vm.categories.filter(category => item.categories.includes(category.guid));
-            return item;
+            let temp = JSON.parse(JSON.stringify(item));
+            temp.image = item.image;
+            temp.categories = vm.categories.filter(category => temp.categories.includes(category.guid));
+            validProducts.push(temp);
           }
         });
+
         if (!validProducts.length) {
           this.hide();
           return;

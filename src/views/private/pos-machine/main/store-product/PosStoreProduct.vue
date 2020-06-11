@@ -14,10 +14,15 @@
             :trigger-on-focus="false">
           </el-autocomplete>
         </el-col>
+        <div class="text-right padding-right-5">
+          <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshStoreProduct">
+            <span><i class="el-icon-refresh"  v-if="!isRefreshing"></i><span>Làm mới</span></span>
+          </el-button>
+        </div>
       </el-row>
     </el-header>
-    <el-main class="show-vertical-scroll full-size padding-left-5 padding-right-5 padding-top-10">
-      <el-row :gutter="10" v-loading="isLoading" class="full-size flex-wrap margin-0">
+    <el-main v-loading="isLoading || isRefreshing" class="show-vertical-scroll full-size padding-left-5 padding-right-5 padding-top-10">
+      <el-row :gutter="10" class="full-size flex-wrap margin-0">
         <el-col v-for="storeProduct in filterStoreProduct ? filteredStoreProducts : displayStoreProducts"
                 class="margin-bottom-10"
                 :span="4"
@@ -95,6 +100,7 @@
     },
     data() {
       return {
+        isRefreshing: false,
         isLoading: false,
         filterDebounce: 400,
         filterStoreProduct: "",
@@ -110,6 +116,19 @@
       }
     },
     methods: {
+      async refreshStoreProduct() {
+        const vm = this;
+        try {
+          vm.isRefreshing = true;
+          await vm.$store.dispatch("posMachine/getAllCategory", vm.$route.params.storeGuid);
+          await vm.$store.dispatch("posMachine/changeCategory", vm.selectedCategory.guid);
+          setTimeout(function () {
+            vm.isRefreshing = false;
+          }, 300);
+        } catch (e) {
+          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        }
+      },
       addOrderProduct(storeProduct) {
         if (!this.selectedSeat.guid) {
           MessageUtils.error("Vui lòng chọn một bàn ăn!");
