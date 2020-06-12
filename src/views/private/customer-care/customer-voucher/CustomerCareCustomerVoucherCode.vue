@@ -7,6 +7,9 @@
       <el-tab-pane label="Tất cả khách hàng" name="listAllVoucher">
         <list-all-voucher/>
       </el-tab-pane>
+      <el-tab-pane label="Thống kê" name="customerStatistic">
+        <customer-statistic/>
+      </el-tab-pane>
     </el-tabs>
   </el-container>
 </template>
@@ -14,10 +17,11 @@
 <script>
   import ListUnsentVoucher from "@/views/private/customer-care/customer-voucher/ListUnsentVoucher";
   import ListAllVoucher from "@/views/private/customer-care/customer-voucher/ListAllVoucher";
+  import CustomerStatistic from "@/views/private/customer-care/customer-voucher/CustomerStatistic";
 
   export default {
     name: "CustomerCareCustomerVoucherCode",
-    components: {ListAllVoucher, ListUnsentVoucher},
+    components: {CustomerStatistic, ListAllVoucher, ListUnsentVoucher},
     created() {
 
     },
