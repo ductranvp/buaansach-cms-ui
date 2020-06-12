@@ -22,7 +22,7 @@
               <td class="text-single-line">Hình thức giảm</td>
               <td>
                 <el-tag size="medium" v-if="row.voucherDiscountType === 'VALUE'" type="primary">Giá trị</el-tag>
-                <el-tag size="medium" v-if="row.productDisplay === 'PERCENT'" type="primary">Phần trăm</el-tag>
+                <el-tag size="medium" v-if="row.voucherDiscountType === 'PERCENT'" type="primary">Phần trăm</el-tag>
               </td>
             </tr>
           </table>

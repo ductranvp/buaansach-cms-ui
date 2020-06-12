@@ -18,6 +18,14 @@
         </el-col>
         <el-col :span="10">
           <el-row type="flex" justify="end">
+            <el-dropdown trigger="click" :hide-on-click="false">
+              <el-button class="margin-right-10"><span>Hiển thị</span></el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item v-for="key in Object.keys(columns)" :key="key">
+                  <el-checkbox v-model="columns[key].display">{{columns[key].label}}</el-checkbox>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
             <el-button type="primary" @click="createUser">
               <span>{{ $t("common.entity.action.create") }}</span>
             </el-button>
@@ -29,6 +37,7 @@
       <data-table
         show-index
         ref="userTable"
+        :default-sort="{prop: 'createdDate', order: 'ascending'}"
         :fetch-data="fetchData"
         :filter="filter"
       >
@@ -39,15 +48,42 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column prop="login" label="Tên đăng nhập"></el-table-column>
-        <el-table-column prop="firstName" label="Tên"></el-table-column>
-        <el-table-column prop="lastName" label="Họ"></el-table-column>
-        <el-table-column prop="email" label="Email">
+        <template v-for="key in Object.keys(columns)">
+          <el-table-column :key="key" :prop="key" :label="columns[key].label" v-if="columns[key].display" :sortable="columns[key].sortable">
+            <template slot-scope="{row}">
+              <div v-if="columns[key].type === 'time'">
+                <span v-if="row[key]">{{row[key] | moment("HH:mm DD/MM/YYYY")}}</span>
+              </div>
+              <div v-else class="no-break-word text-single-line">
+                <span>{{row[key]}}</span>
+              </div>
+            </template>
+          </el-table-column>
+        </template>
+        <el-table-column prop="authorities" label="Quyền" width="160px">
           <template slot-scope="{row}">
-            <span class="no-break-word">{{row.email}}</span>
+            <el-tooltip content="Quản trị viên" v-if="row.authorities.includes('ROLE_ADMIN')">
+              <span class="text-large padding-5 text-primary">
+                <i class="fas el-icon-fa-user-shield"></i>
+              </span>
+            </el-tooltip>
+            <el-tooltip content="Điều hành viên" v-if="row.authorities.includes('ROLE_MODERATOR')">
+              <span class="text-large padding-5 text-warning">
+              <i class="fas el-icon-fa-user-cog"></i>
+              </span>
+            </el-tooltip>
+            <el-tooltip content="Chăm sóc khách hàng" v-if="row.authorities.includes('ROLE_CUSTOMER_CARE')">
+              <span class="text-large padding-5 text-success">
+              <i class="fas el-icon-fa-headset"></i>
+              </span>
+            </el-tooltip>
+            <el-tooltip content="Người dùng" v-if="row.authorities.includes('ROLE_USER')">
+              <span class="text-large padding-5">
+              <i class="fas el-icon-fa-user"></i>
+              </span>
+            </el-tooltip>
           </template>
         </el-table-column>
-        <el-table-column prop="phone" label="SĐT"></el-table-column>
         <el-table-column prop="activated" label="Trạng thái">
           <template slot-scope="{row}">
             <el-button :disabled="currentUser.login === row.login" size="small" type="success"
@@ -59,7 +95,6 @@
             </el-button>
           </template>
         </el-table-column>
-        <!--        <el-table-column prop="langKey" label="Ngôn ngữ"></el-table-column>-->
         <template slot="action">
           <el-table-column width="130px" label="Thao tác">
             <template slot-scope="{ row }">
@@ -103,7 +138,18 @@
         searchKey: "",
         filter: {
           searchKey: ""
-        }
+        },
+        columns: {
+          login: {label: 'Tên đăng nhập', display: true, sortable: true},
+          lastName: {label: 'Họ', display: true},
+          firstName: {label: 'Tên', display: true},
+          email: {label: 'Email', display: true},
+          phone: {label: 'SĐT', display: false},
+          createdBy: {label: 'Người tạo', display: false},
+          createdDate: {label: 'Ngày tạo', display: false, type: 'time', sortable: true},
+          lastModifiedBy: {label: 'Cập nhật cuối bởi', display: false},
+          lastModifiedDate: {label: 'Cập nhật cuối lúc', display: false, type: 'time', sortable: true},
+        },
       };
     },
     methods: {
