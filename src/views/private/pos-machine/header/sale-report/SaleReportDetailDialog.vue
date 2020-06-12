@@ -9,7 +9,18 @@
     <div slot="title">
       <el-row type="flex" align="middle">
         <el-col>
-          <span>Danh sách đơn hàng</span>
+          <el-row type="flex" align="middle">
+            <el-col>
+              <el-input
+                placeholder="Tìm theo mã đơn"
+                v-model="searchKey"
+                @keypress.enter.native="onSearch"
+                clearable
+              >
+                <el-button slot="append" icon="el-icon-search" @click="onSearch"></el-button>
+              </el-input>
+            </el-col>
+          </el-row>
         </el-col>
         <el-col class="text-right">
           <el-dropdown trigger="click" :hide-on-click="false">
@@ -94,7 +105,9 @@
     },
     data() {
       return {
+        searchKey: "",
         dialogFormVisible: false,
+        originalReportData: [],
         reportData: [],
         reportType: null,
         columns: {
@@ -149,6 +162,7 @@
           this.columns.orderDiscountType.display = true;
           this.columns.totalAmount.display = true;
         }
+        this.originalReportData = data;
         this.reportData = data;
         this.dialogFormVisible = true;
       },
@@ -161,14 +175,23 @@
       },
       hide() {
         this.dialogFormVisible = false;
+        this.originalReportData = [];
         this.reportData = [];
       },
       beforeClose(done) {
+        this.originalReportData = [];
         this.reportData = [];
         done();
       },
       showOrderHistory(data) {
         this.$refs.orderHistoryDialog.show(data);
+      },
+      onSearch() {
+        if (this.searchKey) {
+          this.reportData = this.originalReportData.filter(item => item.orderCode.includes(this.searchKey));
+        } else {
+          this.reportData = this.originalReportData;
+        }
       },
     }
   };
