@@ -128,17 +128,17 @@
                 <span>{{row.voucherCode | uppercase}}</span>
               </el-col>
               <el-col>
-                <el-button @click="copyMessage(row)" v-if="!row.voucherCodeSent" type="success" plain size="small">
+                <el-button @click="copyMessage(row)" v-if="!row.voucherCodeClaimStatus" type="success" plain size="small">
                   <span>Copy + Tin nhắn</span>
                 </el-button>
               </el-col>
             </el-row>
           </template>
         </el-table-column>
-        <el-table-column width="200px" prop="voucherCodeSentStatus" label="Thao tác">
-          <template slot-scope="{row}" v-show="row.voucherCodeSentStatus === 'UNSET'">
+        <el-table-column width="200px" prop="voucherCodeClaimStatus" label="Thao tác">
+          <template slot-scope="{row}" v-show="row.voucherCodeClaimStatus === 'UNSET'">
             <el-tooltip content="Mã sẽ được kích hoạt">
-              <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success"
+              <el-button :loading="row.isSending" @click="updateVoucher(row, 'CLAIMED')" type="success"
                          size="small">
                 <span>Đã gửi</span>
               </el-button>
@@ -189,9 +189,9 @@
           {label: "Có Zalo", value: "EXIST"},
           {label: "Không có Zalo", value: "NOT_EXIST"},
         ],
-        voucherCodeSentStatus: [
+        voucherCodeClaimStatus: [
           {label: "Chưa đặt", value: "UNSET"},
-          {label: "Đã gửi", value: "SENT"},
+          {label: "Đã gửi", value: "CLAIMED"},
           {label: "Đã lưu trữ", value: "ARCHIVED"},
         ],
         listUnsentVoucher: [],
@@ -288,7 +288,7 @@
           this.$set(row, 'isSending', true);
           await CustomerCareVoucherCodeService.updateVoucherCode({
             voucherCode: row.voucherCode,
-            voucherCodeSentStatus: status
+            voucherCodeClaimStatus: status
           });
           this.$set(row, 'isSending', false);
           this.hideRow(row);

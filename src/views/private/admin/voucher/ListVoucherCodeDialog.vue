@@ -6,11 +6,26 @@
     :before-close="beforeClose"
     :destroy-on-close="true"
     :show-close="false"
+    :fullscreen="fullscreen"
+    width="70%"
   >
+    <div slot="title">
+      <el-row type="flex" align="middle">
+        <el-checkbox v-model="codeUppercase">Mã code viết hoa</el-checkbox>
+        <el-col class="text-right">
+          <i class="el-icon-full-screen" @click="fullscreen = !fullscreen"></i>
+        </el-col>
+      </el-row>
+    </div>
     <div v-loading="isLoading">
-      <raw-data-table :data="voucherCodes">
-        <el-table-column label="Mã code" prop="voucherCode"></el-table-column>
-        <el-table-column label="Khả dụng" prop="voucherCodeUsable">
+      <raw-data-table :data="voucherCodes" show-index>
+        <el-table-column label="Mã code" prop="voucherCode">
+          <template slot-scope="{row}">
+            <span v-if="codeUppercase">{{row.voucherCode | uppercase}}</span>
+            <span v-else>{{row.voucherCode}}</span>
+          </template>
+        </el-table-column>
+        <el-table-column label="Khả dụng" prop="voucherCodeUsable" sortable>
           <template slot-scope="{row}">
             <el-tag v-if="row.voucherCodeUsable">Có</el-tag>
             <el-tag v-else>Không</el-tag>
@@ -18,6 +33,21 @@
         </el-table-column>
         <el-table-column label="Số lần được sử dụng" prop="voucherCodeUsageCount"></el-table-column>
         <el-table-column label="SĐT Khách" prop="customerPhone"></el-table-column>
+        <el-table-column label="Trạng thái" prop="voucherCodeClaimStatus">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.voucherCodeClaimStatus === 'CLAIMED'">Đã nhận</el-tag>
+            <el-tag v-else-if="row.voucherCodeClaimStatus === 'ARCHIVED'">Đã lưu trữ</el-tag>
+            <el-tag v-else>Chưa đặt</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column label="Thao tác">
+          <template slot-scope="{row}">
+            <el-button v-if="row.voucherCodeUsable" @click="toggleVoucherCode(row)" type="danger" size="mini">Vô hiệu
+              hóa
+            </el-button>
+            <el-button v-else @click="toggleVoucherCode(row)" type="success" size="mini">Kích hoạt</el-button>
+          </template>
+        </el-table-column>
       </raw-data-table>
     </div>
     <div slot="footer">
@@ -31,6 +61,8 @@
 <script>
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
   import AdminVoucherService from "@/service/admin/admin.voucher.service";
+  import AdminVoucherCodeService from "@/service/admin/admin.voucher-code.service";
+  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "ListVoucherCodeDialog",
@@ -38,12 +70,22 @@
     data() {
       return {
         isEdit: false,
+        fullscreen: false,
+        codeUppercase: false,
         isLoading: false,
         dialogFormVisible: false,
         voucherCodes: []
       };
     },
     methods: {
+      async toggleVoucherCode(row) {
+        try {
+          await AdminVoucherCodeService.toggleVoucherCode(row.voucherCode);
+          row.voucherCodeUsable = !row.voucherCodeUsable;
+        } catch (e) {
+          NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau");
+        }
+      },
       async getVoucherCode(voucherGuid) {
         const {data} = await AdminVoucherService.getListVoucherCode(voucherGuid);
         this.voucherCodes = data;

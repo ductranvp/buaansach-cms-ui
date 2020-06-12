@@ -88,19 +88,19 @@
         <el-table-column width="110px" v-if="columns.voucherCodeUsageCount.display" prop="voucherCodeUsageCount"
                          :label="columns.voucherCodeUsageCount.label"></el-table-column>
 
-        <el-table-column width="140px" v-if="columns.voucherCodeSentStatus.display" prop="voucherCodeSentStatus"
-                         :label="columns.voucherCodeSentStatus.label">
+        <el-table-column width="140px" v-if="columns.voucherCodeClaimStatus.display" prop="voucherCodeClaimStatus"
+                         :label="columns.voucherCodeClaimStatus.label">
           <template slot-scope="{row}">
-            <el-tag type="success" v-if="row.voucherCodeSentStatus === 'SENT'">Đã gửi</el-tag>
-            <el-tag v-else-if="row.voucherCodeSentStatus === 'ARCHIVED'" type="info">Đã lưu trữ</el-tag>
+            <el-tag type="success" v-if="row.voucherCodeClaimStatus === 'CLAIMED'">Đã gửi</el-tag>
+            <el-tag v-else-if="row.voucherCodeClaimStatus === 'ARCHIVED'" type="info">Đã lưu trữ</el-tag>
             <el-tag type="danger" v-else>Chưa đặt</el-tag>
           </template>
         </el-table-column>
 
-        <el-table-column prop="voucherCodeSent" label="Thao tác" width="180px">
+        <el-table-column prop="voucherCodeClaimStatus" label="Thao tác" width="180px">
           <template slot-scope="{row}">
             <el-tooltip content="Mã sẽ được kích hoạt">
-              <el-button :loading="row.isSending" @click="updateVoucher(row, 'SENT')" type="success" size="small">
+              <el-button :loading="row.isSending" @click="updateVoucher(row, 'CLAIMED')" type="success" size="small">
                 <span>Đã gửi</span>
               </el-button>
             </el-tooltip>
@@ -144,7 +144,7 @@
           customerPhone: {label: 'SĐT khách', display: true},
           customerZaloStatus: {label: 'Trạng thái Zalo', display: true},
           voucherCode: {label: 'Mã voucher', display: true},
-          voucherCodeSentStatus: {label: 'Trạng thái voucher', display: true},
+          voucherCodeClaimStatus: {label: 'Trạng thái voucher', display: true},
           voucherCodeUsageCount: {label: 'Lượt sử dụng', display: true},
         },
         customerZaloStatus: [
@@ -152,9 +152,9 @@
           {label: "Có Zalo", value: "EXIST"},
           {label: "Không có Zalo", value: "NOT_EXIST"},
         ],
-        voucherCodeSentStatus: [
+        voucherCodeClaimStatus: [
           {label: "Chưa đặt", value: "UNSET"},
-          {label: "Đã gửi", value: "SENT"},
+          {label: "Đã gửi", value: "CLAIMED"},
           {label: "Đã lưu trữ", value: "ARCHIVED"},
         ],
         listUnsentVoucher: []
@@ -186,10 +186,10 @@
           this.$set(row, 'isSending', true);
           await CustomerCareVoucherCodeService.updateVoucherCode({
             voucherCode: row.voucherCode,
-            voucherCodeSentStatus: status
+            voucherCodeClaimStatus: status
           });
           this.$set(row, 'isSending', false);
-          this.$set(row, 'voucherCodeSentStatus', status);
+          this.$set(row, 'voucherCodeClaimStatus', status);
         } catch (e) {
           this.$set(row, 'isSending', false);
           NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại");
