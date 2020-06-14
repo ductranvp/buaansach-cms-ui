@@ -70,6 +70,11 @@
                   <span>Tải TeamViewer</span>
                   <span></span>
                 </el-dropdown-item>
+                <el-dropdown-item @click.native="setupTeamViewer">
+                  <i class="el-icon-help padding-right-10"></i>
+                  <span>HD cài TeamViewer</span>
+                  <span></span>
+                </el-dropdown-item>
                 <el-divider class="margin-0"></el-divider>
                 <el-dropdown-item command="logout">
                   <i class="el-icon-switch-button padding-right-10"></i>
@@ -109,7 +114,11 @@
     },
     methods: {
       downloadTeamViewer() {
-        let win = window.open("https://download.teamviewer.com/full", '_blank');
+        let win = window.open("https://download.teamviewer.com/full", '_blank', "width=500,height=500");
+        win.focus();
+      },
+      setupTeamViewer() {
+        let win = window.open("https://quantrimang.com/dieu-khien-may-tinh-tu-xa-voi-teamviewer-9-106917", '_blank', "width=500,height=500");
         win.focus();
       },
       checkPrinter() {

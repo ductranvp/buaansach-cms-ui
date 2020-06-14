@@ -4,7 +4,13 @@
       <el-row class="full-height flex-wrap" type="flex" align="top">
         <el-col class="padding-5" :lg="6" :md="8" :sm="12" :xs="24" v-for="store in storeUser" :key="store.storeGuid">
           <el-card :body-style="{ padding: '0px' }" shadow="never">
-            <img :src="store.storeImageUrl" class="image">
+            <el-row>
+              <el-image lazy class="image" :src="store.storeImageUrl">
+                <div slot="error" class="image-error-slot full-size">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </el-row>
             <el-divider class="margin-0"></el-divider>
             <el-container class="padding-20" direction="vertical">
               <div style="min-height: 100px">

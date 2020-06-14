@@ -64,7 +64,7 @@
     methods: {
       goto(seatGuid) {
         let routeData = this.seatPrefixUrl + seatGuid;
-        window.open(routeData, '_blank');
+        window.open(routeData, '_blank', "width=360; height=640");
       },
       createOrder() {
         const vm = this;
