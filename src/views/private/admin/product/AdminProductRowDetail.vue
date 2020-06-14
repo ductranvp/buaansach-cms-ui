@@ -46,11 +46,11 @@
               <td>{{ row.createdDate | moment("HH:mm - DD/MM/YYYY") }}</td>
             </tr>
             <tr>
-              <td>Cập nhật cuối bởi:</td>
+              <td>Người sửa cuối:</td>
               <td>{{ row.lastModifiedBy }}</td>
             </tr>
             <tr>
-              <td>Cập nhật cuối lúc:</td>
+              <td>Ngày sửa cuối:</td>
               <td>{{ row.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}</td>
             </tr>
           </table>

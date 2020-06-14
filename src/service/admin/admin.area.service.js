@@ -14,7 +14,10 @@ const AdminAreaService = {
   },
   deleteArea(areaGuid) {
     return request.delete(baseUrl + "/delete/" + areaGuid);
-  }
+  },
+  toggleArea(payload) {
+    return request.put(baseUrl + "/toggle-area", payload);
+  },
 };
 
 export default AdminAreaService;

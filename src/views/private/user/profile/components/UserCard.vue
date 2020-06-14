@@ -16,7 +16,7 @@
           <span>Ngày tạo: {{ user.createdDate | moment("HH:mm - DD/MM/YYYY") }}</span>
         </div>
         <div>
-          <span>Cập nhật cuối: {{ user.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}</span>
+          <span>Ngày sửa cuối: {{ user.lastModifiedDate | moment("HH:mm - DD/MM/YYYY") }}</span>
         </div>
       </el-row>
     </el-container>

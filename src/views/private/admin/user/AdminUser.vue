@@ -147,8 +147,8 @@
           phone: {label: 'SĐT', display: false},
           createdBy: {label: 'Người tạo', display: false},
           createdDate: {label: 'Ngày tạo', display: false, type: 'time', sortable: true},
-          lastModifiedBy: {label: 'Cập nhật cuối bởi', display: false},
-          lastModifiedDate: {label: 'Cập nhật cuối lúc', display: false, type: 'time', sortable: true},
+          lastModifiedBy: {label: 'Người sửa cuối', display: false},
+          lastModifiedDate: {label: 'Ngày sửa cuối', display: false, type: 'time', sortable: true},
         },
       };
     },

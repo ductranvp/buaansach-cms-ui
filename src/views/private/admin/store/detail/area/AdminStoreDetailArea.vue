@@ -92,7 +92,7 @@
         </el-table-column>
         <el-table-column
           prop="areaColor"
-          width="80px"
+          width="70px"
           :label="$t('private.adminStoreDetailAreaPage.table.areaColor')">
           <template slot-scope="{ row }">
             <el-color-picker
@@ -101,6 +101,15 @@
               show-alpha
               :predefine="predefineColors">
             </el-color-picker>
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="areaActivated"
+          width="125px"
+          label="Trạng thái">
+          <template slot-scope="{ row }">
+            <el-button :loading="row.isUpdating" @click="toggleArea(row)" size="mini" type="success" v-if="row.areaActivated">Đã kích hoạt</el-button>
+            <el-button :loading="row.isUpdating" @click="toggleArea(row)" size="mini" type="danger" v-else>Đã khóa</el-button>
           </template>
         </el-table-column>
         <el-table-column
@@ -175,6 +184,7 @@
           areaName: null,
           areaType: "IN_STORE",
           areaColor: "#90ee90",
+          areaActivated: true,
           seatPrefix: null,
           numberOfSeats: null,
           autoCreateSeat: true,
@@ -346,6 +356,17 @@
         try {
           await AdminAreaService.updateArea(row);
         } catch (error) {
+          NotificationUtils.error(error.message || error.data.message);
+        }
+      },
+      async toggleArea(row) {
+        try {
+          this.$set(row, 'isUpdating', true);
+          await AdminAreaService.toggleArea(row.guid);
+          row.areaActivated = !row.areaActivated;
+          this.$set(row, 'isUpdating', false);
+        } catch (error) {
+          this.$set(row, 'isUpdating', false);
           NotificationUtils.error(error.message || error.data.message);
         }
       }
