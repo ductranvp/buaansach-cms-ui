@@ -32,7 +32,7 @@
           <table class="expanded-table">
             <tr>
               <td>{{$t("private.adminStoreManagementPage.activeTime")}}</td>
-              <td>{{ row.storeOpenHour }} - {{ row.storeCloseHour }}</td>
+              <td class="keep-break-line">{{ row.storeBusinessHours }}</td>
             </tr>
             <tr>
               <td>{{ $t("common.entity.audit.lastModifiedDate") }}</td>

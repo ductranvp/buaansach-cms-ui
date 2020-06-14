@@ -8,30 +8,16 @@
   >
     <el-form :model="form" ref="storeForm" :rules="formRules">
       <el-form-item>
-<!--        <el-col :span="11">-->
-<!--          <el-form-item prop="storeCode">-->
-<!--            <input-label :label="$t('private.adminStoreManagementPage.store.storeCode')" required/>-->
-<!--            <el-input-->
-<!--              ref="storeCode"-->
-<!--              v-model="form.storeCode"-->
-<!--              maxlength="20"-->
-<!--              show-word-limit-->
-<!--              autocomplete="off"-->
-<!--            ></el-input>-->
-<!--          </el-form-item>-->
-<!--        </el-col>-->
-<!--        <el-col :span="11" :offset="2">-->
-          <el-form-item prop="storeName">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeName')" required/>
-            <el-input
-              ref="storeName"
-              v-model="form.storeName"
-              maxlength="100"
-              show-word-limit
-              autocomplete="off"
-            ></el-input>
-          </el-form-item>
-<!--        </el-col>-->
+        <el-form-item prop="storeName">
+          <input-label :label="$t('private.adminStoreManagementPage.store.storeName')" required/>
+          <el-input
+            ref="storeName"
+            v-model="form.storeName"
+            maxlength="100"
+            show-word-limit
+            autocomplete="off"
+          ></el-input>
+        </el-form-item>
       </el-form-item>
 
       <el-form-item prop="storeAddress">
@@ -96,30 +82,12 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item>
-        <el-col :span="11">
-          <el-form-item prop="storeOpenHour">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeOpenHour')" optional/>
-            <el-time-select
-              class="full-width"
-              v-model="form.storeOpenHour"
-              :picker-options="timePickerOption">
-            </el-time-select>
-          </el-form-item>
-        </el-col>
-
-        <el-col :span="11" :offset="2">
-          <el-form-item prop="storeCloseHour">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeCloseHour')" optional/>
-            <el-time-select
-              class="full-width"
-              :disabled="!form.storeOpenHour"
-              v-model="form.storeCloseHour"
-              :picker-options="{...timePickerOption, minTime: form.storeOpenHour}">
-            </el-time-select>
-          </el-form-item>
-        </el-col>
+      <el-form-item prop="storeBusinessHours">
+        <input-label :label="$t('private.adminStoreManagementPage.store.storeBusinessHours')" optional/>
+        <el-input type="textarea" rows="5" v-model="form.storeBusinessHours" maxlength="255"
+                  show-word-limit></el-input>
       </el-form-item>
+
 
       <el-form-item prop="storeStatus">
         <el-row type="flex" align="bottom">

@@ -27,7 +27,7 @@
                   </tr>
                   <tr>
                     <td>Giờ hoạt động:</td>
-                    <td>{{store.storeOpenHour}} - {{store.storeCloseHour}}</td>
+                    <td class="keep-break-line">{{store.storeBusinessHours}}</td>
                   </tr>
                 </table>
               </div>

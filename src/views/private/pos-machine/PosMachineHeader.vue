@@ -50,9 +50,11 @@
 
           <el-row type="flex" align="middle">
             <el-dropdown trigger="click" @command="goto">
-              <el-button class="icon-button" type="success">
-                <i class="el-icon-menu"></i>
-              </el-button>
+              <el-tooltip content="Menu">
+                <el-button class="icon-button" type="success">
+                  <i class="el-icon-menu"></i>
+                </el-button>
+              </el-tooltip>
               <el-dropdown-menu class="padding-0" slot="dropdown">
                 <el-dropdown-item command="profilePage">
                   <i class="el-icon-user padding-right-10"></i>

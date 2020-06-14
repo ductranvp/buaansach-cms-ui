@@ -11,8 +11,6 @@ const mixinMethod = {
       this.isEdit = false;
       this.form = {
         storeStatus: "OPENING",
-        storeOpenHour: null,
-        storeCloseHour: null,
         storeActivated: true,
       };
       this.show();
@@ -47,7 +45,6 @@ const mixinMethod = {
         if (valid) {
           try {
             vm.isLoading = true;
-            if (!vm.form.storeOpenHour) vm.form.storeCloseHour = null;
             let image = vm.$refs.singleImageUploader.getSelectedImage();
             if (vm.form.guid && this.isEdit) {
               await AdminStoreService.updateStore(vm.form, image);

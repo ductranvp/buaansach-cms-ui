@@ -15,7 +15,7 @@
               ref="guidePopover"
               placement="bottom"
               width="250"
-              trigger="click">
+              trigger="hover">
               <div>
                 <el-row class="padding-bottom-5" type="flex" align="middle">
                   <el-button size="medium"></el-button>
@@ -38,7 +38,7 @@
             </el-popover>
 
             <el-button v-popover:guidePopover class="bg-yellowgreen no-border" size="mini">
-              <span><i class="el-icon-help"></i><span>Hướng dẫn</span></span>
+              <span><i class="el-icon-help"></i><span>Chú thích</span></span>
             </el-button>
           </el-row>
         </el-col>

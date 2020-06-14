@@ -13,8 +13,7 @@
       "storeOwnerPhone": "SĐT chủ cửa hàng",
       "storeOwnerEmail": "Email chủ cửa hàng",
       "storeTaxCode": "Mã số thuế",
-      "storeOpenHour": "Giờ mở cửa",
-      "storeCloseHour": "Giờ đóng cửa"
+      "storeBusinessHours": "Giờ làm việc"
     },
     "storeStatus": {
       "opening": "Mở cửa",

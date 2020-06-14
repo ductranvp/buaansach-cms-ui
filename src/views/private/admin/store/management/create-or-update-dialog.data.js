@@ -4,11 +4,6 @@ const mixinData = {
       dialogFormVisible: false,
       isEdit: false,
       isLoading: false,
-      timePickerOption: {
-        start: '07:00',
-        step: '00:30',
-        end: '22:00'
-      },
       form: {
         guid: null,
         storeCode: null,
@@ -20,15 +15,10 @@ const mixinData = {
         storeOwnerPhone: null,
         storeOwnerEmail: null,
         storeTaxCode: null,
-        storeOpenHour: null,
-        storeCloseHour: null,
+        storeBusinessHours: null,
         storeActivated: true,
       },
       formRules: {
-        // storeCode: [
-        //   {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-        //   {max: 20, message: this.$t("common.entity.validation.maxlength", {max: 20}), trigger: "blur"}
-        // ],
         storeName: [
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
           {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}

@@ -141,6 +141,10 @@
   overflow: hidden;
 }
 
+.keep-break-line {
+  white-space: pre-wrap;
+}
+
 .no-break-word {
   white-space: pre-wrap;
   word-break: keep-all;

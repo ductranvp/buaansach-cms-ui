@@ -13,8 +13,7 @@
       "storeOwnerPhone": "Owner Phone",
       "storeOwnerEmail": "Owner Email",
       "storeTaxCode": "Tax Code",
-      "storeOpenHour": "Open Hour",
-      "storeCloseHour": "Close Hour"
+      "storeBusinessHours": "Business Hours"
     },
     "storeStatus": {
       "opening": "Opening",

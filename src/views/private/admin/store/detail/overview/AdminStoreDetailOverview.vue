@@ -60,8 +60,7 @@
                       size="small"
                       type="success"
                       effect="dark"
-                      v-if="adminCurrentStore.storeActivated">{{
-                      $t("private.adminStoreManagementPage.storeActivated.activated") }}
+                      v-if="adminCurrentStore.storeActivated">{{$t("private.adminStoreManagementPage.storeActivated.activated") }}
                     </el-tag>
                     <el-tag
                       size="small"
@@ -90,7 +89,7 @@
                 </tr>
                 <tr>
                   <td>Giờ hoạt động</td>
-                  <td><span v-if="adminCurrentStore.storeOpenHour">{{adminCurrentStore.storeOpenHour}} - {{adminCurrentStore.storeCloseHour}}</span>
+                  <td><span v-if="adminCurrentStore.storeBusinessHours">{{adminCurrentStore.storeBusinessHours}}</span>
                   </td>
                 </tr>
               </table>
