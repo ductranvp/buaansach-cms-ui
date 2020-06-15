@@ -17,6 +17,12 @@ const CustomerCareWebsocket = {
     }
   },
   methods: {
+    playAudio(){
+      if (localStorage.getItem("muteCustomerSound") !== "yes"){
+        let sound = document.getElementById("new_customer_sound");
+        sound.play();
+      }
+    },
     onConnectSuccess(stompClient) {
       if (!this.customerCareSubscription) {
         const subscription = stompClient.subscribe("/topic/customer-care", this.onMessageReceived);
@@ -34,6 +40,7 @@ const CustomerCareWebsocket = {
         createdDate: new Date()
       };
       this.$store.commit("customerCare/ADD_NEW_NOTIFICATION", notify);
+      this.playAudio();
     }
   }
 };

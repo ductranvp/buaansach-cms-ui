@@ -1,5 +1,8 @@
 <template>
   <el-header height="50px" class="bg-success padding-0-10">
+    <audio style="display: none" id="new_customer_sound">
+      <source :src="soundSrc" type="audio/mpeg">
+    </audio>
     <el-row
       class="full-size"
       type="flex"
@@ -18,6 +21,14 @@
         <i class="fas el-icon-fa-sign-out-alt"></i>
         <span class="hidden-xs-only">Đăng xuất</span>
       </el-button>
+      <div class="padding-right-10">
+        <el-tooltip :content="muteSound ? 'Bấm để bật âm thanh thông báo' : 'Bấm để tắt âm thanh thông báo'">
+          <el-button @click="toggleSound" class="icon-button" type="success">
+            <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
+            <i v-else class="fas el-icon-fa-volume-up"></i>
+          </el-button>
+        </el-tooltip>
+      </div>
       <div v-if="!showSidebar" class="padding-right-20">
         <el-badge :hidden="listUnseen.length === 0" :value="listUnseen.length" class="item">
           <el-button @click="toggleSidebar" class="padding-5" size="medium" type="success">
@@ -37,6 +48,7 @@
   import hasAnyRole from "@/utils/has-any-role";
   import Hamburger from "@/components/hamburger/index";
   import {mapState} from "vuex";
+  import NewCustomerSound from "@/assets/sounds/new_customer.mp3";
 
   export default {
     name: "CustomerCareHeader",
@@ -49,9 +61,19 @@
     data() {
       return {
         showSidebar: true,
+        soundSrc: NewCustomerSound,
+        muteSound: false,
       };
     },
     methods: {
+      toggleSound(){
+        this.muteSound = !this.muteSound;
+        if (this.muteSound){
+          localStorage.setItem("muteCustomerSound", "yes");
+        } else {
+          localStorage.setItem("muteCustomerSound", "no");
+        }
+      },
       toggleSidebar() {
         this.showSidebar = !this.showSidebar;
         this.$emit("show-sidebar", this.showSidebar);
@@ -71,4 +93,11 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .icon-button {
+    padding: 0;
+    height: 32px;
+    width: 32px;
+    font-size: 22px
+  }
+</style>

@@ -36,6 +36,12 @@ const PosWebsocket = {
         container.scrollTop = container.scrollHeight;
       }
     },
+    playAudio(){
+      if (localStorage.getItem("muteSound") !== "yes"){
+        let sound = document.getElementById("notification_sound");
+        sound.play();
+      }
+    },
     onConnectSuccess(stompClient) {
       if (!this.posSubscription) {
         const storeGuid = this.currentStore.guid || this.$route.params.storeGuid;
@@ -59,6 +65,7 @@ const PosWebsocket = {
         watched: false,
         seat: seatData
       };
+
       switch (data.message) {
         case "GUEST_CREATE_ORDER":
           if (this.selectedSeat.guid === seatData.guid) {
@@ -87,6 +94,7 @@ const PosWebsocket = {
           }
           this.$store.commit("posMachine/ADD_NOTIFICATION", notification);
           MessageUtils.info(seatData.seatName + " " + seatData.areaName + " đã gọi món");
+          this.playAudio();
           break;
       }
     }

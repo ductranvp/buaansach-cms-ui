@@ -1,5 +1,8 @@
 <template>
   <el-header class="bg-success" height="40px">
+    <audio style="display: none" id="notification_sound">
+      <source :src="soundSrc" type="audio/mpeg">
+    </audio>
     <check-printer ref="checkPrinter"/>
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
@@ -34,6 +37,15 @@
 
       <el-col :span="8">
         <el-row type="flex" align="middle" justify="end">
+          <el-row class="padding-right-10">
+            <el-tooltip :content="muteSound ? 'Bấm để bật âm thanh thông báo' : 'Bấm để tắt âm thanh thông báo'">
+              <el-button @click="toggleSound" class="icon-button" type="success">
+                <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
+                <i v-else class="fas el-icon-fa-volume-up"></i>
+              </el-button>
+            </el-tooltip>
+          </el-row>
+
           <el-row type="flex" align="middle" class="padding-right-10">
             <pos-notification/>
           </el-row>
@@ -97,6 +109,7 @@
   import PosNotification from "@/views/private/pos-machine/header/notification/PosNotification";
   import CheckPrinter from "@/views/private/pos-machine/CheckPrinter";
   import MessageUtils from "@/utils/message.util";
+  import NotificationSound from "@/assets/sounds/notify.mp3";
 
   export default {
     name: "PosMachineHeader",
@@ -109,10 +122,24 @@
     },
     data() {
       return {
+        soundSrc: NotificationSound,
+        muteSound: false,
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       };
     },
+    created(){
+      const muteSound = localStorage.getItem("muteSound");
+      this.muteSound = muteSound === "yes";
+    },
     methods: {
+      toggleSound(){
+        this.muteSound = !this.muteSound;
+        if (this.muteSound){
+          localStorage.setItem("muteSound", "yes");
+        } else {
+          localStorage.setItem("muteSound", "no");
+        }
+      },
       downloadTeamViewer() {
         let win = window.open("https://download.teamviewer.com/full", '_blank', "width=500,height=500");
         win.focus();
