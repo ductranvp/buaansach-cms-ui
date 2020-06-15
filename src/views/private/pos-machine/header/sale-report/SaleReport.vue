@@ -9,6 +9,14 @@
         <el-col>
           <el-row justify="end" type="flex" align="middle">
             <div class="padding-right-10">
+              <el-tooltip content="Tài khoản của bạn">
+                <el-button type="success">
+                  <i class="el-icon-user"></i>
+                  <span>{{currentUser.login}}</span>
+                </el-button>
+              </el-tooltip>
+            </div>
+            <div class="padding-right-10">
               <el-select placeholder="Chọn nhân viên" size="small" v-model="form.userLogin"
                          v-if="['STORE_MANAGER', 'STORE_OWNER'].includes(this.currentStoreUserRole)">
                 <el-option label="Tất cả" value=""></el-option>
@@ -152,7 +160,12 @@
                 </el-row>
                 <el-row type="flex" align="middle" style="height: 40px">
                   <el-col>
+                    <span class="text-small">Trên hóa đơn: </span>
                     <span class="text-very-large text-bold">{{parsedReportData.totalDiscount | priceAppend}}</span>
+                  </el-col>
+                  <el-col>
+                    <span class="text-small">Thực tế: </span>
+                    <span class="text-very-large text-bold">{{parsedReportData.totalRealDiscount | priceAppend}}</span>
                   </el-col>
                 </el-row>
               </el-main>
@@ -166,7 +179,12 @@
                 </el-row>
                 <el-row type="flex" align="middle" style="height: 40px">
                   <el-col>
+                    <span class="text-small">Trên hóa đơn: </span>
                     <span class="text-very-large text-bold">{{parsedReportData.totalRevenue | priceAppend}}</span>
+                  </el-col>
+                  <el-col>
+                    <span class="text-small">Thực tế: </span>
+                    <span class="text-very-large text-bold">{{parsedReportData.totalRealRevenue | priceAppend}}</span>
                   </el-col>
                 </el-row>
               </el-main>
@@ -175,6 +193,20 @@
         </el-row>
       </div>
     </el-main>
+    <el-footer height="auto">
+      <el-row>
+        <el-alert style="line-height: 30px" :closable="false" type="warning">
+          <ul class="text-large">
+            <li><b>Khuyến mãi trên hóa đơn</b>: Tổng số tiền khuyến mãi dựa trên giá trị các mã khuyến mãi.</li>
+            <li><b>Khuyến mãi thực tế</b>: Tổng số tiền khuyến mãi thực tế được hưởng. (VD: Khuyến mãi 50k cho đơn 30k thì thực
+              tế khuyến mãi là 30k)
+            </li>
+            <li><b>Doanh thu trên hóa đơn</b>: Tổng số tiền sản phẩm đã phục vụ của các hóa đơn.</li>
+            <li><b>Doanh thu thực tế</b>: Tổng số tiền phải thanh toán của các hóa đơn. (Là số tiền nhân viên thu về)</li>
+          </ul>
+        </el-alert>
+      </el-row>
+    </el-footer>
     <sale-report-detail-dialog v-if="!isLoading" :current-store-user-role="currentStoreUserRole" ref="reportDialog"/>
   </el-container>
 </template>
@@ -195,6 +227,7 @@
       ...mapState({
         orderStatus: state => state.posMachine.orderStatus,
         orderType: state => state.posMachine.orderType,
+        currentUser: state => state.user.info,
       })
     },
     data() {
@@ -271,6 +304,8 @@
         parsedReportData: {
           totalRevenue: 0,
           totalDiscount: 0,
+          totalRealDiscount: 0,
+          totalRealRevenue: 0,
           listTotal: [],
           listCancelled: [],
           listPurchased: [],
@@ -334,9 +369,15 @@
         this.parsedReportData.listOnline = this.reportData.filter(item => item.orderType === this.orderType.ONLINE);
 
         this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
+          return acc + item.totalAmount;
+        }, 0);
+
+        this.parsedReportData.totalRealRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
           let payAmount = PriceUtils.getPayAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
           return acc + payAmount;
         }, 0);
+
+        this.parsedReportData.totalRealDiscount = this.parsedReportData.totalRevenue - this.parsedReportData.totalRealRevenue;
 
         this.parsedReportData.totalDiscount = this.parsedReportData.listPurchased.reduce((acc, item) => {
           let discountAmount = PriceUtils.getDiscountAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
