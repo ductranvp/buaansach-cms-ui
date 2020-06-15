@@ -98,13 +98,22 @@
           inputType: 'textarea'
         }).then(cb => {
           if (cb.value) {
-            if (vm.$route.params.storeGuid)
-              vm.$store.dispatch("posMachine/cancelOrderProduct",
-                {
+            if (vm.$route.params.storeGuid) {
+              try {
+                const payload = {
                   orderProduct: product,
                   cancelReason: cb.value,
                   storeGuid: vm.$route.params.storeGuid
-                });
+                };
+                vm.$store.dispatch("posMachine/cancelOrderProduct", payload)
+                  .then(() => {
+                    vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
+                  });
+              } catch (e) {
+                MessageUtils.error("Đã xảy ra lỗi, vui lòng thử lại sau");
+              }
+            }
+
           } else {
             MessageUtils.error("Bạn phải nhập lí do hủy đơn");
           }

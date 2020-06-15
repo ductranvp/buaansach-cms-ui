@@ -3,13 +3,8 @@
     <el-row class="full-size" :gutter="10">
       <el-col :md="10" :sm="24">
         <div class="text-center">
-          <el-image v-show="adminCurrentStore.storeImageUrl" class="store-image" :src="adminCurrentStore.storeImageUrl"
+          <el-image lazy class="store-image" :src="adminCurrentStore.storeImageUrl"
                     fit="cover" :preview-src-list="[adminCurrentStore.storeImageUrl]">
-            <div slot="error" class="image-error-slot full-size">
-              <i class="el-icon-picture-outline"></i>
-            </div>
-          </el-image>
-          <el-image v-show="!adminCurrentStore.storeImageUrl" class="store-image-error" fit="cover">
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
             </div>
@@ -181,8 +176,8 @@
   }
 
   .store-image {
-    min-width: 320px;
-    min-height: 180px !important;
+    width: 448px;
+    height: 252px !important;
     border: 2px solid gray;
     box-sizing: border-box;
     border-radius: 5px;

@@ -35,15 +35,18 @@
         <el-table-column label="SĐT Khách" prop="customerPhone"></el-table-column>
         <el-table-column label="Trạng thái" prop="voucherCodeClaimStatus">
           <template slot-scope="{row}">
-            <el-tag v-if="row.voucherCodeClaimStatus === 'CLAIMED'">Đã nhận</el-tag>
-            <el-tag v-else-if="row.voucherCodeClaimStatus === 'ARCHIVED'">Đã lưu trữ</el-tag>
-            <el-tag v-else>Chưa đặt</el-tag>
+            <el-select size="small" @change="updateVoucherCode(row)" v-model="row.voucherCodeClaimStatus">
+              <el-option v-for="status in voucherCodeClaimStatus"
+                         :key="status.value"
+                         :value="status.value"
+                         :label="status.label"></el-option>
+            </el-select>
           </template>
         </el-table-column>
         <el-table-column label="Thao tác">
           <template slot-scope="{row}">
-            <el-button v-if="row.voucherCodeUsable" @click="toggleVoucherCode(row)" type="danger" size="mini">Vô hiệu
-              hóa
+            <el-button v-if="row.voucherCodeUsable" @click="toggleVoucherCode(row)" type="danger" size="mini">
+              <span>Vô hiệu hóa</span>
             </el-button>
             <el-button v-else @click="toggleVoucherCode(row)" type="success" size="mini">Kích hoạt</el-button>
           </template>
@@ -74,7 +77,12 @@
         codeUppercase: false,
         isLoading: false,
         dialogFormVisible: false,
-        voucherCodes: []
+        voucherCodes: [],
+        voucherCodeClaimStatus: [
+          {label: "Chưa biết", value: "UNSET"},
+          {label: "Đã gửi", value: "CLAIMED"},
+          {label: "Đã lưu trữ", value: "ARCHIVED"},
+        ],
       };
     },
     methods: {
@@ -82,6 +90,17 @@
         try {
           await AdminVoucherCodeService.toggleVoucherCode(row.voucherCode);
           row.voucherCodeUsable = !row.voucherCodeUsable;
+        } catch (e) {
+          NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau");
+        }
+      },
+      async updateVoucherCode(row) {
+        try {
+          const payload = {
+            voucherCode: row.voucherCode,
+            voucherCodeClaimStatus: row.voucherCodeClaimStatus
+          };
+          await AdminVoucherCodeService.updateVoucherCode(payload);
         } catch (e) {
           NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau");
         }

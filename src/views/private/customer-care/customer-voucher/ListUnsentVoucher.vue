@@ -128,7 +128,7 @@
                 <span>{{row.voucherCode | uppercase}}</span>
               </el-col>
               <el-col>
-                <el-button @click="copyMessage(row)" v-if="!row.voucherCodeClaimStatus" type="success" plain size="small">
+                <el-button @click="copyMessage(row)" type="success" plain size="small">
                   <span>Copy + Tin nhắn</span>
                 </el-button>
               </el-col>
