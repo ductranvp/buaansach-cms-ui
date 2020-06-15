@@ -62,7 +62,7 @@
         info += "</div>";
         info += "</div>";
 
-        info += "<div class='pl-2'><b>Cửa hàng: </b>" + store.storeName + "</div>";
+        info += "<div class='pl-2'><b>Mã cửa hàng: </b>" + store.storeCode + "</div>";
         info += "<div class='pl-2'><b>Địa chỉ: </b>" + store.storeAddress + "</div>";
         info += "<div class='pl-2'><b>Điện thoại: </b>" + store.storeOwnerPhone + "</div>";
         info += "<h4 class='text-center'>HÓA ĐƠN BÁN HÀNG</h4>";
