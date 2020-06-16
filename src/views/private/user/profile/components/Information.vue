@@ -148,6 +148,7 @@
               MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
           }
+          await vm.$store.dispatch("user/getAccount");
         });
       }
     }
