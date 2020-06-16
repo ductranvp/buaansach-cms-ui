@@ -55,9 +55,9 @@
                     <i v-if="openNewTab" class="el-icon-top-right"></i>
                   </el-button>
                   <el-button v-else type="success" plain class="full-width" size="medium"
-                             @click="goTo('partnerDashboardPage', store.storeGuid)">
-                    <i class="el-icon-s-tools"></i>
-                    <span>Quản lý</span>
+                             @click="goTo('saleReportPage', store.storeGuid)">
+                    <i class="el-icon-s-data"></i>
+                    <span>Thống kê</span>
                     <i v-if="openNewTab" class="el-icon-top-right"></i>
                   </el-button>
                 </el-col>

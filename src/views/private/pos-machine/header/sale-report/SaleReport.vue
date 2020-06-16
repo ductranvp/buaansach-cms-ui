@@ -12,17 +12,17 @@
               <el-tooltip content="Tài khoản của bạn">
                 <el-button type="success">
                   <i class="el-icon-user"></i>
-                  <span>{{currentUser.login}}</span>
+                  <span>{{currentUser.lastName + " " + currentUser.firstName}}</span>
                 </el-button>
               </el-tooltip>
             </div>
             <div class="padding-right-10">
               <el-select placeholder="Chọn nhân viên" size="small" v-model="form.userLogin"
                          v-if="['STORE_MANAGER', 'STORE_OWNER'].includes(this.currentStoreUserRole)">
-                <el-option label="Tất cả" value=""></el-option>
+                <el-option label="Tất cả nhân viên" value=""></el-option>
                 <el-option v-for="u in listStoreUser"
                            :key="u.userLogin"
-                           :label="u.userLogin"
+                           :label="u.lastName + ' ' + u.firstName"
                            :value="u.userLogin"></el-option>
               </el-select>
             </div>
@@ -55,6 +55,7 @@
               <span class="text-primary">{{form.startDate | moment("HH:mm DD/MM/YYYY")}}</span>
               <span> đến </span>
               <span class="text-primary">{{form.endDate | moment("HH:mm DD/MM/YYYY")}}</span>
+              <span v-if="reportForUser"> của <span class="text-primary">{{reportForUser.lastName + ' ' + reportForUser.firstName}}</span></span>
             </div>
           </el-alert>
         </el-row>
@@ -198,11 +199,13 @@
         <el-alert style="line-height: 30px" :closable="false" type="warning">
           <ul class="text-large">
             <li><b>Khuyến mãi trên hóa đơn</b>: Tổng số tiền khuyến mãi dựa trên giá trị các mã khuyến mãi.</li>
-            <li><b>Khuyến mãi thực tế</b>: Tổng số tiền khuyến mãi thực tế được hưởng. (VD: Khuyến mãi 50k cho đơn 30k thì thực
+            <li><b>Khuyến mãi thực tế</b>: Tổng số tiền khuyến mãi thực tế được hưởng. (VD: Khuyến mãi 50k cho đơn 30k
+              thì thực
               tế khuyến mãi là 30k)
             </li>
             <li><b>Doanh thu trên hóa đơn</b>: Tổng số tiền sản phẩm đã phục vụ của các hóa đơn.</li>
-            <li><b>Doanh thu thực tế</b>: Tổng số tiền phải thanh toán của các hóa đơn. (Là số tiền nhân viên thu về)</li>
+            <li><b>Doanh thu thực tế</b>: Tổng số tiền phải thanh toán của các hóa đơn. (Là số tiền nhân viên thu về)
+            </li>
           </ul>
         </el-alert>
       </el-row>
@@ -300,6 +303,7 @@
           STORE_WAITER: "STORE_WAITER",
           STORE_CASHIER: "STORE_CASHIER",
         },
+        reportForUser: null,
         reportData: {},
         parsedReportData: {
           totalRevenue: 0,
@@ -347,18 +351,6 @@
       goBack() {
         this.$router.go(-1);
       },
-      async getCurrentUserSaleReport() {
-        this.form.storeGuid = this.$route.params.storeGuid;
-        this.form.startDate = this.dateRange[0];
-        this.form.endDate = this.dateRange[1];
-        try {
-          const {data} = await PosSaleReportService.getCurrentUserSaleReport(this.form);
-          this.reportData = data;
-          this.parseReportData();
-        } catch (error) {
-          MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
-        }
-      },
       parseReportData() {
         this.parsedReportData = {};
         this.parsedReportData.listTotal = this.reportData;
@@ -384,7 +376,24 @@
           return acc + discountAmount;
         }, 0);
       },
+      async getCurrentUserSaleReport() {
+        this.form.storeGuid = this.$route.params.storeGuid;
+        this.form.startDate = this.dateRange[0];
+        this.form.endDate = this.dateRange[1];
+        try {
+          const {data} = await PosSaleReportService.getCurrentUserSaleReport(this.form);
+          this.reportData = data;
+          this.parseReportData();
+        } catch (error) {
+          MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
+        }
+      },
       async getSaleReport() {
+        if (this.form.userLogin){
+          this.reportForUser = this.listStoreUser.find(item => item.userLogin === this.form.userLogin);
+        } else {
+          this.reportForUser = null;
+        }
         this.form.storeGuid = this.$route.params.storeGuid;
         this.form.startDate = this.dateRange[0];
         this.form.endDate = this.dateRange[1];
