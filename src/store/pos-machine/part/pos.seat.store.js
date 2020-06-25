@@ -18,6 +18,9 @@ const mutations = {
   SET_SELECTED_SEAT(state, selectedSeat) {
     state.selectedSeat = selectedSeat;
   },
+  CLEAR_SELECT_SEAT(state){
+    state.selectedSeat = {};
+  },
   CHANGE_SEAT_STATUS(state, {targetSeat, seatStatus, seatServiceStatus}) {
     if (seatStatus || seatServiceStatus)
       state.allAreas.forEach(area => {
@@ -55,6 +58,11 @@ const actions = {
       commit("SET_SELECTED_SEAT", seat);
       dispatch("getSeatOrderInfo", seat.guid);
     }
+  },
+  clearSeat({state, commit}){
+    commit("CLEAR_SELECT_SEAT");
+    commit("RESET_ORDER");
+    commit("RESET_ORDER_PRODUCT");
   },
   async reloadSeat({state, commit}, seatGuid) {
     const {data} = await PosSeatService.getSeat(seatGuid);

@@ -60,9 +60,9 @@
       ...mapState({
         selectedSeat: state => state.posMachine.selectedSeat,
         currentStore: state => state.posMachine.currentStore,
-        listNotification: state => state.posMachine.allNotifications,
+        listNotification: state => state.posMachine.storeNotifications,
         allAreas: state => state.posMachine.allAreas,
-        listUnseen: state => state.posMachine.allNotifications.filter(item => item.status === 'UNSEEN'),
+        listUnseen: state => state.posMachine.storeNotifications.filter(item => item.status === 'UNSEEN'),
       })
     },
     data() {
@@ -72,7 +72,7 @@
     },
     methods: {
       clickNotification(notification) {
-        if (this.currentStore.storeStatus ==='CLOSED'){
+        if (this.currentStore.storeStatus === 'CLOSED') {
           MessageUtils.error("Cửa hàng đã đóng cửa");
           return;
         }
@@ -91,7 +91,7 @@
         this.$store.commit("posMachine/CLEAR_SEEN_NOTIFICATION");
       },
       clearAllNotification() {
-        this.$store.commit("posMachine/SET_ALL_NOTIFICATION", []);
+        this.$store.commit("posMachine/CLEAR_STORE_NOTIFICATIONS");
       }
     }
   };

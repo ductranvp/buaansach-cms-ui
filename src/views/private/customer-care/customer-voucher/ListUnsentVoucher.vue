@@ -163,7 +163,7 @@
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
   import CustomerCareCustomerService from "@/service/customer-care/customer-care.customer.service";
   import MessageUtils from "@/utils/message.util";
-  import PosVoucherService from "@/store/pos-machine/part/pos.voucher.service";
+  import PosVoucherService from "@/service/pos/pos.voucher.service";
 
   export default {
     name: "ListUnsentVoucher",

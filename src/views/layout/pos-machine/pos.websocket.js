@@ -46,7 +46,7 @@ const PosWebsocket = {
   methods: {
     subscribeTopics() {
       try {
-        const storeGuid = this.currentStore.guid || this.$route.params.storeGuid;
+        const storeGuid = this.$route.params.storeGuid;
         this.subscription = this.wsStompClient.subscribe(WebSocketConstants.TOPIC_POS_PREFIX + storeGuid, this.onMessageReceived);
       } catch (e) {
         this.retry++;
