@@ -106,31 +106,30 @@
         this.$router.push({name: "resetPasswordInitPage"});
       },
       handleLogin() {
-        const vm = this;
-        this.$refs.loginForm.validate(valid => {
+        this.$refs.loginForm.validate(async valid => {
           if (valid) {
             this.isLoading = true;
-            this.$store
-              .dispatch("user/login", this.loginForm)
-              .then(() => {
-                const redirect = sessionStorage.getItem("requested-url");
-                if (redirect && redirect !== "/home") {
-                  const item = sessionStorage.getItem("requested-url");
-                  sessionStorage.removeItem("requested-url");
-                  this.$router.push({path: item});
-                } else {
-                  this.$router.push({path: AppUtils.redirectBasedOnRole()});
-                }
-                this.isLoading = false;
-              })
-              .catch(error => {
-                NotificationUtils.error(error.message || error.data.message);
-                this.isLoading = false;
-              });
+            try {
+              await this.$store.dispatch("user/login", this.loginForm);
+              this.redirect();
+            } catch (error) {
+              NotificationUtils.error(error.message || error.data.message);
+              this.isLoading = false;
+            }
           } else {
             return false;
           }
         });
+      },
+      async redirect() {
+        const redirect = sessionStorage.getItem("requested-url");
+        if (redirect && redirect !== "/home") {
+          const item = sessionStorage.getItem("requested-url");
+          sessionStorage.removeItem("requested-url");
+          await this.$router.push({path: item});
+        } else {
+          await this.$router.push({path: AppUtils.redirectBasedOnRole()});
+        }
       }
     }
   };

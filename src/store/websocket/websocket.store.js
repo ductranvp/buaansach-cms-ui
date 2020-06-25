@@ -5,32 +5,31 @@ import * as Stomp from "webstomp-client";
 import Constants from "@/utils/constants";
 import {Notification} from "element-ui";
 import NotificationUtils from "@/utils/notification.util";
+import WebSocketConstants from "@/store/websocket/websocket.constants";
 
 const state = {
-  posStompClient: null,
-  posSubscription: null,
-  customerCareStompClient: null,
-  customerCareSubscription: null,
-  error: null,
+  wsError: null,
+  wsConnected: false,
+  wsStompClient: null,
 };
 const mutations = {
-  SET_POS_STOMP_CLIENT(state, client) {
-    state.posStompClient = client;
+  SET_STOMP_CLIENT(state, client) {
+    // disconnect previous connection if exist
+    if (state.wsStompClient){
+      try {
+        state.wsStompClient.disconnect();
+      } catch (e) {
+        // do nothing
+      }
+    }
+    state.wsStompClient = client;
   },
-  SET_CUSTOMER_CARE_STOMP_CLIENT(state, client) {
-    state.customerCareStompClient = client;
+  SET_CONNECTED(state, status) {
+    state.wsConnected = status;
   },
   SET_ERROR(state) {
-    if (state.posSubscription){
-      state.posSubscription.unsubscribe();
-      state.posSubscription = null;
-    }
-    if (state.customerCareSubscription){
-      state.customerCareSubscription.unsubscribe();
-      state.customerCareSubscription = null;
-    }
-    if (!state.error) {
-      state.error = Notification.error({
+    if (!state.wsError) {
+      state.wsError = Notification.error({
         title: "Mất kết nối tới máy chủ!",
         message: "<span>Hãy kiểm tra các kết nối mạng!<br>Đang thực hiện kết nối lại...</span>",
         dangerouslyUseHTMLString: true,
@@ -40,78 +39,51 @@ const mutations = {
     }
   },
   CLEAR_ERROR(state) {
-    if (state.error) {
-      state.error.close();
-      state.error = null;
+    if (state.wsError) {
+      state.wsError.close();
+      state.wsError = null;
       setTimeout(() => NotificationUtils.success("Kết nối lại thành công, tải lại trang để đảm bảo dữ liệu mới nhất"), 300);
     }
   },
-  SET_POS_SUBSCRIPTION(state, posSubscription) {
-    state.posSubscription = posSubscription;
-  },
-  SET_CUSTOMER_CARE_SUBSCRIPTION(state, customerCareSubscription) {
-    state.customerCareSubscription = customerCareSubscription;
-  },
 };
 const actions = {
-  posConnect({state, commit, dispatch}, {onSuccess, onError}) {
+  connectWS({commit, dispatch}) {
     let url = Constants.SERVER_API_URL + "/websocket?access_token=" + AuthUtils.getToken();
     let options = {debug: false, protocols: ['v12.stomp']};
     let socket = new SockJS(url);
-    let posStompClient = Stomp.over(socket, options);
-    posStompClient.connect(
+    let stompClient = Stomp.over(socket, options);
+    stompClient.connect(
       {},
       function (frame) {
-        if (state.error){
-          commit("CLEAR_ERROR");
-        }
-        commit("SET_POS_STOMP_CLIENT", posStompClient);
-        onSuccess(posStompClient);
+        commit("SET_CONNECTED", true);
+        commit("SET_STOMP_CLIENT", stompClient);
+        commit("CLEAR_ERROR");
+        dispatch("sendActivity", {});
       },
       function (error) {
-        if (!state.error){
-          commit("SET_ERROR");
-        }
-        commit("SET_POS_STOMP_CLIENT", null);
-        onError(error);
+        commit("SET_CONNECTED", false);
+        commit("SET_STOMP_CLIENT", null);
+        commit("SET_ERROR");
         setTimeout(() => {
-          dispatch("posConnect", {
-            onSuccess: onSuccess,
-            onError: onError
-          });
-        }, 2000);
+          dispatch("connectWS");
+        }, WebSocketConstants.RECONNECT_DELAY);
       }
     );
   },
-  customerCareConnect({state, commit, dispatch}, {onSuccess, onError}) {
-    let url = Constants.SERVER_API_URL + "/websocket?access_token=" + AuthUtils.getToken();
-    let options = {debug: false, protocols: ['v12.stomp']};
-    let socket = new SockJS(url);
-    let customerCareStompClient = Stomp.over(socket, options);
-    customerCareStompClient.connect(
-      {},
-      function (frame) {
-        if (state.error){
-          commit("CLEAR_ERROR");
-        }
-        commit("SET_CUSTOMER_CARE_STOMP_CLIENT", customerCareStompClient);
-        onSuccess(customerCareStompClient);
-      },
-      function (error) {
-        if (!state.error){
-          commit("SET_ERROR");
-        }
-        commit("SET_CUSTOMER_CARE_STOMP_CLIENT", null);
-        onError(error);
-        setTimeout(() => {
-          dispatch("customerCareConnect", {
-            onSuccess: onSuccess,
-            onError: onError
-          });
-        }, 2000);
-      }
-    );
+  disconnectWS({state, commit}) {
+    if (state.wsStompClient) {
+      state.wsStompClient.disconnect();
+      commit("CLEAR_ERROR");
+      commit("SET_CONNECTED", false);
+      commit("SET_STOMP_CLIENT", null);
+    }
   },
+  sendActivity({state}, activity) {
+    state.wsStompClient.send(WebSocketConstants.APP_ACTIVITY, // destination
+      JSON.stringify(activity), // body
+      {} // header
+    );
+  }
 };
 
 export default {

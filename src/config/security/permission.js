@@ -26,6 +26,9 @@ router.beforeEach(async (to, from, next) => {
       /* If roles is not saved in store or page is refreshed
        * call api to get account info first then check roles,
        * else just check the roles */
+      if (store.getters.websocket.wsStompClient === null){
+        store.dispatch("websocket/connectWS", {});
+      }
       if (!store.getters.roles.length) {
         await store.dispatch("user/getAccount");
       }

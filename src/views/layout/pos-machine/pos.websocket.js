@@ -1,13 +1,12 @@
-import AuthUtils from "@/utils/auth.util";
 import {mapState} from "vuex";
 import MessageUtils from "@/utils/message.util";
+import WebSocketConstants from "@/store/websocket/websocket.constants";
 
 const PosWebsocket = {
   computed: {
     ...mapState({
-      posStompClient: state => state.websocket.posStompClient,
+      wsStompClient: state => state.websocket.wsStompClient,
       currentStore: state => state.posMachine.currentStore,
-      posSubscription: state => state.websocket.posSubscription,
       selectedSeat: state => state.posMachine.selectedSeat,
       allAreas: state => state.posMachine.allAreas,
       allSeats: state => {
@@ -21,36 +20,62 @@ const PosWebsocket = {
       }
     })
   },
-  async created() {
-    if (this.posStompClient === null && AuthUtils.getToken()) {
-      await this.$store.dispatch("websocket/posConnect", {
-        onSuccess: this.onConnectSuccess,
-        onError: this.onConnectError,
-      });
+  data() {
+    return {
+      subscription: null,
+      retry: 0,
+      maxRetry: 60
+    };
+  },
+  watch: {
+    wsStompClient: function (val) {
+      if (val) {
+        if (this.subscription) {
+          this.unsubscribeTopics();
+          this.subscribeTopics();
+        }
+      }
     }
   },
+  async created() {
+    this.subscribeTopics();
+  },
+  beforeDestroy() {
+    this.unsubscribeTopics();
+  },
   methods: {
+    subscribeTopics() {
+      try {
+        const storeGuid = this.currentStore.guid || this.$route.params.storeGuid;
+        this.subscription = this.wsStompClient.subscribe(WebSocketConstants.TOPIC_POS_PREFIX + storeGuid, this.onMessageReceived);
+      } catch (e) {
+        this.retry++;
+        if (this.retry < this.maxRetry) {
+          setTimeout(() => {
+            this.subscribeTopics();
+          }, 1000);
+        } else {
+          MessageUtils.error("Không thể đăng ký nhận thông báo gọi món. Hãy thử tải lại trang.");
+        }
+      }
+    },
+    unsubscribeTopics() {
+      if (this.subscription) {
+        this.subscription.unsubscribe();
+        this.subscription = null;
+      }
+    },
     scrollToEnd() {
       let container = document.querySelector(".scroll");
       if (container) {
         container.scrollTop = container.scrollHeight;
       }
     },
-    playAudio(){
-      if (localStorage.getItem("muteSound") !== "yes"){
+    playAudio() {
+      if (localStorage.getItem("muteSound") !== "yes") {
         let sound = document.getElementById("notification_sound");
-        sound.play();
+        if (sound) sound.play();
       }
-    },
-    onConnectSuccess(stompClient) {
-      if (!this.posSubscription) {
-        const storeGuid = this.currentStore.guid || this.$route.params.storeGuid;
-        const subscription = stompClient.subscribe("/topic/pos/" + storeGuid, this.onMessageReceived);
-        this.$store.commit("websocket/SET_POS_SUBSCRIPTION", subscription);
-      }
-    },
-    onConnectError(error) {
-
     },
     onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
@@ -67,7 +92,7 @@ const PosWebsocket = {
       };
 
       switch (data.message) {
-        case "GUEST_CREATE_ORDER":
+        case WebSocketConstants.GUEST_CREATE_ORDER:
           if (this.selectedSeat.guid === seatData.guid) {
             this.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
               this.scrollToEnd();
@@ -80,7 +105,7 @@ const PosWebsocket = {
             });
           }
           break;
-        case "GUEST_UPDATE_ORDER":
+        case WebSocketConstants.GUEST_UPDATE_ORDER:
           if (this.selectedSeat.guid === seatData.guid) {
             this.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
               this.scrollToEnd();

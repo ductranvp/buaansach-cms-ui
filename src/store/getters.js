@@ -6,7 +6,7 @@ const getters = {
   languages: state => state.translation.languages,
   adminCurrentStore: state => state.adminStore.adminCurrentStore,
   adminSidebarCollapse: state => state.adminSetting.adminSidebarCollapse,
-  websocket: state => state.websocket.stompClient,
+  websocket: state => state.websocket,
   posMachine: state => state.posMachine,
 };
 export default getters;

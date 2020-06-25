@@ -1,0 +1,22 @@
+const WebSocketConstants = {
+  RECONNECT_DELAY: 2000,
+  /*Send*/
+  APP_ACTIVITY: "/app/activity",
+  /*Subscribe*/
+  TOPIC_ADMIN_TRACKER: "/topic/admin/tracker",
+  TOPIC_CUSTOMER_CARE_TRACKER: "/topic/customer_care/tracker",
+  TOPIC_POS_PREFIX: "/topic/pos/",
+  TOPIC_GUEST_PREFIX: "/topic/guest/",
+  /*Message*/
+  POS_CREATE_CUSTOMER: "POS_CREATE_CUSTOMER",
+  POS_RECEIVE_ORDER: "POS_RECEIVE_ORDER",
+  POS_CANCEL_ORDER: "POS_CANCEL_ORDER",
+  POS_PURCHASE_ORDER: "POS_PURCHASE_ORDER",
+  POS_CHANGE_SEAT: "POS_CHANGE_SEAT",
+
+  GUEST_CREATE_CUSTOMER: "GUEST_CREATE_CUSTOMER",
+  GUEST_UPDATE_ORDER: "GUEST_UPDATE_ORDER",
+  GUEST_CREATE_ORDER: "GUEST_CREATE_ORDER",
+};
+
+export default WebSocketConstants;

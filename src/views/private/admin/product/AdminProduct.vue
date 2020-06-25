@@ -57,6 +57,16 @@
           </el-table-column>
         </template>
 
+        <el-table-column prop="productThumbnailUrl" label="Hình" width="72px">
+          <template slot-scope="{row}">
+            <el-image class="product-thumbnail" :src="row.productThumbnailUrl" :preview-src-list="[row.productThumbnailUrl]">
+              <div slot="error" class="image-error-slot full-size">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </el-image>
+          </template>
+        </el-table-column>
+
         <el-table-column prop="productCode" label="Mã SP"></el-table-column>
 
         <el-table-column prop="productName" label="Tên sản phẩm">
@@ -213,4 +223,10 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+  .product-thumbnail {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+  }
+</style>

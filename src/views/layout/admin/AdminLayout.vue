@@ -12,10 +12,12 @@
   import AdminSidebar from "@/views/layout/admin/modules/AdminSidebar";
   import AdminHeader from "@/views/layout/admin/modules/AdminHeader";
   import AdminMain from "@/views/layout/admin/modules/AdminMain";
+  import AdminWebsocket from "@/views/layout/admin/admin.websocket";
 
   export default {
     name: "AdminLayout",
-    components: {AdminMain, AdminHeader, AdminSidebar}
+    components: {AdminMain, AdminHeader, AdminSidebar},
+    mixins: [AdminWebsocket],
   };
 </script>
 
