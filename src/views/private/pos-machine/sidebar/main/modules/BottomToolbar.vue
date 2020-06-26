@@ -52,7 +52,6 @@
 
 <script>
   import {mapState} from "vuex";
-  import NotificationUtils from "@/utils/notification.util";
   import MessageUtils from "@/utils/message.util";
 
   export default {
@@ -60,6 +59,7 @@
     computed: {
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
+        selectedCategory: state => state.posMachine.selectedCategory,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
         isAllOrderProductDone: state => {
           const temp = state.posMachine.savedOrderProduct.filter(item => item.orderProductStatus === state.posMachine.orderProductStatus.PREPARING);
@@ -109,7 +109,23 @@
           await this.$store.dispatch("posMachine/updateOrder");
           vm.isLoading = false;
         } catch (error) {
+          const message = error.message || error.data.message;
+          console.log(message);
+          if (message.includes("productStopTrading")) {
+            this.refreshStoreProduct();
+            MessageUtils.error("Danh sách sản phẩm đã thay đổi. Vui lòng kiểm tra lại");
+          } else {
+            MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+          }
           vm.isLoading = false;
+        }
+      },
+      async refreshStoreProduct() {
+        const vm = this;
+        try {
+          await vm.$store.dispatch("posMachine/getAllCategory", vm.$route.params.storeGuid);
+          await vm.$store.dispatch("posMachine/changeCategory", vm.selectedCategory.guid);
+        } catch (e) {
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
       },
