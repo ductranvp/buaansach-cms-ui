@@ -77,12 +77,14 @@ const actions = {
       }
     );
   },
+  // use when logout only
   disconnectWS({state, commit}) {
     if (state.wsStompClient) {
       state.wsStompClient.disconnect();
       commit("CLEAR_ERROR");
       commit("SET_CONNECTED", false);
       commit("SET_STOMP_CLIENT", null);
+      commit("SET_HAS_EXECUTED_CONNECT", false);
     }
   },
   sendActivity({state}, activity) {

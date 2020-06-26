@@ -6,6 +6,7 @@ const AdminWebsocket = {
   computed: {
     ...mapState({
       wsStompClient: state => state.websocket.wsStompClient,
+      wsConnected: state => state.websocket.wsConnected,
     })
   },
   data() {
@@ -16,7 +17,7 @@ const AdminWebsocket = {
     };
   },
   watch: {
-    wsStompClient: function (val) {
+    wsConnected: function (val) {
       if (val) {
         if (this.subscription) {
           this.unsubscribeTopics();
@@ -50,6 +51,7 @@ const AdminWebsocket = {
     unsubscribeTopics() {
       if (this.subscription) {
         this.subscription.unsubscribe();
+        this.subscription = null;
       }
     },
     onTrackerEventReceived(payload) {

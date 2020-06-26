@@ -6,6 +6,7 @@ const PosWebsocket = {
   computed: {
     ...mapState({
       wsStompClient: state => state.websocket.wsStompClient,
+      wsConnected: state => state.websocket.wsConnected,
       currentStore: state => state.posMachine.currentStore,
       selectedSeat: state => state.posMachine.selectedSeat,
       allAreas: state => state.posMachine.allAreas,
@@ -28,7 +29,7 @@ const PosWebsocket = {
     };
   },
   watch: {
-    wsStompClient: function (val) {
+    wsConnected: function (val) {
       if (val) {
         if (this.subscription) {
           this.unsubscribeTopics();

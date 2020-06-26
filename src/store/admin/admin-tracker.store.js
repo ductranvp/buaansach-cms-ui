@@ -22,6 +22,9 @@ const mutations = {
       let userSessions = state.activeUsers[payload.userLogin].sessions;
       const idx = userSessions.findIndex(item => item.sessionId === payload.sessionId);
       userSessions.splice(idx, 1);
+      if (userSessions.length === 0) {
+        payload.vm.$delete(state.activeUsers, payload.userLogin);
+      }
     }
   }
 };

@@ -1,7 +1,13 @@
 <template>
   <el-container direction="vertical">
     <el-main>
-      <el-row class="padding-bottom-10">
+      <el-row class="padding-bottom-10" type="flex" align="middle">
+        <el-col>
+          <el-row type="flex" align="middle">
+            <el-button>Người dùng: {{numberUser}}</el-button>
+            <el-button>Khách: {{numberGuest}}</el-button>
+          </el-row>
+        </el-col>
         <el-button :loading="isRefreshing" @click="refresh">Làm mới</el-button>
       </el-row>
       <raw-data-table show-index :data="Object.keys(activeUsers)">
@@ -37,6 +43,14 @@
             }
           });
           return arr;
+        },
+        numberUser: state => {
+          return Object.keys(state.adminStore.activeUsers).filter(item => item !== 'anonymousUser').length;
+        },
+        numberGuest: state => {
+          const temp = state.adminStore.activeUsers['anonymousUser'];
+          if (!temp) return 0;
+          return temp.sessions ? temp.sessions.length : 0;
         },
       })
     },
