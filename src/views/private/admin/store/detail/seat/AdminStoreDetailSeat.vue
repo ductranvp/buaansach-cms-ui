@@ -97,7 +97,6 @@
     },
     methods: {
       downloadImage(seat) {
-        console.log(seat.seatName + " - " + seat.areaName);
         let link = document.createElement("a"); //Create <a>
         link.href = this.$refs[seat.guid][0].$el.currentSrc; //Image Base64 Goes here
         link.download = seat.seatName + " - " + seat.areaName + ".png"; //File name Here

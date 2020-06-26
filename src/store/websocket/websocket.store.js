@@ -11,11 +11,15 @@ const state = {
   wsError: null,
   wsConnected: false,
   wsStompClient: null,
+  hasExecutedConnect: false,
 };
 const mutations = {
+  SET_HAS_EXECUTED_CONNECT(state, status) {
+    state.hasExecutedConnect = status;
+  },
   SET_STOMP_CLIENT(state, client) {
     // disconnect previous connection if exist
-    if (state.wsStompClient){
+    if (state.wsStompClient) {
       try {
         state.wsStompClient.disconnect();
       } catch (e) {
@@ -47,7 +51,10 @@ const mutations = {
   },
 };
 const actions = {
-  connectWS({commit, dispatch}) {
+  connectWS({state, commit, dispatch}) {
+    /* WS will automatic reconnect when disconnected, so this function must be called once */
+    commit("SET_HAS_EXECUTED_CONNECT", true);
+
     let url = Constants.SERVER_API_URL + "/websocket?access_token=" + AuthUtils.getToken();
     let options = {debug: false, protocols: ['v12.stomp']};
     let socket = new SockJS(url);
