@@ -9,10 +9,10 @@ jobs:
       - run:
           name: Build docker
           command: |
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             TAG=staging
-            docker build --build-arg MODE=$TAG -t $DOCKER_REGISTRY/cms-ui:$TAG .
-            docker push $DOCKER_REGISTRY/cms-ui:$TAG
+            docker build --build-arg MODE=$TAG -t $DOCKER_USER/buaansach:cms-ui .
+            docker push $DOCKER_USER/buaansach:cms-ui
   deploy-staging:
     machine:
       image: ubuntu-1604:201903-01
