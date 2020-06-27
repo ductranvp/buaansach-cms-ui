@@ -110,7 +110,6 @@
           vm.isLoading = false;
         } catch (error) {
           const message = error.message || error.data.message;
-          console.log(message);
           if (message.includes("productStopTrading")) {
             this.refreshStoreProduct();
             MessageUtils.error("Danh sách sản phẩm đã thay đổi. Vui lòng kiểm tra lại");

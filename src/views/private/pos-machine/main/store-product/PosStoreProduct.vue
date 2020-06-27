@@ -1,5 +1,5 @@
 <template>
-  <el-container class="full-size" direction="vertical">
+  <el-container class="full-size" direction="vertical" v-loading="isLoading || isRefreshing">
     <el-header class="bg-yellowgreen" height="40px">
       <el-row class="full-size" type="flex" align="middle">
         <el-col class="padding-0-5">
@@ -21,7 +21,7 @@
         </div>
       </el-row>
     </el-header>
-    <el-main v-loading="isLoading || isRefreshing" class="show-vertical-scroll full-size padding-left-5 padding-right-5 padding-top-10">
+    <el-main class="show-vertical-scroll full-size padding-left-5 padding-right-5 padding-top-10">
       <el-row :gutter="10" class="full-size flex-wrap margin-0">
         <el-col v-for="storeProduct in filterStoreProduct ? filteredStoreProducts : displayStoreProducts"
                 class="margin-bottom-10"

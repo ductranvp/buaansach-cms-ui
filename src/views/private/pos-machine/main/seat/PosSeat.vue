@@ -1,5 +1,5 @@
 <template>
-  <el-container class="full-size" direction="vertical">
+  <el-container class="full-size" direction="vertical" v-loading="isLoading || isRefreshing">
     <el-header class="bg-yellowgreen" height="36px">
       <el-row class="full-size" type="flex" align="middle">
         <el-col class="padding-left-5 hidden-sm-and-down">
@@ -49,7 +49,7 @@
         </div>
       </el-row>
     </el-header>
-    <el-main v-loading="isLoading || isRefreshing" class="show-vertical-scroll full-size">
+    <el-main class="show-vertical-scroll full-size">
       <el-row :gutter="10" class="full-size flex-wrap margin-0 padding-0-5">
         <template v-for="area in allAreas">
           <el-row v-show="area.display" :key="area.guid">
