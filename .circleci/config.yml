@@ -7,25 +7,12 @@ jobs:
       - checkout
 
       - run:
-          name: Build docker
+          name: Build docker staging
           command: |
             echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             TAG=staging
-            docker build --build-arg MODE=$TAG -t $DOCKER_USER/buaansach:cms-ui .
-            docker push $DOCKER_USER/buaansach:cms-ui
-  deploy-staging:
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - run:
-          name: Setup ssh
-          command: ssh-keyscan $STAGING_DOMAIN >> ~/.ssh/known_hosts
-      - run:
-          name: Deploy
-          command: |
-            TAG=staging
-            ssh root@$STAGING_DOMAIN "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-staging.yml up -d --force-recreate --build cmsui"
-
+            docker build --build-arg MODE=$TAG -t $DOCKER_USER/buaansach:cms-ui-staging .
+            docker push $DOCKER_USER/buaansach:cms-ui-staging
   build-production:
     machine:
       image: ubuntu-1604:201903-01
@@ -33,26 +20,14 @@ jobs:
       - checkout
 
       - run:
-          name: Build docker
+          name: Build docker production
           command: |
-            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY
+            echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin
             TAG=production
-            docker build --build-arg MODE=$TAG -t $DOCKER_REGISTRY/cms-ui:$TAG .
-            docker push $DOCKER_REGISTRY/cms-ui:$TAG
-  deploy-production:
-    machine:
-      image: ubuntu-1604:201903-01
-    steps:
-      - run:
-          name: Setup ssh
-          command: ssh-keyscan $PRODUCTION_DOMAIN >> ~/.ssh/known_hosts
-      - run:
-          name: Deploy
-          command: |
-            TAG=production
-            ssh root@$PRODUCTION_DOMAIN "echo $DOCKER_PASS | docker login -u $DOCKER_USER --password-stdin $DOCKER_REGISTRY && docker pull $DOCKER_REGISTRY/cms-ui:$TAG && cd /root/app/buaansach-config-ui && docker-compose -f docker-compose-production.yml up -d --force-recreate --build cmsui"
+            docker build --build-arg MODE=$TAG -t $DOCKER_USER/buaansach:cms-ui-production .
+            docker push $DOCKER_USER/buaansach:cms-ui-production
 workflows:
-  build-and-deploy:
+  build-image:
     jobs:
       # - build
       - build-staging:
@@ -60,16 +35,8 @@ workflows:
             branches:
               only:
                 - master
-      - deploy-staging:
-          requires:
-            - build-staging
-      - hold:
-          type: approval
-          requires:
-            - deploy-staging
-      - build-production:
-          requires:
-            - hold
-      - deploy-production:
-          requires:
-            - build-production
+      - build-staging:
+          filters:
+            branches:
+              only:
+                - master
