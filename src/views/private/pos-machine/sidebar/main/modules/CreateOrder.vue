@@ -4,18 +4,19 @@
       <el-form onsubmit="return false" ref="createOrderForm" :model="form" :rules="formRules">
         <el-form-item>
           <el-row type="flex" align="middle" justify="center">
-            <qrcode class="pointer" @click.native="goto(selectedSeat.guid)" :value="seatPrefixUrl + selectedSeat.guid"></qrcode>
+            <qrcode class="pointer" @click.native="goto(selectedSeat.guid)"
+                    :value="seatPrefixUrl + selectedSeat.guid"></qrcode>
           </el-row>
         </el-form-item>
-<!--        <el-form-item>-->
-<!--          <el-alert style="line-height: 28px;" type="warning" :closable="false">-->
-<!--            <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>-->
-<!--          </el-alert>-->
-<!--        </el-form-item>-->
-<!--        <el-form-item prop="customerPhone">-->
-<!--          <input-label label="SĐT khách hàng" optional/>-->
-<!--          <el-input @keypress.enter.native="createOrder" v-model="form.customerPhone"></el-input>-->
-<!--        </el-form-item>-->
+        <!--        <el-form-item>-->
+        <!--          <el-alert style="line-height: 28px;" type="warning" :closable="false">-->
+        <!--            <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>-->
+        <!--          </el-alert>-->
+        <!--        </el-form-item>-->
+        <!--        <el-form-item prop="customerPhone">-->
+        <!--          <input-label label="SĐT khách hàng" optional/>-->
+        <!--          <el-input @keypress.enter.native="createOrder" v-model="form.customerPhone"></el-input>-->
+        <!--        </el-form-item>-->
         <el-form-item>
           <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">Tạo đơn
           </el-button>
@@ -77,8 +78,13 @@
               await this.$store.dispatch("posMachine/createOrder", this.form.customerPhone);
               vm.isLoading = false;
             } catch (error) {
+              const message = error.message || error.data.message;
+              if (message.includes("areaDisabled")) {
+                MessageUtils.error("Khu vực này đã bị khóa, hãy tải lại danh sách chỗ ngồi.");
+              } else {
+                MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+              }
               vm.isLoading = false;
-              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
           }
         });
