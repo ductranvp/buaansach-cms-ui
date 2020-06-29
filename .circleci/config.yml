@@ -35,8 +35,10 @@ workflows:
             branches:
               only:
                 - master
+      - hold:
+          type: approval
+          requires:
+            - build-staging
       - build-production:
-          filters:
-            branches:
-              only:
-                - master
+          requires:
+            - hold
