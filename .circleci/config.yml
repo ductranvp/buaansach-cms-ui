@@ -34,7 +34,7 @@ workflows:
           filters:
             branches:
               only:
-                - release
+                - /release\/.*/
       - build-production:
           filters:
             branches:
