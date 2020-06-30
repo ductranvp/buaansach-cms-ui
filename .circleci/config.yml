@@ -27,18 +27,16 @@ jobs:
             docker build --build-arg MODE=$TAG -t $DOCKER_USER/buaansach:cms-ui-production .
             docker push $DOCKER_USER/buaansach:cms-ui-production
 workflows:
-  build-image:
+  build-and-push-image:
     jobs:
       # - build
       - build-staging:
           filters:
             branches:
               only:
-                - master
-      - hold:
-          type: approval
-          requires:
-            - build-staging
+                - release
       - build-production:
-          requires:
-            - hold
+          filters:
+            branches:
+              only:
+                - master
