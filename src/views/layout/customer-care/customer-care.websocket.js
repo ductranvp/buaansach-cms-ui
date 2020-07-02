@@ -61,13 +61,33 @@ const CustomerCareWebsocket = {
     },
     async onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
+      let notificationType = ""; // NEW_CUSTOMER, CUSTOMER_PURCHASE
+      let message = "";
+      switch(data.message){
+        case WebSocketConstants.POS_CREATE_CUSTOMER:
+          notificationType = "NEW_CUSTOMER";
+          message = " đã đăng ký";
+          break;
+        case WebSocketConstants.GUEST_CREATE_ORDER:
+          notificationType = "NEW_CUSTOMER";
+          message = " đã đăng ký";
+          break;
+        case WebSocketConstants.POS_PURCHASE_ORDER_WITH_PHONE:
+          notificationType = "CUSTOMER_PURCHASE";
+          message = " đã thanh toán";
+          break;
+        default: break;
+      }
       const notify = {
+        id: data.payload + "" + (new Date()).getTime(),
         customerPhone: data.payload,
         status: "UNSEEN",
+        message: message,
+        type: notificationType,
         createdDate: new Date()
       };
       this.$store.commit("customerCare/ADD_NEW_NOTIFICATION", notify);
-      this.playAudio();
+      if (notificationType === "NEW_CUSTOMER") this.playAudio();
     },
   }
 };

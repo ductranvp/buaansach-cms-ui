@@ -46,7 +46,7 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column label="Số điện thoại" prop="customerPhone"></el-table-column>
+        <el-table-column label="Số điện thoại" prop="customerPhone" sortable></el-table-column>
         <el-table-column label="LTT" prop="orderCount" width="50px">
         </el-table-column>
         <el-table-column label="Trạng thái" prop="customerCareStatus">

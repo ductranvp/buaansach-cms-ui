@@ -18,15 +18,27 @@
         </el-row>
       </el-header>
       <el-main class="full-size bg-white">
+        <el-row type="flex" align="middle" class="padding-5">
+          <el-col class="text-center">
+            <el-checkbox v-model="showNewCustomer">Đăng ký</el-checkbox>
+          </el-col>
+          <el-col class="text-center">
+            <el-checkbox v-model="showCustomerPurchase">Thanh toán</el-checkbox>
+          </el-col>
+        </el-row>
+        <el-divider class="margin-0"></el-divider>
         <template v-for="noti in listNotification">
           <el-alert :closable="false" class="pointer full-width padding-5-10"
+                    v-if="noti.type === 'NEW_CUSTOMER' && showNewCustomer ||
+                    noti.type === 'CUSTOMER_PURCHASE' && showCustomerPurchase"
                     :type="noti.status ==='UNSEEN' ? 'warning' : ''"
-                    :key="noti.customerPhone">
+                    :key="noti.id">
             <el-row class="full-size" type="flex" align="middle">
               <el-col @click.native="seenNotification(noti)">
                 <div class="padding-10-0 text-small">
-                  <el-tag type="info" size="mini">{{noti.customerPhone}}</el-tag>
-                  <span> đã đăng ký</span>
+                  <el-tag :type="noti.type === 'NEW_CUSTOMER' ? 'info' : 'success'" size="mini">{{noti.customerPhone}}
+                  </el-tag>
+                  <span> {{noti.message}}</span>
                 </div>
               </el-col>
               <el-button @click="closeNotification(noti)" size="mini" type="text">
@@ -34,7 +46,8 @@
               </el-button>
             </el-row>
           </el-alert>
-          <el-divider class="margin-0" :key="noti.createdDate.toString()"></el-divider>
+          <el-divider v-if="noti.type === 'NEW_CUSTOMER' && showNewCustomer ||
+                    noti.type === 'CUSTOMER_PURCHASE' && showCustomerPurchase" class="margin-0" :key="noti.id"></el-divider>
         </template>
       </el-main>
       <el-footer height="auto">
@@ -66,6 +79,12 @@
         listUnseen: state => state.customerCare.listNotification.filter(item => item.status === "UNSEEN"),
       })
     },
+    data() {
+      return {
+        showNewCustomer: true,
+        showCustomerPurchase: true,
+      };
+    },
     methods: {
       markAllAsRead() {
         this.$store.commit("customerCare/MARK_ALL_AS_READ");
@@ -73,7 +92,7 @@
       seenNotification(noti) {
         this.$store.commit("customerCare/MARK_AS_READ", noti);
       },
-      closeNotification(noti){
+      closeNotification(noti) {
         this.$store.commit("customerCare/CLOSE_NOTIFICATION", noti);
       },
       clearAllNotification() {
