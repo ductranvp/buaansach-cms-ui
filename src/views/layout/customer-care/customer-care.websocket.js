@@ -68,7 +68,7 @@ const CustomerCareWebsocket = {
           notificationType = "NEW_CUSTOMER";
           message = " đã đăng ký";
           break;
-        case WebSocketConstants.GUEST_CREATE_ORDER:
+        case WebSocketConstants.GUEST_CREATE_CUSTOMER:
           notificationType = "NEW_CUSTOMER";
           message = " đã đăng ký";
           break;
