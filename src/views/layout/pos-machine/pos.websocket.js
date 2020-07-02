@@ -75,7 +75,9 @@ const PosWebsocket = {
     playAudio() {
       if (localStorage.getItem("muteSound") !== "yes") {
         let sound = document.getElementById("notification_sound");
-        if (sound) sound.play();
+        if (sound && sound.paused) {
+          sound.play();
+        }
       }
     },
     onMessageReceived(payload) {

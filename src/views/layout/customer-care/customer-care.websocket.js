@@ -56,7 +56,9 @@ const CustomerCareWebsocket = {
     playAudio() {
       if (localStorage.getItem("muteCustomerSound") !== "yes") {
         let sound = document.getElementById("new_customer_sound");
-        if (sound) sound.play();
+        if (sound && sound.paused) {
+          sound.play();
+        }
       }
     },
     async onMessageReceived(payload) {
