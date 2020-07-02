@@ -113,7 +113,7 @@
       defaultStart.setHours(0, 0, 0, 0);
 
       return {
-        isLoading: true,
+        isLoading: false,
         dateFormat: 'HH:mm:ss dd/MM/yyyy',
         pickerOptions: {
           shortcuts: [

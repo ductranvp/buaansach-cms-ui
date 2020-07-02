@@ -113,7 +113,9 @@
               await this.$store.dispatch("user/login", this.loginForm);
               this.redirect();
             } catch (error) {
-              NotificationUtils.error(error.message || error.data.message);
+              let message = error.message || error.data.message;
+              if(message.toLowerCase().includes("bad credentials")) message = "Sai tên đăng nhập hoặc mật khẩu";
+              NotificationUtils.error(message);
               this.isLoading = false;
             }
           } else {

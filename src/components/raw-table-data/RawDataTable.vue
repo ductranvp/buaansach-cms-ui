@@ -39,7 +39,7 @@
         <!-- action definitions here -->
       </slot>
     </el-table>
-    <el-row type="flex" justify="end" class="margin-top-10">
+    <el-row v-if="showPagination" type="flex" justify="end" class="margin-top-10">
       <el-pagination
         background
         @current-change="onPageChange"
@@ -82,6 +82,10 @@
         }
       },
       config: Object,
+      showPagination: {
+        type: Boolean,
+        default: true
+      }
     },
     created() {
       this.renderTable();

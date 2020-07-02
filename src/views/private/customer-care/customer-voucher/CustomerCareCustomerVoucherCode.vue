@@ -1,13 +1,16 @@
 <template>
   <el-container class="full-size padding-10" direction="vertical">
     <el-tabs v-model="activeName">
-      <el-tab-pane label="Khách hàng mới" name="listUnsentVoucher">
+      <el-tab-pane lazy label="Khách hàng mới" name="listUnsentVoucher">
         <list-unsent-voucher/>
       </el-tab-pane>
-      <el-tab-pane label="Tất cả khách hàng" name="listAllVoucher">
+      <el-tab-pane lazy label="Tất cả khách hàng" name="listAllVoucher">
         <list-all-voucher/>
       </el-tab-pane>
-      <el-tab-pane label="Thống kê" name="customerStatistic">
+      <el-tab-pane lazy label="Khách đã thanh toán" name="listCustomerOrder">
+        <customer-order />
+      </el-tab-pane>
+      <el-tab-pane lazy label="Thống kê" name="customerStatistic">
         <customer-statistic/>
       </el-tab-pane>
     </el-tabs>
@@ -18,10 +21,11 @@
   import ListUnsentVoucher from "@/views/private/customer-care/customer-voucher/ListUnsentVoucher";
   import ListAllVoucher from "@/views/private/customer-care/customer-voucher/ListAllVoucher";
   import CustomerStatistic from "@/views/private/customer-care/customer-voucher/CustomerStatistic";
+  import CustomerOrder from "@/views/private/customer-care/customer-order/CustomerOrder";
 
   export default {
     name: "CustomerCareCustomerVoucherCode",
-    components: {CustomerStatistic, ListAllVoucher, ListUnsentVoucher},
+    components: {CustomerOrder, CustomerStatistic, ListAllVoucher, ListUnsentVoucher},
     created() {
 
     },
