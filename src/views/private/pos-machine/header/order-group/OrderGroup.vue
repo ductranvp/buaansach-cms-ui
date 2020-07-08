@@ -84,10 +84,10 @@
           <span v-else>0</span>
         </el-button>
       </el-row>
-      <el-row class="row-item" type="flex" align="middle">
-        <el-button @click="resetAll" type="info" class="full-size text-left">
+      <el-row v-if="turnOnOrderGroup" class="row-item" type="flex" align="middle">
+        <el-button @click="changeOrderGroupStatus(false)" type="danger" class="full-size text-left">
           <i class="el-icon-refresh"></i>
-          <span>Đặt về mặc định</span>
+          <span>Tắt cộng đồn đơn</span>
         </el-button>
       </el-row>
     </el-dropdown-menu>
