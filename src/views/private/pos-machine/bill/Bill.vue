@@ -13,6 +13,7 @@
     computed: {
       ...mapState({
         currentStore: state => state.posMachine.currentStore,
+        selectedSeat: state => state.posMachine.selectedSeat,
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         totalAmount: state => state.posMachine.currentOrder.totalAmount,
@@ -91,6 +92,21 @@
         let meta = "<table>";
         meta += "<tr><td>Mã đơn: " + this.currentOrder.orderCode + "</td></tr>";
         meta += "<tr><td>Ngày bán: " + this.getDate() + "</td></tr>";
+        switch (this.selectedSeat.areaType) {
+          case "IN_STORE":
+            meta += "<tr><td>Vị trí: " + this.selectedSeat.seatName + " - " + this.selectedSeat.areaName + "</td></tr>";
+            break;
+          case "TAKE_AWAY":
+            meta += "<tr><td>Hình thức: Mang về</td></tr>";
+            break;
+          case "ONLINE":
+            meta += "<tr><td>Hình thức: Đặt online</td></tr>";
+            break;
+          case "TEST":
+            meta += "<tr><td>Hình thức: Test</td></tr>";
+            break;
+          default: break;
+        }
         meta += "</table>";
         return meta;
       },
@@ -138,10 +154,10 @@
         tableContent += "</table>";
         tableContent += "<div class='divider'></div>";
         tableContent += "<table>";
-        tableContent += "<tr><th>THANH TOÁN</th><td class='text-right'>" + this.formatPrice(this.payAmount) + "</td></tr>";
+        tableContent += "<tr><th>THANH TOÁN</th><td class='text-right'><b>" + this.formatPrice(this.payAmount) + "</b></td></tr>";
         tableContent += "<tr><th>TIỀN KHÁCH ĐƯA</th><td class='text-right'>" + this.formatPrice(customerPay) + "</td></tr>";
         tableContent += "<tr><th>TIỀN TRẢ LẠI</th><td class='text-right'>" + this.formatPrice(customerPay - this.payAmount) + "</td></tr>";
-        tableContent += "<tr><td colspan='2'><div class='text-center'>(Giá đã bao gồm thuế GTGT)</div></td></tr>";
+        // tableContent += "<tr><td colspan='2'><div class='text-center'>(Giá đã bao gồm thuế GTGT)</div></td></tr>";
         tableContent += "</table>";
         return tableContent;
       },

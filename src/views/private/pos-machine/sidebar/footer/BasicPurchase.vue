@@ -154,6 +154,7 @@
     components: {CreateCustomerDialog, Bill},
     computed: {
       ...mapState({
+        turnOnOrderGroup: state => state.posMachine.turnOnOrderGroup,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
         selectedSeat: state => state.posMachine.selectedSeat,
@@ -352,6 +353,20 @@
           this.isLoading = false;
           vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(customerPay * 1000)), function () {
             // this function is called when print is done;
+
+            // if order group is turned on
+            if (vm.turnOnOrderGroup){
+              let temp = {
+                orderGuid: vm.currentOrder.guid,
+                seatName: vm.selectedSeat.seatName,
+                areaName: vm.selectedSeat.areaName,
+                totalAmount: vm.totalAmount,
+                payAmount: vm.payAmount,
+                discountAmount: vm.discountAmount,
+              };
+              vm.$store.commit("posMachine/ADD_ORDER_GROUP", temp);
+            }
+
             vm.$store.dispatch("posMachine/printDone");
             vm.customerPay = null;
             MessageUtils.success("Thanh toán thành công");

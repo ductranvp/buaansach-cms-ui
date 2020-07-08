@@ -46,6 +46,7 @@
         async created() {
             await this.$store.dispatch("posMachine/initState", this.$route.params.storeGuid);
             await this.$store.dispatch("posMachine/getStoreNotification", this.$route.params.storeGuid);
+            await this.$store.dispatch("posMachine/getStoreOrderGroup", this.$route.params.storeGuid);
         }
     };
 </script>

@@ -4,7 +4,7 @@
       <el-row class="full-size" type="flex" align="middle">
         <el-col class="padding-left-5 hidden-sm-and-down">
           <el-row type="flex" align="middle">
-            <el-radio-group class="full-height" :fill="color.WARNING" v-model="displaySeatStatus" size="mini">
+            <el-radio-group class="full-height hidden-md-and-down" :fill="color.WARNING" v-model="displaySeatStatus" size="mini">
               <el-radio-button class="full-height no-border-radius" v-for="status in seatStatus" :key="status.value"
                                :label="status.value">
                 <span>{{status.label}}</span>
@@ -40,6 +40,7 @@
             <el-button v-popover:guidePopover class="bg-yellowgreen no-border" size="mini">
               <span><i class="el-icon-help"></i><span>Chú thích</span></span>
             </el-button>
+            <order-group/>
           </el-row>
         </el-col>
         <div class="text-right padding-right-5">
@@ -86,9 +87,11 @@
   import Constants from "@/utils/constants";
   import MessageUtils from "@/utils/message.util";
   import hotkeys from "hotkeys-js";
+  import OrderGroup from "@/views/private/pos-machine/header/order-group/OrderGroup";
 
   export default {
     name: "PosSeat",
+    components: {OrderGroup},
     computed: {
       ...mapState({
         displaySeats: state => state.posMachine.displaySeats,
