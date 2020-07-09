@@ -7,9 +7,6 @@
       <el-tab-pane lazy label="Tất cả khách hàng" name="listAllVoucher">
         <list-all-voucher/>
       </el-tab-pane>
-      <el-tab-pane lazy label="Khách đã thanh toán" name="listCustomerOrder">
-        <customer-order />
-      </el-tab-pane>
       <el-tab-pane lazy label="Thống kê" name="customerStatistic">
         <customer-statistic/>
       </el-tab-pane>
@@ -21,11 +18,10 @@
   import ListUnsentVoucher from "@/views/private/customer-care/customer-voucher/ListUnsentVoucher";
   import ListAllVoucher from "@/views/private/customer-care/customer-voucher/ListAllVoucher";
   import CustomerStatistic from "@/views/private/customer-care/customer-voucher/CustomerStatistic";
-  import CustomerOrder from "@/views/private/customer-care/customer-order/CustomerOrder";
 
   export default {
-    name: "CustomerCareCustomerVoucherCode",
-    components: {CustomerOrder, CustomerStatistic, ListAllVoucher, ListUnsentVoucher},
+    name: "CustomerVoucherCode",
+    components: {CustomerStatistic, ListAllVoucher, ListUnsentVoucher},
     created() {
 
     },

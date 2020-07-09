@@ -33,7 +33,7 @@ const router = new VueRouter({
     {
       path: "/customer-care",
       component: () => import("@/views/layout/customer-care/CustomerCareLayout"),
-      redirect: "/customer-care/customer-voucher-code",
+      redirect: "/customer-care/dashboard",
       children: [...CustomerCareRoutes]
     },
     /* For partner to manage stores */

@@ -4,7 +4,9 @@
       <el-col>
         <div class="padding-0-10">
           <router-link to="/">
-            <img alt="logo" src="/logo_square.png" class="logo">
+            <el-tooltip content="Trang chủ">
+              <img alt="logo" src="/logo_square.png" class="logo">
+            </el-tooltip>
           </router-link>
         </div>
       </el-col>

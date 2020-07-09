@@ -14,7 +14,7 @@
           <i class="el-icon-s-tools"></i>
           <span class="hidden-sm-and-down">Quản trị viên</span>
         </el-button>
-        <el-button type="success" v-if="hasAnyRole(['ROLE_CUSTOMER_CARE'])" @click="goto('customerCareCustomerVoucherCodePage')">
+        <el-button type="success" v-if="hasAnyRole(['ROLE_CUSTOMER_CARE'])" @click="goto('customerCareDashboardPage')">
           <i class="fas el-icon-fa-comment"></i>
           <span class="hidden-sm-and-down">Chăm sóc khách hàng</span>
         </el-button>

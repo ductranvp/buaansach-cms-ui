@@ -22,7 +22,8 @@
     },
     "customerCare": {
       "customerCareDashboardPage": "Dashboard",
-      "customerCareCustomerVoucherCodePage": "Customer Voucher Code"
+      "customerCareCustomerVoucherCodePage": "Customer Voucher Code",
+      "customerCareCustomerOrderPurchasedPage": "Customer Order Purchased"
     },
     "posPage": "POS",
     "saleReportPage": "Sale Report",

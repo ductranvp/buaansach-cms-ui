@@ -2,22 +2,22 @@
   <el-container class="full-size" direction="vertical">
     <el-header class="bg-success  padding-0-10" height="50px">
       <el-row class="full-size" type="flex" align="middle">
-        <el-button size="small" type="success" @click="goBack">
+        <el-button size="medium" type="success" @click="goBack">
           <i class="el-icon-arrow-left"></i>
-          <span>Trở lại</span>
+          <span>Quay lại</span>
         </el-button>
         <el-col>
           <el-row justify="end" type="flex" align="middle">
             <div class="padding-right-10">
               <el-tooltip content="Tài khoản của bạn">
-                <el-button type="success">
+                <el-button size="medium" type="success">
                   <i class="el-icon-user"></i>
                   <span>{{currentUser.lastName + " " + currentUser.firstName}}</span>
                 </el-button>
               </el-tooltip>
             </div>
             <div class="padding-right-10">
-              <el-select placeholder="Chọn nhân viên" size="small" v-model="form.userLogin"
+              <el-select placeholder="Chọn nhân viên" size="medium" v-model="form.userLogin"
                          v-if="['STORE_MANAGER', 'STORE_OWNER'].includes(this.currentStoreUserRole)">
                 <el-option label="Tất cả nhân viên" value=""></el-option>
                 <el-option v-for="u in listStoreUser"
@@ -30,7 +30,7 @@
               <el-date-picker
                 :format="dateFormat"
                 v-model="dateRange"
-                size="small"
+                size="medium"
                 type="datetimerange"
                 :picker-options="pickerOptions"
                 range-separator="tới"
@@ -40,7 +40,7 @@
               </el-date-picker>
             </div>
             <div>
-              <el-button @click="handleGetReport" type="warning" size="small">Xem thống kê</el-button>
+              <el-button @click="handleGetReport" type="warning" size="medium">Xem thống kê</el-button>
             </div>
           </el-row>
         </el-col>

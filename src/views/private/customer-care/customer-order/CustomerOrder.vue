@@ -1,5 +1,5 @@
 <template>
-  <el-container direction="vertical" class="full-size">
+  <el-container direction="vertical" class="full-size padding-10">
     <el-header height="auto">
       <el-row :gutter="10" type="flex" align="middle">
         <el-col>
@@ -35,6 +35,7 @@
       <el-row type="flex" align="middle" justify="center" class="padding-10-0">
         <el-button @click="getListCustomerOrder" type="primary" :loading="isLoading">Lấy danh sách</el-button>
       </el-row>
+      <el-divider class="margin-0"></el-divider>
     </el-header>
     <el-main class="full-size" v-loading="isLoading">
       <raw-data-table highlight-current-row :data="listCustomerOrder" show-audit :custom-audit="['createdDate']"
@@ -244,5 +245,4 @@
 </script>
 
 <style scoped>
-
 </style>

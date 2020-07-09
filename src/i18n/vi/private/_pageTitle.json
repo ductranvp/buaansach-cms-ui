@@ -22,7 +22,8 @@
     },
     "customerCare": {
       "customerCareDashboardPage": "Bảng điều khiển",
-      "customerCareCustomerVoucherCodePage": "Mã khuyến mãi khách hàng"
+      "customerCareCustomerVoucherCodePage": "Mã khuyến mãi khách hàng",
+      "customerCareCustomerOrderPurchasedPage": "Khách hàng đã thanh toán"
     },
     "posPage": "Bán Hàng",
     "saleReportPage": "Thống kê",

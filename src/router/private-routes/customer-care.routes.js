@@ -13,9 +13,18 @@ const CustomerCareRoutes = [
   {
     path: "customer-voucher-code",
     name: "customerCareCustomerVoucherCodePage",
-    component: () => import("@/views/private/customer-care/customer-voucher/CustomerCareCustomerVoucherCode"),
+    component: () => import("@/views/private/customer-care/customer-voucher/CustomerVoucherCode"),
     meta: {
       title: "private.pageTitle.customerCare.customerCareCustomerVoucherCodePage",
+      roles: [Roles.CUSTOMER_CARE]
+    }
+  },
+  {
+    path: "customer-order-purchased",
+    name: "customerCareCustomerOrderPurchasedPage",
+    component: () => import("@/views/private/customer-care/customer-order/CustomerOrder"),
+    meta: {
+      title: "private.pageTitle.customerCare.customerCareCustomerOrderPurchasedPage",
       roles: [Roles.CUSTOMER_CARE]
     }
   }
