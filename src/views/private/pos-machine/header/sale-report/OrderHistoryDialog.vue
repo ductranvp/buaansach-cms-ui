@@ -145,7 +145,9 @@
           // additional status
           UPDATE_ORDER: "Gọi món",
           CHANGE_SEAT: "Chuyển bàn",
-          CHANGE_PHONE: "Cập nhật SĐT"
+          CHANGE_PHONE: "Cập nhật SĐT",
+          APPLY_VOUCHER: "Sử dụng mã khuyến mãi",
+          CANCEL_VOUCHER: "Hủy mã khuyến mãi",
         }
       };
     },
@@ -190,6 +192,9 @@
             if (arr[0] === "UPDATE_ORDER") {
               let temp = arr[3].split("*");
               metaData = temp[0] + " sản phẩm.";
+            }
+            if (arr[0] === "APPLY_VOUCHER") {
+              metaData = arr[3];
             }
           }
           let activity = {

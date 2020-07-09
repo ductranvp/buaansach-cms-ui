@@ -163,7 +163,9 @@
           // additional status
           UPDATE_ORDER: "Gọi món",
           CHANGE_SEAT: "Chuyển bàn",
-          CHANGE_PHONE: "Cập nhật SĐT"
+          CHANGE_PHONE: "Cập nhật SĐT",
+          APPLY_VOUCHER: "Sử dụng mã khuyến mãi",
+          CANCEL_VOUCHER: "Hủy mã khuyến mãi",
         },
         columns: {
           orderCode: {label: "Mã đơn", display: true},
@@ -216,7 +218,7 @@
       },
       parseHistory(history) {
         let events = history.split(";");
-
+        console.log(events);
         this.activities = [];
         events.forEach(e => {
           let arr = e.split("@");
