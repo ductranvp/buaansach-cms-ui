@@ -47,7 +47,14 @@
           </el-table-column>
         </template>
         <el-table-column label="Số điện thoại" prop="customerPhone" sortable></el-table-column>
-        <el-table-column label="LTT" prop="orderCount" width="50px">
+        <el-table-column prop="orderCount" width="50px">
+          <template slot="header">
+            <el-tooltip content="Lần thanh toán">
+              <span>
+                LTT
+              </span>
+            </el-tooltip>
+          </template>
         </el-table-column>
         <el-table-column label="Trạng thái" prop="customerCareStatus">
           <template slot-scope="{row}">

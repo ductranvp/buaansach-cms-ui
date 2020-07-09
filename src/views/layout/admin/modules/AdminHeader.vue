@@ -1,7 +1,9 @@
 <template>
   <el-header height="50px">
     <el-row class="full-size padding-right-10 padding-left-10" type="flex" align="middle">
-      <hamburger :is-active="!adminSidebarCollapse" @toggleClick="toggleSidebar"/>
+      <el-tooltip content="Ẩn / Hiện thanh công cụ">
+        <hamburger :is-active="!adminSidebarCollapse" @toggleClick="toggleSidebar"/>
+      </el-tooltip>
       <el-col class="text-right">
         <el-button size="medium" type="primary" plain @click="goto('logout')">
           <span>Đăng xuất</span>

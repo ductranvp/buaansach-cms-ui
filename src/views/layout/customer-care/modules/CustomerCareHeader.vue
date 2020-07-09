@@ -37,7 +37,9 @@
           </el-button>
         </el-badge>
       </div>
-      <hamburger :is-active="!showSidebar" @toggleClick="toggleSidebar"/>
+      <el-tooltip content="Ẩn / Hiện thanh công cụ">
+        <hamburger :is-active="!showSidebar" fill="#fff" @toggleClick="toggleSidebar"/>
+      </el-tooltip>
     </el-row>
   </el-header>
 </template>

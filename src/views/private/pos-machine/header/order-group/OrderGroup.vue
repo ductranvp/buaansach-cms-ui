@@ -2,7 +2,7 @@
   <el-dropdown @visible-change="visibleChange" trigger="click" :hide-on-click="false" placement="bottom">
 
       <el-button class="bg-yellowgreen no-border hidden-sm-and-down" size="small" type="success">
-        <i class="el-icon-circle-plus"></i>
+        <i class="el-icon-document-add"></i>
         <span class="hidden-md-and-down">Cộng dồn đơn</span>
       </el-button>
     <el-tooltip content="Bấm để tắt cộng dồn đơn" v-if="turnOnOrderGroup" class="hidden-sm-and-down">
@@ -86,8 +86,14 @@
       </el-row>
       <el-row v-if="turnOnOrderGroup" class="row-item" type="flex" align="middle">
         <el-button @click="changeOrderGroupStatus(false)" type="danger" class="full-size text-left">
-          <i class="el-icon-refresh"></i>
+          <i class="el-icon-close"></i>
           <span>Tắt cộng đồn đơn</span>
+        </el-button>
+      </el-row>
+      <el-row v-else class="row-item" type="flex" align="middle">
+        <el-button @click="changeOrderGroupStatus(true)" type="success" class="full-size text-left">
+          <i class="el-icon-switch-button"></i>
+          <span>Bật cộng đồn đơn</span>
         </el-button>
       </el-row>
     </el-dropdown-menu>
