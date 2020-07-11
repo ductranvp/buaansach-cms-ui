@@ -18,6 +18,7 @@
           <el-form-item prop="password">
             <input-label label="Mật khẩu" required/>
             <el-input autocomplete="new-password"
+                      :disabled="isEdit"
                       ref="password"
                       maxlength="100"
                       v-model="form.password"
@@ -182,10 +183,16 @@
         }
       },
       create() {
+        this.formRules.password = [
+          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+          {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"},
+          {min: 4, message: this.$t("common.entity.validation.minlength", {min: 4}), trigger: "blur"}
+        ];
         this.isEdit = false;
         this.show();
       },
       edit(user) {
+        this.formRules.password = [];
         this.form = AppUtils.deepCopy(user);
         this.isEdit = true;
         this.show();
@@ -210,9 +217,13 @@
           if (valid) {
             try {
               vm.isLoading = true;
-              await AdminUserService.createUser(vm.form);
+              if (vm.isEdit) {
+                await AdminUserService.updateUser(vm.form);
+              } else {
+                await AdminUserService.createUser(vm.form);
+              }
               vm.isLoading = false;
-              vm.$emit("created");
+              vm.$emit("saved");
               vm.hide();
             } catch (error) {
               vm.isLoading = false;

@@ -49,7 +49,8 @@
           </el-table-column>
         </template>
         <template v-for="key in Object.keys(columns)">
-          <el-table-column :key="key" :prop="key" :label="columns[key].label" v-if="columns[key].display" :sortable="columns[key].sortable">
+          <el-table-column :key="key" :prop="key" :label="columns[key].label" v-if="columns[key].display"
+                           :sortable="columns[key].sortable">
             <template slot-scope="{row}">
               <div v-if="columns[key].type === 'time'">
                 <span v-if="row[key]">{{row[key] | moment("HH:mm DD/MM/YYYY")}}</span>
@@ -98,20 +99,23 @@
         <template slot="action">
           <el-table-column width="130px" label="Thao tác">
             <template slot-scope="{ row }">
-              <el-button
-                size="mini"
-                type="warning"
-                plain
-                @click="handleChangePassword(row)"
-              >
-                <span>Đổi mật khẩu</span>
-              </el-button>
+              <el-dropdown>
+                <el-button size="mini"
+                           type="warning"
+                           plain>
+                  Chọn<i class="el-icon-arrow-down el-icon--right"></i>
+                </el-button>
+                <el-dropdown-menu slot="dropdown">
+                  <el-dropdown-item @click.native="editUser(row)">Cập nhật thông tin</el-dropdown-item>
+                  <el-dropdown-item @click.native="handleChangePassword(row)">Đổi mật khẩu</el-dropdown-item>
+                </el-dropdown-menu>
+              </el-dropdown>
             </template>
           </el-table-column>
         </template>
       </data-table>
     </div>
-    <create-or-update-user-dialog @created="reloadTableData" ref="userDialog"/>
+    <create-or-update-user-dialog @saved="reloadTableData" ref="userDialog"/>
   </el-container>
 </template>
 

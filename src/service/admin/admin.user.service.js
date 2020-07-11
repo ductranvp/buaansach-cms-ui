@@ -6,6 +6,9 @@ const AdminUserService = {
   createUser(payload) {
     return request.post(baseUrl + "/create", payload);
   },
+  updateUser(payload) {
+    return request.put(baseUrl + "/update", payload);
+  },
   getPageUser(params) {
     return request.get(baseUrl + "/list", {
       params: params
