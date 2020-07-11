@@ -79,7 +79,7 @@
         <el-col :span="11" :offset="2">
           <el-form-item prop="authorities">
             <input-label label="Quyền" required/>
-            <el-select multiple class="full-width" v-model="form.authorities">
+            <el-select :disabled="currentUser.login === form.login" multiple class="full-width" v-model="form.authorities">
               <el-option
                 v-for="lang in roles"
                 :key="lang.value"
@@ -106,9 +106,15 @@
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import AdminUserService from "@/service/admin/admin.user.service";
+  import {mapState} from "vuex";
 
   export default {
     name: "CreateOrUpdateUserDialog",
+    computed: {
+      ...mapState({
+        currentUser: state => state.user.info
+      })
+    },
     data() {
       return {
         dialogFormVisible: false,
@@ -183,6 +189,16 @@
         }
       },
       create() {
+        this.form = {
+          firstName: null,
+          lastName: null,
+          login: null,
+          password: null,
+          email: null,
+          phone: null,
+          langKey: "vi",
+          authorities: [],
+        };
         this.formRules.password = [
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
           {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"},
