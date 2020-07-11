@@ -132,6 +132,7 @@
       },
       onVoucherCreated(voucher) {
         this.listVoucher.push(voucher);
+        this.getVoucherInventoryStatus();
       },
       createVoucher() {
         this.$refs.voucherDialog.create();

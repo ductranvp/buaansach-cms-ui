@@ -48,7 +48,7 @@
             <el-button v-if="row.voucherCodeUsable" @click="toggleVoucherCode(row)" type="danger" size="mini">
               <span>Vô hiệu hóa</span>
             </el-button>
-            <el-button v-else @click="toggleVoucherCode(row)" type="success" size="mini">Kích hoạt</el-button>
+            <el-button :disabled="row.voucherCodeClaimStatus === 'ARCHIVED'" v-else @click="toggleVoucherCode(row)" type="success" size="mini">Kích hoạt</el-button>
           </template>
         </el-table-column>
       </raw-data-table>
@@ -101,6 +101,10 @@
             voucherCodeClaimStatus: row.voucherCodeClaimStatus
           };
           await AdminVoucherCodeService.updateVoucherCode(payload);
+          if (row.voucherCodeClaimStatus === "ARCHIVED" && row.voucherCodeUsable){
+            await AdminVoucherCodeService.toggleVoucherCode(row.voucherCode);
+            row.voucherCodeUsable = !row.voucherCodeUsable;
+          }
         } catch (e) {
           NotificationUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau");
         }
