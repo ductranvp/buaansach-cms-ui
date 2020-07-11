@@ -102,7 +102,7 @@
               <el-dropdown>
                 <el-button size="mini"
                            type="warning"
-                           :disabled="row.login === 'anonymousUser'"
+                           :disabled="row.login === 'anonymousUser' || row.login === 'systembas'"
                            plain>
                   Chọn<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
