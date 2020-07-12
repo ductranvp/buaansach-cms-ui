@@ -50,10 +50,12 @@
             <el-tag type="info">Chưa lưu</el-tag>
           </el-col>
         </el-row>
-        <el-button @click="removeUnsavedOrderProduct(item)" type="text"
-                   class="padding-10 text-info text-very-large">
-          <i class="el-icon-close"></i>
-        </el-button>
+        <el-tooltip content="Xóa món ăn">
+          <el-button @click="removeUnsavedOrderProduct(item)" type="text"
+                     class="padding-10 text-info text-very-large">
+            <i class="el-icon-close"></i>
+          </el-button>
+        </el-tooltip>
       </el-row>
       <el-row type="flex" align="middle" class="padding-0-10">
         <div class="padding-right-10">

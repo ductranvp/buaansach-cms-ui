@@ -36,14 +36,17 @@
             </el-col>
           </template>
         </el-row>
-        <el-button
-          v-if="item.orderProductStatus !== 'SERVED' &&
+        <el-tooltip content="Hủy món ăn">
+          <el-button
+            v-if="item.orderProductStatus !== 'SERVED' &&
           item.orderProductStatus.indexOf('CANCELLED') === -1 &&
           currentOrder.orderStatus !== 'CREATED'"
-          @click="cancelOrderProduct(item)" type="text"
-          class="padding-10 text-info text-very-large">
-          <i class="el-icon-close"></i>
-        </el-button>
+            @click="cancelOrderProduct(item)" type="text"
+            class="padding-10 text-info text-very-large">
+            <i class="el-icon-close"></i>
+          </el-button>
+        </el-tooltip>
+
       </el-row>
       <el-row v-if="item.orderProductNote" type="flex" align="middle" class="full-size padding-top-5">
         <el-tag type="info" class="order-note" size="medium">

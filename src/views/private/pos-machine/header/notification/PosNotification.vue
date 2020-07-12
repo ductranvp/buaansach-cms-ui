@@ -7,91 +7,97 @@
         </el-button>
       </el-badge>
     </el-tooltip>
-    <el-dropdown-menu class="padding-0 notification" slot="dropdown">
-      <el-row class="bg-success text-light top-toolbar" type="flex" align="middle">
-        <el-col>
-          <el-button @click="markAllAsRead" type="success" class="full-width no-border-radius" size="medium">
-            <i class="fas el-icon-fa-envelope-open"></i>
-            <span>Đã xem tất cả</span>
-          </el-button>
+    <el-dropdown-menu class="padding-0 notification" slot="dropdown" v-loading="isLoading">
+      <el-row class="bg-success text-light top-toolbar padding-5" type="flex" align="middle">
+        <el-col class="padding-right-10">
+          <span class="padding-right-10 text-bold">Thông báo gọi món ngày {{today | moment("DD/MM/YYYY")}}</span>
         </el-col>
-        <el-col class="text-center">
-          <el-checkbox v-model="deleteWhenClick">
-            <span class="text-light">Xóa khi bấm xem</span>
-          </el-checkbox>
-        </el-col>
+        <el-button size="mini" type="warning" @click="reloadNotification">Làm mới</el-button>
       </el-row>
       <el-dropdown-item v-if="!listNotification.length">
         <el-row type="flex" align="middle" justify="center" class="padding-50-10">
-          <span>Chưa có thông báo</span>
+          <span>Chưa có thông báo nào</span>
         </el-row>
       </el-dropdown-item>
-      <el-dropdown-item @click.native="clickNotification(noti)" v-else class="padding-0"
-                        v-for="(noti, index) in listNotification" :key="index">
-        <notification-item :data="noti"/>
-      </el-dropdown-item>
+      <template v-else>
+        <el-dropdown-item class="padding-0" v-for="(noti) in listNotification" :key="noti.guid">
+          <notification-item :notification="noti"/>
+        </el-dropdown-item>
+      </template>
       <el-row class="bg-success text-light bottom-toolbar" type="flex" align="middle">
         <el-col>
-          <el-button @click="clearSeenNotifications" type="info" size="small" class="full-width no-border-radius">
-            <i class="fas el-icon-fa-eraser"></i>
-            <span>Xóa đã xem</span>
+          <el-button @click="hideSeenNotification" type="info" size="small" class="full-width no-border-radius">
+            <i class="fas el-icon-fa-eye-slash"></i>
+            <span>Ẩn thông báo đã xem</span>
           </el-button>
         </el-col>
         <el-col>
-          <el-button @click="clearAllNotification" type="info" size="small" class="full-width no-border-radius">
-            <i class="fas el-icon-fa-trash-alt"></i>
-            <span>Xóa tất cả</span>
+          <el-button @click="showHiddenNotification" type="info" size="small" class="full-width no-border-radius">
+            <i class="fas el-icon-fa-eye"></i>
+            <span>Các thông báo đã ẩn</span>
           </el-button>
         </el-col>
       </el-row>
     </el-dropdown-menu>
+    <hidden-notification-dialog ref="hiddenNotificationDialog"/>
   </el-dropdown>
 </template>
 
 <script>
   import {mapState} from "vuex";
   import NotificationItem from "@/views/private/pos-machine/header/notification/NotificationItem";
+  import HiddenNotificationDialog from "@/views/private/pos-machine/header/notification/HiddenNotificationDialog";
+  import PosStoreOrderService from "@/service/pos/pos.store-order.service";
   import MessageUtils from "@/utils/message.util";
 
   export default {
     name: "PosNotification",
-    components: {NotificationItem},
+    components: {HiddenNotificationDialog, NotificationItem},
     computed: {
       ...mapState({
-        selectedSeat: state => state.posMachine.selectedSeat,
-        currentStore: state => state.posMachine.currentStore,
-        listNotification: state => state.posMachine.storeNotifications,
-        allAreas: state => state.posMachine.allAreas,
-        listUnseen: state => state.posMachine.storeNotifications.filter(item => item.status === 'UNSEEN'),
+        listNotification: state => state.posMachine.storeNotifications.filter(item => !item.hidden),
+        listUnseen: state => state.posMachine.storeNotifications.filter(item => !item.hidden && item.storeOrderStatus === 'UNSEEN'),
+        listSeen: state => state.posMachine.storeNotifications.filter(item => !item.hidden && item.storeOrderStatus === 'SEEN'),
       })
     },
     data() {
+      let today = new Date();
+      today.setHours(0, 0, 0, 0);
       return {
-        deleteWhenClick: false
+        today: today,
+        isLoading: false,
+        showHidden: false
       };
     },
     methods: {
-      clickNotification(notification) {
-        if (this.currentStore.storeStatus === 'CLOSED') {
-          MessageUtils.error("Cửa hàng đã đóng cửa");
-          return;
-        }
-        if (this.selectedSeat.guid !== notification.seat.guid) {
-          this.$store.dispatch("posMachine/selectSeat", notification.seat);
-        }
-        this.$store.commit("posMachine/MARK_AS_READ", notification);
-        if (this.deleteWhenClick) {
-          this.$store.commit("posMachine/REMOVE_NOTIFICATION", notification);
+      async reloadNotification() {
+        try {
+          this.isLoading = true;
+          let startDate = new Date();
+          startDate.setHours(0, 0, 0, 0);
+          await this.$store.dispatch("posMachine/getStoreNotification", {
+            storeGuid: this.$route.params.storeGuid,
+            startDate: startDate,
+            hidden: null,
+          });
+          this.isLoading = false;
+        } catch (e) {
+          this.isLoading = false;
+          MessageUtils.error("Lỗi tải thông báo");
         }
       },
-      markAllAsRead() {
-        this.$store.commit("posMachine/MARK_ALL_AS_READ");
+      async hideSeenNotification() {
+        let listGuid = this.listSeen.map(item => item.guid);
+        let payload = {
+          storeGuid: this.$route.params.storeGuid,
+          listGuid: listGuid,
+          hidden: true
+        };
+        await PosStoreOrderService.toggleVisibility(payload);
+        this.reloadNotification();
       },
-      clearSeenNotifications() {
-        this.$store.commit("posMachine/CLEAR_SEEN_NOTIFICATION");
-      },
-      clearAllNotification() {
-        this.$store.commit("posMachine/CLEAR_STORE_NOTIFICATIONS");
+      showHiddenNotification() {
+        this.$refs.hiddenNotificationDialog.show();
       }
     }
   };
@@ -124,10 +130,10 @@
   }
 
   .notification {
-    border-radius: 0;
+    border-radius: 8px;
     border: none;
     position: relative;
-    width: 300px;
+    width: 400px;
     max-height: 500px;
     overflow-y: auto;
     overflow-x: hidden;

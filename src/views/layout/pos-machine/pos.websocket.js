@@ -82,49 +82,42 @@ const PosWebsocket = {
     },
     onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
-      const seatData = this.allSeats[data.payload];
-      const id = (new Date()).getTime() + "" + seatData.guid;
+      const seatData = this.allSeats[data.payload.seatGuid];
       const notification = {
-        id: id,
-        title: "Gọi món",
-        content: seatData.seatName + " " + seatData.areaName + " đã mọi món",
-        time: new Date(),
-        status: "UNSEEN",
-        watched: false,
+        ...data.payload,
+        title: seatData.seatName + " - " + seatData.areaName + " đã gọi món.",
         seat: seatData
       };
 
       switch (data.message) {
         case WebSocketConstants.GUEST_CREATE_ORDER:
-          if (this.selectedSeat.guid === seatData.guid) {
-            this.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
-              this.scrollToEnd();
-            });
-          } else {
-            this.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
-              targetSeat: seatData,
-              seatStatus: "NON_EMPTY",
-              seatServiceStatus: "UNFINISHED"
-            });
-          }
+          handleSeatChange(this);
+          break;
+        case WebSocketConstants.POS_UPDATE_ORDER:
+          this.$store.commit("posMachine/ADD_NOTIFICATION", notification);
           break;
         case WebSocketConstants.GUEST_UPDATE_ORDER:
-          if (this.selectedSeat.guid === seatData.guid) {
-            this.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
-              this.scrollToEnd();
-            });
-          } else {
-            this.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
-              targetSeat: seatData,
-              seatStatus: "NON_EMPTY",
-              seatServiceStatus: "UNFINISHED"
-            });
-          }
+          handleSeatChange(this);
           this.$store.commit("posMachine/ADD_NOTIFICATION", notification);
-          MessageUtils.info(seatData.seatName + " " + seatData.areaName + " đã gọi món");
+          MessageUtils.info(notification.title);
           this.playAudio();
           break;
       }
+
+      function handleSeatChange(vm) {
+        if (vm.selectedSeat.guid === seatData.guid) {
+          vm.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
+            vm.scrollToEnd();
+          });
+        } else {
+          vm.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
+            targetSeat: seatData,
+            seatStatus: "NON_EMPTY",
+            seatServiceStatus: "UNFINISHED"
+          });
+        }
+      }
+
     }
   }
 };
