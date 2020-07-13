@@ -16,7 +16,7 @@
         </el-col>
         <div class="text-right padding-right-5">
           <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshStoreProduct">
-            <span><i class="el-icon-refresh"  v-if="!isRefreshing"></i><span>Làm mới</span></span>
+            <span><i class="el-icon-refresh" v-if="!isRefreshing"></i><span>Làm mới</span></span>
           </el-button>
         </div>
       </el-row>
@@ -61,8 +61,8 @@
 
             <div style="position: absolute; top: 0; right: 0">
               <el-dropdown trigger="click" placement="bottom-start">
-                <el-button class="padding-5-10" type="info" size="mini">
-                  <i class="fas el-icon-fa-edit"></i>
+                <el-button class="padding-5-10 no-border-radius" type="info" size="mini" title="Sửa trạng thái">
+                    <i class="fas el-icon-fa-edit"></i>
                 </el-button>
                 <el-dropdown-menu class="padding-0" slot="dropdown">
                   <el-dropdown-item v-if="storeProduct.storeProductStatus === 'AVAILABLE'"

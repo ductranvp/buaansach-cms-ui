@@ -57,7 +57,7 @@
             </el-col>
           </el-row>
         </template>
-        <el-row type="flex" align="middle" class="row-item bg-yellowgreen">
+        <el-row type="flex" align="middle" class="row-item bg-yellowgreen text-large text-bold">
           <el-col :span="11">
             <span>Tổng cộng</span>
           </el-col>
