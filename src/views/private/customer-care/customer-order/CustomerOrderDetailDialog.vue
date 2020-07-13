@@ -218,7 +218,6 @@
       },
       parseHistory(history) {
         let events = history.split(";");
-        console.log(events);
         this.activities = [];
         events.forEach(e => {
           let arr = e.split("@");

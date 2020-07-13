@@ -1,10 +1,10 @@
 <template>
   <el-dropdown @visible-change="visibleChange" trigger="click" :hide-on-click="false" placement="bottom">
 
-      <el-button class="bg-yellowgreen no-border hidden-sm-and-down" size="small" type="success">
-        <i class="el-icon-document-add"></i>
-        <span class="hidden-md-and-down">Cộng dồn đơn</span>
-      </el-button>
+    <el-button class="bg-yellowgreen no-border hidden-sm-and-down" size="small" type="success">
+      <i class="el-icon-document-add"></i>
+      <span class="hidden-md-and-down">Cộng dồn đơn</span>
+    </el-button>
     <el-tooltip content="Bấm để tắt cộng dồn đơn" v-if="turnOnOrderGroup" class="hidden-sm-and-down">
       <el-tag size="small" type="success" class="pointer" @click.native="changeOrderGroupStatus(false)">
         <span>Đang bật</span>
@@ -103,6 +103,7 @@
 
 <script>
   import {mapState} from "vuex";
+  import MessageBoxUtils from "@/utils/message-box.util";
 
   export default {
     name: "OrderGroup",
@@ -135,10 +136,17 @@
       visibleChange(status) {
 
       },
-      changeOrderGroupStatus(status) {
-        this.$store.commit("posMachine/SET_TURN_ON_ORDER_GROUP", status);
+      async changeOrderGroupStatus(status) {
         if (!status) {
-          this.resetAll();
+          try {
+            await MessageBoxUtils.confirmPromise("Dữ liệu đang cộng dồn sẽ bị mất. Tiếp tục?");
+            this.$store.commit("posMachine/SET_TURN_ON_ORDER_GROUP", status);
+            this.resetAll();
+          } catch (e) {
+            // cancel
+          }
+        } else {
+          this.$store.commit("posMachine/SET_TURN_ON_ORDER_GROUP", status);
         }
       },
       resetAll() {

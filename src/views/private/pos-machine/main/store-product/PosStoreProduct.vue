@@ -27,7 +27,7 @@
                 class="margin-bottom-10"
                 :span="4"
                 :key="storeProduct.guid">
-          <el-card class="pointer"
+          <el-card v-loading="storeProduct.isLoading" class="pointer"
                    style="position: relative"
                    :body-style="{ padding: '0px' }"
                    shadow="never">
@@ -66,10 +66,10 @@
                 </el-button>
                 <el-dropdown-menu class="padding-0" slot="dropdown">
                   <el-dropdown-item v-if="storeProduct.storeProductStatus === 'AVAILABLE'"
-                                    @click.native="changeStoreProductStatus(storeProduct.guid, 'UNAVAILABLE')">
+                                    @click.native="changeStoreProductStatus(storeProduct, 'UNAVAILABLE')">
                     <span>Hết hàng</span>
                   </el-dropdown-item>
-                  <el-dropdown-item @click.native="changeStoreProductStatus(storeProduct.guid, 'AVAILABLE')" v-else>
+                  <el-dropdown-item @click.native="changeStoreProductStatus(storeProduct, 'AVAILABLE')" v-else>
                     <span>Đã có hàng</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -155,14 +155,17 @@
         this.isLoading = false;
         cb([]);
       },
-      async changeStoreProductStatus(storeProductGuid, storeProductStatus) {
+      async changeStoreProductStatus(storeProduct, storeProductStatus) {
         const payload = {
-          storeProductGuid: storeProductGuid,
+          storeProductGuid: storeProduct.guid,
           storeProductStatus: storeProductStatus,
         };
         try {
+          this.$set(storeProduct, "isLoading", true);
           await this.$store.dispatch("posMachine/changeStoreProductStatus", payload);
+          this.$set(storeProduct, "isLoading", false);
         } catch (e) {
+          this.$set(storeProduct, "isLoading", false);
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
         }
       }
