@@ -2,6 +2,7 @@
   <div id="saved_order">
     <el-card :body-style="{position: 'relative', padding: '12px 0px'}" shadow="never"
              v-for="(item) in savedOrderProduct"
+             :class="item.orderProductGroup === activeOrderProductGroup ? 'is-highlight' : ''"
              :key="item.guid">
       <el-tag style="position: absolute; top: 0; left:0" size="mini" type="info" class="no-border-radius">
         <el-tooltip :content="$moment(item.createdDate).format('HH:mm:ss - DD/MM/YYYY')">
@@ -71,6 +72,7 @@
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         orderProductStatus: state => state.posMachine.orderProductStatus,
+        activeOrderProductGroup: state => state.posMachine.activeOrderProductGroup,
       })
     },
     data() {
@@ -126,7 +128,7 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .order-note {
     white-space: nowrap;
     text-overflow: ellipsis;
@@ -135,5 +137,9 @@
 
   /deep/ .el-card {
     border-bottom: 0;
+  }
+
+  .is-highlight {
+    background: $--color-warning-light;
   }
 </style>

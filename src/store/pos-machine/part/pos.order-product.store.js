@@ -8,6 +8,7 @@ const state = {
   savedOrderProduct: [],
   unsavedOrderProduct: [],
   orderProductStatus: PosOrderStoreUtil.orderProductStatus,
+  activeOrderProductGroup: null
 };
 const mutations = {
   SET_SAVED_ORDER_PRODUCT(state, savedOrderProduct) {
@@ -52,6 +53,9 @@ const mutations = {
   RESET_ORDER_PRODUCT(state) {
     state.savedOrderProduct = [];
     state.unsavedOrderProduct = [];
+  },
+  SET_ACTIVE_ORDER_PRODUCT_GROUP(state, orderProductGroup){
+    state.activeOrderProductGroup = orderProductGroup;
   }
 };
 const actions = {

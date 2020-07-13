@@ -49,6 +49,9 @@ const mutations = {
 };
 const actions = {
   selectSeat({state, commit, dispatch}, seat) {
+    // clear active order product group
+    commit("SET_ACTIVE_ORDER_PRODUCT_GROUP", null);
+
     if (state.unsavedOrderProduct.length) {
       MessageBoxUtils.confirm("Đơn hàng chưa được lưu, xác nhận đổi bàn?", function () {
         commit("SET_SELECTED_SEAT", seat);
