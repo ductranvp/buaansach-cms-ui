@@ -10,7 +10,7 @@
     <el-dropdown-menu class="padding-0 notification" slot="dropdown" v-loading="isLoading">
       <el-row class="bg-success text-light top-toolbar padding-5" type="flex" align="middle">
         <el-col class="padding-right-10">
-          <span class="padding-right-10 text-bold">Thông báo gọi món ngày {{today | moment("DD/MM/YYYY")}}</span>
+          <span class="padding-right-10 text-bold">Thông báo gọi món ({{today | moment("DD/MM/YYYY")}})</span>
         </el-col>
         <el-button size="mini" type="warning" @click="reloadNotification">Làm mới</el-button>
       </el-row>
@@ -103,7 +103,7 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .el-menu {
     border-right-width: 0;
   }
@@ -130,11 +130,12 @@
   }
 
   .notification {
-    border-radius: 8px;
     border: none;
+    border-radius: 0;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, .25);
     position: relative;
-    width: 400px;
-    max-height: 500px;
+    width: 380px;
+    max-height: 480px;
     overflow-y: auto;
     overflow-x: hidden;
     padding: 0;
@@ -151,12 +152,12 @@
   }
 
   .notification::-webkit-scrollbar-thumb {
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     background-color: #aaa;
   }
 
   .notification::-webkit-scrollbar-track {
-    border-radius: 10px;
+    /*border-radius: 10px;*/
     background-color: #F5F5F5;
   }
 </style>

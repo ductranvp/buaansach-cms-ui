@@ -22,10 +22,16 @@
                 <span v-else>{{notification.createdBy}}</span>
               </el-tag>
             </el-tooltip>
-            <el-tooltip placement="top" v-if="notification.firstSeenBy" content="Người xem">
+            <el-tooltip placement="top" v-if="notification.firstSeenBy" content="Người xem đầu">
               <el-tag class="margin-left-10" size="mini" type="info">
-                <i class="el-icon-view"></i>
+                <i class="fas el-icon-fa-eye"></i>
                 <span>{{notification.firstSeenBy}}</span>
+              </el-tag>
+            </el-tooltip>
+            <el-tooltip placement="top" v-if="notification.hidden && notification.firstHideBy" content="Người ẩn thông báo">
+              <el-tag class="margin-left-10" size="mini" type="info">
+                <i class="fas el-icon-fa-eye-slash"></i>
+                <span>{{notification.firstHideBy}}</span>
               </el-tag>
             </el-tooltip>
           </el-col>
@@ -122,10 +128,14 @@
 <style scoped>
   .notification-item {
     line-height: 24px;
-    border-bottom: 1px solid #ddd
+    border-bottom: 1px solid #bbb
   }
 
   .unseen-notification {
     background-color: #fdd488;
+  }
+
+  .notification-item i {
+    margin-right: 5px;
   }
 </style>

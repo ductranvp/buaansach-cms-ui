@@ -1,7 +1,7 @@
 <template>
   <el-dialog
     :visible.sync="dialogFormVisible"
-    title="Thông báo đã bị ẩn"
+    :title="listInvisibleNotification.length + ' thông báo đã bị ẩn'"
     :close-on-click-modal="false"
     :before-close="beforeClose"
     :destroy-on-close="true"
