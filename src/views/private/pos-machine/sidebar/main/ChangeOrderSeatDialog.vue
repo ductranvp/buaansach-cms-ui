@@ -94,6 +94,19 @@
         this.resetForm();
         done();
       },
+      async reloadNotification() {
+        try {
+          let startDate = new Date();
+          startDate.setHours(0, 0, 0, 0);
+          await this.$store.dispatch("posMachine/getStoreNotification", {
+            storeGuid: this.$route.params.storeGuid,
+            startDate: startDate,
+            hidden: null,
+          });
+        } catch (e) {
+          MessageUtils.error("Lỗi tải thông báo");
+        }
+      },
       submit() {
         const vm = this;
         this.$refs.changeOrderSeatForm.validate(async valid => {
@@ -103,6 +116,7 @@
               await vm.$store.dispatch("posMachine/changeOrderSeat", vm.form.selectedSeatGuid);
               await vm.$store.dispatch("posMachine/getAllArea", vm.$route.params.storeGuid);
               await vm.$store.dispatch("posMachine/changeArea", vm.selectedArea.guid);
+              await vm.reloadNotification();
               vm.hide();
               vm.isLoading = false;
               MessageUtils.success("Chuyển bàn thành công!");
