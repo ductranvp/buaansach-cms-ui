@@ -26,9 +26,16 @@
               width="150"
               trigger="click">
               <div>
+                <div>Không gồm mã đơn:</div>
                 <qrcode class="pointer" @click.native="goto(selectedSeat.guid)"
                         :value="seatPrefixUrl + selectedSeat.guid"
-                        :options="{ width: 150 }"></qrcode>
+                        :options="{ width: 150 }">
+                </qrcode>
+                <div>Đã bao gồm mã đơn:</div>
+                <qrcode class="pointer" @click.native="goto(selectedSeat.guid, currentOrder.guid)"
+                        :value="seatPrefixUrl + selectedSeat.guid + '?resume=' + currentOrder.guid"
+                        :options="{ width: 150 }">
+                </qrcode>
               </div>
             </el-popover>
             <el-tooltip content="QR Code">
@@ -106,8 +113,12 @@
       hotkeys.setScope("posMachine");
     },
     methods: {
-      goto(seatGuid) {
+      goto(seatGuid, orderGuid) {
+        if (Constants.APP_MODE === 'prod') return;
         let routeData = this.seatPrefixUrl + seatGuid;
+        if (orderGuid) {
+          routeData += "?resume=" + orderGuid;
+        }
         window.open(routeData, '_blank', "width=400; height=640");
       },
       async refreshSeatOrder() {

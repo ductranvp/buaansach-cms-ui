@@ -64,6 +64,7 @@
     },
     methods: {
       goto(seatGuid) {
+        if (Constants.APP_MODE === 'prod') return;
         let routeData = this.seatPrefixUrl + seatGuid;
         window.open(routeData, '_blank', "width=400; height=640");
       },
