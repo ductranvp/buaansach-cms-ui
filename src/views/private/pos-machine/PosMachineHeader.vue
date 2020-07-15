@@ -15,10 +15,12 @@
       <el-col :span="8">
         <el-row class="hidden-md-and-down" type="flex" align="middle" justify="center">
           <el-dropdown trigger="click" @command="changeStoreStatus">
-            <el-button size="small" type="success">
-              <i class="fas el-icon-fa-store"></i>
-              <span v-if="currentStore.storeName" class="text-light text-bold">{{currentStore.storeCode}} - {{currentStore.storeName}}</span>
-            </el-button>
+              <el-button size="small" type="success" :title="currentStore.storeName">
+                <i class="fas el-icon-fa-store"></i>
+                <span v-if="currentStore.storeName" class="text-light text-bold">
+                  {{currentStore.storeCode}} - {{truncate(currentStore.storeName, 20)}}
+                </span>
+              </el-button>
             <el-dropdown-menu class="padding-0" slot="dropdown">
               <el-dropdown-item command="CLOSED" v-if="currentStore.storeStatus === 'OPENING'">
                 <i class="el-icon-close padding-right-10"></i>
@@ -55,9 +57,11 @@
           </el-row>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
-            <el-button size="small" type="success">
-              <span>{{currentUser.firstName}}</span>
-            </el-button>
+            <el-tooltip :content="currentUser.lastName + ' ' + currentUser.firstName">
+              <el-button size="small" type="success">
+                <span>{{currentUser.firstName}}</span>
+              </el-button>
+            </el-tooltip>
           </el-row>
 
           <el-row type="flex" align="middle">
@@ -127,14 +131,18 @@
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       };
     },
-    created(){
+    created() {
       const muteSound = localStorage.getItem("muteSound");
       this.muteSound = muteSound === "yes";
     },
     methods: {
-      toggleSound(){
+      truncate(string, maxlength) {
+        if (string.length > maxlength) return string.substr(0, maxlength) + "...";
+        return string;
+      },
+      toggleSound() {
         this.muteSound = !this.muteSound;
-        if (this.muteSound){
+        if (this.muteSound) {
           localStorage.setItem("muteSound", "yes");
         } else {
           localStorage.setItem("muteSound", "no");

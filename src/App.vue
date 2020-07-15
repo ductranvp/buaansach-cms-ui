@@ -21,4 +21,7 @@
     Microsoft YaHei, Arial, sans-serif;
     font-size: 100%;
   }
+  body {
+    overflow-y: hidden;
+  }
 </style>
