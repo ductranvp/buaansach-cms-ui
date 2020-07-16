@@ -1,10 +1,12 @@
 <template>
-  <div id="unsaved_order">
-    <el-card :body-style="{padding: '10px 0px'}" shadow="never"
+  <div id="unsaved_order" class="padding-bottom-10">
+    <el-card :body-style="{padding: '15px 0px'}" shadow="never"
+             class="no-border-radius item-card"
              v-for="(item) in unsavedOrderProduct"
              :key="item.guid">
-      <el-row type="flex" align="middle">
-        <div class="pointer text-bold text-very-large">
+      <!--Main-->
+      <el-row type="flex" align="middle" style="height: 50px">
+        <div class="pointer text-bold text-very-large padding-0-20">
           <el-popover
             v-model="item.popoverVisible"
             placement="right"
@@ -35,20 +37,26 @@
                 </el-row>
               </el-form-item>
             </el-form>
-            <span class="order-quantity padding-0-20" slot="reference" @click="setOrderProductQuantity(item)">{{item.orderProductQuantity}}</span>
+            <span class="order-quantity" slot="reference" @click="setOrderProductQuantity(item)">
+              <el-tooltip content="Bấm để sửa">
+                <span>{{item.orderProductQuantity}}</span>
+              </el-tooltip>
+            </span>
           </el-popover>
         </div>
         <el-row class="full-size" type="flex" align="middle">
-          <el-col :span="8" class="text-small">
-            <span>{{item.productName}}</span><br>
-            <span>{{item.orderProductPrice | priceAppend}}</span>
+          <el-col style="line-height: 20px">
+            <div class="text-bold text-medium">{{item.productName}}</div>
+            <div class="text-mini">
+              <i class="el-icon-close"></i>
+              <span>{{item.orderProductPrice | priceAppend}}</span>
+              <span> = </span>
+              <span>{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
+            </div>
           </el-col>
-          <el-col :span="8">
-            <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
-          </el-col>
-          <el-col :span="8" class="padding-left-10 text-right">
+          <div class="padding-left-10">
             <el-tag type="info">Chưa lưu</el-tag>
-          </el-col>
+          </div>
         </el-row>
         <el-tooltip content="Xóa món ăn">
           <el-button @click="removeUnsavedOrderProduct(item)" type="text"
@@ -57,8 +65,9 @@
           </el-button>
         </el-tooltip>
       </el-row>
-      <el-row type="flex" align="middle" class="padding-0-10">
-        <div class="padding-right-10">
+      <!--Note-->
+      <el-row type="flex" align="bottom" style="margin-bottom: -15px;">
+        <div>
           <el-popover
             trigger="click"
             placement="right"
@@ -92,14 +101,17 @@
               </el-form-item>
             </el-form>
 
-            <el-button slot="reference" size="mini" @click="setOrderProductNote(item)">
+            <el-button class="no-border-radius no-border" type="warning" plain slot="reference" size="mini"
+                       @click="setOrderProductNote(item)">
               <i class="fas el-icon-fa-edit"></i>
               <span>Ghi chú</span>
             </el-button>
           </el-popover>
         </div>
-        <el-col>
-          <el-tag v-if="item.orderProductNote" type="info" size="medium">{{item.orderProductNote}}</el-tag>
+        <el-col class="full-height">
+          <el-tag class="no-border no-border-radius full-size" v-if="item.orderProductNote" type="warning"
+                  size="medium">{{item.orderProductNote}}
+          </el-tag>
         </el-col>
       </el-row>
     </el-card>
@@ -159,8 +171,15 @@
   };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
   .order-quantity:focus {
     outline: 0;
+  }
+
+  .item-card {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid $--color-border;
   }
 </style>

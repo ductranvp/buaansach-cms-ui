@@ -1,62 +1,70 @@
 <template>
   <div id="saved_order">
-    <el-card :body-style="{position: 'relative', padding: '12px 0px'}" shadow="never"
-             v-for="(item) in savedOrderProduct"
-             :class="item.orderProductGroup === activeOrderProductGroup ? 'is-highlight' : ''"
-             :key="item.guid">
-      <el-tag style="position: absolute; top: 0; left:0" size="mini" type="info" class="no-border-radius">
-        <el-tooltip :content="$moment(item.createdDate).format('HH:mm:ss - DD/MM/YYYY')">
-          <span>{{item.createdDate | moment("HH:mm:ss")}}</span>
-        </el-tooltip>
-      </el-tag>
-      <el-row type="flex" align="middle" style="height: 48px">
-        <div class="text-bold text-very-large padding-0-20">{{item.orderProductQuantity}}</div>
-        <el-row class="full-size" type="flex" align="middle">
-          <el-col :span="8" class="text-small">
-            <div>{{item.productName}}</div>
-            <div>{{item.orderProductPrice | priceAppend}}</div>
-          </el-col>
-          <el-col :span="6">
-            <span class="text-bold padding-left-10">{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
-          </el-col>
-          <template v-if="currentOrder.orderStatus !== 'CREATED'">
-            <el-col :span="10" class="padding-left-10 text-right">
-              <template v-if="item.orderProductStatus === 'PREPARING'">
-                <el-row type="flex" align="middle" justify="end">
-                  <el-button :loading="item.isLoading" @click="serveOrderProduct(item)" type="success" size="small">Xong
-                  </el-button>
-                </el-row>
-              </template>
-              <el-button disabled plain class="margin-right-10" size="small" type="success"
-                         v-else-if="item.orderProductStatus === 'SERVED'">
-                <span>Đã phục vụ</span>
-              </el-button>
-              <el-button disabled plain class="margin-right-10" size="small" type="danger" v-else>
-                <span>Đã hủy</span>
-              </el-button>
-            </el-col>
-          </template>
-        </el-row>
-        <el-tooltip content="Hủy món ăn">
-          <el-button
-            v-if="item.orderProductStatus !== 'SERVED' &&
-          item.orderProductStatus.indexOf('CANCELLED') === -1 &&
-          currentOrder.orderStatus !== 'CREATED'"
-            @click="cancelOrderProduct(item)" type="text"
-            class="padding-10 text-info text-very-large">
-            <i class="el-icon-close"></i>
-          </el-button>
-        </el-tooltip>
-
-      </el-row>
-      <el-row v-if="item.orderProductNote" type="flex" align="middle" class="full-size padding-top-5">
-        <el-tag type="info" class="order-note" size="medium">
-          <el-tooltip :content="item.orderProductNote">
-            <span>Ghi chú: {{item.orderProductNote}}</span>
+    <template v-for="(item) in savedOrderProduct">
+      <el-card :body-style="{position: 'relative', padding: '15px 0px'}" shadow="never"
+               class="no-border-radius item-card"
+               :class="item.orderProductGroup === activeOrderProductGroup ? 'is-highlight' : ''"
+               :key="item.guid">
+        <!--timestamp-->
+        <el-tag size="mini" type="info" class="no-border no-border-radius timestamp">
+          <el-tooltip :content="$moment(item.createdDate).format('HH:mm:ss - DD/MM/YYYY')">
+            <span>{{item.createdDate | moment("HH:mm:ss")}}</span>
           </el-tooltip>
         </el-tag>
-      </el-row>
-    </el-card>
+        <!--main item content-->
+        <el-row type="flex" align="middle" style="height: 50px">
+          <div class="text-bold text-very-large padding-0-20">{{item.orderProductQuantity}}</div>
+          <el-row class="full-size" type="flex" align="middle">
+            <el-col style="line-height: 20px">
+              <div class="text-bold text-medium">{{item.productName}}</div>
+              <div class="text-mini">
+                <i class="el-icon-close"></i>
+                <span>{{item.orderProductPrice | priceAppend}}</span>
+                <span> = </span>
+                <span>{{(item.orderProductPrice * item.orderProductQuantity) | priceAppend}}</span>
+              </div>
+            </el-col>
+            <template v-if="currentOrder.orderStatus !== 'CREATED'">
+              <div class="padding-left-10 text-right">
+                <template v-if="item.orderProductStatus === 'PREPARING'">
+                  <el-row type="flex" align="middle" justify="end">
+                    <el-button :loading="item.isLoading" @click="serveOrderProduct(item)" type="success" size="small">
+                      <span>Xong</span>
+                    </el-button>
+                  </el-row>
+                </template>
+                <el-button disabled plain class="margin-right-10" size="small" type="success"
+                           v-else-if="item.orderProductStatus === 'SERVED'">
+                  <span>Đã phục vụ</span>
+                </el-button>
+                <el-button disabled plain class="margin-right-10" size="small" type="danger" v-else>
+                  <span>Đã hủy</span>
+                </el-button>
+              </div>
+            </template>
+          </el-row>
+          <el-tooltip content="Hủy món ăn">
+            <el-button
+              v-if="item.orderProductStatus !== 'SERVED' &&
+          item.orderProductStatus.indexOf('CANCELLED') === -1 &&
+          currentOrder.orderStatus !== 'CREATED'"
+              @click="cancelOrderProduct(item)" type="text"
+              class="padding-10 text-info text-very-large">
+              <i class="el-icon-close"></i>
+            </el-button>
+          </el-tooltip>
+
+        </el-row>
+        <!--item note-->
+        <el-row v-if="item.orderProductNote" type="flex" align="middle" class="full-size" style="margin-bottom: -15px;">
+          <el-tag type="warning" class="order-note full-width no-border-radius no-border" size="medium">
+            <el-tooltip :content="item.orderProductNote">
+              <span>Lưu ý: {{item.orderProductNote}}</span>
+            </el-tooltip>
+          </el-tag>
+        </el-row>
+      </el-card>
+    </template>
   </div>
 </template>
 
@@ -141,5 +149,18 @@
 
   .is-highlight {
     background: $--color-warning-light;
+  }
+
+  .timestamp {
+    position: absolute;
+    top: 0;
+    left: 0
+  }
+
+  .item-card {
+    border-top: none;
+    border-right: none;
+    border-left: none;
+    border-bottom: 1px solid $--color-border;
   }
 </style>
