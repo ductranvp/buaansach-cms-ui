@@ -128,7 +128,7 @@
             }
 
           } else {
-            MessageUtils.error("Bạn phải nhập lí do hủy đơn");
+            MessageUtils.error("Bạn phải nhập lí do hủy món");
           }
         });
       },

@@ -2,7 +2,7 @@
   <el-container class="full-size" direction="vertical" v-loading="isLoading || isRefreshing">
     <el-header class="bg-yellowgreen" height="40px">
       <el-row class="full-size" type="flex" align="middle">
-        <el-col class="padding-0-5">
+        <el-col :span="16" class="padding-0-5">
           <el-autocomplete
             ref="filterStoreProduct"
             size="mini"
@@ -13,6 +13,22 @@
             prefix-icon="el-icon-search"
             :trigger-on-focus="false">
           </el-autocomplete>
+        </el-col>
+        <el-col :span="8">
+          <el-row type="flex" align="middle">
+            <el-button class="bg-yellowgreen no-border">
+              <span><span>Mật độ</span></span>
+            </el-button>
+            <el-col>
+              <el-slider
+                v-model="itemSize"
+                :step="1"
+                :min="1"
+                :max="3"
+                show-stops>
+              </el-slider>
+            </el-col>
+          </el-row>
         </el-col>
         <div class="text-right padding-right-5">
           <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshStoreProduct">
@@ -25,7 +41,7 @@
       <el-row :gutter="10" class="full-size flex-wrap margin-0">
         <el-col v-for="storeProduct in filterStoreProduct ? filteredStoreProducts : displayStoreProducts"
                 class="margin-bottom-10"
-                :span="4"
+                :span="sizeOptions[itemSize]"
                 :key="storeProduct.guid">
           <el-card v-loading="storeProduct.isLoading" class="pointer"
                    style="position: relative"
@@ -33,9 +49,10 @@
                    shadow="never">
             <div style="position: relative"
                  :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'pointer-disabled' : ''">
-              <el-image :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'grayscale' : ''"
-                        @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productThumbnailUrl"
-                        class="store-product-image">
+              <el-image
+                :class="[storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'grayscale' : '', imageClasses[itemSize]]"
+                @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productThumbnailUrl"
+                class="store-product-image">
                 <div slot="error" class="image-error-slot full-size">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -62,7 +79,7 @@
             <div style="position: absolute; top: 0; right: 0">
               <el-dropdown trigger="click" placement="bottom-start">
                 <el-button class="padding-5-10 no-border-radius" type="info" size="mini" title="Sửa trạng thái">
-                    <i class="fas el-icon-fa-edit"></i>
+                  <i class="fas el-icon-fa-edit"></i>
                 </el-button>
                 <el-dropdown-menu class="padding-0" slot="dropdown">
                   <el-dropdown-item v-if="storeProduct.storeProductStatus === 'AVAILABLE'"
@@ -105,6 +122,17 @@
         filterDebounce: 400,
         filterStoreProduct: "",
         filteredStoreProducts: [],
+        itemSize: 2,
+        sizeOptions: {
+          1: 3,
+          2: 4,
+          3: 6,
+        },
+        imageClasses: {
+          1: "image-height-1",
+          2: "image-height-2",
+          3: "image-height-3",
+        }
       };
     },
     watch: {
@@ -182,8 +210,19 @@
   .store-product-image {
     width: 100%;
     object-fit: cover;
-    height: 100px;
     display: block;
+  }
+
+  .image-height-1 {
+    height: 72px;
+  }
+
+  .image-height-2 {
+    height: 100px;
+  }
+
+  .image-height-3 {
+    height: 168px;
   }
 
   .grayscale {

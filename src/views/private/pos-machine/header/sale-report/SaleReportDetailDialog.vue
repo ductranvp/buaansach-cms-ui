@@ -12,7 +12,7 @@
           <el-row type="flex" align="middle">
             <el-col>
               <el-input
-                placeholder="Tìm theo mã đơn"
+                placeholder="Tìm theo mã đơn hoặc SĐT"
                 v-model="searchKey"
                 @keypress.enter.native="onSearch"
                 clearable
@@ -40,6 +40,7 @@
           <el-table-column
             :key="key"
             :prop="key"
+            :sortable="columns[key].sortable"
             :label="columns[key].label"
             v-if="columns[key].display">
             <template slot-scope="{row}">
@@ -111,7 +112,7 @@
         reportData: [],
         reportType: null,
         columns: {
-          orderCode: {label: "Mã đơn", display: true},
+          orderCode: {label: "Mã đơn", display: true, sortable: true},
           orderType: {
             label: "Loại đơn", display: true, type: "enum",
             enum: {
@@ -122,7 +123,7 @@
             }
           },
           orderStatus: {
-            label: "Trạng thái", display: true, type: "enum",
+            label: "Trạng thái", display: true, type: "enum", sortable: true,
             enum: {
               CREATED: {label: "Đã tạo", color: "info"},
               RECEIVED: {label: "Đã tiếp nhận", color: "warning"},
@@ -133,8 +134,8 @@
             }
           },
           seatGuid: {label: "Vị trí", display: true, type: 'seat'},
-          orderCheckinTime: {label: "Giờ vào", display: true, type: "time"},
-          orderCheckoutTime: {label: "Giờ ra", display: true, type: "time"},
+          orderCheckinTime: {label: "Giờ vào", display: true, type: "time", sortable: true},
+          orderCheckoutTime: {label: "Giờ ra", display: true, type: "time", sortable: true},
           customerPhone: {label: "SĐT khách", display: true},
           cashierLogin: {label: "Thu ngân", display: true},
           orderDiscount: {label: "Giảm giá", display: false},
@@ -177,6 +178,7 @@
         this.dialogFormVisible = false;
         this.originalReportData = [];
         this.reportData = [];
+        this.searchKey = null;
       },
       beforeClose(done) {
         this.originalReportData = [];
@@ -188,7 +190,8 @@
       },
       onSearch() {
         if (this.searchKey) {
-          this.reportData = this.originalReportData.filter(item => item.orderCode.includes(this.searchKey));
+          this.reportData = this.originalReportData.filter(item => item.orderCode.includes(this.searchKey) ||
+            (item.customerPhone && item.customerPhone.includes(this.searchKey)));
         } else {
           this.reportData = this.originalReportData;
         }
