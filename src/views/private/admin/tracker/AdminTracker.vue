@@ -23,7 +23,7 @@
             <span>{{row}}</span>
           </template>
         </el-table-column>
-        <el-table-column label="Số kết nối websocket">
+        <el-table-column label="Số lượng kết nôi">
           <template slot-scope="{row}">
             <span v-if="activeUsers[row].sessions">{{activeUsers[row].sessions.length}}</span>
           </template>

@@ -3,13 +3,13 @@
     <table class="expanded-table">
       <thead>
       <tr>
-        <th>Session ID</th>
-        <th>Connected Time</th>
-        <th>IP Address</th>
-        <th>Location</th>
+        <th>Mã phiên</th>
+        <th>Kết nối lúc</th>
+        <th>Địa chỉ IP</th>
+        <th>Vị trí</th>
         <th>Warp</th>
-        <th>Browser</th>
-        <th>Device OS</th>
+        <th>Trình duyệt</th>
+        <th>Hệ điều hành</th>
       </tr>
       </thead>
       <tbody>
@@ -19,8 +19,8 @@
         <td>{{item.cloudFlareTrace.ip}}</td>
         <td>{{item.cloudFlareTrace.loc}}</td>
         <td>{{item.cloudFlareTrace.warp}}</td>
-        <td>{{item.userAgent.browser.name + " - " + item.userAgent.browser.major}}</td>
-        <td>{{item.userAgent.os.name + " - " + item.userAgent.os.version}}</td>
+        <td>{{item.userAgent.browser.name + " " + item.userAgent.browser.major}}</td>
+        <td>{{item.userAgent.os.name + " " + item.userAgent.os.version}}</td>
       </tr>
       </tbody>
     </table>
