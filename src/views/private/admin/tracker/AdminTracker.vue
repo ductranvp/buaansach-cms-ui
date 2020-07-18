@@ -11,6 +11,13 @@
         <el-button :loading="isRefreshing" @click="refresh">Làm mới</el-button>
       </el-row>
       <raw-data-table show-index :data="Object.keys(activeUsers)">
+        <template slot="expand">
+          <el-table-column type="expand">
+            <template slot-scope="{row}">
+              <admin-tracker-row-detail :row="row" />
+            </template>
+          </el-table-column>
+        </template>
         <el-table-column label="Tên đăng nhập">
           <template slot-scope="{row}">
             <span>{{row}}</span>
@@ -29,10 +36,11 @@
 <script>
   import {mapState} from "vuex";
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
+  import AdminTrackerRowDetail from "@/views/private/admin/tracker/AdminTrackerRowDetail";
 
   export default {
     name: "AdminTracker",
-    components: {RawDataTable},
+    components: {AdminTrackerRowDetail, RawDataTable},
     computed: {
       ...mapState({
         activeUsers: state => {

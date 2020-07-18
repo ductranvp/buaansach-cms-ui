@@ -31,11 +31,24 @@ function setAttrs(vm, currentObj, newObj) {
   vm.$set(currentObj, "createdDate", temp['createdDate']);
 }
 
+function parseCloudFlareTrace(trace){
+  let lines = trace.trim().split("\n");
+  let data = {};
+  lines.forEach(line => {
+    let pair = line.trim().split("=");
+    const key = pair[0];
+    const value = pair[1];
+    data[key] = value;
+  });
+  return data;
+}
+
 const AppUtils = {
   redirectBasedOnRole: redirectBasedOnRole,
   generatePageTitle: generatePageTitle,
   deepCopy: deepCopy,
-  setAttrs: setAttrs
+  setAttrs: setAttrs,
+  parseCloudFlareTrace: parseCloudFlareTrace
 };
 
 export default AppUtils;

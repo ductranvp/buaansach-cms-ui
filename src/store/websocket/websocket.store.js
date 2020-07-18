@@ -6,6 +6,8 @@ import Constants from "@/utils/constants";
 import {Notification} from "element-ui";
 import NotificationUtils from "@/utils/notification.util";
 import WebSocketConstants from "@/store/websocket/websocket.constants";
+import CloudFlareService from "@/service/cloudflare.service";
+import AppUtils from "@/utils/app.util";
 
 const state = {
   wsError: null,
@@ -87,7 +89,14 @@ const actions = {
       commit("SET_HAS_EXECUTED_CONNECT", false);
     }
   },
-  sendActivity({state}, activity) {
+  async sendActivity({state}, activity) {
+    activity.cloudFlareTrace = {};
+    try {
+      const {data} = await CloudFlareService.getCouldFlareTrace();
+      activity.cloudFlareTrace = AppUtils.parseCloudFlareTrace(data);
+    } catch (e) {
+      // error get cloudFlare trace
+    }
     state.wsStompClient.send(WebSocketConstants.APP_ACTIVITY, // destination
       JSON.stringify(activity), // body
       {} // header
