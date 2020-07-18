@@ -10,17 +10,23 @@
           <i class="el-icon-s-data"></i>
           <span class="hidden-md-and-down">Thống kê</span>
         </el-button>
+        <el-tooltip v-if="serverTime" :content="'Giờ hệ thống: ' + $moment(serverTime).format('HH:mm:ss DD/MM/YYYY')">
+          <el-button class="hidden-sm-and-down" size="small" type="success">
+            <i class="el-icon-time"></i>
+            <span class="hidden-md-and-down">{{ serverTime | moment("HH:mm:ss")}}</span>
+          </el-button>
+        </el-tooltip>
       </el-col>
 
       <el-col :span="8">
         <el-row class="hidden-md-and-down" type="flex" align="middle" justify="center">
           <el-dropdown trigger="click" @command="changeStoreStatus">
-              <el-button size="small" type="success" :title="currentStore.storeName">
-                <i class="fas el-icon-fa-store"></i>
-                <span v-if="currentStore.storeName" class="text-light text-bold">
+            <el-button size="small" type="success" :title="currentStore.storeName">
+              <i class="fas el-icon-fa-store"></i>
+              <span v-if="currentStore.storeName" class="text-light text-bold">
                   {{currentStore.storeCode}} - {{truncate(currentStore.storeName, 20)}}
                 </span>
-              </el-button>
+            </el-button>
             <el-dropdown-menu class="padding-0" slot="dropdown">
               <el-dropdown-item command="CLOSED" v-if="currentStore.storeStatus === 'OPENING'">
                 <i class="el-icon-close padding-right-10"></i>
@@ -114,6 +120,7 @@
   import CheckPrinter from "@/views/private/pos-machine/CheckPrinter";
   import MessageUtils from "@/utils/message.util";
   import NotificationSound from "@/assets/sounds/notify.mp3";
+  import ServerTimeService from "@/service/server-time.service";
 
   export default {
     name: "PosMachineHeader",
@@ -126,6 +133,7 @@
     },
     data() {
       return {
+        serverTime: null,
         soundSrc: NotificationSound,
         muteSound: false,
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
@@ -134,8 +142,25 @@
     created() {
       const muteSound = localStorage.getItem("muteSound");
       this.muteSound = muteSound === "yes";
+      this.getServerTime();
     },
     methods: {
+      async getServerTime() {
+        try {
+          let start = (new Date()).getTime();
+          const {data} = await ServerTimeService.getServerTime();
+          let end = (new Date()).getTime();
+          let server = new Date(data);
+          const diff = end - start;
+          this.serverTime = new Date(server.getTime() + diff);
+          setInterval(this.updateTime, 1000);
+        } catch (e) {
+          // Error get server time;
+        }
+      },
+      updateTime() {
+        this.serverTime = new Date(this.serverTime.getTime() + 1000);
+      },
       truncate(string, maxlength) {
         if (string.length > maxlength) return string.substr(0, maxlength) + "...";
         return string;

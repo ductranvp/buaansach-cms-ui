@@ -19,8 +19,12 @@
         <td>{{item.cloudFlareTrace.ip}}</td>
         <td>{{item.cloudFlareTrace.loc}}</td>
         <td>{{item.cloudFlareTrace.warp}}</td>
-        <td>{{item.userAgent.browser.name + " " + item.userAgent.browser.major}}</td>
-        <td>{{item.userAgent.os.name + " " + item.userAgent.os.version}}</td>
+        <td>
+          <span v-if="item.userAgent.browser">{{item.userAgent.browser.name + " " + item.userAgent.browser.major}}</span>
+        </td>
+        <td>
+          <span v-if="item.userAgent.os">{{item.userAgent.os.name + " " + item.userAgent.os.version}}</span>
+        </td>
       </tr>
       </tbody>
     </table>
@@ -41,9 +45,14 @@
             if (state.adminStore.activeUsers[key].sessions.length) {
               arr[key] = state.adminStore.activeUsers[key];
               arr[key].sessions.forEach(item => {
-                let parser = new UAParser();
-                parser.setUA(item.cloudFlareTrace.uag);
-                item.userAgent = parser.getResult();
+                if (item.cloudFlareTrace){
+                  let parser = new UAParser();
+                  parser.setUA(item.cloudFlareTrace.uag);
+                  item.userAgent = parser.getResult();
+                } else {
+                  item.cloudFlareTrace = {};
+                  item.userAgent = {};
+                }
               });
             }
           });
