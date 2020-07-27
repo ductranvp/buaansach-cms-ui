@@ -48,7 +48,7 @@
 
       <el-col :span="8">
         <el-row type="flex" align="middle" justify="end">
-          <el-row class="padding-right-10">
+          <el-row class="padding-right-15">
             <el-tooltip :content="muteSound ? 'Bấm để bật âm thanh thông báo' : 'Bấm để tắt âm thanh thông báo'">
               <el-button @click="toggleSound" class="icon-button" type="success">
                 <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
@@ -57,12 +57,12 @@
             </el-tooltip>
           </el-row>
 
-          <el-row type="flex" align="middle" class="padding-right-10">
+          <el-row type="flex" align="middle">
             <pos-notification/>
           </el-row>
 
-          <el-row class="padding-0-10" type="flex" align="middle">
-            <el-avatar :size="24" :src="currentUser.imageUrl? currentUser.imageUrl : circleUrl"></el-avatar>
+          <el-row class="padding-0-15" type="flex" align="middle">
+            <pos-call-servant-notification/>
           </el-row>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
@@ -125,10 +125,12 @@
   import NotificationSound from "@/assets/sounds/notify.mp3";
   import ServantSound from "@/assets/sounds/new_customer.mp3";
   import ServerTimeService from "@/service/server-time.service";
+  import PosCallServantNotification
+    from "@/views/private/pos-machine/header/call-servant-notification/PosCallServantNotification";
 
   export default {
     name: "PosMachineHeader",
-    components: {CheckPrinter, PosNotification},
+    components: {PosCallServantNotification, CheckPrinter, PosNotification},
     computed: {
       ...mapState({
         currentUser: state => state.user.info,

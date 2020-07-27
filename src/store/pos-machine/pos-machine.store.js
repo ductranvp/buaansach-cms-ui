@@ -7,6 +7,7 @@ import PosStoreStore from "@/store/pos-machine/part/pos.store.store";
 import PosOrderProductStore from "@/store/pos-machine/part/pos.order-product.store";
 import PosNotificationStore from "@/store/pos-machine/part/pos.notification.store";
 import PosOrderGroupStore from "@/store/pos-machine/part/pos.order-group.store";
+import PosCallServantNotificationStore from "@/store/pos-machine/part/pos.call-servant.store";
 
 const state = {
   ready: false,
@@ -19,6 +20,7 @@ const state = {
   ...PosStoreStore.state,
   ...PosNotificationStore.state,
   ...PosOrderGroupStore.state,
+  ...PosCallServantNotificationStore.state,
 };
 const mutations = {
   SET_READY(state, ready) {
@@ -33,6 +35,7 @@ const mutations = {
   ...PosStoreStore.mutations,
   ...PosNotificationStore.mutations,
   ...PosOrderGroupStore.mutations,
+  ...PosCallServantNotificationStore.mutations,
 };
 const actions = {
   ...PosSeatStore.actions,
@@ -44,6 +47,7 @@ const actions = {
   ...PosStoreStore.actions,
   ...PosNotificationStore.actions,
   ...PosOrderGroupStore.actions,
+  ...PosCallServantNotificationStore.actions,
   async initState({state, commit, dispatch}, storeGuid) {
     commit("SET_READY", false);
     const store = dispatch("getCurrentStore", storeGuid);

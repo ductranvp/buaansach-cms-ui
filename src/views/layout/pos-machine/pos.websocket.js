@@ -95,8 +95,16 @@ const PosWebsocket = {
         seat: seatData
       };
 
+      const callServant = {
+        id: data.payload.seatGuid + (new Date()).getTime(),
+        title: seatData.seatName + " - " + seatData.areaName + " đã gọi phục vụ.",
+        createdDate: new Date(),
+        status: "UNSEEN"
+      };
+
       switch (data.message) {
         case WebSocketConstants.GUEST_CALL_SERVANT:
+          this.$store.commit("posMachine/ADD_CALL_SERVANT_NOTIFICATION", callServant);
           MessageUtils.warning(seatData.seatName + " - " + seatData.areaName + " đã gọi phục vụ.");
           this.playCallServantSound();
           break;
