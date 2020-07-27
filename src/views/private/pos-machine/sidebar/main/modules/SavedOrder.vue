@@ -33,7 +33,7 @@
                     </el-button>
                   </el-row>
                 </template>
-                <el-button disabled plain class="margin-right-10" size="small" type="success"
+                <el-button disabled plain size="small" type="success"
                            v-else-if="item.orderProductStatus === 'SERVED'">
                   <span>Đã phục vụ</span>
                 </el-button>
@@ -45,8 +45,7 @@
           </el-row>
           <el-tooltip content="Hủy món ăn">
             <el-button
-              v-if="item.orderProductStatus !== 'SERVED' &&
-          item.orderProductStatus.indexOf('CANCELLED') === -1 &&
+              v-if="item.orderProductStatus.indexOf('CANCELLED') === -1 &&
           currentOrder.orderStatus !== 'CREATED'"
               @click="cancelOrderProduct(item)" type="text"
               class="padding-10 text-info text-very-large">
@@ -65,15 +64,18 @@
         </el-row>
       </el-card>
     </template>
+    <cancel-order-product-dialog ref="cancelOrderProductDialog" />
   </div>
 </template>
 
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
+  import CancelOrderProductDialog from "@/views/private/pos-machine/sidebar/main/dialog/CancelOrderProductDialog";
 
   export default {
     name: "SavedOrder",
+    components: {CancelOrderProductDialog},
     computed: {
       ...mapState({
         selectedSeat: state => state.posMachine.selectedSeat,
@@ -104,33 +106,7 @@
         }
       },
       cancelOrderProduct(product) {
-        const vm = this;
-        this.$prompt("Nhập lí do hủy món (bắt buộc)", "Hủy món", {
-          confirmButtonText: 'Hủy món',
-          cancelButtonText: 'Đóng',
-          inputType: 'textarea'
-        }).then(cb => {
-          if (cb.value) {
-            if (vm.$route.params.storeGuid) {
-              try {
-                const payload = {
-                  orderProduct: product,
-                  cancelReason: cb.value,
-                  storeGuid: vm.$route.params.storeGuid
-                };
-                vm.$store.dispatch("posMachine/cancelOrderProduct", payload)
-                  .then(() => {
-                    vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
-                  });
-              } catch (e) {
-                MessageUtils.error("Đã xảy ra lỗi, vui lòng thử lại sau");
-              }
-            }
-
-          } else {
-            MessageUtils.error("Bạn phải nhập lí do hủy món");
-          }
-        });
+        this.$refs.cancelOrderProductDialog.show(product);
       },
     }
   };

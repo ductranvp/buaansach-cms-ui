@@ -88,15 +88,13 @@
       };
     },
     methods: {
-      create() {
+      create(phone) {
         this.isCopied = false;
-        this.form = {customerGender: "MALE"};
+        this.form = {
+          customerPhone: phone ? phone : null,
+          customerGender: "MALE",
+        };
         this.isEdit = false;
-        this.show();
-      },
-      edit(entity) {
-        this.isEdit = true;
-        this.form = AppUtils.deepCopy(entity);
         this.show();
       },
       show() {

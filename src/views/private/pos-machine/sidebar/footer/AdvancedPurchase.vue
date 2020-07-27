@@ -10,7 +10,7 @@
     <el-container class="full-size" direction="vertical">
       <el-header height="40px" class="bg-success">
         <el-row type="flex" align="middle" class="full-size text-light text-bold" justify="center">
-          <span class="text-medium">Khuyến Mãi</span>
+          <span class="text-medium">Tùy chọn thanh toán</span>
         </el-row>
       </el-header>
       <el-main class="full-size padding-20">

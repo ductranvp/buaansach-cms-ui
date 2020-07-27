@@ -1,8 +1,6 @@
 /* Store module pattern */
 import PosOrderStoreUtil from "@/store/pos-machine/util/pos.order.store.util";
 import PosOrderProductService from "@/service/pos/pos.order-product.service";
-import NotificationUtils from "@/utils/notification.util";
-import MessageUtils from "@/utils/message.util";
 
 const state = {
   savedOrderProduct: [],
@@ -54,7 +52,7 @@ const mutations = {
     state.savedOrderProduct = [];
     state.unsavedOrderProduct = [];
   },
-  SET_ACTIVE_ORDER_PRODUCT_GROUP(state, orderProductGroup){
+  SET_ACTIVE_ORDER_PRODUCT_GROUP(state, orderProductGroup) {
     state.activeOrderProductGroup = orderProductGroup;
   }
 };
@@ -111,21 +109,12 @@ const actions = {
     dispatch("checkOrderProductStatus");
   },
   async cancelOrderProduct({state, commit}, {orderProduct, cancelReason, storeGuid}) {
-    try {
-      let orderProductChange = {
-        storeGuid: storeGuid,
-        orderProductGuid: orderProduct.guid,
-        orderProductCancelReason: cancelReason
-      };
-      await PosOrderProductService.cancelOrderProduct(orderProductChange);
-      MessageUtils.success("Hủy món thành công");
-      commit("SET_ORDER_PRODUCT_STATUS", {
-        orderProduct: orderProduct,
-        status: state.orderProductStatus.CANCELLED_BY_EMPLOYEE
-      });
-    } catch (error) {
-      MessageUtils.error(error.message || error.data.message);
-    }
+    let orderProductChange = {
+      storeGuid: storeGuid,
+      orderProductGuid: orderProduct.guid,
+      orderProductCancelReason: cancelReason
+    };
+    await PosOrderProductService.cancelOrderProduct(orderProductChange);
   }
 };
 

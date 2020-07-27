@@ -1,5 +1,6 @@
 <template>
   <el-footer height="40px">
+    <cancel-order-dialog ref="cancelOrderDialog"/>
     <el-row style="overflow: hidden" class="full-size" type="flex" align="middle" v-if="currentOrder.guid">
       <el-col class="full-height">
         <el-row type="flex" align="middle" class="full-size" v-if="currentOrder.orderStatus ==='CREATED'">
@@ -53,9 +54,11 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
+  import CancelOrderDialog from "@/views/private/pos-machine/sidebar/main/dialog/CancelOrderDialog";
 
   export default {
     name: "BottomToolbar",
+    components: {CancelOrderDialog},
     computed: {
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
@@ -74,23 +77,7 @@
     },
     methods: {
       cancelOrder() {
-        const vm = this;
-        this.$prompt("Nhập lí do hủy đơn (bắt buộc)", "Xác nhận hủy đơn", {
-          confirmButtonText: 'Hủy đơn',
-          cancelButtonText: 'Đóng',
-          inputType: 'textarea'
-        }).then(async cb => {
-          if (cb.value) {
-            try {
-              await vm.$store.dispatch("posMachine/cancelOrder", cb.value);
-              MessageUtils.success("Hủy đơn thành công");
-            } catch (e) {
-              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
-            }
-          } else {
-            MessageUtils.error("Bạn phải nhập lí do hủy đơn");
-          }
-        });
+        this.$refs.cancelOrderDialog.show();
       },
       async receiveOrder() {
         try {

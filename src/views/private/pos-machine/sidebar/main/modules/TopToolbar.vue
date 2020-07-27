@@ -1,6 +1,7 @@
 <template>
   <el-header height="40px">
     <change-order-seat-dialog ref="changeSeatDialog"/>
+    <cancel-order-dialog ref="cancelOrderDialog"/>
     <el-row v-if="currentOrder.guid" class="full-size padding-0-10" type="flex" align="middle" justify="center">
       <el-col :span="18" class="text-small">
         <el-row type="flex" align="middle">
@@ -84,10 +85,11 @@
   import ChangeOrderSeatDialog from "@/views/private/pos-machine/sidebar/main/ChangeOrderSeatDialog";
   import Constants from "@/utils/constants";
   import hotkeys from "hotkeys-js";
+  import CancelOrderDialog from "@/views/private/pos-machine/sidebar/main/dialog/CancelOrderDialog";
 
   export default {
     name: "TopToolbar",
-    components: {ChangeOrderSeatDialog},
+    components: {CancelOrderDialog, ChangeOrderSeatDialog},
     computed: {
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
@@ -134,23 +136,7 @@
         }
       },
       cancelOrder() {
-        const vm = this;
-        this.$prompt("Nhập lí do hủy đơn (bắt buộc)", "Xác nhận hủy đơn", {
-          confirmButtonText: 'Hủy đơn',
-          cancelButtonText: 'Đóng',
-          inputType: 'textarea'
-        }).then(cb => {
-          if (cb.value) {
-            try {
-              vm.$store.dispatch("posMachine/cancelOrder", cb.value);
-              MessageUtils.success("Hủy đơn thành công");
-            } catch (e) {
-              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
-            }
-          } else {
-            MessageUtils.error("Bạn phải nhập lí do hủy đơn");
-          }
-        });
+        this.$refs.cancelOrderDialog.show();
       },
       changeOrderSeat() {
         this.$refs.changeSeatDialog.show();

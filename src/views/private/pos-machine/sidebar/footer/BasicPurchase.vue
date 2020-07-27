@@ -14,9 +14,8 @@
               class="full-size"
               popper-class="my-autocomplete"
               placement="top-start"
-              :popper-append-to-body="true"
               :hide-loading="true"
-              :trigger-on-focus="false"
+              :trigger-on-focus="true"
               :debounce="300"
               :disabled="!isEditCustomerPhone"
               v-model="currentOrder.customerPhone"
@@ -52,7 +51,7 @@
                 </div>
                 <div>
                   <el-tooltip class="item" effect="dark" content="Thêm Khách Hàng" placement="top">
-                    <el-button @click="createCustomer" class="full-size">
+                    <el-button @click="createCustomer()" class="full-size">
                       <i class="fas el-icon-fa-user-plus"></i>
                     </el-button>
                   </el-tooltip>
@@ -61,6 +60,9 @@
               <template slot-scope="{ item }">
                 <div v-if="!item.customerPhone">
                   <div class="value">Không tìm thấy khách hàng</div>
+                  <div>
+                    <el-button type="warning" @click="createCustomer(currentOrder.customerPhone)">Thêm khách hàng</el-button>
+                  </div>
                 </div>
                 <div v-else>
                   <div class="value">{{ item.customerName }}</div>
@@ -126,7 +128,7 @@
             </el-button>
           </el-col>
           <el-col :span="4">
-            <el-tooltip class="item" effect="dark" content="Khuyến mãi (F7)" placement="top">
+            <el-tooltip class="item" effect="dark" content="Tùy chọn khác (F7)" placement="top">
               <el-button type="warning" class="text-large full-width padding-20-10" @click="showAdvancedPurchase">
                 <i class="fas el-icon-fa-tags"></i>
               </el-button>
@@ -195,7 +197,8 @@
         isLoading: false,
         customerPay: null,
         backupCustomerPhone: null,
-        isEditCustomerPhone: false
+        isEditCustomerPhone: false,
+        phoneRegex: new RegExp(Constants.PHONE_REGEX),
       };
     },
     mounted() {
@@ -217,11 +220,14 @@
     watch: {
       currentOrder: function () {
         this.customerPay = null;
+        this.isEditCustomerPhone = false;
+        this.backupCustomerPhone = null;
       }
     },
     methods: {
-      createCustomer() {
-        this.$refs.customerDialog.create();
+      createCustomer(phone) {
+        if (phone) this.$refs.customerDialog.create(phone);
+        else this.$refs.customerDialog.create();
       },
       showAdvancedPurchase() {
         this.$emit("showAdvancedPurchase");
@@ -283,7 +289,7 @@
         }
       },
       async queryCustomer(customerPhone, cb) {
-        if (customerPhone.length === 10) {
+        if (customerPhone && customerPhone.length === 10) {
           try {
             const {data} = await PosCustomerService.getCustomerByPhone(customerPhone);
             cb([data]);
