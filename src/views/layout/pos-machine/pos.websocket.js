@@ -80,6 +80,12 @@ const PosWebsocket = {
         }
       }
     },
+    playCallServantSound() {
+      let sound = document.getElementById("call_servant_sound");
+      if (sound && sound.paused) {
+        sound.play();
+      }
+    },
     onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
       const seatData = this.allSeats[data.payload.seatGuid];
@@ -90,6 +96,10 @@ const PosWebsocket = {
       };
 
       switch (data.message) {
+        case WebSocketConstants.GUEST_CALL_SERVANT:
+          MessageUtils.warning(seatData.seatName + " - " + seatData.areaName + " đã gọi phục vụ.");
+          this.playCallServantSound();
+          break;
         case WebSocketConstants.GUEST_CREATE_ORDER:
           handleSeatChange(this);
           break;

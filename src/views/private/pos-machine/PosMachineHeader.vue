@@ -3,6 +3,9 @@
     <audio style="display: none" id="notification_sound">
       <source :src="soundSrc" type="audio/mpeg">
     </audio>
+    <audio style="display: none" id="call_servant_sound">
+      <source :src="servantSound" type="audio/mpeg">
+    </audio>
     <check-printer ref="checkPrinter"/>
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
@@ -120,6 +123,7 @@
   import CheckPrinter from "@/views/private/pos-machine/CheckPrinter";
   import MessageUtils from "@/utils/message.util";
   import NotificationSound from "@/assets/sounds/notify.mp3";
+  import ServantSound from "@/assets/sounds/new_customer.mp3";
   import ServerTimeService from "@/service/server-time.service";
 
   export default {
@@ -135,6 +139,7 @@
       return {
         serverTime: null,
         soundSrc: NotificationSound,
+        servantSound: ServantSound,
         muteSound: false,
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       };
