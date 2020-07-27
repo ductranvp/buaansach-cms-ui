@@ -8,6 +8,9 @@ const PosVoucherCodeService = {
   cancelVoucher(payload) {
     return request.put(baseUrl + "/cancel-voucher/", payload);
   },
+  updateVoucherCode(payload) {
+    return request.put(baseUrl + "/update-voucher-code", payload);
+  },
 };
 
 export default PosVoucherCodeService;

@@ -129,7 +129,8 @@
     },
     methods: {
       onOpened() {
-        this.$refs.voucherCode.focus();
+        if (this.$refs.voucherCode)
+          this.$refs.voucherCode.focus();
       },
       async applyVoucher() {
         if (this.voucherCode) {

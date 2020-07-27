@@ -1,7 +1,8 @@
 <template>
   <el-container class="full-size" direction="vertical">
     <bill ref="billPage"/>
-    <create-customer-dialog ref="customerDialog"/>
+    <create-customer-dialog @customer-created="onCustomerCreated" ref="customerDialog"/>
+    <customer-code-dialog ref="customerCodeDialog" />
     <el-container class="full-size" direction="vertical" id="basic_purchase">
       <el-header height="auto">
         <el-row class="full-size">
@@ -50,7 +51,7 @@
 
                 </div>
                 <div>
-                  <el-tooltip class="item" effect="dark" content="Thêm Khách Hàng" placement="top">
+                  <el-tooltip class="item" effect="dark" content="Tạo Khách Hàng" placement="top">
                     <el-button @click="createCustomer()" class="full-size">
                       <i class="fas el-icon-fa-user-plus"></i>
                     </el-button>
@@ -61,7 +62,7 @@
                 <div v-if="!item.customerPhone">
                   <div class="value">Không tìm thấy khách hàng</div>
                   <div>
-                    <el-button type="warning" @click="createCustomer(currentOrder.customerPhone)">Thêm khách hàng</el-button>
+                    <el-button type="warning" @click="createCustomer(currentOrder.customerPhone)">Tạo khách hàng</el-button>
                   </div>
                 </div>
                 <div v-else>
@@ -150,10 +151,11 @@
   import CreateCustomerDialog from "@/views/private/pos-machine/sidebar/footer/CreateCustomerDialog";
   import MessageBoxUtils from "@/utils/message-box.util";
   import hotkeys from "hotkeys-js";
+  import CustomerCodeDialog from "@/views/private/pos-machine/sidebar/footer/CustomerCodeDialog";
 
   export default {
     name: "BasicPurchase",
-    components: {CreateCustomerDialog, Bill},
+    components: {CustomerCodeDialog, CreateCustomerDialog, Bill},
     computed: {
       ...mapState({
         turnOnOrderGroup: state => state.posMachine.turnOnOrderGroup,
@@ -228,6 +230,9 @@
       createCustomer(phone) {
         if (phone) this.$refs.customerDialog.create(phone);
         else this.$refs.customerDialog.create();
+      },
+      onCustomerCreated(customer){
+        setTimeout(()=> {this.$refs.customerCodeDialog.show(customer);}, 300);
       },
       showAdvancedPurchase() {
         this.$emit("showAdvancedPurchase");

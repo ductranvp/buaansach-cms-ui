@@ -1,12 +1,11 @@
 <template>
   <el-dialog
     :visible.sync="dialogFormVisible"
-    title="Thêm khách hàng"
+    title="Tạo khách hàng"
     width="300px"
     @opened="onOpened"
     :close-on-click-modal="false"
     :before-close="beforeClose"
-    :destroy-on-close="true"
   >
     <el-form ref="dialogForm" :model="form" :rules="formRules">
       <el-form-item prop="customerName">
@@ -46,7 +45,6 @@
 </template>
 
 <script>
-  import AppUtils from "@/utils/app.util";
   import PosCustomerService from "@/service/pos/pos.customer.service";
   import MessageUtils from "@/utils/message.util";
 
@@ -126,14 +124,15 @@
           if (valid) {
             try {
               vm.isLoading = true;
-              await PosCustomerService.createCustomer(vm.form);
-              MessageUtils.success("Thêm khách hàng thành công");
+              vm.form.storeGuid = vm.$route.params.storeGuid;
+              const {data} = await PosCustomerService.createCustomer(vm.form);
               vm.isLoading = false;
-              this.hide();
+              vm.$emit("customer-created", data);
+              vm.hide();
             } catch (error) {
               vm.isLoading = false;
               const msg = error.message || error.data.message;
-              if (msg.includes("customerPhoneExist")){
+              if (msg.includes("customerPhoneExist")) {
                 MessageUtils.error("Khách hàng đã tồn tại trên hệ thống!");
                 return;
               }
