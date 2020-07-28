@@ -1,10 +1,10 @@
 <template>
   <el-header class="bg-success" height="40px">
     <audio style="display: none" id="notification_sound">
-      <source :src="soundSrc" type="audio/mpeg">
+      <source :src="notificationSound" type="audio/mpeg">
     </audio>
-    <audio style="display: none" id="call_servant_sound">
-      <source :src="servantSound" type="audio/mpeg">
+    <audio style="display: none" id="call_waiter_sound">
+      <source :src="callWaiterSound" type="audio/mpeg">
     </audio>
     <check-printer ref="checkPrinter"/>
     <el-row class="full-size flex-wrap" type="flex" align="middle">
@@ -62,7 +62,7 @@
           </el-row>
 
           <el-row class="padding-0-15" type="flex" align="middle">
-            <pos-call-servant-notification/>
+            <pos-call-waiter/>
           </el-row>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
@@ -123,14 +123,14 @@
   import CheckPrinter from "@/views/private/pos-machine/CheckPrinter";
   import MessageUtils from "@/utils/message.util";
   import NotificationSound from "@/assets/sounds/notify.mp3";
-  import ServantSound from "@/assets/sounds/new_customer.mp3";
+  import CallWaiterSound from "@/assets/sounds/call_waiter.mp3";
   import ServerTimeService from "@/service/server-time.service";
-  import PosCallServantNotification
-    from "@/views/private/pos-machine/header/call-servant-notification/PosCallServantNotification";
+  import PosCallWaiter
+    from "@/views/private/pos-machine/header/call-waiter/PosCallWaiter";
 
   export default {
     name: "PosMachineHeader",
-    components: {PosCallServantNotification, CheckPrinter, PosNotification},
+    components: {PosCallWaiter, CheckPrinter, PosNotification},
     computed: {
       ...mapState({
         currentUser: state => state.user.info,
@@ -140,8 +140,8 @@
     data() {
       return {
         serverTime: null,
-        soundSrc: NotificationSound,
-        servantSound: ServantSound,
+        notificationSound: NotificationSound,
+        callWaiterSound: CallWaiterSound,
         muteSound: false,
         circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       };

@@ -30,7 +30,7 @@
   import {mapState} from "vuex";
 
   export default {
-    name: "CallServantItem",
+    name: "CallWaiterItem",
     computed: {
       ...mapState({
         selectedSeat: state => state.posMachine.selectedSeat,
@@ -52,10 +52,10 @@
     methods: {
       clickNotification(notification) {
         notification.status = "SEEN";
-        this.$store.commit("posMachine/SEEN_CALL_SERVANT_NOTIFICATION", notification);
+        this.$store.commit("posMachine/SEEN_CALL_WAITER", notification);
       },
       deleteNotification(notification) {
-        this.$store.commit("posMachine/REMOVE_CALL_SERVANT_NOTIFICATION", notification);
+        this.$store.commit("posMachine/REMOVE_CALL_WAITER", notification);
       },
     }
   };

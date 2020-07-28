@@ -1,6 +1,6 @@
 <template>
   <el-dropdown :hide-on-click="false" trigger="click">
-    <el-tooltip content="Gọi phục vụ">
+    <el-tooltip content="Khách gọi nhân viên">
       <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
         <el-button class="icon-button" type="success">
           <i class="el-icon-s-custom"></i>
@@ -10,7 +10,7 @@
     <el-dropdown-menu class="padding-0 notification" slot="dropdown">
       <el-row class="bg-success text-light top-toolbar padding-5" type="flex" align="middle">
         <el-col class="padding-right-10 padding-top-5 padding-bottom-5">
-          <span class="padding-right-10 text-bold">Thông báo gọi phục vụ</span>
+          <span class="padding-right-10 text-bold">Thông báo gọi nhân viên</span>
         </el-col>
       </el-row>
       <el-dropdown-item v-if="!listNotification.length">
@@ -20,7 +20,7 @@
       </el-dropdown-item>
       <template v-else>
         <el-dropdown-item class="padding-0" v-for="(noti) in listNotification" :key="noti.guid">
-          <call-servant-item :notification="noti"/>
+          <call-waiter-item :notification="noti"/>
         </el-dropdown-item>
       </template>
       <el-row class="bg-success text-light bottom-toolbar" type="flex" align="middle">
@@ -43,24 +43,24 @@
 
 <script>
   import {mapState} from "vuex";
-  import CallServantItem from "@/views/private/pos-machine/header/call-servant-notification/CallServantItem";
+  import CallWaiterItem from "@/views/private/pos-machine/header/call-waiter/CallWaiterItem";
 
   export default {
-    name: "PosCallServantNotification",
-    components: {CallServantItem},
+    name: "PosCallWaiter",
+    components: {CallWaiterItem},
     computed: {
       ...mapState({
-        listNotification: state => state.posMachine.callServantNotifications,
-        listUnseen: state => state.posMachine.callServantNotifications.filter(item => item.status === 'UNSEEN'),
-        listSeen: state => state.posMachine.callServantNotifications.filter(item => item.status === 'SEEN'),
+        listNotification: state => state.posMachine.callWaiters,
+        listUnseen: state => state.posMachine.callWaiters.filter(item => item.status === 'UNSEEN'),
+        listSeen: state => state.posMachine.callWaiters.filter(item => item.status === 'SEEN'),
       })
     },
     methods: {
       clearSeen() {
-        this.$store.commit("posMachine/CLEAR_SEEN_CALL_SERVANT_NOTIFICATION");
+        this.$store.commit("posMachine/CLEAR_SEEN_CALL_WAITER");
       },
       clearAll() {
-        this.$store.commit("posMachine/CLEAR_ALL_CALL_SERVANT_NOTIFICATION");
+        this.$store.commit("posMachine/CLEAR_ALL_CALL_WAITER");
       }
     }
   };

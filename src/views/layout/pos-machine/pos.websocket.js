@@ -80,10 +80,12 @@ const PosWebsocket = {
         }
       }
     },
-    playCallServantSound() {
-      let sound = document.getElementById("call_servant_sound");
-      if (sound && sound.paused) {
-        sound.play();
+    playCallWaiterSound() {
+      if (localStorage.getItem("muteSound") !== "yes") {
+        let sound = document.getElementById("call_waiter_sound");
+        if (sound && sound.paused) {
+          sound.play();
+        }
       }
     },
     onMessageReceived(payload) {
@@ -95,18 +97,18 @@ const PosWebsocket = {
         seat: seatData
       };
 
-      const callServant = {
+      const callWaiter = {
         id: data.payload.seatGuid + (new Date()).getTime(),
-        title: seatData.seatName + " - " + seatData.areaName + " đã gọi phục vụ.",
+        title: seatData.seatName + " - " + seatData.areaName + " đã gọi nhân viên.",
         createdDate: new Date(),
         status: "UNSEEN"
       };
 
       switch (data.message) {
-        case WebSocketConstants.GUEST_CALL_SERVANT:
-          this.$store.commit("posMachine/ADD_CALL_SERVANT_NOTIFICATION", callServant);
-          MessageUtils.warning(seatData.seatName + " - " + seatData.areaName + " đã gọi phục vụ.");
-          this.playCallServantSound();
+        case WebSocketConstants.GUEST_CALL_WAITER:
+          this.$store.commit("posMachine/ADD_CALL_WAITER", callWaiter);
+          MessageUtils.warning(callWaiter.title);
+          this.playCallWaiterSound();
           break;
         case WebSocketConstants.GUEST_CREATE_ORDER:
           handleSeatChange(this);
