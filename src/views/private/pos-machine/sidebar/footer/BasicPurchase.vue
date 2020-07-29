@@ -3,6 +3,7 @@
     <bill ref="billPage"/>
     <create-customer-dialog @customer-created="onCustomerCreated" ref="customerDialog"/>
     <customer-code-dialog ref="customerCodeDialog" />
+    <order-feedback-dialog ref="orderFeedbackDialog" />
     <el-container class="full-size" direction="vertical" id="basic_purchase">
       <el-header height="auto">
         <el-row class="full-size">
@@ -54,6 +55,13 @@
                   <el-tooltip class="item" effect="dark" content="Tạo Khách Hàng" placement="top">
                     <el-button @click="createCustomer()" class="full-size">
                       <i class="fas el-icon-fa-user-plus"></i>
+                    </el-button>
+                  </el-tooltip>
+                </div>
+                <div>
+                  <el-tooltip class="item" effect="dark" content="Đánh Giá & Phản Hồi" placement="top">
+                    <el-button @click="showFeedback()" class="full-size">
+                      <i class="fas el-icon-fa-comments"></i>
                     </el-button>
                   </el-tooltip>
                 </div>
@@ -148,14 +156,15 @@
   import Constants from "@/utils/constants";
   import MessageUtils from "@/utils/message.util";
   import PosOrderService from "@/service/pos/pos.order.service";
-  import CreateCustomerDialog from "@/views/private/pos-machine/sidebar/footer/CreateCustomerDialog";
+  import CreateCustomerDialog from "@/views/private/pos-machine/sidebar/footer/modules/CreateCustomerDialog";
   import MessageBoxUtils from "@/utils/message-box.util";
   import hotkeys from "hotkeys-js";
-  import CustomerCodeDialog from "@/views/private/pos-machine/sidebar/footer/CustomerCodeDialog";
+  import CustomerCodeDialog from "@/views/private/pos-machine/sidebar/footer/modules/CustomerCodeDialog";
+  import OrderFeedbackDialog from "@/views/private/pos-machine/sidebar/footer/modules/OrderFeedbackDialog";
 
   export default {
     name: "BasicPurchase",
-    components: {CustomerCodeDialog, CreateCustomerDialog, Bill},
+    components: {OrderFeedbackDialog, CustomerCodeDialog, CreateCustomerDialog, Bill},
     computed: {
       ...mapState({
         turnOnOrderGroup: state => state.posMachine.turnOnOrderGroup,
@@ -387,6 +396,9 @@
           MessageUtils.error("Thanh toán không thành công, vui lòng thử lại");
         }
 
+      },
+      showFeedback(){
+        this.$refs.orderFeedbackDialog.show();
       }
     }
   };
