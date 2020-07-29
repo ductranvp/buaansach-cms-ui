@@ -18,7 +18,7 @@
               placement="top-start"
               :hide-loading="true"
               :trigger-on-focus="true"
-              :debounce="300"
+              :debounce="100"
               :disabled="!isEditCustomerPhone"
               v-model="currentOrder.customerPhone"
               :fetch-suggestions="queryCustomer"
@@ -74,8 +74,20 @@
                   </div>
                 </div>
                 <div v-else>
-                  <div class="value">{{ item.customerName }}</div>
-                  <span class="link">{{ item.customerPhone }}</span>
+                  <div class="value">
+                    <el-row type="flex" align="middle">
+                      <el-col>{{ item.customerName }}</el-col>
+                      <el-col>
+                        <el-tag size="mini" type="success">{{ genders[item.customerGender]}}</el-tag>
+                      </el-col>
+                    </el-row>
+                  </div>
+                  <div class="link">
+                    <el-row type="flex" align="middle">
+                      <el-col>{{ item.customerPhone }}</el-col>
+                      <el-col>{{ item.customerPoint }} điểm</el-col>
+                    </el-row>
+                  </div>
                 </div>
               </template>
             </el-autocomplete>
@@ -210,6 +222,11 @@
         backupCustomerPhone: null,
         isEditCustomerPhone: false,
         phoneRegex: new RegExp(Constants.PHONE_REGEX),
+        genders: {
+          MALE: "Nam",
+          FEMALE: "Nữ",
+          UNDEFINED: "Chưa rõ",
+        }
       };
     },
     mounted() {
@@ -320,10 +337,10 @@
       editCustomerPhone() {
         const vm = this;
         vm.backupCustomerPhone = JSON.parse(JSON.stringify(vm.currentOrder.customerPhone));
+        vm.isEditCustomerPhone = true;
         setTimeout(() => {
           vm.$refs.customerPhone.focus();
         }, 1);
-        vm.isEditCustomerPhone = true;
       },
       cancelEditCustomerPhone() {
         const vm = this;
