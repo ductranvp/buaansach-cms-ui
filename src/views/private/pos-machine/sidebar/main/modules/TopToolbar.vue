@@ -27,12 +27,12 @@
               width="150"
               trigger="click">
               <div>
-                <div>Không gồm mã đơn:</div>
-                <qrcode class="pointer" @click.native="goto(selectedSeat.guid)"
-                        :value="seatPrefixUrl + selectedSeat.guid"
-                        :options="{ width: 150 }">
-                </qrcode>
-                <div>Đã bao gồm mã đơn:</div>
+<!--                <div>Không gồm mã đơn:</div>-->
+<!--                <qrcode class="pointer" @click.native="goto(selectedSeat.guid)"-->
+<!--                        :value="seatPrefixUrl + selectedSeat.guid"-->
+<!--                        :options="{ width: 150 }">-->
+<!--                </qrcode>-->
+                <div class="text-center">Đã bao gồm mã đơn:</div>
                 <qrcode class="pointer" @click.native="goto(selectedSeat.guid, currentOrder.guid)"
                         :value="seatPrefixUrl + selectedSeat.guid + '?resume=' + currentOrder.guid"
                         :options="{ width: 150 }">

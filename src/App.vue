@@ -1,13 +1,16 @@
 <template>
   <div id="app">
+    <ribbon />
     <router-view/>
   </div>
 </template>
 
 <script>
 
+  import Ribbon from "@/components/ribbon/Ribbon";
   export default {
     name: "App",
+    components: {Ribbon},
   };
 </script>
 <style lang="scss">
