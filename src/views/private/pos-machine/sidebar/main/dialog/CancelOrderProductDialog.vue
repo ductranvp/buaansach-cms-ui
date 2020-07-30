@@ -112,6 +112,7 @@
 
             if (vm.$route.params.storeGuid) {
               try {
+                vm.isLoading = true;
                 const payload = {
                   orderProduct: vm.orderProduct,
                   cancelReason: vm.cancelReason,
@@ -119,9 +120,11 @@
                 };
                 await vm.$store.dispatch("posMachine/cancelOrderProduct", payload);
                 MessageUtils.success("Hủy món thành công");
+                vm.isLoading = false;
                 vm.hide();
                 await vm.$store.dispatch("posMachine/getSeatOrderInfo", vm.selectedSeat.guid);
               } catch (e) {
+                vm.isLoading = false;
                 MessageUtils.error("Đã xảy ra lỗi, vui lòng thử lại sau");
               }
             }

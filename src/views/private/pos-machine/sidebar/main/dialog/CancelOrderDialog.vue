@@ -103,16 +103,20 @@
         const vm = this;
         this.$refs.dialogForm.validate(async valid => {
           if (valid) {
+
             if (vm.form.selectReason === vm.instantReasons.OTHER) {
               vm.cancelReason = vm.form.inputReason;
             } else {
               vm.cancelReason = vm.form.selectReason;
             }
             try {
+              vm.isLoading = true;
               await vm.$store.dispatch("posMachine/cancelOrder", vm.cancelReason);
               MessageUtils.success("Hủy đơn thành công");
+              vm.isLoading = false;
               vm.hide();
             } catch (e) {
+              vm.isLoading = false;
               MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
             }
 
