@@ -48,7 +48,7 @@
 
       <el-col :span="8">
         <el-row type="flex" align="middle" justify="end">
-          <el-row class="padding-right-15">
+          <el-row class="padding-right-20">
             <el-tooltip :content="muteSound ? 'Bấm để bật âm thanh thông báo' : 'Bấm để tắt âm thanh thông báo'">
               <el-button @click="toggleSound" class="icon-button" type="success">
                 <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
@@ -61,7 +61,7 @@
             <pos-notification/>
           </el-row>
 
-          <el-row class="padding-0-15" type="flex" align="middle">
+          <el-row class="padding-0-20" type="flex" align="middle">
             <pos-call-waiter/>
           </el-row>
 
