@@ -78,9 +78,10 @@
         isCopied: false,
         activated: false,
         applied: false,
-        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá 30,000₫.\n\n" +
-          "(Mã sử dụng được 1 lần và áp dụng khi thanh toán cùng với số điện thoại nhận được tin nhắn)\n\n" +
-          "Mã khuyến mãi là: {code}",
+        defaultTemplate: "Mã khách hàng: {code}\n\n" +
+          "Bữa Ăn Sạch cảm ơn quý khách đã đăng ký thành viên! QK được tặng 30.000đ sẽ giảm trừ ngay khi thanh toán. " +
+          "Các lần sau đến ăn, QK sẽ được tích điểm trên hệ thống.\n\n" +
+          "Việc trở thành thành viên của Bữa Ăn Sạch, quý khách sẽ nhận đc tin nhắn thông báo của hệ thống khi có chương trình khuyến mãi.",
         form: {
           message: null,
         },
