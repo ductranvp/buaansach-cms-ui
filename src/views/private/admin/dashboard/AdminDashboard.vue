@@ -1,6 +1,6 @@
 <template>
   <div>
-  <span>Tổng quan</span>
+  <el-button type="warning" @click="$router.push({name: 'qrCreatorPage'})">Tạo mã QR</el-button>
   </div>
 </template>
 
