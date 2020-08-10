@@ -12,3 +12,11 @@ h1,h2,h3,h4,p,b {
     white-space: pre-wrap;
     word-break: keep-all;
 }
+
+.el-loading-spinner .el-loading-text {
+    color: $--color-success !important;
+}
+
+.el-loading-spinner .path{
+    stroke: $--color-success !important;
+}

@@ -38,6 +38,6 @@
   .admin-main {
     background: #f0f2f5;
     overflow-x: hidden !important;
-    padding: 10px !important; /* override file override.css */
+    padding: 10px !important; /* override file override.scss */
   }
 </style>
