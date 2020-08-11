@@ -4,6 +4,7 @@
     "resetPasswordFinishPage": "Complete Reset Password",
     "loginPage": "Login",
     "forbiddenPage": "Forbidden",
-    "notFoundPage": "Not Found"
+    "notFoundPage": "Not Found",
+    "qrCreatorPage": "QR Creator"
   }
 }

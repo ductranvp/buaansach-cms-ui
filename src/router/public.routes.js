@@ -38,6 +38,14 @@ const PublicRoutes = [
     meta: {
       title: "public.pageTitle.notFoundPage"
     }
+  },
+  {
+    path: "/qr-creator",
+    name: "qrCreatorPage",
+    component: () => import("@/views/public/qr-creator/QRCreator"),
+    meta: {
+      title: "public.pageTitle.qrCreatorPage"
+    }
   }
 ];
 

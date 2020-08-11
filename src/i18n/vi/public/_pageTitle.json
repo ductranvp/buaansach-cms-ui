@@ -4,6 +4,7 @@
     "resetPasswordFinishPage": "Hoàn tất đặt mật khẩu",
     "loginPage": "Đăng nhập",
     "forbiddenPage": "Không có quyền truy cập",
-    "notFoundPage": "Không tìm thấy"
+    "notFoundPage": "Không tìm thấy",
+    "qrCreatorPage": "Tạo mã QR"
   }
 }
