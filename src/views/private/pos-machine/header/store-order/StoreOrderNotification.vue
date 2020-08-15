@@ -1,6 +1,6 @@
 <template>
   <el-dropdown :hide-on-click="false" trigger="click">
-    <el-tooltip content="Thông báo">
+    <el-tooltip content="Thông báo gọi món">
       <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
         <el-button class="icon-button" type="success">
           <i class="el-icon-message-solid"></i>
@@ -21,7 +21,7 @@
       </el-dropdown-item>
       <template v-else>
         <el-dropdown-item class="padding-0" v-for="(noti) in listNotification" :key="noti.guid">
-          <notification-item :notification="noti"/>
+          <store-order-notification-item :notification="noti"/>
         </el-dropdown-item>
       </template>
       <el-row class="bg-success text-light bottom-toolbar" type="flex" align="middle">
@@ -39,25 +39,25 @@
         </el-col>
       </el-row>
     </el-dropdown-menu>
-    <hidden-notification-dialog ref="hiddenNotificationDialog"/>
+    <hidden-store-order-notification-dialog ref="hiddenNotificationDialog"/>
   </el-dropdown>
 </template>
 
 <script>
   import {mapState} from "vuex";
-  import NotificationItem from "@/views/private/pos-machine/header/notification/NotificationItem";
-  import HiddenNotificationDialog from "@/views/private/pos-machine/header/notification/HiddenNotificationDialog";
+  import StoreOrderNotificationItem from "@/views/private/pos-machine/header/store-order/StoreOrderNotificationItem";
+  import HiddenStoreOrderNotificationDialog from "@/views/private/pos-machine/header/store-order/HiddenStoreOrderNotificationDialog";
   import PosStoreOrderService from "@/service/pos/pos.store-order.service";
   import MessageUtils from "@/utils/message.util";
 
   export default {
-    name: "PosNotification",
-    components: {HiddenNotificationDialog, NotificationItem},
+    name: "StoreOrderNotification",
+    components: {HiddenStoreOrderNotificationDialog, StoreOrderNotificationItem},
     computed: {
       ...mapState({
-        listNotification: state => state.posMachine.storeNotifications.filter(item => !item.hidden),
-        listUnseen: state => state.posMachine.storeNotifications.filter(item => !item.hidden && item.storeOrderStatus === 'UNSEEN'),
-        listSeen: state => state.posMachine.storeNotifications.filter(item => !item.hidden && item.storeOrderStatus === 'SEEN'),
+        listNotification: state => state.posMachine.storeOrderNotifications.filter(item => !item.hidden),
+        listUnseen: state => state.posMachine.storeOrderNotifications.filter(item => !item.hidden && item.storeOrderStatus === 'UNSEEN'),
+        listSeen: state => state.posMachine.storeOrderNotifications.filter(item => !item.hidden && item.storeOrderStatus === 'SEEN'),
       })
     },
     data() {
@@ -75,7 +75,7 @@
           this.isLoading = true;
           let startDate = new Date();
           startDate.setHours(0, 0, 0, 0);
-          await this.$store.dispatch("posMachine/getStoreNotification", {
+          await this.$store.dispatch("posMachine/getStoreOrderNotifications", {
             storeGuid: this.$route.params.storeGuid,
             startDate: startDate,
             hidden: null,

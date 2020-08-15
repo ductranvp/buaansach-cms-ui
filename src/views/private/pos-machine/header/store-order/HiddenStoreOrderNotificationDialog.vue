@@ -15,7 +15,7 @@
       </el-row>
       <template v-else>
         <el-row class="notification-item" v-for="item in listInvisibleNotification" :key="item.guid">
-          <notification-item :selectable="false" :notification="item"/>
+          <store-order-notification-item :selectable="false" :notification="item" :show-username="true"/>
         </el-row>
       </template>
     </el-main>
@@ -30,14 +30,14 @@
 <script>
 
   import {mapState} from "vuex";
-  import NotificationItem from "@/views/private/pos-machine/header/notification/NotificationItem";
+  import StoreOrderNotificationItem from "@/views/private/pos-machine/header/store-order/StoreOrderNotificationItem";
 
   export default {
-    name: "HiddenNotificationDialog",
-    components: {NotificationItem},
+    name: "HiddenStoreOrderNotificationDialog",
+    components: {StoreOrderNotificationItem},
     computed: {
       ...mapState({
-        listInvisibleNotification: state => state.posMachine.storeNotifications.filter(item => item.hidden),
+        listInvisibleNotification: state => state.posMachine.storeOrderNotifications.filter(item => item.hidden),
       })
     },
     data() {

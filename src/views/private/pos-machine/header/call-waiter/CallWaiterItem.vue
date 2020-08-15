@@ -52,10 +52,10 @@
     methods: {
       clickNotification(notification) {
         notification.status = "SEEN";
-        this.$store.commit("posMachine/SEEN_CALL_WAITER", notification);
+        this.$store.commit("posMachine/SEEN_CALL_WAITER_NOTIFICATION", notification);
       },
       deleteNotification(notification) {
-        this.$store.commit("posMachine/REMOVE_CALL_WAITER", notification);
+        this.$store.commit("posMachine/REMOVE_CALL_WAITER_NOTIFICATION", notification);
       },
     }
   };
