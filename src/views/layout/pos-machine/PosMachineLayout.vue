@@ -56,6 +56,9 @@
       /* Lấy thông tin cộng dồn đơn */
       this.$store.dispatch("posMachine/getStoreOrderGroup", this.$route.params.storeGuid);
 
+      /* Lấy thông tin gọi nhân viên */
+      this.$store.dispatch("posMachine/getStoreCallWaiter", this.$route.params.storeGuid);
+
       let startDate = new Date();
       startDate.setHours(0, 0, 0, 0);
       const payload = {

@@ -105,12 +105,12 @@ const PosWebsocket = {
       switch (data.message) {
         case WebSocketConstants.GUEST_CALL_WAITER:
           this.$store.commit("posMachine/ADD_CALL_WAITER_NOTIFICATION", callWaiter);
-          MessageUtils.warning(callWaiter.title);
+          MessageUtils.info(callWaiter.title + " đã gọi nhân viên.");
           this.playAudio("call_waiter_sound");
           break;
         case WebSocketConstants.GUEST_STORE_PAY_REQUEST:
           this.$store.commit("posMachine/ADD_STORE_PAY_REQUEST_NOTIFICATION", payRequest);
-          MessageUtils.warning(payRequest.title);
+          MessageUtils.info(payRequest.title + " yêu cầu thanh toán.");
           reloadSeatIfActive(this);
           this.playAudio("store_pay_request_sound");
           break;
@@ -123,7 +123,7 @@ const PosWebsocket = {
         case WebSocketConstants.GUEST_UPDATE_ORDER:
           handleSeatChange(this);
           this.$store.commit("posMachine/ADD_STORE_ORDER_NOTIFICATION", updateOrder);
-          MessageUtils.info(updateOrder.title);
+          MessageUtils.info(updateOrder.title + " đã gọi món.");
           this.playAudio("store_order_sound");
           break;
       }
