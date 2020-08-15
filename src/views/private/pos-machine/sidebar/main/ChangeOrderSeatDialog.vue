@@ -98,7 +98,7 @@
         try {
           let startDate = new Date();
           startDate.setHours(0, 0, 0, 0);
-          await this.$store.dispatch("posMachine/getStoreNotification", {
+          await this.$store.dispatch("posMachine/getStoreOrderNotifications", {
             storeGuid: this.$route.params.storeGuid,
             startDate: startDate,
             hidden: null,

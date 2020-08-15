@@ -25,7 +25,7 @@ const PosWebsocket = {
     return {
       subscription: null,
       retry: 0,
-      maxRetry: 60
+      maxRetry: 30
     };
   },
   watch: {
@@ -72,17 +72,9 @@ const PosWebsocket = {
         container.scrollTop = container.scrollHeight;
       }
     },
-    playAudio() {
+    playAudio(elementId){
       if (localStorage.getItem("muteSound") !== "yes") {
-        let sound = document.getElementById("notification_sound");
-        if (sound && sound.paused) {
-          sound.play();
-        }
-      }
-    },
-    playCallWaiterSound() {
-      if (localStorage.getItem("muteSound") !== "yes") {
-        let sound = document.getElementById("call_waiter_sound");
+        let sound = document.getElementById(elementId);
         if (sound && sound.paused) {
           sound.play();
         }
@@ -91,36 +83,48 @@ const PosWebsocket = {
     onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
       const seatData = this.allSeats[data.payload.seatGuid];
-      const notification = {
+      const updateOrder = {
         ...data.payload,
-        title: seatData.seatName + " - " + seatData.areaName + " đã gọi món.",
+        title: seatData.seatName + " - " + seatData.areaName,
         seat: seatData
       };
 
       const callWaiter = {
         id: data.payload.seatGuid + (new Date()).getTime(),
-        title: seatData.seatName + " - " + seatData.areaName + " đã gọi nhân viên.",
+        title: seatData.seatName + " - " + seatData.areaName,
         createdDate: new Date(),
         status: "UNSEEN"
       };
 
+      const payRequest = {
+        ...data.payload,
+        title: seatData.seatName + " - " + seatData.areaName,
+        seat: seatData
+      };
+
       switch (data.message) {
         case WebSocketConstants.GUEST_CALL_WAITER:
-          this.$store.commit("posMachine/ADD_CALL_WAITER", callWaiter);
-          MessageUtils.warning(callWaiter.title);
-          this.playCallWaiterSound();
+          this.$store.commit("posMachine/ADD_CALL_WAITER_NOTIFICATION", callWaiter);
+          MessageUtils.info(callWaiter.title + " đã gọi nhân viên.");
+          this.playAudio("call_waiter_sound");
+          break;
+        case WebSocketConstants.GUEST_STORE_PAY_REQUEST:
+          this.$store.commit("posMachine/ADD_STORE_PAY_REQUEST_NOTIFICATION", payRequest);
+          MessageUtils.info(payRequest.title + " yêu cầu thanh toán.");
+          reloadSeatIfActive(this);
+          this.playAudio("store_pay_request_sound");
           break;
         case WebSocketConstants.GUEST_CREATE_ORDER:
           handleSeatChange(this);
           break;
         case WebSocketConstants.POS_UPDATE_ORDER:
-          this.$store.commit("posMachine/ADD_NOTIFICATION", notification);
+          this.$store.commit("posMachine/ADD_STORE_ORDER_NOTIFICATION", updateOrder);
           break;
         case WebSocketConstants.GUEST_UPDATE_ORDER:
           handleSeatChange(this);
-          this.$store.commit("posMachine/ADD_NOTIFICATION", notification);
-          MessageUtils.info(notification.title);
-          this.playAudio();
+          this.$store.commit("posMachine/ADD_STORE_ORDER_NOTIFICATION", updateOrder);
+          MessageUtils.info(updateOrder.title + " đã gọi món.");
+          this.playAudio("store_order_sound");
           break;
       }
 
@@ -134,6 +138,14 @@ const PosWebsocket = {
             targetSeat: seatData,
             seatStatus: "NON_EMPTY",
             seatServiceStatus: "UNFINISHED"
+          });
+        }
+      }
+
+      function reloadSeatIfActive(vm) {
+        if (vm.selectedSeat.guid === seatData.guid) {
+          vm.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
+            vm.scrollToEnd();
           });
         }
       }

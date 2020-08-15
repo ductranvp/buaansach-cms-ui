@@ -14,8 +14,16 @@ const state = {
   wsConnected: false,
   wsStompClient: null,
   hasExecutedConnect: false,
+  maxRetry: 10,
+  retryCount: 0
 };
 const mutations = {
+  SET_RETRY_COUNT(state, num){
+    state.retryCount = num;
+  },
+  INCREASE_RETRY(state){
+    state.retryCount++;
+  },
   SET_HAS_EXECUTED_CONNECT(state, status) {
     state.hasExecutedConnect = status;
   },
@@ -37,7 +45,7 @@ const mutations = {
     if (!state.wsError) {
       state.wsError = Notification.error({
         title: "Mất kết nối tới máy chủ!",
-        message: "<span>Hãy kiểm tra các kết nối mạng!<br>Đang thực hiện kết nối lại...</span>",
+        message: "<span>Hãy kiểm tra các kết nối mạng!<br>Đang thực hiện kết nối lại..</span>",
         dangerouslyUseHTMLString: true,
         showClose: false,
         duration: 0
@@ -67,6 +75,7 @@ const actions = {
         commit("SET_CONNECTED", true);
         commit("SET_STOMP_CLIENT", stompClient);
         commit("CLEAR_ERROR");
+        commit("SET_RETRY_COUNT", 0);
         dispatch("sendActivity", {});
       },
       function (error) {
@@ -74,7 +83,13 @@ const actions = {
         commit("SET_STOMP_CLIENT", null);
         commit("SET_ERROR");
         setTimeout(() => {
-          dispatch("connectWS");
+          commit("INCREASE_RETRY");
+          if (state.retryCount < state.maxRetry){
+            dispatch("connectWS");
+          } else {
+            alert("Không thể tự kết nối lại với máy chủ, trang web sẽ được tải lại.");
+            location.reload();
+          }
         }, WebSocketConstants.RECONNECT_DELAY);
       }
     );

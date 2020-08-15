@@ -1,7 +1,7 @@
 {
   "pageTitle": {
     "admin": {
-      "adminDashboardPage": "Bảng điều khiển",
+      "adminDashboardPage": "Bảng Điều Khiển",
       "adminStoreManagementPage": "Quản Lý Cửa Hàng",
       "adminProductPage": "Quản Lý Sản Phẩm",
       "adminCategoryPage": "Quản Lý Danh Mục",
@@ -21,7 +21,7 @@
       "adminStoreDetailSalePage": "Khuyến Mãi - Cửa Hàng"
     },
     "customerCare": {
-      "customerCareDashboardPage": "Bảng điều khiển",
+      "customerCareDashboardPage": "Bảng Điều Khiển",
       "customerCareCustomerVoucherCodePage": "Mã khuyến mãi khách hàng",
       "customerCareCustomerOrderPurchasedPage": "Khách hàng đã thanh toán"
     },

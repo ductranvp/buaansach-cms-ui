@@ -13,7 +13,7 @@ const AdminWebsocket = {
     return {
       subscription: null,
       retry: 0,
-      maxRetry: 60
+      maxRetry: 30
     };
   },
   watch: {

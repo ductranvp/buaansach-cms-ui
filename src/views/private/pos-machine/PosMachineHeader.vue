@@ -1,10 +1,13 @@
 <template>
   <el-header class="bg-success" height="40px">
-    <audio style="display: none" id="notification_sound">
-      <source :src="notificationSound" type="audio/mpeg">
+    <audio style="display: none" id="store_order_sound">
+      <source :src="storeOrderSound" type="audio/mpeg">
     </audio>
     <audio style="display: none" id="call_waiter_sound">
       <source :src="callWaiterSound" type="audio/mpeg">
+    </audio>
+    <audio style="display: none" id="store_pay_request_sound">
+      <source :src="storePayRequestSound" type="audio/mpeg">
     </audio>
     <check-printer ref="checkPrinter"/>
     <el-row class="full-size flex-wrap" type="flex" align="middle">
@@ -41,8 +44,8 @@
               </el-dropdown-item>
             </el-dropdown-menu>
           </el-dropdown>
-          <el-tag size="small" type="success" v-if="currentStore.storeStatus === 'OPENING'">Đang mở cửa</el-tag>
-          <el-tag size="small" type="danger" v-if="currentStore.storeStatus === 'CLOSED'">Đã đóng cửa</el-tag>
+          <el-tag size="small" type="success" v-if="currentStore.storeStatus === 'OPENING'">Mở cửa</el-tag>
+          <el-tag size="small" type="danger" v-if="currentStore.storeStatus === 'CLOSED'">Đóng cửa</el-tag>
         </el-row>
       </el-col>
 
@@ -58,11 +61,15 @@
           </el-row>
 
           <el-row type="flex" align="middle">
-            <pos-notification/>
+            <store-order-notification/>
+          </el-row>
+
+          <el-row class="padding-left-20" type="flex" align="middle">
+            <store-pay-request-notification/>
           </el-row>
 
           <el-row class="padding-0-20" type="flex" align="middle">
-            <pos-call-waiter/>
+            <call-waiter-notification/>
           </el-row>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
@@ -119,18 +126,20 @@
   import MessageBoxUtils from "@/utils/message-box.util";
   import {mapState} from "vuex";
   import PosStoreService from "@/service/pos/pos.store.service";
-  import PosNotification from "@/views/private/pos-machine/header/notification/PosNotification";
+  import StoreOrderNotification from "@/views/private/pos-machine/header/store-order/StoreOrderNotification";
   import CheckPrinter from "@/views/private/pos-machine/CheckPrinter";
   import MessageUtils from "@/utils/message.util";
-  import NotificationSound from "@/assets/sounds/notify.mp3";
+  import StoreOrderSound from "@/assets/sounds/store_order.mp3";
+  import StorePayRequestSound from "@/assets/sounds/store_pay_request.mp3";
   import CallWaiterSound from "@/assets/sounds/call_waiter.mp3";
   import ServerTimeService from "@/service/server-time.service";
-  import PosCallWaiter
-    from "@/views/private/pos-machine/header/call-waiter/PosCallWaiter";
+  import CallWaiterNotification from "@/views/private/pos-machine/header/call-waiter/CallWaiterNotification";
+  import StorePayRequestNotification
+    from "@/views/private/pos-machine/header/store-pay-request/StorePayRequestNotification";
 
   export default {
     name: "PosMachineHeader",
-    components: {PosCallWaiter, CheckPrinter, PosNotification},
+    components: {StorePayRequestNotification, CallWaiterNotification, CheckPrinter, StoreOrderNotification},
     computed: {
       ...mapState({
         currentUser: state => state.user.info,
@@ -140,10 +149,10 @@
     data() {
       return {
         serverTime: null,
-        notificationSound: NotificationSound,
+        storeOrderSound: StoreOrderSound,
         callWaiterSound: CallWaiterSound,
+        storePayRequestSound: StorePayRequestSound,
         muteSound: false,
-        circleUrl: "https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png",
       };
     },
     created() {

@@ -1,13 +1,14 @@
-import PosSeatStore from "@/store/pos-machine/part/pos.seat.store";
-import PosCategoryStore from "@/store/pos-machine/part/pos.category.store";
-import PosAreaStore from "@/store/pos-machine/part/pos.area.store";
-import PosStoreProductStore from "@/store/pos-machine/part/pos.store-product.store";
-import PosOrderStore from "@/store/pos-machine/part/pos.order.store";
-import PosStoreStore from "@/store/pos-machine/part/pos.store.store";
-import PosOrderProductStore from "@/store/pos-machine/part/pos.order-product.store";
-import PosNotificationStore from "@/store/pos-machine/part/pos.notification.store";
-import PosOrderGroupStore from "@/store/pos-machine/part/pos.order-group.store";
-import PosCallWaiterStore from "@/store/pos-machine/part/pos.call-waiter.store";
+import PosSeatStore from "@/store/pos-machine/modules/pos.seat.store";
+import PosCategoryStore from "@/store/pos-machine/modules/pos.category.store";
+import PosAreaStore from "@/store/pos-machine/modules/pos.area.store";
+import PosStoreProductStore from "@/store/pos-machine/modules/pos.store-product.store";
+import PosOrderStore from "@/store/pos-machine/modules/pos.order.store";
+import PosStoreStore from "@/store/pos-machine/modules/pos.store.store";
+import PosOrderProductStore from "@/store/pos-machine/modules/pos.order-product.store";
+import PosStoreOrderStore from "@/store/pos-machine/modules/notification/pos.store-order.store";
+import PosOrderGroupStore from "@/store/pos-machine/modules/pos.order-group.store";
+import PosCallWaiterStore from "@/store/pos-machine/modules/notification/pos.call-waiter.store";
+import PosStorePayRequest from "@/store/pos-machine/modules/notification/pos.store-pay-request.store";
 
 const state = {
   ready: false,
@@ -18,9 +19,10 @@ const state = {
   ...PosOrderStore.state,
   ...PosOrderProductStore.state,
   ...PosStoreStore.state,
-  ...PosNotificationStore.state,
+  ...PosStoreOrderStore.state,
   ...PosOrderGroupStore.state,
   ...PosCallWaiterStore.state,
+  ...PosStorePayRequest.state,
 };
 const mutations = {
   SET_READY(state, ready) {
@@ -33,9 +35,10 @@ const mutations = {
   ...PosOrderStore.mutations,
   ...PosOrderProductStore.mutations,
   ...PosStoreStore.mutations,
-  ...PosNotificationStore.mutations,
+  ...PosStoreOrderStore.mutations,
   ...PosOrderGroupStore.mutations,
   ...PosCallWaiterStore.mutations,
+  ...PosStorePayRequest.mutations,
 };
 const actions = {
   ...PosSeatStore.actions,
@@ -45,9 +48,10 @@ const actions = {
   ...PosOrderStore.actions,
   ...PosOrderProductStore.actions,
   ...PosStoreStore.actions,
-  ...PosNotificationStore.actions,
+  ...PosStoreOrderStore.actions,
   ...PosOrderGroupStore.actions,
   ...PosCallWaiterStore.actions,
+  ...PosStorePayRequest.actions,
   async initState({state, commit, dispatch}, storeGuid) {
     commit("SET_READY", false);
     const store = dispatch("getCurrentStore", storeGuid);

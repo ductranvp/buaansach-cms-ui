@@ -1,6 +1,6 @@
 <template>
   <el-dropdown :hide-on-click="false" trigger="click">
-    <el-tooltip content="Khách gọi nhân viên">
+    <el-tooltip content="Khách gọi">
       <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
         <el-button class="icon-button" type="success">
           <i class="el-icon-s-custom"></i>
@@ -46,21 +46,21 @@
   import CallWaiterItem from "@/views/private/pos-machine/header/call-waiter/CallWaiterItem";
 
   export default {
-    name: "PosCallWaiter",
+    name: "CallWaiterNotification",
     components: {CallWaiterItem},
     computed: {
       ...mapState({
-        listNotification: state => state.posMachine.callWaiters,
-        listUnseen: state => state.posMachine.callWaiters.filter(item => item.status === 'UNSEEN'),
-        listSeen: state => state.posMachine.callWaiters.filter(item => item.status === 'SEEN'),
+        listNotification: state => state.posMachine.callWaiterNotifications,
+        listUnseen: state => state.posMachine.callWaiterNotifications.filter(item => item.status === 'UNSEEN'),
+        listSeen: state => state.posMachine.callWaiterNotifications.filter(item => item.status === 'SEEN'),
       })
     },
     methods: {
       clearSeen() {
-        this.$store.commit("posMachine/CLEAR_SEEN_CALL_WAITER");
+        this.$store.commit("posMachine/CLEAR_SEEN_CALL_WAITER_NOTIFICATION");
       },
       clearAll() {
-        this.$store.commit("posMachine/CLEAR_ALL_CALL_WAITER");
+        this.$store.commit("posMachine/CLEAR_ALL_CALL_WAITER_NOTIFICATION");
       }
     }
   };

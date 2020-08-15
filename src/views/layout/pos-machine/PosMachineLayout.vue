@@ -16,6 +16,8 @@
   import PosMachineMain from "@/views/private/pos-machine/PosMachineMain";
   import {mapState} from "vuex";
   import PosWebsocket from "@/views/layout/pos-machine/pos.websocket";
+  import MessageUtils from "@/utils/message.util";
+  import NotificationUtils from "@/utils/notification.util";
 
   export default {
     name: "PosMachineLayout",
@@ -40,20 +42,35 @@
     },
     beforeDestroy() {
       window.onbeforeunload = null;
-      this.$store.commit("posMachine/SET_STORE_NOTIFICATIONS", []);
+      this.$store.commit("posMachine/SET_STORE_ORDER_NOTIFICATIONS", []);
+      this.$store.commit("posMachine/SET_STORE_PAY_REQUEST_NOTIFICATIONS", []);
       this.$store.dispatch("posMachine/clearSeat");
     },
     async created() {
-      await this.$store.dispatch("posMachine/initState", this.$route.params.storeGuid);
-      await this.$store.dispatch("posMachine/getStoreOrderGroup", this.$route.params.storeGuid);
+      try {
+        await this.$store.dispatch("posMachine/initState", this.$route.params.storeGuid);
+      } catch (e) {
+        NotificationUtils.error("Lỗi khởi tạo dữ liệu, vui lòng tải lại trang.", 0);
+      }
+
+      /* Lấy thông tin cộng dồn đơn */
+      this.$store.dispatch("posMachine/getStoreOrderGroup", this.$route.params.storeGuid);
+
+      /* Lấy thông tin gọi nhân viên */
+      this.$store.dispatch("posMachine/getStoreCallWaiter", this.$route.params.storeGuid);
 
       let startDate = new Date();
       startDate.setHours(0, 0, 0, 0);
-      await this.$store.dispatch("posMachine/getStoreNotification", {
+      const payload = {
         storeGuid: this.$route.params.storeGuid,
         startDate: startDate,
         hidden: null // null means get all
-      });
+      };
+      /* Lấy thông báo gọi món */
+      this.$store.dispatch("posMachine/getStoreOrderNotifications", payload);
+      /* Lấy thông báo yêu cầu thanh toán */
+      this.$store.dispatch("posMachine/getStorePayRequestNotifications", payload);
+
     }
   };
 </script>
