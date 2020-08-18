@@ -17,7 +17,7 @@
         <li>SĐT khách hàng: {{customer.customerPhone}}</li>
       </ul>
     </div>
-    <el-form ref="dialogForm" :model="form" :rules="formRules">
+    <el-form ref="dialogForm" :model="form" :rules="formRules" v-loading="isLoading">
       <el-form-item prop="message">
         <input-label label="Tin nhắn gửi khách"/>
         <el-input ref="message" type="textarea" rows="6" v-model="form.message"></el-input>
@@ -59,6 +59,7 @@
   import MessageUtils from "@/utils/message.util";
   import {mapState} from "vuex";
   import MessageBoxUtils from "@/utils/message-box.util";
+  import PosVoucherService from "@/service/pos/pos.voucher.service";
 
   export default {
     name: "CustomerCodeDialog",
@@ -78,7 +79,7 @@
         isCopied: false,
         activated: false,
         applied: false,
-        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá 30,000₫.\n\n" +
+        defaultTemplate: "Chuỗi cửa hàng Bữa Ăn Sạch gửi tặng quý khách mã giảm giá {value}.\n\n" +
           "(Mã sử dụng được 1 lần và áp dụng khi thanh toán cùng với số điện thoại nhận được tin nhắn)\n\n" +
           "Mã khuyến mãi là: {code}",
         form: {
@@ -90,8 +91,8 @@
     methods: {
       show(data) {
         this.customer = data;
-        this.form.message = this.defaultTemplate.replace("{code}", this.customer.customerCode);
         this.dialogFormVisible = true;
+        this.getFirstRegisterVoucherInfo();
       },
       hide() {
         this.resetForm();
@@ -108,6 +109,19 @@
       beforeClose(done) {
         this.resetForm();
         done();
+      },
+      async getFirstRegisterVoucherInfo() {
+        try {
+          this.isLoading = true;
+          const {data} = await PosVoucherService.getFirstRegisterVoucher();
+          this.form.message = data.voucherDescription.replace("{code}", this.customer.customerCode);
+          console.log(this.form.message);
+        } catch (e) {
+          this.form.message = this.defaultTemplate.replace("{code}", this.customer.customerCode);
+          MessageUtils.error("Lấy thông tin voucher thất bại");
+        } finally {
+          this.isLoading = false;
+        }
       },
       async activateVoucherCode() {
         try {
