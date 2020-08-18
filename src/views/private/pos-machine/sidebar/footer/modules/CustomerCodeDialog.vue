@@ -115,7 +115,6 @@
           this.isLoading = true;
           const {data} = await PosVoucherService.getFirstRegisterVoucher();
           this.form.message = data.voucherDescription.replace("{code}", this.customer.customerCode);
-          console.log(this.form.message);
         } catch (e) {
           this.form.message = this.defaultTemplate.replace("{code}", this.customer.customerCode);
           MessageUtils.error("Lấy thông tin voucher thất bại");
