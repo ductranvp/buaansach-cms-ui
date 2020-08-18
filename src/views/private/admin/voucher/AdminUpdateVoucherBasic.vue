@@ -15,7 +15,7 @@
       </el-form-item>
       <el-form-item prop="voucherDescription">
         <input-label label="Mô tả" optional/>
-        <el-input type="textarea" v-model="form.voucherDescription" maxlength="255" show-word-limit></el-input>
+        <el-input type="textarea" v-model="form.voucherDescription" maxlength="500" show-word-limit></el-input>
       </el-form-item>
       <el-form-item>
         <el-col :span="11">
@@ -74,7 +74,7 @@
             {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ],
           voucherDescription: [
-            {max: 255, message: this.$t("common.entity.validation.maxlength", {max: 255}), trigger: "blur"}
+            {max: 500, message: this.$t("common.entity.validation.maxlength", {max: 500}), trigger: "blur"}
           ],
           voucherDiscount: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},

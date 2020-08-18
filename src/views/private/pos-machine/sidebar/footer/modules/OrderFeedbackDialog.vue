@@ -14,6 +14,10 @@
           :disabled="form.guid != null"
           v-model="form.productQualityRating"
           @change="changeValue"
+          :colors="['#566a79', '#e6a23c','#07a651']"
+          :icon-classes="iconClasses"
+          void-icon-class="fas el-icon-fa-heart"
+          disabled-void-icon-class="fas el-icon-fa-heart"
           :texts="['Rất tệ', 'Tệ', 'Bình thường', 'Tốt', 'Rất tốt']"
           show-text>
         </el-rate>
@@ -63,6 +67,7 @@
         isEdit: false,
         isLoading: false,
         dialogFormVisible: false,
+        iconClasses: ['fas el-icon-fa-heart', 'fas el-icon-fa-heart', 'fas el-icon-fa-heart'],
         form: {
           guid: null,
           orderGuid: null,
@@ -150,7 +155,8 @@
 
 <style scoped>
   /deep/ .el-rate__icon {
-    font-size: 28px;
+    font-size: 24px;
+    padding: 0 5px
   }
 
   /deep/ .el-rate__text {
