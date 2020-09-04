@@ -1,6 +1,6 @@
 import {mapState} from "vuex";
 import MessageUtils from "@/utils/message.util";
-import WebSocketConstants from "@/store/websocket/websocket.constants";
+import WebSocketConstants from "@/utils/websocket.constants";
 
 const AdminWebsocket = {
   computed: {

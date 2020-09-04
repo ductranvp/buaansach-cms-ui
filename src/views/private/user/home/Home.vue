@@ -71,7 +71,7 @@
 </template>
 
 <script>
-  import StoreUserService from "@/service/common/store-user.service";
+  import StoreUserService from "@/service/shared/store-user.service";
   import NotificationUtils from "@/utils/notification.util";
   import hasAnyRole from "@/utils/has-any-role";
 

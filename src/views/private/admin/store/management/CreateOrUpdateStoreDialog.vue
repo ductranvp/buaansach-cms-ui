@@ -110,7 +110,6 @@
         </el-row>
       </el-form-item>
 
-
       <el-form-item>
         <input-label :label="$t('private.adminStoreManagementPage.store.storeImageUrl')" optional/>
         <single-image-uploader

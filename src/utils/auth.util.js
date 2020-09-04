@@ -24,21 +24,20 @@ function removeToken() {
 
 function hasAnyAuthority(authorities) {
   for (let i = 0; i < authorities.length; i++) {
-    if (store.getters.roles.includes(authorities[i])) {
+    if (store.getters.authorities.includes(authorities[i])) {
       return true;
     }
   }
   return false;
 }
 
-function logout() {
+async function logout() {
   /*routeName is the route that we want to redirect to when logged out*/
-  store.dispatch("websocket/disconnectWS");
-  store.dispatch("user/logout").then(() => {
-    localStorage.clear();
-    sessionStorage.clear();
-    router.push("/login").catch(() => {
-    });
+  await store.dispatch("websocket/disconnectWS");
+  await store.dispatch("user/logout");
+  localStorage.clear();
+  sessionStorage.clear();
+  router.push("/login").catch(() => {
   });
 }
 

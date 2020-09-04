@@ -6,7 +6,7 @@ const UserRoutes = [
   {
     path: "home",
     name: "homePage",
-    component: Home,
+    component: () => import("@/views/private/user/home/Home"),
     meta: {
       title: "private.pageTitle.user.homePage",
       roles: [Roles.USER]
@@ -15,7 +15,7 @@ const UserRoutes = [
   {
     path: "profile",
     name: "profilePage",
-    component: Profile,
+    component: () => import("@/views/private/user/profile/Profile"),
     meta: {
       title: "private.pageTitle.user.profilePage",
       roles: [Roles.USER]

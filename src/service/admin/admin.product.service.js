@@ -1,5 +1,5 @@
 import request from "@/config/request";
-import CoreService from "@/service/core.service";
+import CoreService from "@/service/shared/core.service";
 
 const baseUrl = "api/v1/admin/product";
 

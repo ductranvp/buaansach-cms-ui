@@ -5,7 +5,7 @@ import AuthUtils from "@/utils/auth.util"; // get token from cookie
 import AppUtils from "@/utils/app.util";
 import store from "@/store";
 
-NProgress.configure({ showSpinner: false }); // NProgress Configuration
+NProgress.configure({ showSpinner: true }); // NProgress Configuration
 
 router.beforeEach(async (to, from, next) => {
   /* Start progress bar */
@@ -29,7 +29,7 @@ router.beforeEach(async (to, from, next) => {
       if (!store.getters.websocket.hasExecutedConnect){
         await store.dispatch("websocket/connectWS");
       }
-      if (!store.getters.roles.length) {
+      if (!store.getters.authorities.length) {
         await store.dispatch("user/getAccount");
       }
       /* If user has requested role */
@@ -45,7 +45,7 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     if (AuthUtils.getToken()) {
-      if (!store.getters.roles.length) {
+      if (!store.getters.authorities.length) {
         await store.dispatch("user/getAccount");
       }
     }

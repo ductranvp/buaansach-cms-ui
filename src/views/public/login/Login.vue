@@ -3,10 +3,16 @@
     <el-row class="full-size" type="flex" align="middle" justify="center">
       <el-col :xs="18" :sm="16" :md="12" :lg="8" :xl="8">
         <el-form ref="loginForm" class="full-size" :model="loginForm" :rules="loginRules">
-          <el-form-item prop="login">
+          <el-form-item prop="principal">
             <InputLabel effect="dark" :label="$t('public.loginPage.loginForm.username')"
                         required/>
-            <el-input ref="login" v-model="loginForm.login" prefix-icon="el-icon-user" type="text"/>
+            <el-input
+              ref="principal"
+              v-model="loginForm.principal"
+              prefix-icon="el-icon-user"
+              type="text"
+              @keyup.enter.native="handleLogin"
+            />
           </el-form-item>
           <el-form-item prop="password">
             <InputLabel effect="dark" :label="$t('public.loginPage.loginForm.password')"
@@ -65,12 +71,12 @@
     data() {
       return {
         loginForm: {
-          login: "",
+          principal: "",
           password: "",
           rememberMe: false
         },
         loginRules: {
-          login: [
+          principal: [
             {
               required: true,
               message: this.$t("common.entity.validation.required"),
@@ -95,8 +101,8 @@
     },
     mounted() {
       if (this.isAuthenticated) this.$router.push({name: "homePage"});
-      if (this.loginForm.login === "") {
-        this.$refs.login.focus();
+      if (this.loginForm.principal === "") {
+        this.$refs.principal.focus();
       } else {
         this.$refs.password.focus();
       }
@@ -114,7 +120,7 @@
               this.redirect();
             } catch (error) {
               let message = error.message || error.data.message;
-              if(message.toLowerCase().includes("bad credentials")) message = "Sai tên đăng nhập hoặc mật khẩu";
+              if (message.toLowerCase().includes("bad credentials")) message = "Sai tên đăng nhập hoặc mật khẩu";
               NotificationUtils.error(message);
               this.isLoading = false;
             }
@@ -123,14 +129,13 @@
           }
         });
       },
-      async redirect() {
+      redirect() {
         const redirect = sessionStorage.getItem("requested-url");
         if (redirect && redirect !== "/home") {
-          const item = sessionStorage.getItem("requested-url");
           sessionStorage.removeItem("requested-url");
-          await this.$router.push({path: item});
+          this.$router.push({path: redirect});
         } else {
-          await this.$router.push({path: AppUtils.redirectBasedOnRole()});
+          this.$router.push({path: AppUtils.redirectBasedOnRole()});
         }
       }
     }

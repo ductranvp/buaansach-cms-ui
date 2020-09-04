@@ -36,7 +36,7 @@
 </template>
 
 <script>
-  import AccountService from "@/service/account.service";
+  import UserService from "@/service/shared/user.service";
   import MessageBoxUtils from "@/utils/message-box.util";
   import NotificationUtils from "@/utils/notification.util";
 
@@ -106,7 +106,7 @@
               return false;
             }
             vm.form.key = vm.$route.params.key;
-            AccountService.resetPasswordFinish(vm.form).then(function () {
+            UserService.resetPasswordFinish(vm.form).then(function () {
               MessageBoxUtils.showAlert(vm.$t("public.resetPasswordFinishPage.alertTitle"),
                 vm.$t("public.resetPasswordFinishPage.alertMessage"), false, function () {
                   vm.$router.push({name: 'loginPage'});

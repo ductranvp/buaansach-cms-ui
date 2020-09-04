@@ -40,18 +40,12 @@
         <el-table-column prop="storeName" sortable :label="$t('private.adminStoreManagementPage.store.storeName')">
         </el-table-column>
 
-<!--        <el-table-column prop="storeOwnerName" :label="$t('private.adminStoreManagementPage.store.storeOwnerName')">-->
-<!--        </el-table-column>-->
-
-<!--        <el-table-column prop="storeOwnerPhone" :label="$t('private.adminStoreManagementPage.store.storeOwnerPhone')">-->
-<!--        </el-table-column>-->
-
         <el-table-column prop="storeStatus" :label="$t('private.adminStoreManagementPage.store.storeStatus')">
           <template slot-scope="{ row }">
-            <el-tag type="success" v-if="row.storeStatus === 'OPENING'">
+            <el-tag type="success" v-if="row.storeStatus === storeStatus.OPENING">
               <span>{{ $t("private.adminStoreManagementPage.storeStatus.opening") }}</span>
             </el-tag>
-            <el-tag type="danger" v-if="row.storeStatus === 'CLOSED'">
+            <el-tag type="danger" v-else>
               <span>{{ $t("private.adminStoreManagementPage.storeStatus.closed") }}</span>
             </el-tag>
           </template>
@@ -92,12 +86,14 @@
   import AdminStoreService from "@/service/admin/admin.store.service";
   import DataTable from "@/components/data-table/DataTable";
   import AdminStoreManagementRowDetail from "@/views/private/admin/store/management/AdminStoreManagementRowDetail";
+  import StoreStatus from "@/enum/StoreStatus";
 
   export default {
     name: "AdminStoreManagement",
     components: {AdminStoreManagementRowDetail, CreateOrUpdateStoreDialog, DataTable},
     data() {
       return {
+        storeStatus: StoreStatus,
         isLoading: false,
         searchKey: "",
         filter: {

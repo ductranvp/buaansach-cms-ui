@@ -5,8 +5,8 @@ import * as Stomp from "webstomp-client";
 import Constants from "@/utils/constants";
 import {Notification} from "element-ui";
 import NotificationUtils from "@/utils/notification.util";
-import WebSocketConstants from "@/store/websocket/websocket.constants";
-import CloudFlareService from "@/service/cloudflare.service";
+import WebSocketConstants from "@/utils/websocket.constants";
+import CloudFlareService from "@/service/shared/cloudflare.service";
 import AppUtils from "@/utils/app.util";
 
 const state = {

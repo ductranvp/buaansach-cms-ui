@@ -36,7 +36,7 @@
 
 <script>
   import NotificationUtils from "@/utils/notification.util";
-  import AccountService from "@/service/account.service";
+  import UserService from "@/service/shared/user.service";
   import MessageUtils from "@/utils/message.util";
 
   export default {
@@ -86,7 +86,7 @@
               MessageUtils.error("Nhập lại mật khẩu không khớp");
             else {
               vm.isLoading = true;
-              AccountService.changePassword(vm.form)
+              UserService.changePassword(vm.form)
                 .then(() => {
                   MessageUtils.success("Đổi mật khẩu thành công");
                   vm.isLoading = false;

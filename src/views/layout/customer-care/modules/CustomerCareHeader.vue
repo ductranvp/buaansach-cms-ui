@@ -52,7 +52,7 @@
   import AuthUtils from "@/utils/auth.util";
   import MessageBoxUtils from "@/utils/message-box.util";
   import hasAnyRole from "@/utils/has-any-role";
-  import Hamburger from "@/components/hamburger/index";
+  import Hamburger from "@/components/hamburger/Humburger";
   import {mapState} from "vuex";
   import NewCustomerSound from "@/assets/sounds/new_customer.mp3";
 

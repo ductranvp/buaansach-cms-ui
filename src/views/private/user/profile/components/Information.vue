@@ -66,7 +66,7 @@
 
 <script>
   import {mapState} from "vuex";
-  import AccountService from "@/service/account.service";
+  import UserService from "@/service/shared/user.service";
   import MessageUtils from "@/utils/message.util";
 
   export default {
@@ -140,7 +140,7 @@
           if (valid) {
             try {
               vm.isLoading = true;
-              await AccountService.updateAccount(this.form, null);
+              await UserService.updateUser(this.form, null);
               MessageUtils.success("Cập nhật thành công!");
               vm.isLoading = false;
             } catch (e) {

@@ -4,9 +4,10 @@ import Constants from "@/utils/constants";
 import i18n from "@/i18n";
 
 function redirectBasedOnRole() {
-  if (store.getters.roles.includes(Roles.ADMIN)) return "/admin";
-  if (store.getters.roles.includes(Roles.MANAGER)) return "/manager";
-  if (store.getters.roles.includes(Roles.CUSTOMER_CARE)) return "/customer-care";
+  if (store.getters.authorities.includes(Roles.ADMIN)) return "/admin";
+  if (store.getters.authorities.includes(Roles.MODERATOR)) return "/moderator";
+  if (store.getters.authorities.includes(Roles.PARTNER)) return "/partner";
+  if (store.getters.authorities.includes(Roles.CUSTOMER_CARE)) return "/customer-care";
   else return "/home";
 }
 

@@ -1,5 +1,5 @@
 import Roles from "@/config/security/roles";
-import AdminStoreDetailChildren from "@/router/private-routes/admin/admin-store-detail.children.routes";
+import AdminStoreDetailChildren from "@/router/private-routes/admin/admin.store-detail.routes";
 
 const AdminRoutes = [
   {

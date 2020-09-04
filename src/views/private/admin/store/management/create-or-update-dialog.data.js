@@ -1,3 +1,5 @@
+import StoreStatus from "@/enum/StoreStatus";
+
 const mixinData = {
   data() {
     return {
@@ -10,7 +12,7 @@ const mixinData = {
         storeName: null,
         storeAddress: null,
         storeImageUrl: null,
-        storeStatus: "OPENING",
+        storeStatus: StoreStatus.OPENING,
         storeOwnerName: null,
         storeOwnerPhone: null,
         storeOwnerEmail: null,
@@ -49,11 +51,11 @@ const mixinData = {
       storeStatus: [
         {
           label: "private.adminStoreManagementPage.storeStatus.opening",
-          value: "OPENING"
+          value: StoreStatus.OPENING
         },
         {
           label: "private.adminStoreManagementPage.storeStatus.closed",
-          value: "CLOSED"
+          value: StoreStatus.CLOSED
         },
       ]
     };
