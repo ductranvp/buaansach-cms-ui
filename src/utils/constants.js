@@ -7,6 +7,7 @@ const Constants = {
     DEFAULT_AREA_GUID: "all",
     DEFAULT_CATEGORY_GUID: "all",
     PHONE_REGEX: "^(09|03|07|08|05)+([0-9]{8})$",
+    LOGIN_REGEX: "^[^_0-9][_0-9A-Za-z]{3,}$",
     COLOR: {
       PRIMARY: "#409EFF",
       SUCCESS: "#07a651",

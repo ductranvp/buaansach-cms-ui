@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" align="middle">
     <el-col :span="4" :xs="24">
-      <el-image class="expanded-image" :src="row.imageUrl" fit="cover" :preview-src-list="[row.imageUrl]">
+      <el-image class="expanded-image" :src="row.avatarUrl" fit="cover" :preview-src-list="[row.avatarUrl]">
         <div slot="error" class="image-error-slot full-size">
           <i class="el-icon-picture-outline"></i>
         </div>
@@ -13,26 +13,26 @@
           <table class="expanded-table">
             <tr>
               <td>Mã người dùng</td>
-              <td>{{ row.code }}</td>
+              <td>{{ row.userCode }}</td>
             </tr>
             <tr>
               <td>Giới tính</td>
               <td>
-                <el-tag size="mini" type="primary" v-if="row.gender === 'MALE'">Nam</el-tag>
-                <el-tag size="mini" type="primary" v-else-if="row.gender === 'FEMALE'">Nữ</el-tag>
+                <el-tag size="mini" type="primary" v-if="row.userGender === 'MALE'">Nam</el-tag>
+                <el-tag size="mini" type="primary" v-else-if="row.userGender === 'FEMALE'">Nữ</el-tag>
                 <el-tag size="mini" type="primary" v-else>Chưa biết</el-tag>
               </td>
             </tr>
             <tr>
               <td>Ngày sinh</td>
               <td>
-                <span v-if="row.birthday">{{row.birthday | moment("DD/MM/YYYY")}}</span>
+                <span v-if="row.userBirthday">{{row.userBirthday | moment("DD/MM/YYYY")}}</span>
               </td>
             </tr>
             <tr>
               <td>Địa chỉ</td>
               <td>
-                <span class="no-break-word">{{row.address}}</span>
+                <span class="no-break-word">{{row.userAddress}}</span>
               </td>
             </tr>
           </table>

@@ -61,38 +61,26 @@
             </template>
           </el-table-column>
         </template>
-        <el-table-column prop="authorities" label="Quyền" width="160px">
+        <el-table-column prop="userType" label="Loại tài khoản" width="160px">
           <template slot-scope="{row}">
-            <el-tooltip content="Quản trị viên" v-if="row.authorities.includes('ROLE_ADMIN')">
-              <span class="text-large padding-5 text-primary">
-                <i class="fas el-icon-fa-user-shield"></i>
-              </span>
-            </el-tooltip>
-            <el-tooltip content="Điều hành viên" v-if="row.authorities.includes('ROLE_MODERATOR')">
-              <span class="text-large padding-5 text-warning">
-              <i class="fas el-icon-fa-user-cog"></i>
-              </span>
-            </el-tooltip>
-            <el-tooltip content="Chăm sóc khách hàng" v-if="row.authorities.includes('ROLE_CUSTOMER_CARE')">
-              <span class="text-large padding-5 text-success">
-              <i class="fas el-icon-fa-headset"></i>
-              </span>
-            </el-tooltip>
-            <el-tooltip content="Người dùng" v-if="row.authorities.includes('ROLE_USER')">
-              <span class="text-large padding-5">
-              <i class="fas el-icon-fa-user"></i>
-              </span>
-            </el-tooltip>
+            <el-tag size="mini">{{userTypes.find(item => item.value === row.userType).label}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="activated" label="Trạng thái">
+        <el-table-column prop="authorities" label="Nhóm Quyền" width="160px">
           <template slot-scope="{row}">
-            <el-button :disabled="currentUser.login === row.login" size="small" type="success"
-                       @click="handleActivation(row)" v-if="row.activated">
-              {{ $t("private.adminStoreDetailHumanPage.accountStatus.activated") }}
+            <div v-for="role in row.authorities" :key="role">
+              <el-tag size="mini">{{authorities.find(item => item.value === role).label}}</el-tag>
+            </div>
+          </template>
+        </el-table-column>
+        <el-table-column prop="activated" label="Kích hoạt">
+          <template slot-scope="{row}">
+            <el-button :disabled="currentUser.userLogin === row.userLogin" size="small" type="success"
+                       @click="handleActivation(row)" v-if="row.userActivated">
+              <span>Đã kích hoạt</span>
             </el-button>
             <el-button size="small" type="danger" @click="handleActivation(row)" v-else>
-              {{ $t("private.adminStoreDetailHumanPage.accountStatus.deactivated") }}
+              <span>Đã khóa</span>
             </el-button>
           </template>
         </el-table-column>
@@ -102,7 +90,7 @@
               <el-dropdown>
                 <el-button size="mini"
                            type="warning"
-                           :disabled="row.login === 'anonymousUser' || row.login === 'systembas'"
+                           :disabled="row.userLogin === 'anonymousUser' || row.userLogin === 'systembas'"
                            plain>
                   Chọn<i class="el-icon-arrow-down el-icon--right"></i>
                 </el-button>
@@ -128,6 +116,8 @@
   import NotificationUtils from "@/utils/notification.util";
   import MessageUtils from "@/utils/message.util";
   import AdminUserRowDetail from "@/views/private/admin/user/AdminUserRowDetail";
+  import Authority from "@/enum/Authority";
+  import UserType from "@/enum/UserType";
 
   export default {
     name: "AdminUserManagement",
@@ -145,16 +135,17 @@
           searchKey: ""
         },
         columns: {
-          login: {label: 'Tên đăng nhập', display: true, sortable: true},
-          lastName: {label: 'Họ', display: true},
-          firstName: {label: 'Tên', display: true},
-          email: {label: 'Email', display: true},
-          phone: {label: 'SĐT', display: false},
+          userLogin: {label: 'Tên đăng nhập', display: true, sortable: true},
+          fullName: {label: 'Họ Tên', display: true},
+          userEmail: {label: 'Email', display: true},
+          userPhone: {label: 'SĐT', display: true},
           createdBy: {label: 'Người tạo', display: false},
           createdDate: {label: 'Ngày tạo', display: false, type: 'time', sortable: true},
           lastModifiedBy: {label: 'Người sửa cuối', display: false},
           lastModifiedDate: {label: 'Ngày sửa cuối', display: false, type: 'time', sortable: true},
         },
+        authorities: Authority.withLabel,
+        userTypes: UserType.withLabel,
       };
     },
     methods: {
@@ -183,14 +174,14 @@
       },
       async handleActivation(row) {
         try {
-          await AdminUserService.toggleActivation(row.login);
-          row.activated = !row.activated;
+          await AdminUserService.toggleActivation(row.userLogin);
+          row.userActivated = !row.userActivated;
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);
         }
       },
       handleChangePassword(row) {
-        this.$prompt("Nhập vào mật khẩu mới cho '" + row.login + "'", "Đổi mật khẩu", {
+        this.$prompt("Nhập vào mật khẩu mới cho '" + row.userLogin + "'", "Đổi mật khẩu", {
           confirmButtonText: this.$t("app.messageBox.okBtn"),
           cancelButtonText: this.$t("app.messageBox.cancelBtn"),
           inputValue: "",
@@ -200,7 +191,7 @@
           .then(async cb => {
             if (cb.value && cb.value.length >= 4 && cb.value.length <= 100) {
               const payload = {
-                login: row.login,
+                userLogin: row.userLogin,
                 newPassword: cb.value
               };
               try {
@@ -220,4 +211,5 @@
   };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
