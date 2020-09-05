@@ -16,6 +16,10 @@
               <td>{{ row.productDescription }}</td>
             </tr>
             <tr>
+              <td>Mô tả (Tiếng Anh)</td>
+              <td>{{ row.productDescriptionEng }}</td>
+            </tr>
+            <tr>
               <td>Giá gốc</td>
               <td>{{ row.productRootPrice | priceAppend }}</td>
             </tr>
@@ -24,10 +28,14 @@
               <td>{{ row.productDiscount | priceAppend }}</td>
             </tr>
             <tr>
-              <td>Hiển thị</td>
+              <td>Loại giảm giá</td>
+              <td>{{ row.productDiscountType }}</td>
+            </tr>
+            <tr>
+              <td>Loại sản phẩm</td>
               <td>
-                <el-tag v-if="row.productDisplay === 'DEFAULT'" type="primary">Mặc định</el-tag>
-                <el-tag v-if="row.productDisplay === 'HIGHLIGHT'" type="primary">Nổi bật</el-tag>
+                <el-tag v-if="row.productType === 'MAIN_PRODUCT'" type="primary">Sản phẩm chính</el-tag>
+                <el-tag v-else type="primary">Sản phẩm phụ</el-tag>
               </td>
             </tr>
           </table>
@@ -37,6 +45,14 @@
         </el-col>
         <el-col :span="11">
           <table class="expanded-table">
+            <tr>
+              <td>Đơn vị</td>
+              <td>{{ row.productUnit }}</td>
+            </tr>
+            <tr>
+              <td>Đơn vị (Tiếng Anh)</td>
+              <td>{{ row.productUnitEng }}</td>
+            </tr>
             <tr>
               <td>Người tạo</td>
               <td>{{ row.createdBy }}</td>

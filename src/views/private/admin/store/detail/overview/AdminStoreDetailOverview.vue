@@ -14,7 +14,6 @@
       <el-col :md="14" :sm="24">
         <div>
           <el-card shadow="never" class="full-size">
-
             <div>
               <table>
                 <tr>
@@ -32,37 +31,22 @@
                 <tr>
                   <td>Trạng thái</td>
                   <td>
-                    <el-tag
-                      size="small"
-                      type="success"
-                      effect="dark"
-                      v-if="adminCurrentStore.storeStatus === 'OPENING'"
-                    >{{ $t("private.adminStoreManagementPage.storeStatus.opening") }}
+                    <el-tag size="small" type="success" v-if="adminCurrentStore.storeStatus === 'OPENING'">
+                      <span>Mở cửa</span>
                     </el-tag>
-                    <el-tag
-                      size="small"
-                      type="danger"
-                      effect="dark"
-                      v-else
-                    >{{ $t("private.adminStoreManagementPage.storeStatus.closed") }}
+                    <el-tag size="small" type="danger" v-else>
+                      <span>Đóng cửa</span>
                     </el-tag>
                   </td>
                 </tr>
                 <tr>
                   <td>Kích hoạt</td>
                   <td>
-                    <el-tag
-                      size="small"
-                      type="success"
-                      effect="dark"
-                      v-if="adminCurrentStore.storeActivated">{{$t("private.adminStoreManagementPage.storeActivated.activated") }}
+                    <el-tag size="small" type="success" v-if="adminCurrentStore.storeActivated">
+                      <span>Bật</span>
                     </el-tag>
-                    <el-tag
-                      size="small"
-                      type="danger"
-                      effect="dark"
-                      v-else
-                    >{{ $t("private.adminStoreManagementPage.storeActivated.deactivated") }}
+                    <el-tag size="small" type="danger" v-else>
+                      <span>Tắt</span>
                     </el-tag>
                   </td>
                 </tr>
@@ -84,8 +68,7 @@
                 </tr>
                 <tr>
                   <td>Giờ hoạt động</td>
-                  <td><span v-if="adminCurrentStore.storeBusinessHours">{{adminCurrentStore.storeBusinessHours}}</span>
-                  </td>
+                  <td>{{adminCurrentStore.storeBusinessHours}}</td>
                 </tr>
               </table>
               <el-divider class="margin-15-0"></el-divider>

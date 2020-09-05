@@ -32,7 +32,7 @@
             <el-form-item prop="areaType">
               <input-label label="Loại khu vực" required/>
               <el-select :disabled="isEdit" v-model="form.areaType" class="full-width">
-                <el-option v-for="item in areaTypes" :key="item" :label="item" :value="item"></el-option>
+                <el-option v-for="item in areaTypes" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
@@ -117,7 +117,7 @@
         isEdit: false,
         isLoading: false,
         dialogFormVisible: false,
-        areaTypes: AreaType,
+        areaTypes: AreaType.withLabel,
         form: {
           guid: null,
           areaName: null,
@@ -162,7 +162,7 @@
         this.form = {
           storeGuid: this.$route.params.storeGuid,
           areaColor: "#90ee90",
-          areaType: AreaType.IN_STORE,
+          areaType: AreaType.values.IN_STORE,
           areaActivated: true,
         };
         this.show();

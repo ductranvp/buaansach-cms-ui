@@ -43,10 +43,10 @@
         <el-table-column prop="storeStatus" :label="$t('private.adminStoreManagementPage.store.storeStatus')">
           <template slot-scope="{ row }">
             <el-tag type="success" v-if="row.storeStatus === storeStatus.OPENING">
-              <span>{{ $t("private.adminStoreManagementPage.storeStatus.opening") }}</span>
+              <span>Mở cửa</span>
             </el-tag>
             <el-tag type="danger" v-else>
-              <span>{{ $t("private.adminStoreManagementPage.storeStatus.closed") }}</span>
+              <span>Đóng cửa</span>
             </el-tag>
           </template>
         </el-table-column>
@@ -54,10 +54,10 @@
         <el-table-column prop="storeActivated" :label="$t('private.adminStoreManagementPage.store.storeActivated')">
           <template slot-scope="{ row }">
             <el-tag type="success" v-if="row.storeActivated">
-              <span>{{ $t("private.adminStoreManagementPage.storeActivated.activated") }}</span>
+              <span>Bật</span>
             </el-tag>
             <el-tag type="danger" v-else>
-              <span>{{ $t("private.adminStoreManagementPage.storeActivated.deactivated") }}</span>
+              <span>Tắt</span>
             </el-tag>
           </template>
         </el-table-column>
@@ -93,7 +93,7 @@
     components: {AdminStoreManagementRowDetail, CreateOrUpdateStoreDialog, DataTable},
     data() {
       return {
-        storeStatus: StoreStatus,
+        storeStatus: StoreStatus.values,
         isLoading: false,
         searchKey: "",
         filter: {

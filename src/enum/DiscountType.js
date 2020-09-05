@@ -1,4 +1,4 @@
-const AreaType = {
+const DiscountType = {
   values: {
     IN_STORE: "IN_STORE",
     TAKE_AWAY: "TAKE_AWAY",
@@ -11,4 +11,4 @@ const AreaType = {
   ]
 };
 
-export default AreaType;
+export default DiscountType;

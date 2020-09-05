@@ -11,7 +11,7 @@ const mixinMethod = {
     create() {
       this.isEdit = false;
       this.form = {
-        storeStatus: StoreStatus.OPENING,
+        storeStatus: StoreStatus.values.OPENING,
         storeActivated: true,
       };
       this.show();

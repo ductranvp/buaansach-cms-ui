@@ -19,8 +19,8 @@
         <el-table-column label="Tên Danh Mục (Tiếng Anh)" prop="categoryNameEng"></el-table-column>
         <el-table-column label="Kích Hoạt" prop="categoryActivated">
           <template slot-scope="{row}">
-            <el-tag v-if="row.categoryActivated" type="success">Đã bật</el-tag>
-            <el-tag v-else type="danger">Đã tắt</el-tag>
+            <el-tag v-if="row.categoryActivated" type="success">Bật</el-tag>
+            <el-tag v-else type="danger">Tắt</el-tag>
           </template>
         </el-table-column>
         <template slot="action">

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Tạo hoặc cập nhật cửa hàng"
+    title="Tạo hoặc sửa cửa hàng"
     :before-close="beforeClose"
     :visible.sync="dialogFormVisible"
     :close-on-click-modal="false"
@@ -97,14 +97,16 @@
               <el-option
                 v-for="item in storeStatus"
                 :key="item.value"
-                :label="$t(item.label)"
+                :label="item.label"
                 :value="item.value">
               </el-option>
             </el-select>
           </el-col>
           <el-col :span="11" :offset="2">
+            <input-label label="Kích hoạt"/>
             <el-checkbox v-model="form.storeActivated">
-              <span>{{$t('private.adminStoreManagementPage.store.storeActivated')}}</span>
+              <span v-if="form.storeActivated">Bật</span>
+              <span v-else>Tắt</span>
             </el-checkbox>
           </el-col>
         </el-row>

@@ -12,13 +12,13 @@ const mixinData = {
         storeName: null,
         storeAddress: null,
         storeImageUrl: null,
-        storeStatus: StoreStatus.OPENING,
+        storeStatus: null,
         storeOwnerName: null,
         storeOwnerPhone: null,
         storeOwnerEmail: null,
         storeTaxCode: null,
         storeBusinessHours: null,
-        storeActivated: true,
+        storeActivated: null,
       },
       formRules: {
         storeName: [
@@ -48,16 +48,7 @@ const mixinData = {
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
         ]
       },
-      storeStatus: [
-        {
-          label: "private.adminStoreManagementPage.storeStatus.opening",
-          value: StoreStatus.OPENING
-        },
-        {
-          label: "private.adminStoreManagementPage.storeStatus.closed",
-          value: StoreStatus.CLOSED
-        },
-      ]
+      storeStatus: StoreStatus.withLabel
     };
   }
 };
