@@ -1,20 +1,11 @@
 <template>
   <el-container direction="vertical">
     <sort-category-dialog @hasChange="hasChange" ref="sortDialog" />
-    <el-row>
-      <el-col :span="12">
-        <el-form onsubmit="return false" ref="categoryForm" :rules="formRules" :model="form" :inline="true">
-          <el-form-item prop="categoryName">
-            <el-input @keypress.enter.native="submit" placeholder="Nhập tên danh mục"
-                      v-model="form.categoryName">
-            </el-input>
-          </el-form-item>
-          <el-button type="primary" :loading="isLoading" :disabled="!form.categoryName" @click="submit">
-            <span>Thêm Danh Mục</span>
-          </el-button>
-        </el-form>
-      </el-col>
-      <el-col :span="12" class="text-right">
+    <el-row class="padding-bottom-10">
+      <el-col class="text-right">
+        <el-button type="primary" @click="showCategoryDialogDialog()">
+          <span>Tạo Mới</span>
+        </el-button>
         <el-button type="primary" @click="showSortDialog">
           <span>Sắp Xếp</span>
         </el-button>
@@ -22,13 +13,20 @@
     </el-row>
     <el-row>
       <raw-data-table ref="categoryTable" :data="categories"
-                      :default-sort="{prop: 'categoryPosition', order: 'ascending'}" show-audit>
+                      :default-sort="{prop: 'categoryPosition', order: 'ascending'}">
         <el-table-column label="STT" type="index"></el-table-column>
-        <el-table-column label="Tên Danh Mục" prop="categoryName"></el-table-column>
+        <el-table-column label="Tên Danh Mục (Tiếng Việt)" prop="categoryName"></el-table-column>
+        <el-table-column label="Tên Danh Mục (Tiếng Anh)" prop="categoryNameEng"></el-table-column>
+        <el-table-column label="Kích Hoạt" prop="categoryActivated">
+          <template slot-scope="{row}">
+            <el-tag v-if="row.categoryActivated" type="success">Đã bật</el-tag>
+            <el-tag v-else type="danger">Đã tắt</el-tag>
+          </template>
+        </el-table-column>
         <template slot="action">
           <el-table-column label="Thao tác">
             <template slot-scope="{row}">
-              <el-button plain type="warning" size="mini" @click="editCategory(row)">
+              <el-button plain type="warning" size="mini" @click="showCategoryDialogDialog(row)">
                 <span>{{$t("common.entity.action.edit")}}</span>
               </el-button>
 
@@ -40,6 +38,7 @@
         </template>
       </raw-data-table>
     </el-row>
+    <create-or-update-category-dialog ref="categoryDialog" @saved="getCategory" />
   </el-container>
 </template>
 
@@ -50,26 +49,15 @@
   import MessageBoxUtils from "@/utils/message-box.util";
   import AppUtils from "@/utils/app.util";
   import SortCategoryDialog from "@/views/private/admin/category/SortCategoryDialog";
+  import CreateOrUpdateCategoryDialog from "@/views/private/admin/category/CreateOrUpdateCategoryDialog";
 
   export default {
     name: "AdminCategory",
-    components: {SortCategoryDialog, RawDataTable},
+    components: {CreateOrUpdateCategoryDialog, SortCategoryDialog, RawDataTable},
     data() {
       return {
         categories: [],
         isLoading: false,
-        form: {
-          guid: null,
-          categoryName: null,
-          categoryDescription: null,
-          categoryImageUrl: null,
-          categoryPosition: null,
-        },
-        formRules: {
-          categoryName: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
-          ]
-        }
       };
     },
     created() {
@@ -85,55 +73,23 @@
           this.getCategory();
         }
       },
-      editCategory(category) {
-        const vm = this;
-        const originalName = category.categoryName;
-        MessageBoxUtils.prompt("Sửa danh mục",
-          "Nhập vào tên danh mục",
-          false,
-          category.categoryName,
-          async function (callback) {
-            category.categoryName = callback.value;
-            try {
-              const {data} = await AdminCategoryService.updateCategory(category);
-              AppUtils.setAttrs(vm, category, data);
-            } catch (error) {
-              category.categoryName = originalName;
-              NotificationUtils.error(error.message || error.data.message);
-            }
-          });
-      },
       deleteCategory(category) {
         let vm = this;
         MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), async function () {
           try {
             await AdminCategoryService.deleteCategory(category.guid);
-            vm.categories = vm.categories.filter(cat => cat.guid !== category.guid);
+            vm.getCategory();
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
         });
       },
-      resetForm() {
-        this.form = {};
-        this.$refs.categoryForm.clearValidate();
-        this.$refs.categoryForm.resetFields();
-      },
-      submit() {
-        this.$refs.categoryForm.validate(async valid => {
-          if (valid) {
-            try {
-              this.isLoading = true;
-              const {data} = await AdminCategoryService.createCategory(this.form);
-              this.categories.push(data);
-              this.resetForm();
-              this.isLoading = false;
-            } catch (error) {
-              this.isLoading = false;
-              NotificationUtils.error(error.message || error.data.message);
-            }
-          }
-        });
+      showCategoryDialogDialog(category){
+        if (category){
+          this.$refs.categoryDialog.edit(category);
+        } else {
+          this.$refs.categoryDialog.create(category);
+        }
       },
       showSortDialog(){
         this.$refs.sortDialog.show(this.categories);

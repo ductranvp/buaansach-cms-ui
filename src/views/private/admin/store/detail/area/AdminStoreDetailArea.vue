@@ -1,61 +1,23 @@
 <template>
   <el-container direction="vertical">
-    <el-row id="action" type="flex">
-      <el-col :span="20">
-        <el-form ref="areaForm" :rules="formRules" :model="form" :inline="true">
-          <el-row type="flex" align="top">
-            <el-form-item prop="areaName">
-              <el-input :placeholder="$t('private.adminStoreDetailAreaPage.form.areaName')" v-model="form.areaName">
-              </el-input>
-            </el-form-item>
-            <el-form-item prop="areaType">
-              <el-select :placeholder="$t('private.adminStoreDetailAreaPage.form.areaType')" v-model="form.areaType">
-                <el-option v-for="type in areaTypes" :label="type.label" :value="type.value"
-                           :key="type.value"></el-option>
-              </el-select>
-            </el-form-item>
-            <el-form-item>
-              <el-color-picker
-                v-model="form.areaColor"
-                show-alpha
-                :predefine="predefineColors">
-              </el-color-picker>
-            </el-form-item>
-            <el-form-item>
-              <el-input :disabled="!form.autoCreateSeat" type="number"
-                        :placeholder="$t('private.adminStoreDetailAreaPage.form.numberOfSeats')"
-                        v-model="form.numberOfSeats">
-              </el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-input :disabled="!form.autoCreateSeat"
-                        :placeholder="$t('private.adminStoreDetailAreaPage.form.seatPrefix')"
-                        v-model="form.seatPrefix">
-              </el-input>
-            </el-form-item>
-            <el-form-item>
-              <el-checkbox v-model="form.autoCreateSeat" @change="changeCheckbox">
-                <span>{{$t("private.adminStoreDetailAreaPage.form.autoCreateSeat")}}</span>
-              </el-checkbox>
-            </el-form-item>
-          </el-row>
-        </el-form>
-      </el-col>
-      <el-col :span="4" class="text-right">
-        <el-button :disabled="!validInput" :loading="isLoading" type="primary" @click="saveArea">
-          <span>{{$t("private.adminStoreDetailAreaPage.form.submitBtn")}}</span>
+    <create-or-update-area-dialog ref="areaDialog" @saved="getArea"/>
+    <create-or-update-seat-dialog ref="seatDialog" @saved="seatSaved"/>
+    <el-row class="padding-bottom-10">
+      <el-col class="text-right">
+        <el-button type="primary" @click="showAreaDialog()">
+          <span>Tạo mới</span>
         </el-button>
       </el-col>
     </el-row>
     <el-row>
-      <raw-data-table ref="areaTable" :data="areas" show-audit>
+      <raw-data-table ref="areaTable" :data="areas">
         <el-table-column type="expand">
           <template slot-scope="{ row }">
             <el-row :gutter="10" type="flex" align="middle" class="full-size flex-wrap margin-0">
-              <el-col class="margin-bottom-10" :span="4" v-for="seat in row.listSeat" :key="seat.guid">
+              <el-col class="margin-bottom-10" :span="6" v-for="seat in row.listSeat" :key="seat.guid">
                 <el-card :body-style="{padding: '10px', background: '#eee'}" shadow="never">
                   <el-row type="flex" align="middle">
-                    <span class="flex-1">{{seat.seatName}}</span>
+                    <span class="flex-1">{{seat.seatName}} - {{seat.seatNameEng}}</span>
                     <span>
                       <el-button-group>
                         <el-button plain type="info" size="mini" @click="editSeat(seat)"><i
@@ -68,10 +30,11 @@
                 </el-card>
               </el-col>
               <el-col class="margin-bottom-10" :span="4">
-                <el-card class="pointer" @click.native="addSeat(row)" :body-style="{padding: '10px'}" shadow="never">
+                <el-card class="pointer" @click.native="createSeat(row)" :body-style="{padding: '10px'}"
+                         shadow="never">
                   <div class="text-center">
                     <el-button size="mini" type="text">
-                      <span>{{$t('private.adminStoreDetailAreaPage.table.addBtn')}}</span>
+                      <span>Thêm chỗ</span>
                     </el-button>
                   </div>
                 </el-card>
@@ -81,41 +44,28 @@
             </div>
           </template>
         </el-table-column>
-        <el-table-column
-          prop="areaName"
-          sortable
-          :label="$t('private.adminStoreDetailAreaPage.table.areaName')">
-          <template slot-scope="{ row }">
-            <el-input :ref="row.guid" v-show="row.edit" v-model="row.areaName" size="small"/>
-            <span v-show="!row.edit">{{ row.areaName }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="areaName" sortable label="Tên (Tiếng Việt)"/>
+        <el-table-column prop="areaNameEng" sortable label="Tên (Tiếng Anh)"/>
+        <el-table-column prop="areaType" sortable label="Loại"/>
         <el-table-column
           prop="areaColor"
-          width="70px"
-          :label="$t('private.adminStoreDetailAreaPage.table.areaColor')">
+          label="Màu">
           <template slot-scope="{ row }">
-            <el-color-picker
-              v-model="row.areaColor"
-              @change="changeAreaColor($event, row)"
-              show-alpha
-              :predefine="predefineColors">
-            </el-color-picker>
+            <el-button :style="{backgroundColor: row.areaColor}"></el-button>
           </template>
         </el-table-column>
         <el-table-column
           prop="areaActivated"
-          width="125px"
           label="Trạng thái">
           <template slot-scope="{ row }">
-            <el-button :loading="row.isUpdating" @click="toggleArea(row)" size="mini" type="success" v-if="row.areaActivated">Đã kích hoạt</el-button>
-            <el-button :loading="row.isUpdating" @click="toggleArea(row)" size="mini" type="danger" v-else>Đã khóa</el-button>
+            <el-tag type="success" v-if="row.areaActivated">Bật</el-tag>
+            <el-tag type="danger" v-else>Tắt</el-tag>
           </template>
         </el-table-column>
         <el-table-column
           prop="numberOfSeats"
           width="100px"
-          :label="$t('private.adminStoreDetailAreaPage.table.numberOfSeats')">
+          label="Số chỗ">
           <template slot-scope="{ row }">
             {{ row.listSeat.length }}
           </template>
@@ -123,23 +73,12 @@
         <template slot="action">
           <el-table-column :label="$t('common.entity.action.title')" width="160px">
             <template slot-scope="{ row }">
-              <div v-if="row.edit">
-                <el-button plain type="info" size="mini" @click="row.edit = false">
-                  <span>{{$t("common.entity.action.cancel")}}</span>
-                </el-button>
-                <el-button :loading="isLoading" plain type="primary" size="mini" @click="confirmEditArea(row)">
-                  <span>{{$t("common.entity.action.save")}}</span>
-                </el-button>
-              </div>
-              <div v-else>
-                <el-button plain type="warning" size="mini" @click="editArea(row)">
-                  <span>{{$t("common.entity.action.edit")}}</span>
-                </el-button>
-
-                <el-button plain type="danger" size="mini" @click="deleteArea(row)">
-                  <span>{{$t("common.entity.action.delete")}}</span>
-                </el-button>
-              </div>
+              <el-button plain type="warning" size="mini" @click="showAreaDialog(row)">
+                <span>{{$t("common.entity.action.edit")}}</span>
+              </el-button>
+              <el-button plain type="danger" size="mini" @click="deleteArea(row)">
+                <span>{{$t("common.entity.action.delete")}}</span>
+              </el-button>
             </template>
           </el-table-column>
         </template>
@@ -153,20 +92,14 @@
   import NotificationUtils from "@/utils/notification.util";
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
   import MessageBoxUtils from "@/utils/message-box.util";
+  import CreateOrUpdateAreaDialog from "@/views/private/admin/store/detail/area/CreateOrUpdateAreaDialog";
   import AdminSeatService from "@/service/admin/admin.seat.service";
+  import CreateOrUpdateSeatDialog from "@/views/private/admin/store/detail/area/CreateOrUpdateSeatDialog";
+  import AppUtils from "@/utils/app.util";
 
   export default {
     name: "AdminStoreDetailArea",
-    components: {RawDataTable},
-    computed: {
-      validInput() {
-        if (this.form.autoCreateSeat) {
-          return this.form.areaName && this.form.numberOfSeats && this.form.numberOfSeats > 0;
-        } else {
-          return this.form.areaName;
-        }
-      }
-    },
+    components: {CreateOrUpdateSeatDialog, CreateOrUpdateAreaDialog, RawDataTable},
     created() {
       this.getArea();
     },
@@ -179,74 +112,40 @@
       return {
         isLoading: false,
         areas: [],
-        form: { // AdminCreateAreaDTO
-          storeGuid: null,
-          areaName: null,
-          areaType: "IN_STORE",
-          areaColor: "#90ee90",
-          areaActivated: true,
-          seatPrefix: null,
-          numberOfSeats: null,
-          autoCreateSeat: true,
-        },
-        formRules: {
-          areaName: [
-            {
-              required: true,
-              message: this.$t("common.entity.validation.required"),
-              trigger: "blur"
-            }
-          ],
-          areaType: [
-            {
-              required: true,
-              message: this.$t("common.entity.validation.required"),
-              trigger: "blur"
-            }
-          ]
-        },
-        predefineColors: [
-          '#ff4500',
-          '#ff8c00',
-          '#ffd700',
-          '#90ee90',
-          '#00ced1',
-          '#1e90ff',
-          '#c71585',
-          'rgba(255, 69, 0, 0.68)',
-          'rgb(255, 120, 0)',
-          'hsv(51, 100, 98)',
-          'hsva(120, 40, 94, 0.5)',
-          'hsl(181, 100%, 37%)',
-          'hsla(209, 100%, 56%, 0.73)',
-          '#c7158577'
-        ],
-        areaTypes: [
-          {label: "Tại quán", value: "IN_STORE"},
-          {label: "Mang về", value: "TAKE_AWAY"},
-          {label: "Đặt online", value: "ONLINE"},
-          {label: "Test", value: "TEST"},
-        ]
+        seatFlag: null,
+        areaFlag: null,
       };
     },
     methods: {
-      addSeat(row) {
-        const vm = this;
-        MessageBoxUtils.prompt(vm.$t("private.adminStoreDetailAreaPage.dialog.addSeatTitle"),
-          vm.$t("private.adminStoreDetailAreaPage.dialog.addSeatMessage"),
-          false, "",
-          async function (val) {
-            try {
-              const seatEntity = {
-                seatName: val.value,
-                areaGuid: row.guid
-              };
-              const {data} = await AdminSeatService.createSeat(seatEntity);
-              row.listSeat.push(data);
-            } catch (error) {
-              NotificationUtils.error(error.message || error.data.message);
-            }
-          });
+      createSeat(area) {
+        this.$refs.seatDialog.create(area);
+        this.areaFlag = area;
+      },
+      editSeat(seat) {
+        this.$refs.seatDialog.edit(seat);
+        this.seatFlag = seat;
+      },
+      seatSaved(savedSeat){
+        if (savedSeat.created){
+          this.areaFlag.listSeat.push(savedSeat);
+        } else {
+          AppUtils.setAttrs(this, this.seatFlag, savedSeat);
+        }
+      },
+      showAreaDialog(area) {
+        if (area) this.$refs.areaDialog.edit(area);
+        else this.$refs.areaDialog.create();
+      },
+      deleteArea(row) {
+        let vm = this;
+        MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), async function () {
+          try {
+            await AdminAreaService.deleteArea(row.guid);
+            await vm.getArea();
+          } catch (error) {
+            NotificationUtils.error(error.message || error.data.message);
+          }
+        });
       },
       deleteSeat(row, seat) {
         const vm = this;
@@ -259,117 +158,14 @@
           }
         });
       },
-      editSeat(seat) {
-        const vm = this;
-        const originalSeatName = seat.seatName;
-        MessageBoxUtils.prompt(
-          vm.$t("private.adminStoreDetailAreaPage.dialog.editSeatTitle"),
-          vm.$t("private.adminStoreDetailAreaPage.dialog.addSeatMessage"),
-          false, seat.seatName,
-          async function (val) {
-            try {
-              seat.seatName = val.value;
-              await AdminSeatService.updateSeat(seat);
-            } catch (error) {
-              seat.seatName = originalSeatName;
-              NotificationUtils.error(error.message || error.data.message);
-            }
-          });
-      },
-      resetForm() {
-        this.form = {
-          autoCreateSeat: true,
-          areaColor: "#90ee90",
-          areaType: "IN_STORE",
-        };
-        this.$refs.areaForm.clearValidate();
-        this.$refs.areaForm.resetFields();
-      },
-      deleteArea(row) {
-        let vm = this;
-        MessageBoxUtils.confirm(vm.$t("common.entity.delete.title"), async function () {
-          try {
-            await AdminAreaService.deleteArea(row.guid);
-            vm.areas = vm.areas.filter(area => area.guid !== row.guid);
-          } catch (error) {
-            NotificationUtils.error(error.message || error.data.message);
-          }
-        });
-      },
-      editArea(row) {
-        row.edit = true;
-        const vm = this;
-        setTimeout(function () {
-          vm.$refs[row.guid].focus();
-        }, 100);
-      },
-      async confirmEditArea(row) {
-        const vm = this;
-        try {
-          vm.isLoading = true;
-          const {data: area} = await AdminAreaService.updateArea(row);
-          vm.isLoading = false;
-          area.edit = false;
-          Object.keys(area).forEach(key => {
-            row[key] = area[key];
-          });
-        } catch (error) {
-          vm.isLoading = false;
-          NotificationUtils.error(error.message || error.data.message);
-        }
-      },
-      async saveArea() {
-        const vm = this;
-        vm.form.storeGuid = vm.$route.params.storeGuid;
-        if (vm.form.storeGuid) {
-          try {
-            vm.isLoading = true;
-            const {data: area} = await AdminAreaService.createArea(vm.form);
-            vm.isLoading = false;
-            vm.$set(area, 'edit', false);
-            vm.areas.push(area);
-            vm.resetForm();
-          } catch (error) {
-            vm.isLoading = false;
-            NotificationUtils.error(error.message || error.data.message);
-          }
-        }
-      },
       async getArea() {
         try {
           const {data} = await AdminAreaService.getListAreaByStoreGuid(this.$route.params.storeGuid);
-          this.areas = data.map(area => {
-            this.$set(area, 'edit', false);
-            return area;
-          });
+          this.areas = data;
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);
         }
       },
-      changeCheckbox(val) {
-        if (!val) {
-          this.form.numberOfSeats = null;
-          this.form.seatPrefix = null;
-        }
-      },
-      async changeAreaColor(val, row) {
-        try {
-          await AdminAreaService.updateArea(row);
-        } catch (error) {
-          NotificationUtils.error(error.message || error.data.message);
-        }
-      },
-      async toggleArea(row) {
-        try {
-          this.$set(row, 'isUpdating', true);
-          await AdminAreaService.toggleArea(row.guid);
-          row.areaActivated = !row.areaActivated;
-          this.$set(row, 'isUpdating', false);
-        } catch (error) {
-          this.$set(row, 'isUpdating', false);
-          NotificationUtils.error(error.message || error.data.message);
-        }
-      }
     }
   };
 </script>

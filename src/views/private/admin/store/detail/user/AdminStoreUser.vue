@@ -102,14 +102,14 @@
 </template>
 
 <script>
-  import CreateOrUpdateStoreUserDialog from "@/views/private/admin/store/detail/human/CreateOrUpdateStoreUserDialog";
+  import CreateOrUpdateStoreUserDialog from "@/views/private/admin/store/detail/user/CreateOrUpdateStoreUserDialog";
   import AdminStoreUserService from "@/service/admin/admin.store-user.service";
   import RawDataTable from "@/components/raw-table-data/RawDataTable";
-  import AddStoreUserDialog from "@/views/private/admin/store/detail/human/AddStoreUserDialog";
+  import AddStoreUserDialog from "@/views/private/admin/store/detail/user/AddStoreUserDialog";
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import {mapState} from "vuex";
-  import AdminStoreUserRowDetail from "@/views/private/admin/store/detail/human/AdminStoreUserRowDetail";
+  import AdminStoreUserRowDetail from "@/views/private/admin/store/detail/user/AdminStoreUserRowDetail";
 
   export default {
     name: "AdminStoreUser",

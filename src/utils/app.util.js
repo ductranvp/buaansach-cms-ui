@@ -24,12 +24,9 @@ function deepCopy(object) {
 }
 
 function setAttrs(vm, currentObj, newObj) {
-  const temp = deepCopy(currentObj);
   Object.keys(newObj).forEach(key => {
     vm.$set(currentObj, key, newObj[key]);
   });
-  vm.$set(currentObj, "createdBy", temp['createdBy']);
-  vm.$set(currentObj, "createdDate", temp['createdDate']);
 }
 
 function parseCloudFlareTrace(trace){

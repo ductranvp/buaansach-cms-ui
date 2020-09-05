@@ -4,10 +4,23 @@ import CoreService from "@/service/shared/core.service";
 const baseUrl = "api/v1/admin/category";
 
 const AdminCategoryService = {
+  /**
+   * @param {Object} payload
+   * @param {String} payload.categoryName
+   * @param {String} payload.categoryNameEng
+   * @param {Image} image
+   * */
   createCategory(payload, image) {
     const formData = CoreService.processFormDataWithImage(payload, image);
     return request.post(baseUrl + "/create", formData, CoreService.formDataConfig);
   },
+
+  /**
+   * @param {Object} payload
+   * @param {String} payload.categoryName
+   * @param {String} payload.categoryNameEng
+   * @param {Image} image
+   * */
   updateCategory(payload, image) {
     const formData = CoreService.processFormDataWithImage(payload, image);
     return request.put(baseUrl + "/update", formData, CoreService.formDataConfig);
@@ -21,10 +34,10 @@ const AdminCategoryService = {
   deleteCategory(categoryGuid) {
     return request.delete(baseUrl + "/delete/" + categoryGuid);
   },
-  updateCategoryPosition(payload){
+  updateCategoryPosition(payload) {
     return request.put(baseUrl + "/update-position", payload);
   },
-  updateListCategoryPosition(payload){
+  updateListCategoryPosition(payload) {
     return request.put(baseUrl + "/update-list-position", payload);
   }
 };
