@@ -5,6 +5,12 @@ const AdminStoreUserService = {
   createStoreUser(payload) {
     return request.post(baseUrl + "/create", payload);
   },
+  /**
+   * @param {String} payload.storeGuid
+   * @param {String} payload.principal
+   * @param {String} payload.storeUserRole
+   * @param {String} payload.storeUserStatus
+   * */
   addStoreUser(payload) {
     return request.post(baseUrl + "/add", payload);
   },
@@ -14,8 +20,8 @@ const AdminStoreUserService = {
   getListStoreUserByStoreGuid(storeGuid) {
     return request.get(baseUrl + "/list-by-store/" + storeGuid);
   },
-  toggleAccountActivation(storeUserGuid) {
-    return request.put(baseUrl + "/toggle-account-activation/" + storeUserGuid);
+  toggleActivation(storeUserGuid) {
+    return request.put(baseUrl + "/toggle-activation/" + storeUserGuid);
   },
   deleteStoreUser(storeUserGuid) {
     return request.delete(baseUrl + "/delete/" + storeUserGuid);

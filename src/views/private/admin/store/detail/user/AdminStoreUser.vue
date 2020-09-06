@@ -26,26 +26,14 @@
                          sortable
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.userLogin')">
         </el-table-column>
-        <el-table-column prop="firstName"
-                         :label="$t('private.adminStoreDetailHumanPage.storeUser.firstName')">
-        </el-table-column>
-        <el-table-column prop="lastName"
-                         :label="$t('private.adminStoreDetailHumanPage.storeUser.lastName')">
+        <el-table-column prop="fullName"
+                         label="Họ tên">
         </el-table-column>
         <el-table-column prop="storeUserRole"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserRole')">
           <template slot-scope="{row}">
-            <el-tag type="primary" v-if="row.storeUserRole === 'STORE_OWNER'">
-              {{ $t("private.adminStoreDetailHumanPage.storeUserRole.owner") }}
-            </el-tag>
-            <el-tag type="primary" v-else-if="row.storeUserRole === 'STORE_MANAGER'">
-              {{ $t("private.adminStoreDetailHumanPage.storeUserRole.manager") }}
-            </el-tag>
-            <el-tag type="primary" v-else-if="row.storeUserRole === 'STORE_CASHIER'">
-              {{ $t("private.adminStoreDetailHumanPage.storeUserRole.cashier") }}
-            </el-tag>
-            <el-tag type="primary" v-else>
-              {{ $t("private.adminStoreDetailHumanPage.storeUserRole.waiter") }}
+            <el-tag type="primary">
+              {{storeUserRoleLabels[row.storeUserRole]}}
             </el-tag>
           </template>
         </el-table-column>
@@ -63,15 +51,15 @@
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="activated"
+        <el-table-column prop="storeUserActivated"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.activated')">
           <template slot-scope="{row}">
-            <el-button :disabled="currentUser.login === row.userLogin" size="small" type="success"
-                       @click="handleActivated(row)" v-if="row.activated">
-              {{ $t("private.adminStoreDetailHumanPage.accountStatus.activated") }}
+            <el-button :disabled="currentUser.userLogin === row.userLogin" size="small" type="success"
+                       @click="handleActivated(row)" v-if="row.storeUserActivated">
+              <span>Đã kích hoạt</span>
             </el-button>
             <el-button size="small" type="danger" @click="handleActivated(row)" v-else>
-              {{ $t("private.adminStoreDetailHumanPage.accountStatus.deactivated") }}
+              <span>Đã khóa</span>
             </el-button>
           </template>
         </el-table-column>
@@ -110,6 +98,8 @@
   import NotificationUtils from "@/utils/notification.util";
   import {mapState} from "vuex";
   import AdminStoreUserRowDetail from "@/views/private/admin/store/detail/user/AdminStoreUserRowDetail";
+  import StoreUserRole from "@/enum/StoreUserRole";
+  import StoreUserStatus from "@/enum/StoreUserStatus";
 
   export default {
     name: "AdminStoreUser",
@@ -121,6 +111,7 @@
     },
     data() {
       return {
+        storeUserRoleLabels: StoreUserRole.label,
         isLoading: false,
         searchKey: null,
         storeUsers: [],
@@ -157,8 +148,8 @@
       },
       async handleActivated(row) {
         try {
-          await AdminStoreUserService.toggleAccountActivation(row.guid);
-          row.activated = !row.activated;
+          await AdminStoreUserService.toggleActivation(row.guid);
+          row.storeUserActivated = !row.storeUserActivated;
         } catch (error) {
           NotificationUtils.error(error.message || error.data.message);
         }

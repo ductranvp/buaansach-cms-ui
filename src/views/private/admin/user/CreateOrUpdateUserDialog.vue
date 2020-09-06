@@ -45,7 +45,7 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="userPhone">
-            <input-label label="SĐT" optional/>
+            <input-label label="SĐT" required/>
             <el-input maxlength="10" v-model="form.userPhone" show-word-limit></el-input>
           </el-form-item>
         </el-col>
@@ -154,6 +154,7 @@
             {max: 255, message: this.$t("common.entity.validation.maxlength", {max: 255}), trigger: "blur"}
           ],
           userPhone: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
             {
               pattern: Constants.PHONE_REGEX,
@@ -185,7 +186,7 @@
     methods: {
       onOpened() {
         if (this.isEdit) {
-          this.$refs.lastName.focus();
+          this.$refs.fullName.focus();
         } else {
           this.$refs.userLogin.focus();
         }

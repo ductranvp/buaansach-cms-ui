@@ -1,15 +1,15 @@
 <template>
   <el-dialog
-    :title="$t('private.adminStoreDetailHumanPage.dialog.title')"
+    title="Thêm nhân viên"
     :visible.sync="dialogFormVisible"
     :before-close="beforeClose"
     :close-on-click-modal="false"
     @opened="dialogOpened"
   >
     <el-form ref="addsStoreUserForm" :model="form" :rules="formRules">
-      <el-form-item prop="userLoginOrEmail">
-        <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.userLoginOrEmail')" required/>
-        <el-input ref="userLoginOrEmail" maxlength="100" v-model="form.userLoginOrEmail" show-word-limit></el-input>
+      <el-form-item prop="principal">
+        <input-label label="Tên đăng nhập, email hoặc SĐT" required/>
+        <el-input ref="principal" maxlength="100" v-model="form.principal" show-word-limit></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -20,7 +20,7 @@
               <el-option
                 v-for="role in storeUserRole"
                 :key="role.value"
-                :label="$t(role.label)"
+                :label="role.label"
                 :value="role.value">
               </el-option>
             </el-select>
@@ -34,7 +34,7 @@
               <el-option
                 v-for="status in storeUserStatus"
                 :key="status.value"
-                :label="$t(status.label)"
+                :label="status.label"
                 :value="status.value">
               </el-option>
             </el-select>
@@ -58,6 +58,8 @@
 <script>
   import AdminStoreUserService from "@/service/admin/admin.store-user.service";
   import NotificationUtils from "@/utils/notification.util";
+  import StoreUserRole from "@/enum/StoreUserRole";
+  import StoreUserStatus from "@/enum/StoreUserStatus";
 
   export default {
     name: "AddStoreUserDialog",
@@ -67,53 +69,23 @@
         dialogFormVisible: false,
         form: {
           storeGuid: null,
-          userLoginOrEmail: null,
-          storeUserRole: "STORE_WAITER",
-          storeUserStatus: "WORKING",
+          principal: null,
+          storeUserRole: null,
+          storeUserStatus: null,
         },
         formRules: {
-          userLoginOrEmail: [
+          principal: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
           ]
         },
-        storeUserRole: [
-          {
-            value: "STORE_OWNER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.owner"
-          },
-          {
-            value: "STORE_MANAGER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.manager"
-          },
-          {
-            value: "STORE_CASHIER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.cashier"
-          },
-          {
-            value: "STORE_WAITER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.waiter"
-          }
-        ],
-        storeUserStatus: [
-          {
-            value: "WORKING",
-            label: "private.adminStoreDetailHumanPage.storeUserStatus.working"
-          },
-          {
-            value: "FIRED",
-            label: "private.adminStoreDetailHumanPage.storeUserStatus.fired"
-          },
-          {
-            value: "QUIT",
-            label: "private.adminStoreDetailHumanPage.storeUserStatus.quit"
-          }
-        ]
+        storeUserRole: StoreUserRole.optionArray,
+        storeUserStatus: StoreUserStatus.optionArray
       };
     },
     methods: {
       dialogOpened() {
-        this.$refs.userLoginOrEmail.focus();
+        this.$refs.principal.focus();
       },
       show() {
         this.dialogFormVisible = true;
@@ -127,27 +99,29 @@
         done();
       },
       add() {
+        this.form = {
+          storeGuid: this.$route.params.storeGuid,
+          storeUserRole: StoreUserRole.value.STORE_WAITER,
+          storeUserStatus: StoreUserStatus.value.WORKING,
+        };
         this.show();
       },
       resetForm() {
-        const vm = this;
-        this.form = {storeUserRole: "STORE_WAITER", storeUserStatus: "WORKING"};
-        vm.$refs.addsStoreUserForm.clearValidate();
-        vm.$refs.addsStoreUserForm.resetFields();
+        this.$refs.addsStoreUserForm.clearValidate();
+        this.$refs.addsStoreUserForm.resetFields();
       },
       submit() {
         this.$refs.addsStoreUserForm.validate(async valid => {
           if (valid) {
             try {
               this.isLoading = true;
-              this.form.storeGuid = this.$route.params.storeGuid;
               const {data} = await AdminStoreUserService.addStoreUser(this.form);
               this.$emit("addStoreUser", data);
-              this.isLoading = false;
               this.hide();
             } catch (error) {
-              this.isLoading = false;
               NotificationUtils.error(error.message || error.data.message);
+            } finally {
+              this.isLoading = false;
             }
           }
         });

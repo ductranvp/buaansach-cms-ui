@@ -35,6 +35,14 @@
           </el-form-item>
         </el-col>
       </el-form-item>
+
+      <el-form-item prop="storeProductHidden">
+        <input-label label="Ẩn/Hiện tại trang gọi món"/>
+        <el-checkbox v-model="form.storeProductHidden">
+          <span v-if="form.storeProductHidden">Ẩn</span>
+          <span v-else>Hiện</span>
+        </el-checkbox>
+      </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="hide">
@@ -69,6 +77,7 @@
         form: {
           guid: null,
           storeProductStatus: "AVAILABLE",
+          storeProductHidden: false,
           storeGuid: null,
           productGuid: null
         },

@@ -17,35 +17,29 @@
         </el-col>
 
         <el-col :span="11" :offset="2">
-          <el-form-item prop="password">
-            <input-label v-show="isEdit"
-                         :label="$t('private.adminStoreDetailHumanPage.storeUser.passwordWithoutRequired')"/>
-            <input-label v-show="!isEdit" :label="$t('private.adminStoreDetailHumanPage.storeUser.password')" required/>
-            <el-input autocomplete="new-password"
-                      ref="password"
-                      maxlength="100"
-                      v-model="form.password"
-                      type="password"
-                      show-word-limit
-                      show-password></el-input>
+          <el-form-item prop="userPhone">
+            <input-label label="SĐT" required/>
+            <el-input :disabled="isEdit" ref="userPhone" maxlength="10" v-model="form.userPhone" show-word-limit></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
 
-      <el-form-item>
-        <el-col :span="11">
-          <el-form-item prop="lastName">
-            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.lastName')" required/>
-            <el-input ref="lastName" maxlength="50" v-model="form.lastName" show-word-limit></el-input>
-          </el-form-item>
-        </el-col>
+      <el-form-item prop="userPassword">
+        <input-label v-show="isEdit"
+                     :label="$t('private.adminStoreDetailHumanPage.storeUser.passwordWithoutRequired')"/>
+        <input-label v-show="!isEdit" :label="$t('private.adminStoreDetailHumanPage.storeUser.password')" required/>
+        <el-input autocomplete="new-password"
+                  ref="userPassword"
+                  maxlength="100"
+                  v-model="form.userPassword"
+                  type="password"
+                  show-word-limit
+                  show-password></el-input>
+      </el-form-item>
 
-        <el-col :span="11" :offset="2">
-          <el-form-item prop="firstName">
-            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.firstName')" required/>
-            <el-input maxlength="50" v-model="form.firstName" show-word-limit></el-input>
-          </el-form-item>
-        </el-col>
+      <el-form-item prop="fullName">
+        <input-label label="Họ tên" required/>
+        <el-input ref="fullName" maxlength="100" v-model="form.fullName" show-word-limit></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -54,10 +48,10 @@
             <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserRole')"/>
             <el-select class="full-width" v-model="form.storeUserRole">
               <el-option
-                v-for="role in storeUserRole"
-                :key="role.value"
-                :label="$t(role.label)"
-                :value="role.value">
+                v-for="item in storeUserRole"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
@@ -68,10 +62,10 @@
             <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserStatus')"/>
             <el-select class="full-width" v-model="form.storeUserStatus">
               <el-option
-                v-for="status in storeUserStatus"
-                :key="status.value"
-                :label="$t(status.label)"
-                :value="status.value">
+                v-for="item in storeUserStatus"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value">
               </el-option>
             </el-select>
           </el-form-item>
@@ -93,6 +87,10 @@
   import AdminStoreUserService from "@/service/admin/admin.store-user.service";
   import NotificationUtils from "@/utils/notification.util";
   import {mapState} from "vuex";
+  import StoreUserRole from "@/enum/StoreUserRole";
+  import StoreUserStatus from "@/enum/StoreUserStatus";
+  import AppUtils from "@/utils/app.util";
+  import Constants from "@/utils/constants";
 
   export default {
     name: "CreateOrUpdateStoreUserDialog",
@@ -109,75 +107,49 @@
         form: {
           guid: null,
           storeGuid: null,
-          userCode: null,
           userLogin: null,
-          userLoginOrEmail: null,
-          password: null,
-          firstName: null,
-          lastName: null,
-          activated: null,
-          storeUserRole: "STORE_WAITER",
-          storeUserStatus: "WORKING",
-          createdBy: null,
-          createdDate: null,
-          lastModifiedBy: null,
-          lastModifiedDate: null
+          userEmail: null,
+          userPhone: null,
+          userPassword: null,
+          fullName: null,
+          storeUserRole: null,
+          storeUserStatus: null,
         },
         formRules: {
           userLogin: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ],
-          password: [
+          userPassword: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
           ],
-          firstName: [
+          userEmail: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
+            {type: 'email', message: this.$t("common.entity.validation.email"), trigger: "blur"},
+            {max: 255, message: this.$t("common.entity.validation.maxlength", {max: 255}), trigger: "blur"}
           ],
-          lastName: [
+          userPhone: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
+            {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
+            {
+              pattern: Constants.PHONE_REGEX,
+              message: this.$t("common.entity.validation.pattern", {pattern: Constants.PHONE_REGEX}),
+              trigger: "blur"
+            }
+          ],
+          fullName: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+            {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
           ]
         },
-        storeUserRole: [
-          {
-            value: "STORE_OWNER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.owner"
-          },
-          {
-            value: "STORE_MANAGER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.manager"
-          },
-          {
-            value: "STORE_CASHIER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.cashier"
-          },
-          {
-            value: "STORE_WAITER",
-            label: "private.adminStoreDetailHumanPage.storeUserRole.waiter"
-          }
-        ],
-        storeUserStatus: [
-          {
-            value: "WORKING",
-            label: "private.adminStoreDetailHumanPage.storeUserStatus.working"
-          },
-          {
-            value: "FIRED",
-            label: "private.adminStoreDetailHumanPage.storeUserStatus.fired"
-          },
-          {
-            value: "QUIT",
-            label: "private.adminStoreDetailHumanPage.storeUserStatus.quit"
-          }
-        ]
+        storeUserRole: StoreUserRole.optionArray,
+        storeUserStatus: StoreUserStatus.optionArray
       };
     },
     methods: {
       dialogOpened() {
-        if (this.isEdit) this.$refs.lastName.focus();
+        if (this.isEdit) this.$refs.fullName.focus();
         else this.$refs.userLogin.focus();
       },
       show() {
@@ -193,20 +165,45 @@
       },
       resetForm() {
         const vm = this;
-        this.form = {storeUserRole: "STORE_WAITER", storeUserStatus: "WORKING"};
         vm.$refs.storeUserForm.clearValidate();
         vm.$refs.storeUserForm.resetFields();
       },
       create() {
         this.isEdit = false;
+        this.form = {
+          storeGuid: this.$route.params.storeGuid,
+          storeUserRole: StoreUserRole.value.STORE_WAITER,
+          storeUserStatus: StoreUserStatus.value.WORKING
+        };
+        this.formRules.userPassword = [
+          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+          {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
+        ];
+        this.formRules.userPhone = [
+          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+          {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
+          {
+            pattern: Constants.PHONE_REGEX,
+            message: this.$t("common.entity.validation.pattern", {pattern: Constants.PHONE_REGEX}),
+            trigger: "blur"
+          }
+        ];
         this.show();
       },
       edit(storeUser) {
         this.isEdit = true;
-        this.formRules.password = [
+        this.formRules.userPassword = [
           {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
         ];
-        this.form = JSON.parse(JSON.stringify(storeUser));
+        this.formRules.userPhone = [
+          {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
+          {
+            pattern: Constants.PHONE_REGEX,
+            message: this.$t("common.entity.validation.pattern", {pattern: Constants.PHONE_REGEX}),
+            trigger: "blur"
+          }
+        ];
+        this.form = AppUtils.deepCopy(storeUser);
         this.show();
       },
       submit() {
@@ -215,7 +212,6 @@
             try {
               let response;
               this.isLoading = true;
-              this.form.storeGuid = this.$route.params.storeGuid;
               if (!this.isEdit) {
                 response = await AdminStoreUserService.createStoreUser(this.form);
                 this.$emit("createStoreUser", response.data);
@@ -223,12 +219,12 @@
                 response = await AdminStoreUserService.updateStoreUser(this.form);
                 this.$emit("updateStoreUser", response.data);
               }
-              this.isLoading = false;
               this.hide();
               NotificationUtils.success(this.$t("common.entity.save.success"));
             } catch (error) {
-              this.isLoading = false;
               NotificationUtils.error(error.message || error.data.message);
+            } finally {
+              this.isLoading = false;
             }
           }
         });
