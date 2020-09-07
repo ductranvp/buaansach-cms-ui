@@ -36,7 +36,7 @@
     components: {ChangePassword, Information, UserCard},
     computed: {
       ...mapGetters({
-        user: "info"
+        user: "userInfo"
       })
     },
     data() {

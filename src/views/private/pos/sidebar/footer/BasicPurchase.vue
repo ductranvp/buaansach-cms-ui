@@ -1,100 +1,7 @@
 <template>
   <el-container class="full-size" direction="vertical">
     <bill ref="billPage"/>
-    <create-customer-dialog @customer-created="onCustomerCreated" ref="customerDialog"/>
-    <customer-code-dialog ref="customerCodeDialog" />
-    <order-feedback-dialog ref="orderFeedbackDialog" />
     <el-container class="full-size" direction="vertical" id="basic_purchase">
-      <el-header height="auto">
-        <el-row class="full-size">
-          <el-col class="full-height">
-            <el-autocomplete
-              @keyup.enter.native="updateCustomerPhone"
-              @keyup.esc.native="cancelEditCustomerPhone"
-              ref="customerPhone"
-              :class="isEditCustomerPhone ? 'edit-phone' : ''"
-              class="full-size"
-              popper-class="my-autocomplete"
-              placement="top-start"
-              :hide-loading="true"
-              :trigger-on-focus="true"
-              :debounce="100"
-              :disabled="!isEditCustomerPhone"
-              v-model="currentOrder.customerPhone"
-              :fetch-suggestions="queryCustomer"
-              placeholder="SĐT Khách hàng (F2)"
-              :maxlength="10"
-              @select="handleSelect">
-              <i slot="prefix" class="el-input__icon el-icon-phone"></i>
-              <el-row class="full-size" type="flex" align="middle" slot="suffix">
-                <div v-if="isEditCustomerPhone">
-                  <el-tooltip class="item" effect="dark" content="Lưu" placement="top">
-                    <el-button :loading="isLoading" @click="updateCustomerPhone" class="full-size margin-0">
-                      <i class="fas el-icon-fa-check"></i>
-                    </el-button>
-                  </el-tooltip>
-
-                </div>
-                <div v-if="isEditCustomerPhone">
-                  <el-tooltip class="item" effect="dark" content="Hủy" placement="top">
-                    <el-button @click="cancelEditCustomerPhone" class="full-size margin-0">
-                      <i class="fas el-icon-fa-times"></i>
-                    </el-button>
-                  </el-tooltip>
-
-                </div>
-                <div v-else>
-                  <el-tooltip class="item" effect="dark" content="Sửa" placement="top">
-                    <el-button @click="editCustomerPhone" class="full-size margin-0">
-                      <i class="fas el-icon-fa-edit"></i>
-                    </el-button>
-                  </el-tooltip>
-
-                </div>
-                <div>
-                  <el-tooltip class="item" effect="dark" content="Tạo Khách Hàng" placement="top">
-                    <el-button @click="createCustomer()" class="full-size">
-                      <i class="fas el-icon-fa-user-plus"></i>
-                    </el-button>
-                  </el-tooltip>
-                </div>
-                <div>
-                  <el-tooltip class="item" effect="dark" content="Đánh Giá & Phản Hồi" placement="top">
-                    <el-button @click="showFeedback()" class="full-size">
-                      <i class="fas el-icon-fa-comments"></i>
-                    </el-button>
-                  </el-tooltip>
-                </div>
-              </el-row>
-              <template slot-scope="{ item }">
-                <div v-if="!item.customerPhone">
-                  <div class="value">Không tìm thấy khách hàng</div>
-                  <div>
-                    <el-button type="warning" @click="createCustomer(currentOrder.customerPhone)">Tạo khách hàng</el-button>
-                  </div>
-                </div>
-                <div v-else>
-                  <div class="value">
-                    <el-row type="flex" align="middle">
-                      <el-col>{{ item.customerName }}</el-col>
-                      <el-col>
-                        <el-tag size="mini" type="success">{{ genders[item.customerGender]}}</el-tag>
-                      </el-col>
-                    </el-row>
-                  </div>
-                  <div class="link">
-                    <el-row type="flex" align="middle">
-                      <el-col>{{ item.customerPhone }}</el-col>
-                      <el-col>{{ item.customerPoint }} điểm</el-col>
-                    </el-row>
-                  </div>
-                </div>
-              </template>
-            </el-autocomplete>
-          </el-col>
-        </el-row>
-        <el-divider class="margin-0 full-width bg-success"></el-divider>
-      </el-header>
       <el-main class="full-size">
         <el-container direction="vertical">
           <el-row type="flex" align="middle" style="height: 40px">
@@ -164,19 +71,12 @@
 <script>
   import {mapState} from "vuex";
   import Bill from "@/views/private/pos/bill/Bill";
-  import PosCustomerService from "@/service/pos/pos.customer.service";
-  import Constants from "@/utils/constants";
   import MessageUtils from "@/utils/message.util";
-  import PosOrderService from "@/service/pos/pos.order.service";
-  import CreateCustomerDialog from "@/views/private/pos/sidebar/footer/modules/CreateCustomerDialog";
-  import MessageBoxUtils from "@/utils/message-box.util";
   import hotkeys from "hotkeys-js";
-  import CustomerCodeDialog from "@/views/private/pos/sidebar/footer/modules/CustomerCodeDialog";
-  import OrderFeedbackDialog from "@/views/private/pos/sidebar/footer/modules/OrderFeedbackDialog";
 
   export default {
     name: "BasicPurchase",
-    components: {OrderFeedbackDialog, CustomerCodeDialog, CreateCustomerDialog, Bill},
+    components: {Bill},
     computed: {
       ...mapState({
         turnOnOrderGroup: state => state.posMachine.turnOnOrderGroup,
@@ -219,14 +119,6 @@
       return {
         isLoading: false,
         customerPay: null,
-        backupCustomerPhone: null,
-        isEditCustomerPhone: false,
-        phoneRegex: new RegExp(Constants.PHONE_REGEX),
-        genders: {
-          MALE: "Nam",
-          FEMALE: "Nữ",
-          UNDEFINED: "Chưa rõ",
-        }
       };
     },
     mounted() {
@@ -234,9 +126,6 @@
       hotkeys.filter = function (event) {
         return true;
       };
-      hotkeys('f2', 'posMachine', function (event, handler) {
-        vm.editCustomerPhone();
-      });
       hotkeys('f4', 'posMachine', function (event, handler) {
         vm.$refs.customerPay.focus();
       });
@@ -248,105 +137,11 @@
     watch: {
       currentOrder: function () {
         this.customerPay = null;
-        this.isEditCustomerPhone = false;
-        this.backupCustomerPhone = null;
       }
     },
     methods: {
-      createCustomer(phone) {
-        if (phone) this.$refs.customerDialog.create(phone);
-        else this.$refs.customerDialog.create();
-      },
-      onCustomerCreated(customer){
-        setTimeout(()=> {this.$refs.customerCodeDialog.show(customer);}, 300);
-      },
       showAdvancedPurchase() {
         this.$emit("showAdvancedPurchase");
-      },
-      async updateCustomerPhone() {
-        if (this.backupCustomerPhone === this.currentOrder.customerPhone) {
-          this.isEditCustomerPhone = false;
-          return;
-        }
-        /* when order has apply voucher code, if change customer phone, voucher will be remove */
-        let willVoucherBeCancelled = false;
-        if (this.currentOrder.voucherCustomerPhone != null) {
-          try {
-            await MessageBoxUtils.confirmPromise("Thay đổi số điện thoại sẽ hủy mã voucher, tiếp tục?");
-            willVoucherBeCancelled = true;
-          } catch (e) {
-            return;
-          }
-        }
-
-        /* validate phone number*/
-        const patt = new RegExp(Constants.PHONE_REGEX);
-        if (this.currentOrder.customerPhone && !patt.test(this.currentOrder.customerPhone)) {
-          MessageUtils.error("Số điện thoại không hợp lệ");
-          return;
-        }
-        /* check if phone existed or not */
-        try {
-          if (this.currentOrder.customerPhone) {
-            await PosCustomerService.getCustomerByPhone(this.currentOrder.customerPhone);
-          }
-        } catch (e) {
-          MessageUtils.error("Số điện thoại không tồn tại trong hệ thống. Vui lòng Thêm Khách Khàng trước");
-          return;
-        }
-
-        this.isLoading = true;
-        /* perform update customer phone */
-        try {
-          await PosOrderService.changeCustomerPhone({
-            seatGuid: this.currentOrder.seatGuid,
-            orderGuid: this.currentOrder.guid,
-            newCustomerPhone: this.currentOrder.customerPhone ? this.currentOrder.customerPhone : null,
-          });
-          this.isEditCustomerPhone = false;
-          this.isLoading = false;
-        } catch (e) {
-          this.isLoading = false;
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
-        }
-
-        /* reload seat order info when voucher has been cancelled */
-        if (willVoucherBeCancelled) {
-          try {
-            await this.$store.dispatch("posMachine/getSeatOrderInfo", this.selectedSeat.guid);
-          } catch (e) {
-            MessageUtils.error("Lỗi tải lại dữ liệu đơn hàng");
-          }
-        }
-      },
-      async queryCustomer(customerPhone, cb) {
-        if (customerPhone && customerPhone.length === 10) {
-          try {
-            const {data} = await PosCustomerService.getCustomerByPhone(customerPhone);
-            cb([data]);
-          } catch (e) {
-            cb([{}]);
-          }
-        } else {
-          cb([{}]);
-        }
-      },
-      handleSelect(item) {
-        this.currentOrder.customerPhone = item.customerPhone ? item.customerPhone : null;
-      },
-      editCustomerPhone() {
-        const vm = this;
-        vm.backupCustomerPhone = JSON.parse(JSON.stringify(vm.currentOrder.customerPhone));
-        vm.isEditCustomerPhone = true;
-        setTimeout(() => {
-          vm.$refs.customerPhone.focus();
-        }, 1);
-      },
-      cancelEditCustomerPhone() {
-        const vm = this;
-        vm.currentOrder.customerPhone = JSON.parse(JSON.stringify(vm.backupCustomerPhone));
-        vm.backupCustomerPhone = null;
-        vm.isEditCustomerPhone = false;
       },
       async completeOrder(customerPay) {
         const vm = this;
@@ -392,7 +187,7 @@
             // this function is called when print is done;
 
             // if order group is turned on
-            if (vm.turnOnOrderGroup){
+            if (vm.turnOnOrderGroup) {
               let temp = {
                 orderGuid: vm.currentOrder.guid,
                 seatName: vm.selectedSeat.seatName,
@@ -414,7 +209,7 @@
         }
 
       },
-      showFeedback(){
+      showFeedback() {
         this.$refs.orderFeedbackDialog.show();
       }
     }

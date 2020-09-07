@@ -1,44 +1,36 @@
 /* Store module pattern */
 import PosOrderService from "@/service/pos/pos.order.service";
-import NotificationUtils from "@/utils/notification.util";
-import PosOrderStoreUtil from "@/store/pos/util/pos.order.store.util";
 import MessageUtils from "@/utils/message.util";
+import SeatStatus from "@/enum/SeatStatus";
+import SeatServiceStatus from "@/enum/SeatServiceStatus";
 
 const state = {
   currentOrder: {},
-  orderStatus: PosOrderStoreUtil.orderStatus,
-  orderType: PosOrderStoreUtil.orderType,
-  paymentMethods: PosOrderStoreUtil.paymentMethods,
-  customerPay: null,
   isLoadingOrder: false,
 };
 
 const mutations = {
-  SET_CUSTOMER_PAY(state, customerPay) {
-    state.customerPay = customerPay;
-  },
   SET_CURRENT_ORDER(state, currentOrder) {
     state.currentOrder = currentOrder;
   },
-  RESET_ORDER(state) {
-    state.currentOrder = {};
-  },
   SET_IS_LOADING_ORDER(state, status){
     state.isLoadingOrder = status;
+  },
+  RESET_ORDER(state) {
+    state.currentOrder = {};
+    state.isLoadingOrder = false;
   }
 };
 const actions = {
-  async createOrder({state, commit}, customerPhone) {
-    const posCreateOrder = {
-      seatGuid: state.selectedSeat.guid,
-      customerPhone: customerPhone,
+  async createOrder({state, commit}) {
+    const payload = {
+      seatGuid: state.selectedSeat.guid
     };
-    const {data} = await PosOrderService.createOrder(posCreateOrder);
+    const {data} = await PosOrderService.createOrder(payload);
     commit("SET_CURRENT_ORDER", data);
     commit("CHANGE_SEAT_STATUS", {
-      targetSeat: state.selectedSeat,
-      seatStatus: state.seatStatus.NON_EMPTY,
-      seatServiceStatus: state.seatServiceStatus.FINISHED
+      seatStatus: SeatStatus.value.NON_EMPTY,
+      seatServiceStatus: SeatServiceStatus.value.UNFINISHED
     });
   },
   async updateOrder({state, commit}) {
@@ -52,8 +44,8 @@ const actions = {
     commit("SET_UNSAVED_ORDER_PRODUCT", []);
     commit("CHANGE_SEAT_STATUS", {
       targetSeat: state.selectedSeat,
-      seatStatus: state.seatStatus.NON_EMPTY,
-      seatServiceStatus: state.seatServiceStatus.UNFINISHED
+      seatStatus: SeatStatus.value.NON_EMPTY,
+      seatServiceStatus: SeatServiceStatus.value.UNFINISHED
     });
   },
   async receiveOrder({state, dispatch}) {
@@ -71,8 +63,8 @@ const actions = {
   printDone({commit, state}) {
     commit("CHANGE_SEAT_STATUS", {
       targetSeat: state.selectedSeat,
-      seatStatus: state.seatStatus.EMPTY,
-      seatServiceStatus: state.seatServiceStatus.FINISHED,
+      seatStatus: SeatStatus.value.EMPTY,
+      seatServiceStatus: SeatServiceStatus.value.FINISHED
     });
     commit("RESET_ORDER");
     commit("RESET_ORDER_PRODUCT");
@@ -85,6 +77,11 @@ const actions = {
       orderGuid: state.currentOrder.guid,
     };
     await PosOrderService.changeOrderSeat(posOrderSeatChange);
+    // commit("CHANGE_SEAT_STATUS", {
+    //   targetSeat: state.selectedSeat,
+    //   seatStatus: SeatStatus.value.EMPTY,
+    //   seatServiceStatus: SeatServiceStatus.value.FINISHED
+    // });
     commit("RESET_ORDER");
     commit("RESET_ORDER_PRODUCT");
   },
@@ -96,16 +93,15 @@ const actions = {
     await PosOrderService.cancelOrder(orderChange);
     commit("CHANGE_SEAT_STATUS", {
       targetSeat: state.selectedSeat,
-      seatStatus: state.seatStatus.EMPTY,
-      seatServiceStatus: state.seatServiceStatus.FINISHED
+      seatStatus: SeatStatus.value.EMPTY,
+      seatServiceStatus: SeatServiceStatus.value.FINISHED
     });
     commit("RESET_ORDER");
     commit("RESET_ORDER_PRODUCT");
   },
   async getSeatOrderInfo({commit, dispatch}, seatGuid) {
+    commit("SET_IS_LOADING_ORDER", true);
     try {
-      commit("SET_CUSTOMER_PAY", 0);
-      commit("SET_IS_LOADING_ORDER", true);
       const {data} = await PosOrderService.getSeatCurrentOrder(seatGuid);
       if (data.guid) {
         commit("SET_CURRENT_ORDER", data);
@@ -118,7 +114,7 @@ const actions = {
     } catch (error) {
       MessageUtils.error("Lấy thông tin đơn hàng thất bại, vui lòng thử lại");
     }
-    setTimeout(()=> commit("SET_IS_LOADING_ORDER", false), 300);
+    commit("SET_IS_LOADING_ORDER", false);
     dispatch("reloadSeat", seatGuid);
   },
 };

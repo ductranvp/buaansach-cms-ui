@@ -1,0 +1,81 @@
+/* Store module pattern */
+import PosStoreNotificationService from '@/service/pos/pos.store-notification.service';
+import StoreNotificationType from '@/enum/StoreNotificationType';
+
+const state = {
+  callWaiterNotifications: [],
+  payRequestNotifications: [],
+  orderNotifications: [],
+};
+
+const mutations = {
+  RESET_STORE_NOTIFICATION(state) {
+    state.callWaiterNotifications = [];
+    state.payRequestNotifications = [];
+    state.orderNotifications = [];
+  },
+  SET_CALL_WAITER_NOTIFICATIONS(state, notifications) {
+    state.callWaiterNotifications = notifications;
+  },
+  ADD_CALL_WAITER_NOTIFICATION(state, notification) {
+    state.callWaiterNotifications.push(notification);
+  },
+  SET_PAY_REQUEST_NOTIFICATIONS(state, notifications) {
+    state.payRequestNotifications = notifications;
+  },
+  ADD_PAY_REQUEST_NOTIFICATION(state, notification) {
+    state.payRequestNotifications.push(notification);
+  },
+  SET_ORDER_NOTIFICATIONS(state, notifications) {
+    state.orderNotifications = notifications;
+  },
+  ADD_ORDER_NOTIFICATION(state, notification) {
+    state.orderNotifications.push(notification);
+  },
+};
+const actions = {
+  async getStoreNotifications(
+    {state, commit}, {storeGuid, startDate, type, hidden}) {
+    let params = {
+      storeGuid: storeGuid,
+      startDate: startDate,
+      type: type,
+      hidden: hidden,
+    };
+
+    let {data} = await PosStoreNotificationService.getListStoreNotification(
+      params);
+
+    switch (type) {
+      case StoreNotificationType.value.ORDER_UPDATE:
+        commit('SET_ORDER_NOTIFICATIONS', data);
+        break;
+      case StoreNotificationType.value.PAY_REQUEST:
+        commit('SET_PAY_REQUEST_NOTIFICATIONS', data);
+        break;
+      case StoreNotificationType.value.CALL_WAITER:
+        commit('SET_CALL_WAITER_NOTIFICATIONS', data);
+        break;
+      case null:
+        commit('SET_ORDER_NOTIFICATIONS', data.filter(
+          item => item.storeNotificationType ===
+            StoreNotificationType.value.ORDER_UPDATE));
+        commit('SET_CALL_WAITER_NOTIFICATIONS', data.filter(
+          item => item.storeNotificationType ===
+            StoreNotificationType.value.CALL_WAITER));
+        commit('SET_PAY_REQUEST_NOTIFICATIONS', data.filter(
+          item => item.storeNotificationType ===
+            StoreNotificationType.value.PAY_REQUEST));
+        break;
+    }
+  },
+};
+
+const PosStoreNotificationStore = {
+  namespaced: true,
+  state,
+  mutations,
+  actions,
+};
+
+export default PosStoreNotificationStore;

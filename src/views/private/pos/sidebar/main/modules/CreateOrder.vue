@@ -8,17 +8,9 @@
                     :value="seatPrefixUrl + selectedSeat.guid"></qrcode>
           </el-row>
         </el-form-item>
-        <!--        <el-form-item>-->
-        <!--          <el-alert style="line-height: 28px;" type="warning" :closable="false">-->
-        <!--            <span class="text-small">Số điện thoại chưa có trong hệ thống sẽ được tạo tự động.</span>-->
-        <!--          </el-alert>-->
-        <!--        </el-form-item>-->
-        <!--        <el-form-item prop="customerPhone">-->
-        <!--          <input-label label="SĐT khách hàng" optional/>-->
-        <!--          <el-input @keypress.enter.native="createOrder" v-model="form.customerPhone"></el-input>-->
-        <!--        </el-form-item>-->
         <el-form-item>
-          <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">Tạo đơn
+          <el-button class="full-width" type="warning" @click="createOrder" :loading="isLoading">
+            <span>Tạo đơn</span>
           </el-button>
         </el-form-item>
       </el-form>
@@ -49,18 +41,13 @@
         formRules: {
           customerPhone: [
             {
-              pattern: "^(09|03|07|08|05)+([0-9]{8})$",
+              pattern: Constants.PHONE_REGEX,
               message: "Số điện thoại không hợp lệ",
               trigger: "blur"
             }
           ]
         },
       };
-    },
-    watch: {
-      currentOrder: function () {
-        if (!this.currentOrder.guid) this.resetForm();
-      },
     },
     methods: {
       goto(seatGuid) {
@@ -72,27 +59,18 @@
         const vm = this;
         this.$refs.createOrderForm.validate(async valid => {
           if (valid) {
-            // dont create customer here
-            this.form.customerPhone = null;
             try {
               vm.isLoading = true;
-              await this.$store.dispatch("posMachine/createOrder", this.form.customerPhone);
-              vm.isLoading = false;
+              await this.$store.dispatch("posMachine/createOrder");
             } catch (error) {
               const message = error.message || error.data.message;
-              if (message.includes("areaDisabled")) {
-                MessageUtils.error("Khu vực này đã bị khóa, hãy tải lại danh sách chỗ ngồi.");
-              } else {
-                MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
-              }
+              MessageUtils.error(message);
+            } finally {
               vm.isLoading = false;
             }
           }
         });
-      },
-      resetForm() {
-        this.form = {};
-      },
+      }
     }
   };
 </script>

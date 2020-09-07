@@ -52,7 +52,7 @@
                 <span v-if="row[key]">{{row[key] | moment("HH:mm:ss - DD/MM/YYYY")}}</span>
               </div>
               <div v-else-if="columns[key].type === 'seat'">
-                <span>{{ allSeats[row[key]].seatName}} - {{allSeats[row[key]].areaName}}</span>
+                <span>{{ allSeatsObject[row[key]].seatName}} - {{allSeatsObject[row[key]].areaName}}</span>
               </div>
               <div v-else-if="columns[key].type === 'history'">
 
@@ -93,15 +93,7 @@
       ...mapState({
         orderStatus: state => state.posMachine.orderStatus,
         orderType: state => state.posMachine.orderType,
-        allSeats: state => {
-          let arr = {};
-          state.posMachine.allAreas.forEach(area => {
-            area.listSeat.forEach(seat => {
-              arr[seat.guid] = seat;
-            });
-          });
-          return arr;
-        }
+        allSeatsObject: state => state.posMachine.allSeatsObject,
       })
     },
     data() {
@@ -119,7 +111,6 @@
               IN_STORE: {label: "Ăn tại quán", color: "primary"},
               TAKE_AWAY: {label: "Mang về", color: "primary"},
               ONLINE: {label: "Đặt online", color: "primary"},
-              TEST: {label: "Test", color: "primary"},
             }
           },
           orderStatus: {
@@ -128,9 +119,7 @@
               CREATED: {label: "Đã tạo", color: "info"},
               RECEIVED: {label: "Đã tiếp nhận", color: "warning"},
               PURCHASED: {label: "Đã thanh toán", color: "success"},
-              CANCELLED_BY_EMPLOYEE: {label: "Đã hủy", color: "danger"},
-              CANCELLED_BY_CUSTOMER: {label: "Hủy bởi khách", color: "danger"},
-              CANCELLED_BY_SYSTEM: {label: "Hủy bởi hệ thống", color: "danger"},
+              CANCELLED: {label: "Đã hủy", color: "danger"},
             }
           },
           seatGuid: {label: "Vị trí", display: true, type: 'seat'},

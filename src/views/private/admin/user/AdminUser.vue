@@ -144,8 +144,8 @@
           lastModifiedBy: {label: 'Người sửa cuối', display: false},
           lastModifiedDate: {label: 'Ngày sửa cuối', display: false, type: 'time', sortable: true},
         },
-        authorities: Authority.withLabel,
-        userTypes: UserType.withLabel,
+        authorities: Authority.optionArray,
+        userTypes: UserType.optionArray,
       };
     },
     methods: {

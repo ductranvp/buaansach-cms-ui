@@ -22,19 +22,19 @@
 <script>
   import {mapState} from "vuex";
   import Constants from "@/utils/constants";
+  import DefaultEntity from "@/utils/default-entity";
 
   export default {
     name: "PosCategory",
     computed: {
       ...mapState({
         allCategories: state => state.posMachine.allCategories,
-        defaultCategory: state => state.posMachine.defaultCategory,
         selectedCategory: state => state.posMachine.selectedCategory,
       })
     },
     data() {
       return {
-        defaultCategoryGuid: Constants.DEFAULT_CATEGORY_GUID
+        defaultCategory: DefaultEntity.category
       };
     },
     methods: {

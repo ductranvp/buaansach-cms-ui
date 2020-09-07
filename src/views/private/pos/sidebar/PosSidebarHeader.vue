@@ -17,12 +17,12 @@
       </el-col>
       <el-col>
         <el-row v-if="selectedSeat.guid" type="flex" align="middle" justify="end">
-          <el-button v-if="!selectedSeat.seatLocked" :loading="isLocking" @click="toggleLock" type="success"
+          <el-button v-if="!selectedSeat.seatLocked" :loading="isLocking" @click="toggleSeatLock" type="success"
                      size="small">
             <i class="el-icon-lock"></i>
             <span>Khóa</span>
           </el-button>
-          <el-button v-else :loading="isLocking" @click="toggleLock" type="success"
+          <el-button v-else :loading="isLocking" @click="toggleSeatLock" type="success"
                      size="small">
             <i class="el-icon-unlock"></i>
             <span>Mở khóa</span>
@@ -50,11 +50,11 @@
       };
     },
     methods: {
-      async toggleLock() {
+      async toggleSeatLock() {
         const vm = this;
         try {
           vm.isLocking = true;
-          await vm.$store.dispatch("posMachine/toggleLock");
+          await vm.$store.dispatch("posMachine/toggleSeatLock");
           setTimeout(function () {
             vm.isLocking = false;
           }, 300);

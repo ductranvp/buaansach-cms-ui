@@ -19,7 +19,7 @@
         <el-tooltip v-if="serverTime" :content="'Giờ hệ thống: ' + $moment(serverTime).format('HH:mm:ss DD/MM/YYYY')">
           <el-button class="hidden-sm-and-down" size="small" type="success">
             <i class="el-icon-time"></i>
-            <span class="hidden-md-and-down">{{ serverTime | moment("HH:mm:ss")}}</span>
+            <span class="hidden-md-and-down">{{ serverTime | moment('HH:mm:ss')}}</span>
           </el-button>
         </el-tooltip>
       </el-col>
@@ -61,23 +61,21 @@
           </el-row>
 
           <el-row type="flex" align="middle">
-            <store-order-notification/>
+            <notification :type="notificationType.ORDER_UPDATE"/>
           </el-row>
 
           <el-row class="padding-left-20" type="flex" align="middle">
-            <store-pay-request-notification/>
+            <notification :type="notificationType.PAY_REQUEST"/>
           </el-row>
 
           <el-row class="padding-0-20" type="flex" align="middle">
-            <call-waiter-notification/>
+            <notification :type="notificationType.CALL_WAITER"/>
           </el-row>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
-            <el-tooltip :content="currentUser.lastName + ' ' + currentUser.firstName">
-              <el-button size="small" type="success">
-                <span>{{currentUser.firstName}}</span>
-              </el-button>
-            </el-tooltip>
+            <el-button size="small" type="success">
+              <span>{{currentUser.fullName}}</span>
+            </el-button>
           </el-row>
 
           <el-row type="flex" align="middle">
@@ -122,29 +120,30 @@
 </template>
 
 <script>
-  import AuthUtils from "@/utils/auth.util";
-  import MessageBoxUtils from "@/utils/message-box.util";
-  import {mapState} from "vuex";
-  import PosStoreService from "@/service/pos/pos.store.service";
-  import StoreOrderNotification from "@/views/private/pos/header/store-order/StoreOrderNotification";
-  import CheckPrinter from "@/views/private/pos/CheckPrinter";
-  import MessageUtils from "@/utils/message.util";
-  import StoreOrderSound from "@/assets/sounds/store_order.mp3";
-  import StorePayRequestSound from "@/assets/sounds/store_pay_request.mp3";
-  import CallWaiterSound from "@/assets/sounds/call_waiter.mp3";
-  import ServerTimeService from "@/service/shared/server-time.service";
-  import CallWaiterNotification from "@/views/private/pos/header/call-waiter/CallWaiterNotification";
-  import StorePayRequestNotification
-    from "@/views/private/pos/header/store-pay-request/StorePayRequestNotification";
+  import AuthUtils from '@/utils/auth.util';
+  import MessageBoxUtils from '@/utils/message-box.util';
+  import {mapState} from 'vuex';
+  import PosStoreService from '@/service/pos/pos.store.service';
+  import CheckPrinter from '@/views/private/pos/CheckPrinter';
+  import MessageUtils from '@/utils/message.util';
+  import StoreOrderSound from '@/assets/sounds/store_order.mp3';
+  import StorePayRequestSound from '@/assets/sounds/store_pay_request.mp3';
+  import CallWaiterSound from '@/assets/sounds/call_waiter.mp3';
+  import ServerTimeService from '@/service/shared/server-time.service';
+  import Notification from '@/views/private/pos/header/notification/Notification';
+  import StoreNotificationType from '@/enum/StoreNotificationType';
 
   export default {
-    name: "PosMachineHeader",
-    components: {StorePayRequestNotification, CallWaiterNotification, CheckPrinter, StoreOrderNotification},
+    name: 'PosMachineHeader',
+    components: {
+      Notification,
+      CheckPrinter,
+    },
     computed: {
       ...mapState({
         currentUser: state => state.user.info,
         currentStore: state => state.posMachine.currentStore,
-      })
+      }),
     },
     data() {
       return {
@@ -153,11 +152,12 @@
         callWaiterSound: CallWaiterSound,
         storePayRequestSound: StorePayRequestSound,
         muteSound: false,
+        notificationType: StoreNotificationType.value,
       };
     },
     created() {
-      const muteSound = localStorage.getItem("muteSound");
-      this.muteSound = muteSound === "yes";
+      const muteSound = localStorage.getItem('muteSound');
+      this.muteSound = muteSound === 'yes';
       this.getServerTime();
     },
     methods: {
@@ -172,29 +172,31 @@
           setInterval(this.updateTime, 1000);
         } catch (e) {
           // Error get server time;
+          this.serverTime = new Date();
         }
       },
       updateTime() {
         this.serverTime = new Date(this.serverTime.getTime() + 1000);
       },
       truncate(string, maxlength) {
-        if (string.length > maxlength) return string.substr(0, maxlength) + "...";
+        if (string.length > maxlength) return string.substr(0, maxlength) + '...';
         return string;
       },
       toggleSound() {
         this.muteSound = !this.muteSound;
         if (this.muteSound) {
-          localStorage.setItem("muteSound", "yes");
+          localStorage.setItem('muteSound', 'yes');
         } else {
-          localStorage.setItem("muteSound", "no");
+          localStorage.setItem('muteSound', 'no');
         }
       },
       downloadTeamViewer() {
-        let win = window.open("https://download.teamviewer.com/full", '_blank', "width=500,height=500");
+        let win = window.open('https://download.teamviewer.com/full', '_blank', 'width=500,height=500');
         win.focus();
       },
       setupTeamViewer() {
-        let win = window.open("https://quantrimang.com/dieu-khien-may-tinh-tu-xa-voi-teamviewer-9-106917", '_blank', "width=500,height=500");
+        let win = window.open('https://quantrimang.com/dieu-khien-may-tinh-tu-xa-voi-teamviewer-9-106917', '_blank',
+          'width=500,height=500');
         win.focus();
       },
       checkPrinter() {
@@ -205,8 +207,8 @@
       },
       goto(routeName) {
         if (!routeName) return;
-        if (routeName === "logout") {
-          MessageBoxUtils.confirm("Thoát tài khoản", function () {
+        if (routeName === 'logout') {
+          MessageBoxUtils.confirm('Thoát tài khoản', function() {
             AuthUtils.logout();
           });
         } else {
@@ -218,17 +220,17 @@
         try {
           const payload = {
             storeGuid: this.$route.params.storeGuid,
-            storeStatus: status
+            storeStatus: status,
           };
           if (this.currentStore.storeStatus !== status) {
             await PosStoreService.changeStoreStatus(payload);
-            this.$store.commit("posMachine/CHANGE_STORE_STATUS", status);
+            this.$store.commit('posMachine/CHANGE_STORE_STATUS', status);
           }
         } catch (e) {
-          MessageUtils.error("Đổi trạng thái cửa hàng không thành công!");
+          MessageUtils.error('Đổi trạng thái cửa hàng không thành công!');
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

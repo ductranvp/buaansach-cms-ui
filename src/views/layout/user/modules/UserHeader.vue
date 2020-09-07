@@ -10,11 +10,11 @@
         </el-button>
       </el-row>
       <el-col class="text-right">
-        <el-button type="success" v-if="hasAnyRole(['ROLE_ADMIN'])" @click="goto('adminDashboardPage')">
+        <el-button type="success" v-if="hasAnyRole([roles.ROLE_ADMIN])" @click="goto('adminDashboardPage')">
           <i class="el-icon-s-tools"></i>
           <span class="hidden-sm-and-down">Quản trị viên</span>
         </el-button>
-        <el-button type="success" v-if="hasAnyRole(['ROLE_CUSTOMER_CARE'])" @click="goto('customerCareDashboardPage')">
+        <el-button type="success" v-if="hasAnyRole([roles.ROLE_CUSTOMER_CARE])" @click="goto('customerCareDashboardPage')">
           <i class="fas el-icon-fa-comment"></i>
           <span class="hidden-sm-and-down">Chăm sóc khách hàng</span>
         </el-button>
@@ -35,6 +35,7 @@
   import AuthUtils from "@/utils/auth.util";
   import hasAnyRole from "@/utils/has-any-role";
   import MessageBoxUtils from "@/utils/message-box.util";
+  import Authority from '@/enum/Authority';
 
   export default {
     name: "UserHeader",
@@ -50,6 +51,11 @@
         }
       },
       hasAnyRole: hasAnyRole,
+    },
+    data() {
+      return {
+        roles: Authority.value
+      };
     }
   };
 </script>

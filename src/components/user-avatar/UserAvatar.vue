@@ -1,7 +1,7 @@
 <template>
   <div :style="{ width: size + 'px', height: size + 'px' }" class="pointer">
     <el-tooltip
-      :content="user.firstName + ' ' + user.lastName"
+      :content="user.fullName"
       :disabled="!showTooltip"
       effect="dark"
       placement="bottom"
@@ -9,7 +9,7 @@
       <el-avatar
         :shape="shape"
         :size="size"
-        :src="user.imageUrl ? user.imageUrl : circleUrl"
+        :src="user.avatarUrl || circleUrl"
       >
       </el-avatar>
     </el-tooltip>

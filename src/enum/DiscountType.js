@@ -1,14 +1,11 @@
 const DiscountType = {
-  values: {
-    IN_STORE: "IN_STORE",
-    TAKE_AWAY: "TAKE_AWAY",
-    ONLINE: "ONLINE",
-  },
-  withLabel: [
-    {label: "Tại quán", value: "IN_STORE"},
-    {label: "Mang về", value: "TAKE_AWAY"},
-    {label: "Online", value: "ONLINE"},
-  ]
+  valueArray: ["VALUE", "PERCENT"],
+  labelArray: ["Giá trị", "Phần trăm"],
+  value: {VALUE: "VALUE", PERCENT: "PERCENT"},
+  label: {VALUE: "Giá trị", PERCENT: "Phần trăm"},
+  optionArray: [
+    {value: "VALUE", label: "Giá trị"},
+    {value: "PERCENT", label: "Phần trăm"}
+  ],
 };
-
 export default DiscountType;

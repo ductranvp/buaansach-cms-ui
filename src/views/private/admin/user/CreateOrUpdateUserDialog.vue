@@ -178,9 +178,9 @@
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
           ],
         },
-        languages: Language.withLabel,
-        authorities: Authority.withLabel,
-        userTypes: UserType.withLabel,
+        languages: Language.optionArray,
+        authorities: Authority.optionArray,
+        userTypes: UserType.optionArray,
       };
     },
     methods: {
@@ -193,9 +193,9 @@
       },
       create() {
         this.form = {
-          langKey: Language.values.VI,
+          langKey: Language.value.vi,
           userActivated: true,
-          userType: UserType.values.INTERNAL,
+          userType: UserType.value.INTERNAL,
           authorities: [],
         };
         this.formRules.userPassword = [

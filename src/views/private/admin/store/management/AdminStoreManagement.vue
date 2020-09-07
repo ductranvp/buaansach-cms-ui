@@ -93,7 +93,7 @@
     components: {AdminStoreManagementRowDetail, CreateOrUpdateStoreDialog, DataTable},
     data() {
       return {
-        storeStatus: StoreStatus.values,
+        storeStatus: StoreStatus.value,
         isLoading: false,
         searchKey: "",
         filter: {

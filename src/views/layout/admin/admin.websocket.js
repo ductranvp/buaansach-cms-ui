@@ -1,6 +1,7 @@
 import {mapState} from "vuex";
 import MessageUtils from "@/utils/message.util";
 import WebSocketConstants from "@/utils/websocket.constants";
+import WebsocketStatus from "@/enum/WebsocketStatus";
 
 const AdminWebsocket = {
   computed: {
@@ -44,7 +45,7 @@ const AdminWebsocket = {
             this.subscribeTopics();
           }, 1000);
         } else {
-          MessageUtils.error("Không thể đăng ký kênh theo dõi. Hãy thử tải lại trang.");
+          MessageUtils.error("Không thể đăng ký kênh nhận thông báo. Hãy thử tải lại trang.", 0);
         }
       }
     },
@@ -57,7 +58,7 @@ const AdminWebsocket = {
     onTrackerEventReceived(payload) {
       const data = JSON.parse(payload.body);
       data.vm = this;
-      if (data.status === 'CONNECTED') {
+      if (data.status === WebsocketStatus.value.CONNECTED) {
         this.$store.commit("adminStore/ADD_USER_SESSION", data);
       } else {
         this.$store.commit("adminStore/REMOVE_USER_SESSION", data);

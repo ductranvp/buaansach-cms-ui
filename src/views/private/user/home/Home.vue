@@ -47,8 +47,9 @@
                   </el-button>
                 </el-col>
                 <el-col
-                  v-if="store.storeUserRole === 'STORE_OWNER' || store.storeUserRole === 'STORE_MANAGER' || hasAnyRole(['ROLE_ADMIN'])">
-                  <el-button v-if="hasAnyRole(['ROLE_ADMIN'])" type="success" plain class="full-width" size="medium"
+                  v-if="store.storeUserRole === storeUserRole.STORE_OWNER || store.storeUserRole === storeUserRole.STORE_MANAGER
+                  || hasAnyRole([authority.ROLE_ADMIN])">
+                  <el-button v-if="hasAnyRole([authority.ROLE_ADMIN])" type="success" plain class="full-width" size="medium"
                              @click="goTo('adminStoreDetailOverviewPage', store.storeGuid)">
                     <i class="el-icon-s-tools"></i>
                     <span>Quản lý</span>
@@ -74,6 +75,8 @@
   import StoreUserService from "@/service/shared/store-user.service";
   import NotificationUtils from "@/utils/notification.util";
   import hasAnyRole from "@/utils/has-any-role";
+  import StoreUserRole from '@/enum/StoreUserRole';
+  import Authority from '@/enum/Authority';
 
   export default {
     name: "Home",
@@ -82,6 +85,8 @@
         isLoading: false,
         openNewTab: false,
         storeUser: [],
+        storeUserRole: StoreUserRole.value,
+        authority: Authority.value
       };
     },
     created() {

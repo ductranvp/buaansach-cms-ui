@@ -13,7 +13,7 @@ import VueQrCode from '@chenfengyuan/vue-qrcode';
 import "@/config/security/permission"; // permission control
 import "@/components"; // import registered components
 import "@/assets/styles/index.scss"; // all custom css here
-import * as filters from "./filters"; // global filters
+import * as filters from "./mixin/filters"; // global filters
 import VueCurrencyInput from 'vue-currency-input';
 
 Vue.component(VueQrCode.name, VueQrCode);

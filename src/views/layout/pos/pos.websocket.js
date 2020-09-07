@@ -1,6 +1,8 @@
 import {mapState} from "vuex";
 import MessageUtils from "@/utils/message.util";
 import WebSocketConstants from "@/utils/websocket.constants";
+import SeatStatus from "@/enum/SeatStatus";
+import SeatServiceStatus from "@/enum/SeatServiceStatus";
 
 const PosWebsocket = {
   computed: {
@@ -10,15 +12,7 @@ const PosWebsocket = {
       currentStore: state => state.posMachine.currentStore,
       selectedSeat: state => state.posMachine.selectedSeat,
       allAreas: state => state.posMachine.allAreas,
-      allSeats: state => {
-        let arr = {};
-        state.posMachine.allAreas.forEach(area => {
-          area.listSeat.forEach(seat => {
-            arr[seat.guid] = seat;
-          });
-        });
-        return arr;
-      }
+      allSeatsObject: state => state.posMachine.allSeatsObject,
     })
   },
   data() {
@@ -82,48 +76,33 @@ const PosWebsocket = {
     },
     onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
-      const seatData = this.allSeats[data.payload.seatGuid];
-      const updateOrder = {
+      const seatData = this.allSeatsObject[data.payload.seatGuid];
+      const notification = {
         ...data.payload,
         title: seatData.seatName + " - " + seatData.areaName,
-        seat: seatData
-      };
-
-      const callWaiter = {
-        id: data.payload.seatGuid + (new Date()).getTime(),
-        title: seatData.seatName + " - " + seatData.areaName,
-        createdDate: new Date(),
-        status: "UNSEEN"
-      };
-
-      const payRequest = {
-        ...data.payload,
-        title: seatData.seatName + " - " + seatData.areaName,
-        seat: seatData
       };
 
       switch (data.message) {
         case WebSocketConstants.GUEST_CALL_WAITER:
-          this.$store.commit("posMachine/ADD_CALL_WAITER_NOTIFICATION", callWaiter);
-          MessageUtils.info(callWaiter.title + " đã gọi nhân viên.");
+          this.$store.commit("posMachine/ADD_CALL_WAITER_NOTIFICATION", notification);
+          MessageUtils.info(notification.title + " đã gọi nhân viên.");
           this.playAudio("call_waiter_sound");
           break;
         case WebSocketConstants.GUEST_STORE_PAY_REQUEST:
-          this.$store.commit("posMachine/ADD_STORE_PAY_REQUEST_NOTIFICATION", payRequest);
-          MessageUtils.info(payRequest.title + " yêu cầu thanh toán.");
-          reloadSeatIfActive(this);
+          this.$store.commit("posMachine/ADD_PAY_REQUEST_NOTIFICATION", notification);
+          MessageUtils.info(notification.title + " yêu cầu thanh toán.");
           this.playAudio("store_pay_request_sound");
           break;
         case WebSocketConstants.GUEST_CREATE_ORDER:
           handleSeatChange(this);
           break;
         case WebSocketConstants.POS_UPDATE_ORDER:
-          this.$store.commit("posMachine/ADD_STORE_ORDER_NOTIFICATION", updateOrder);
+          this.$store.commit("posMachine/ADD_ORDER_NOTIFICATION", notification);
           break;
         case WebSocketConstants.GUEST_UPDATE_ORDER:
           handleSeatChange(this);
-          this.$store.commit("posMachine/ADD_STORE_ORDER_NOTIFICATION", updateOrder);
-          MessageUtils.info(updateOrder.title + " đã gọi món.");
+          this.$store.commit("posMachine/ADD_ORDER_NOTIFICATION", notification);
+          MessageUtils.info(notification.title + " đã gọi món.");
           this.playAudio("store_order_sound");
           break;
       }
@@ -136,16 +115,8 @@ const PosWebsocket = {
         } else {
           vm.$store.commit("posMachine/CHANGE_SEAT_STATUS", {
             targetSeat: seatData,
-            seatStatus: "NON_EMPTY",
-            seatServiceStatus: "UNFINISHED"
-          });
-        }
-      }
-
-      function reloadSeatIfActive(vm) {
-        if (vm.selectedSeat.guid === seatData.guid) {
-          vm.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
-            vm.scrollToEnd();
+            seatStatus: SeatStatus.value.NON_EMPTY,
+            seatServiceStatus: SeatServiceStatus.value.UNFINISHED
           });
         }
       }

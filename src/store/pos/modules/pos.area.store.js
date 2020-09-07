@@ -1,36 +1,29 @@
 /* Store module pattern */
-import Constants from "@/utils/constants";
 import PosAreaService from "@/service/pos/pos.area.service";
+import DefaultEntity from "@/utils/default-entity";
 
-const defaultAreaEntity = {
-  guid: Constants.DEFAULT_AREA_GUID,
-  areaName: "Tất cả",
-  areaColor: "gray",
-};
 
 const state = {
   allAreas: [],
-  defaultArea: defaultAreaEntity,
-  selectedArea: defaultAreaEntity,
+  selectedArea: DefaultEntity.area,
 };
 
 const mutations = {
   SET_ALL_AREA(state, allAreas) {
-    allAreas.forEach(area => area.display = true);
     state.allAreas = allAreas;
   },
   SET_SELECTED_AREA(state, areaGuid) {
-    if (areaGuid === state.defaultArea.guid) {
-      state.selectedArea = state.defaultArea;
+    if (areaGuid === DefaultEntity.area.guid) {
+      state.selectedArea = DefaultEntity.area;
       state.allAreas.forEach(area => {
-        area.display = true;
+        area.showSeats = true;
       });
     } else {
       state.allAreas.forEach(area => {
-        area.display = false;
+        area.showSeats = false;
         if (area.guid === areaGuid) {
           state.selectedArea = area;
-          area.display = true;
+          area.showSeats = true;
         }
       });
     }
@@ -38,11 +31,20 @@ const mutations = {
 };
 const actions = {
   async getAllArea({commit}, storeGuid) {
-    const areaData = await PosAreaService.getListAreaWithSeatByStoreGuid(storeGuid);
-    commit("SET_ALL_AREA", areaData.data);
+    const {data: areaData} = await PosAreaService.getListAreaWithSeatByStoreGuid(storeGuid);
+    areaData.forEach(area => area.showSeats = true);
+
+    let allSeats = [];
+    areaData.forEach(area => {
+      allSeats = allSeats.concat(area.listSeat);
+    });
+
+    commit("SET_ALL_AREA", areaData);
+    commit("SET_ALL_SEAT", allSeats);
+
   },
   changeArea({commit, dispatch}, areaGuid) {
-    commit("SET_SELECTED_AREA", areaGuid);
+    commit("SET_SELECTED_AREA", areaGuid || DefaultEntity.area.guid);
   }
 };
 

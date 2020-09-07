@@ -31,6 +31,7 @@
 
 <script>
   import {mapState} from "vuex";
+  import DefaultEntity from '@/utils/default-entity';
 
   export default {
     name: "PosArea",
@@ -38,11 +39,12 @@
       ...mapState({
         displayAreas: state => state.posMachine.allAreas,
         selectedArea: state => state.posMachine.selectedArea,
-        defaultArea: state => state.posMachine.defaultArea
       })
     },
     data() {
-      return {};
+      return {
+        defaultArea: DefaultEntity.area
+      };
     },
     methods: {
       changeArea(areaGuid) {

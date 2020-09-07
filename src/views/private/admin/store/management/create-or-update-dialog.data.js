@@ -48,7 +48,7 @@ const mixinData = {
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
         ]
       },
-      storeStatus: StoreStatus.withLabel
+      storeStatus: StoreStatus.optionArray
     };
   }
 };

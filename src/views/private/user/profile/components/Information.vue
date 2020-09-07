@@ -1,54 +1,47 @@
 <template>
   <el-row>
     <el-form ref="userForm" :model="form" :rules="formRules">
-      <el-form-item>
-        <el-col :span="11">
-          <el-form-item prop="firstName">
-            <input-label label="Tên" required/>
-            <el-input v-model="form.firstName" maxlength="50" show-word-limit></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="11" :offset="2">
-          <el-form-item prop="lastName">
-            <input-label label="Họ" required/>
-            <el-input v-model="form.lastName" maxlength="50" show-word-limit></el-input>
-          </el-form-item>
-        </el-col>
+      <el-form-item prop="firstName">
+        <input-label label="Tên" required/>
+        <el-input v-model="form.fullName" maxlength="50" show-word-limit></el-input>
       </el-form-item>
+
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="email">
+          <el-form-item prop="userEmail">
             <input-label label="Email" required/>
-            <el-input v-model="form.email" maxlength="100" show-word-limit></el-input>
+            <el-input v-model="form.userEmail" maxlength="100" show-word-limit></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <el-form-item prop="phone">
+          <el-form-item prop="userPhone">
             <input-label label="SĐT" optional/>
-            <el-input v-model="form.phone" maxlength="10" show-word-limit></el-input>
+            <el-input v-model="form.userPhone" maxlength="10" show-word-limit></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
+
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="gender">
+          <el-form-item prop="userGender">
             <input-label label="Giới tính" required/>
-            <el-select class="full-width" v-model="form.gender">
+            <el-select class="full-width" v-model="form.userGender">
               <el-option v-for="item in gender" :key="item.value" :value="item.value" :label="item.label"></el-option>
             </el-select>
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
-          <el-form-item prop="birthday">
+          <el-form-item prop="userBirthday">
             <input-label label="Ngày sinh" optional/>
-            <el-date-picker class="full-width" format="dd/MM/yyyy" v-model="form.birthday"></el-date-picker>
+            <el-date-picker class="full-width" format="dd/MM/yyyy" v-model="form.userBirthday"></el-date-picker>
           </el-form-item>
         </el-col>
       </el-form-item>
+
       <el-form-item>
-        <el-form-item prop="address">
+        <el-form-item prop="userAddress">
           <input-label label="Địa chỉ" optional/>
-          <el-input v-model="form.address" maxlength="255" show-word-limit></el-input>
+          <el-input v-model="form.userAddress" maxlength="255" show-word-limit></el-input>
         </el-form-item>
       </el-form-item>
       <el-form-item>
@@ -65,73 +58,60 @@
 </template>
 
 <script>
-  import {mapState} from "vuex";
-  import UserService from "@/service/shared/user.service";
-  import MessageUtils from "@/utils/message.util";
+  import {mapState} from 'vuex';
+  import UserService from '@/service/shared/user.service';
+  import MessageUtils from '@/utils/message.util';
+  import Gender from '@/enum/Gender';
+  import Constants from '@/utils/constants';
 
   export default {
-    name: "Information",
+    name: 'Information',
     computed: {
       ...mapState({
-        currentUser: state => state.user.info
-      })
+        currentUser: state => state.user.info,
+      }),
     },
     data() {
       return {
         isLoading: false,
         form: {
-          firstName: null,
-          lastName: null,
-          email: null,
-          phone: null,
-          gender: null,
-          birthday: null,
-          address: null,
-          langKey: "vi"
+          fullName: null,
+          userEmail: null,
+          userPhone: null,
+          userGender: null,
+          userBirthday: null,
+          userAddress: null,
+          langKey: null,
         },
-        gender: [
-          {label: 'Nam', value: 'MALE'},
-          {label: 'Nữ', value: 'FEMALE'},
-          {label: 'Không xác định', value: 'UNDEFINED'},
-        ],
+        gender: Gender.optionArray,
         formRules: {
-          firstName: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
-            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"},
+          fullName: [
+            {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
+            {max: 100, message: this.$t('common.entity.validation.maxlength', {max: 100}), trigger: 'blur'},
           ],
-          lastName: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
-            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"},
+          userGender: [
+            {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
           ],
-          gender: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
-          ],
-          phone: [
+          userPhone: [
             {
-              pattern: "^(09|03|07|08|05)+([0-9]{8})$",
-              message: this.$t("common.entity.validation.pattern", {pattern: "^(09|03|07|08|05)+([0-9]{8})$"}),
-              trigger: "blur"
+              pattern: Constants.PHONE_REGEX,
+              message: this.$t('common.entity.validation.pattern', {pattern: Constants.PHONE_REGEX}),
+              trigger: 'blur',
             },
           ],
-          email: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: 'blur'},
-            {type: 'email', message: this.$t("common.entity.validation.email"), trigger: "blur"},
-            {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"},
+          userEmail: [
+            {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
+            {type: 'email', message: this.$t('common.entity.validation.email'), trigger: 'blur'},
+            {max: 100, message: this.$t('common.entity.validation.maxlength', {max: 100}), trigger: 'blur'},
           ],
-          address: [
-            {max: 255, message: this.$t("common.entity.validation.maxlength", {max: 255}), trigger: "blur"},
-          ]
-        }
+          userAddress: [
+            {max: 255, message: this.$t('common.entity.validation.maxlength', {max: 255}), trigger: 'blur'},
+          ],
+        },
       };
     },
     created() {
-      this.form.firstName = this.currentUser.firstName;
-      this.form.lastName = this.currentUser.lastName;
-      this.form.email = this.currentUser.email;
-      this.form.phone = this.currentUser.phone;
-      this.form.gender = this.currentUser.gender;
-      this.form.birthday = this.currentUser.birthday;
-      this.form.address = this.currentUser.address;
+      this.form = this.currentUser;
     },
     methods: {
       submit() {
@@ -141,17 +121,17 @@
             try {
               vm.isLoading = true;
               await UserService.updateUser(this.form, null);
-              MessageUtils.success("Cập nhật thành công!");
+              MessageUtils.success('Cập nhật thành công!');
               vm.isLoading = false;
             } catch (e) {
               vm.isLoading = false;
-              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+              MessageUtils.error('Đã có lỗi xảy ra, vui lòng thử lại sau!');
             }
           }
-          await vm.$store.dispatch("user/getAccount");
+          await vm.$store.dispatch('user/getAccount');
         });
-      }
-    }
+      },
+    },
   };
 </script>
 

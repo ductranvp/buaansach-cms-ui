@@ -7,6 +7,9 @@
 
 <script>
   import {mapState} from "vuex";
+  import PriceUtils from "@/utils/price.util";
+  import AreaType from "@/enum/AreaType";
+  import OrderProductStatus from "@/enum/OrderProductStatus";
 
   export default {
     name: "Bill",
@@ -18,31 +21,12 @@
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         totalAmount: state => state.posMachine.currentOrder.totalAmount,
         discountAmount: state => {
-          let amount = 0;
-          let total = state.posMachine.currentOrder.totalAmount;
-          let discount = state.posMachine.currentOrder.orderDiscount;
-          let discountType = state.posMachine.currentOrder.orderDiscountType;
-          if (discount) {
-            if (discountType === "VALUE") {
-              amount = discount;
-            } else {
-              amount = (Math.floor(total * discount / 100));
-            }
-          }
-          return amount > 0 ? amount : 0;
+          const {totalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
+          return PriceUtils.getDiscountAmount(totalAmount, orderDiscount, orderDiscountType);
         },
         payAmount: state => {
-          let amount = state.posMachine.currentOrder.totalAmount;
-          let discount = state.posMachine.currentOrder.orderDiscount;
-          let discountType = state.posMachine.currentOrder.orderDiscountType;
-          if (discount) {
-            if (discountType === "VALUE") {
-              amount = amount - discount;
-            } else {
-              amount = amount - (Math.floor(amount * discount / 100));
-            }
-          }
-          return amount > 0 ? amount : 0;
+          const {totalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
+          return PriceUtils.getPayAmount(totalAmount, orderDiscount, orderDiscountType);
         },
       })
     },
@@ -93,25 +77,23 @@
         meta += "<tr><td>Mã đơn: " + this.currentOrder.orderCode + "</td></tr>";
         meta += "<tr><td>Ngày bán: " + this.getDate() + "</td></tr>";
         switch (this.selectedSeat.areaType) {
-          case "IN_STORE":
+          case AreaType.value.IN_STORE:
             meta += "<tr><td>Vị trí: " + this.selectedSeat.seatName + " - " + this.selectedSeat.areaName + "</td></tr>";
             break;
-          case "TAKE_AWAY":
+          case AreaType.value.TAKE_AWAY:
             meta += "<tr><td>Hình thức: Mang về</td></tr>";
             break;
-          case "ONLINE":
+          case AreaType.value.ONLINE:
             meta += "<tr><td>Hình thức: Đặt online</td></tr>";
             break;
-          case "TEST":
-            meta += "<tr><td>Hình thức: Test</td></tr>";
+          default:
             break;
-          default: break;
         }
         meta += "</table>";
         return meta;
       },
       getBillProduct() {
-        const orderProduct = this.savedOrderProduct.filter(od => !od.orderProductStatus.includes('CANCELLED'));
+        const orderProduct = this.savedOrderProduct.filter(od => !od.orderProductStatus === OrderProductStatus.value.CANCELLED);
         let distinctProduct = {};
 
         orderProduct.forEach((op) => {
@@ -157,7 +139,6 @@
         tableContent += "<tr><th>THANH TOÁN</th><td class='text-right'><b>" + this.formatPrice(this.payAmount) + "</b></td></tr>";
         tableContent += "<tr><th>TIỀN KHÁCH ĐƯA</th><td class='text-right'>" + this.formatPrice(customerPay) + "</td></tr>";
         tableContent += "<tr><th>TIỀN TRẢ LẠI</th><td class='text-right'>" + this.formatPrice(customerPay - this.payAmount) + "</td></tr>";
-        // tableContent += "<tr><td colspan='2'><div class='text-center'>(Giá đã bao gồm thuế GTGT)</div></td></tr>";
         tableContent += "</table>";
         return tableContent;
       },

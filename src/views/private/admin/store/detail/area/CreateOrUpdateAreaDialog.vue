@@ -117,7 +117,7 @@
         isEdit: false,
         isLoading: false,
         dialogFormVisible: false,
-        areaTypes: AreaType.withLabel,
+        areaTypes: AreaType.optionArray,
         form: {
           guid: null,
           areaName: null,
@@ -162,7 +162,7 @@
         this.form = {
           storeGuid: this.$route.params.storeGuid,
           areaColor: "#90ee90",
-          areaType: AreaType.values.IN_STORE,
+          areaType: AreaType.value.IN_STORE,
           areaActivated: true,
         };
         this.show();

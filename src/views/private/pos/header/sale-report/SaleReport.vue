@@ -12,7 +12,7 @@
               <el-tooltip content="Tài khoản của bạn">
                 <el-button size="medium" type="success">
                   <i class="el-icon-user"></i>
-                  <span>{{currentUser.lastName + " " + currentUser.firstName}}</span>
+                  <span>{{currentUser.fullName}}</span>
                 </el-button>
               </el-tooltip>
             </div>
@@ -22,7 +22,7 @@
                 <el-option label="Tất cả nhân viên" value=""></el-option>
                 <el-option v-for="u in listStoreUser"
                            :key="u.userLogin"
-                           :label="u.lastName + ' ' + u.firstName"
+                           :label="u.fullName"
                            :value="u.userLogin"></el-option>
               </el-select>
             </div>
@@ -52,10 +52,10 @@
           <el-alert :closable="false">
             <div class="text-large">
               <span>Kết quả thống kê từ </span>
-              <span class="text-primary">{{form.startDate | moment("HH:mm DD/MM/YYYY")}}</span>
+              <span class="text-primary">{{form.startDate | moment('HH:mm DD/MM/YYYY')}}</span>
               <span> đến </span>
-              <span class="text-primary">{{form.endDate | moment("HH:mm DD/MM/YYYY")}}</span>
-              <span v-if="reportForUser"> của <span class="text-primary">{{reportForUser.lastName + ' ' + reportForUser.firstName}}</span></span>
+              <span class="text-primary">{{form.endDate | moment('HH:mm DD/MM/YYYY')}}</span>
+              <span v-if="reportForUser"> của <span class="text-primary">{{reportForUser.fullName}}</span></span>
             </div>
           </el-alert>
         </el-row>
@@ -215,23 +215,24 @@
 </template>
 
 <script>
-  import PosSaleReportService from "@/service/pos/pos.sale-report.service";
-  import PosStoreUserService from "@/service/pos/pos.store-user-service";
-  import hasAnyRole from "@/utils/has-any-role";
-  import MessageUtils from "@/utils/message.util";
-  import {mapState} from "vuex";
-  import SaleReportDetailDialog from "@/views/private/pos/header/sale-report/SaleReportDetailDialog";
-  import PriceUtils from "@/utils/price.util";
+  import PosSaleReportService from '@/service/pos/pos.sale-report.service';
+  import PosStoreUserService from '@/service/pos/pos.store-user-service';
+  import hasAnyRole from '@/utils/has-any-role';
+  import MessageUtils from '@/utils/message.util';
+  import {mapState} from 'vuex';
+  import SaleReportDetailDialog from '@/views/private/pos/header/sale-report/SaleReportDetailDialog';
+  import PriceUtils from '@/utils/price.util';
+  import StoreUserRole from '@/enum/StoreUserRole';
+  import OrderStatus from '@/enum/OrderStatus';
+  import OrderType from '@/enum/OrderType';
 
   export default {
-    name: "SaleReport",
+    name: 'SaleReport',
     components: {SaleReportDetailDialog},
     computed: {
       ...mapState({
-        orderStatus: state => state.posMachine.orderStatus,
-        orderType: state => state.posMachine.orderType,
         currentUser: state => state.user.info,
-      })
+      }),
     },
     data() {
       const defaultEnd = new Date();
@@ -250,7 +251,7 @@
                 const start = new Date();
                 start.setHours(0, 0, 0, 0);
                 picker.$emit('pick', [start, end]);
-              }
+              },
             },
             {
               text: 'Hôm qua',
@@ -262,7 +263,7 @@
                 end.setHours(0, 0, 0, 0);
                 end.setTime(end.getTime() - 1000);
                 picker.$emit('pick', [start, end]);
-              }
+              },
             },
             {
               text: '7 ngày trước',
@@ -274,7 +275,7 @@
                 end.setHours(0, 0, 0, 0);
                 end.setTime(end.getTime() - 1000);
                 picker.$emit('pick', [start, end]);
-              }
+              },
             },
             {
               text: '30 ngày trước',
@@ -286,25 +287,22 @@
                 end.setHours(0, 0, 0, 0);
                 end.setTime(end.getTime() - 1000);
                 picker.$emit('pick', [start, end]);
-              }
-            }]
+              },
+            }],
         },
         form: {
           storeGuid: null,
-          userLogin: "",
+          userLogin: '',
           startDate: null,
           endDate: null,
         },
         dateRange: [defaultStart, defaultEnd],
         listStoreUser: [],
-        storeUserRoles: {
-          STORE_OWNER: "STORE_OWNER",
-          STORE_MANAGER: "STORE_MANAGER",
-          STORE_WAITER: "STORE_WAITER",
-          STORE_CASHIER: "STORE_CASHIER",
-        },
+        storeUserRoles: StoreUserRole.value,
         reportForUser: null,
         reportData: {},
+        orderStatus: OrderStatus.value,
+        orderType: OrderType.value,
         parsedReportData: {
           totalRevenue: 0,
           totalDiscount: 0,
@@ -323,9 +321,9 @@
     async created() {
       this.isLoading = true;
       /* get all area for display seat - area on order report */
-      await this.$store.dispatch("posMachine/getAllArea", this.$route.params.storeGuid);
+      await this.$store.dispatch('posMachine/getAllArea', this.$route.params.storeGuid);
       await this.getCurrentStoreUserRole();
-      if (["STORE_MANAGER", "STORE_OWNER"].includes(this.currentStoreUserRole)) {
+      if (['STORE_MANAGER', 'STORE_OWNER'].includes(this.currentStoreUserRole)) {
         this.getListStoreUser();
       }
       this.handleGetReport();
@@ -340,7 +338,7 @@
       },
       async handleGetReport() {
         this.isLoading = true;
-        if (["STORE_MANAGER", "STORE_OWNER"].includes(this.currentStoreUserRole)) {
+        if (['STORE_MANAGER', 'STORE_OWNER'].includes(this.currentStoreUserRole)) {
           await this.getSaleReport();
         } else {
           await this.getCurrentUserSaleReport();
@@ -354,10 +352,12 @@
       parseReportData() {
         this.parsedReportData = {};
         this.parsedReportData.listTotal = this.reportData;
-        this.parsedReportData.listPurchased = this.reportData.filter(item => item.orderStatus === this.orderStatus.PURCHASED);
-        this.parsedReportData.listCancelled = this.reportData.filter(item => item.orderStatus.includes("CANCELLED"));
+        this.parsedReportData.listPurchased = this.reportData.filter(
+          item => item.orderStatus === this.orderStatus.PURCHASED);
+        this.parsedReportData.listCancelled = this.reportData.filter(item => item.orderStatus === this.orderStatus.CANCELLED);
         this.parsedReportData.listInStore = this.reportData.filter(item => item.orderType === this.orderType.IN_STORE);
-        this.parsedReportData.listTakeAway = this.reportData.filter(item => item.orderType === this.orderType.TAKE_AWAY);
+        this.parsedReportData.listTakeAway = this.reportData.filter(
+          item => item.orderType === this.orderType.TAKE_AWAY);
         this.parsedReportData.listOnline = this.reportData.filter(item => item.orderType === this.orderType.ONLINE);
 
         this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
@@ -369,10 +369,12 @@
           return acc + payAmount;
         }, 0);
 
-        this.parsedReportData.totalRealDiscount = this.parsedReportData.totalRevenue - this.parsedReportData.totalRealRevenue;
+        this.parsedReportData.totalRealDiscount = this.parsedReportData.totalRevenue -
+          this.parsedReportData.totalRealRevenue;
 
         this.parsedReportData.totalDiscount = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          let discountAmount = PriceUtils.getDiscountAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
+          let discountAmount = PriceUtils.getDiscountAmount(item.totalAmount, item.orderDiscount,
+            item.orderDiscountType);
           return acc + discountAmount;
         }, 0);
       },
@@ -385,11 +387,11 @@
           this.reportData = data;
           this.parseReportData();
         } catch (error) {
-          MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
+          MessageUtils.error('Lỗi tải thông tin thống kê, vui lòng thử lại sau!');
         }
       },
       async getSaleReport() {
-        if (this.form.userLogin){
+        if (this.form.userLogin) {
           this.reportForUser = this.listStoreUser.find(item => item.userLogin === this.form.userLogin);
         } else {
           this.reportForUser = null;
@@ -402,7 +404,7 @@
           this.reportData = data;
           this.parseReportData();
         } catch (e) {
-          MessageUtils.error("Lỗi tải thông tin thống kê, vui lòng thử lại sau!");
+          MessageUtils.error('Lỗi tải thông tin thống kê, vui lòng thử lại sau!');
         }
       },
       async getListStoreUser() {
@@ -410,10 +412,10 @@
           const {data} = await PosStoreUserService.getStoreUser(this.$route.params.storeGuid);
           this.listStoreUser = data;
         } catch (e) {
-          MessageUtils.error("Lỗi tải danh sách nhân viên, vui lòng thử lại sau!");
+          MessageUtils.error('Lỗi tải danh sách nhân viên, vui lòng thử lại sau!');
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

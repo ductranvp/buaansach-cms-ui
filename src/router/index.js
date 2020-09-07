@@ -51,7 +51,6 @@ const router = new VueRouter({
         try {
           const {data} = await PosStoreService.checkAccessibility(to.params.storeGuid);
           if (!data) await router.push({name: "forbiddenPage"});
-          store.commit("posMachine/SET_CURRENT_STORE_GUID", to.params.storeGuid);
           next();
         } catch (error) {
           await router.push({name: "homePage"});

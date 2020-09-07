@@ -1,23 +1,28 @@
 <template>
   <el-row v-loading="isLoading" type="flex" align="middle"
           class="padding-5-10 notification-item"
-          :class="notification.storePayRequestStatus === 'UNSEEN' ? 'unseen-notification' : ''">
+          :class="notification.storeNotificationStatus === notificationStatus.UNSEEN ? 'unseen-notification' : ''">
     <el-col class="padding-right-10" @click.native="clickNotification(notification)">
       <div>
         <b>{{notification.title}}</b>
-        <div v-if="notification.payNote" class="text-mini" style="line-height: 20px !important;">
-          <em>Ghi chú: {{notification.payNote}}</em>
-        </div>
+        <em v-if="type === notificationType.ORDER_UPDATE"> ({{notification.orderNotification.numberOfProduct }} loại sản phẩm)</em>
       </div>
       <el-row type="flex" align="middle">
         <el-col>
           <el-tooltip placement="top" :content="$moment(notification.createdDate).format('HH:mm:ss - DD/MM/YYYY')">
-            <el-tag size="mini" type="info">
+            <el-tag size="small" type="info">
               <i class="el-icon-time"></i>
-              <span>{{notification.createdDate | moment("HH:mm:ss")}}</span>
+              <span>{{notification.createdDate | moment('HH:mm:ss')}}</span>
             </el-tag>
           </el-tooltip>
-          <el-tooltip placement="top" content="Tiền khách sẽ đưa">
+          <el-tooltip placement="top" content="Người gọi" v-if="type === notificationType.ORDER_UPDATE">
+            <el-tag class="margin-left-10" size="small" type="info">
+              <i class="el-icon-s-claim"></i>
+              <span v-if="notification.createdBy === 'anonymousUser'">Khách</span>
+              <span v-else>{{notification.createdBy}}</span>
+            </el-tag>
+          </el-tooltip>
+          <el-tooltip placement="top" content="Tiền khách sẽ đưa" v-if="type === notificationType.PAY_REQUEST">
             <el-tag class="margin-left-10" size="small" type="success">
               <i class="el-icon-money"></i>
               <span>{{notification.payAmount | priceAppend}}</span>
@@ -25,13 +30,14 @@
           </el-tooltip>
         </el-col>
         <template v-if="!showUsername">
-          <el-tooltip placement="top" v-if="notification.firstSeenBy" :content="'Người xem đầu: ' + notification.firstSeenBy">
+          <el-tooltip placement="top" v-if="notification.firstSeenBy"
+                      :content="'Người xem đầu: ' + notification.firstSeenBy">
             <el-tag class="margin-left-10" size="small" type="info">
               <i class="fas el-icon-fa-eye margin-0"></i>
             </el-tag>
           </el-tooltip>
-          <el-tooltip placement="top" v-if="notification.hidden && notification.firstHideBy"
-                      :content="'Người ẩn thông báo:' + notification.firstHideBy">
+          <el-tooltip placement="top" v-if="notification.storeNotificationHidden && notification.firstHiddenBy"
+                      :content="'Người ẩn đầu:' + notification.firstHiddenBy">
             <el-tag class="margin-left-10" size="small" type="info">
               <i class="fas el-icon-fa-eye-slash margin-0"></i>
             </el-tag>
@@ -44,17 +50,17 @@
               <span>{{notification.firstSeenBy}}</span>
             </el-tag>
           </el-tooltip>
-          <el-tooltip placement="top" v-if="notification.hidden && notification.firstHideBy"
-                      content="Người ẩn thông báo">
+          <el-tooltip placement="top" v-if="notification.storeNotificationHidden && notification.firstHiddenBy"
+                      content="Người ẩn đầu">
             <el-tag class="margin-left-10" size="small" type="info">
               <i class="fas el-icon-fa-eye-slash"></i>
-              <span>{{notification.firstHideBy}}</span>
+              <span>{{notification.firstHiddenBy}}</span>
             </el-tag>
           </el-tooltip>
         </template>
       </el-row>
     </el-col>
-    <el-tooltip placement="top" content="Ẩn thông báo" v-if="!notification.hidden">
+    <el-tooltip placement="top" content="Ẩn thông báo" v-if="!notification.storeNotificationHidden">
       <el-button @click="toggleNotification(notification, true)" type="text"
                  class="text-info text-very-large">
         <i class="el-icon-close"></i>
@@ -70,63 +76,77 @@
 </template>
 
 <script>
-  import MessageUtils from "@/utils/message.util";
-  import {mapState} from "vuex";
-  import PosStoreOrderService from "@/service/pos/pos.store-order.service";
-  import PosStorePayRequestService from "@/service/pos/pos.store-pay-request.service";
+  import MessageUtils from '@/utils/message.util';
+  import {mapState} from 'vuex';
+  import StoreNotificationStatus from '@/enum/StoreNotificationStatus';
+  import StoreNotificationType from '@/enum/StoreNotificationType';
+  import PosStoreNotificationService from '@/service/pos/pos.store-notification.service';
+  import StoreStatus from '@/enum/StoreStatus';
 
   export default {
-    name: "StorePayRequestItem",
+    name: 'NotificationItem',
     computed: {
       ...mapState({
         selectedSeat: state => state.posMachine.selectedSeat,
         currentStore: state => state.posMachine.currentStore,
-      })
+      }),
     },
     props: {
       selectable: {
         type: Boolean,
-        default: true
+        default: true,
       },
       showUsername: {
         type: Boolean,
-        default: false
+        default: false,
       },
-      notification: Object
+      notification: {
+        type: Object,
+        required: true,
+      },
+      type: {
+        type: String,
+        required: true,
+      },
     },
     data() {
       return {
-        isLoading: false
+        notificationStatus: StoreNotificationStatus.value,
+        notificationType: StoreNotificationType.value,
+        isLoading: false,
       };
     },
     methods: {
       async clickNotification(notification) {
         if (!this.selectable) return;
-        if (this.currentStore.storeStatus === 'CLOSED') {
-          MessageUtils.error("Cửa hàng đã đóng cửa");
+        if (this.currentStore.storeStatus === StoreStatus.value.CLOSED) {
+          MessageUtils.error('Cửa hàng đã đóng cửa');
           return;
         }
 
         if (this.selectedSeat.guid !== notification.seat.guid) {
-          await this.$store.dispatch("posMachine/selectSeat", notification.seat);
+          await this.$store.dispatch('posMachine/selectSeat', notification.seatGuid);
         }
 
-        if (notification.storeOrderStatus !== "SEEN") {
+        if (notification.storeNotificationStatus !== StoreNotificationStatus.value.SEEN) {
           this.markAsRead(notification);
+        }
+
+        if (this.type === this.notificationType.ORDER_UPDATE) {
+          this.$store.commit('posMachine/SET_ACTIVE_ORDER_PRODUCT_GROUP',
+            notification.orderNotification.orderProductGroup);
         }
       },
       async markAsRead(notification) {
         let payload = {
           guid: notification.guid,
-          storePayRequestStatus: "SEEN"
+          storeNotificationStatus: StoreNotificationStatus.value.SEEN,
         };
         try {
           this.isLoading = true;
-          const {data} = await PosStorePayRequestService.updateStorePayRequest(payload);
-          notification.firstSeenBy = data.firstSeenBy;
-          notification.storePayRequestStatus = "SEEN";
-          this.isLoading = false;
-        } catch (e) {
+          const {data} = await PosStoreNotificationService.updateStoreNotification(payload);
+          notification = data;
+        } finally {
           this.isLoading = false;
         }
       },
@@ -134,18 +154,17 @@
         let payload = {
           storeGuid: this.$route.params.storeGuid,
           listGuid: [notification.guid],
-          hidden: hidden
+          hidden: hidden,
         };
         try {
           this.isLoading = true;
-          await PosStorePayRequestService.toggleVisibility(payload);
-          notification.hidden = hidden;
-          this.isLoading = false;
-        } catch (e) {
+          await PosStoreNotificationService.toggleVisibility(payload);
+          notification.storeNotificationHidden = hidden;
+        } finally {
           this.isLoading = false;
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

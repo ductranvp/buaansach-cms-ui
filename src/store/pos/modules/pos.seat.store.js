@@ -3,67 +3,75 @@ import MessageBoxUtils from "@/utils/message-box.util";
 import PosSeatService from "@/service/pos/pos.seat.service";
 
 const state = {
+  allSeats: [],
+  allSeatsObject: {},
   selectedSeat: {},
-  seatStatus: {
-    EMPTY: "EMPTY",
-    NON_EMPTY: "NON_EMPTY",
-    LOCKED: "LOCKED",
-  },
-  seatServiceStatus: {
-    FINISHED: "FINISHED",
-    UNFINISHED: "UNFINISHED",
-  }
 };
 const mutations = {
-  SET_SELECTED_SEAT(state, selectedSeat) {
-    state.selectedSeat = selectedSeat;
+  SET_ALL_SEAT(state, allSeats) {
+    state.allSeats = allSeats;
+    let allSeatsObject = {};
+    allSeats.forEach(seat => {
+      allSeatsObject[seat.guid] = seat;
+    });
+    state.allSeatsObject = allSeatsObject;
   },
-  CLEAR_SELECT_SEAT(state){
-    state.selectedSeat = {};
+  SET_SELECTED_SEAT(state, seatGuid) {
+    state.selectedSeat = state.allSeats.find(seat => seat.guid === seatGuid) || {};
   },
   CHANGE_SEAT_STATUS(state, {targetSeat, seatStatus, seatServiceStatus}) {
-    if (seatStatus || seatServiceStatus)
-      state.allAreas.forEach(area => {
-        if (area.guid === targetSeat.areaGuid) {
-          const idx = area.listSeat.findIndex(seat => seat.guid === targetSeat.guid);
-          if (idx !== -1) {
-            if (seatStatus) area.listSeat[idx].seatStatus = seatStatus;
-            if (seatServiceStatus) area.listSeat[idx].seatServiceStatus = seatServiceStatus;
-            area.listSeat.splice(idx, 1, area.listSeat[idx]);
-          }
-        }
-      });
-  },
-  TOGGLE_LOCK(state, targetSeat) {
-    state.allAreas.forEach(area => {
+    if (targetSeat.guid === state.selectedSeat.guid) {
+      state.selectedSeat.seatStatus = seatStatus;
+      state.selectedSeat.seatServiceStatus = seatServiceStatus;
+    }
+    /* Cập nhật trạng thái cho ghế trong danh sách */
+    for (let i = 0; i < state.allAreas.length; i++) {
+      let area = state.allAreas[i];
       if (area.guid === targetSeat.areaGuid) {
         const idx = area.listSeat.findIndex(seat => seat.guid === targetSeat.guid);
         if (idx !== -1) {
-          area.listSeat[idx].seatLocked = !area.listSeat[idx].seatLocked;
-          state.selectedSeat = area.listSeat[idx];
+          area.listSeat[idx].seatStatus = seatStatus;
+          area.listSeat[idx].seatServiceStatus = seatServiceStatus;
           area.listSeat.splice(idx, 1, area.listSeat[idx]);
+          break;
         }
       }
-    });
+    }
+  },
+  TOGGLE_LOCK(state) {
+    state.selectedSeat.seatLocked = !state.selectedSeat.seatLocked;
+    /* Cập nhật trạng thái cho ghế trong danh sách */
+    for (let i = 0; i < state.allAreas.length; i++) {
+      let area = state.allAreas[i];
+      if (area.guid === state.selectedSeat.areaGuid) {
+        const idx = area.listSeat.findIndex(seat => seat.guid === state.selectedSeat.guid);
+        if (idx !== -1) {
+          area.listSeat[idx].seatLocked = !area.listSeat[idx].seatLocked;
+          area.listSeat.splice(idx, 1, area.listSeat[idx]);
+          break;
+        }
+      }
+    }
+
   }
 };
 const actions = {
-  selectSeat({state, commit, dispatch}, seat) {
+  selectSeat({state, commit, dispatch}, seatGuid) {
     // clear active order product group
     commit("SET_ACTIVE_ORDER_PRODUCT_GROUP", null);
 
     if (state.unsavedOrderProduct.length) {
       MessageBoxUtils.confirm("Đơn hàng chưa được lưu, xác nhận đổi bàn?", function () {
-        commit("SET_SELECTED_SEAT", seat);
-        dispatch("getSeatOrderInfo", seat.guid);
+        commit("SET_SELECTED_SEAT", seatGuid);
+        dispatch("getSeatOrderInfo", seatGuid);
       });
     } else {
-      commit("SET_SELECTED_SEAT", seat);
-      dispatch("getSeatOrderInfo", seat.guid);
+      commit("SET_SELECTED_SEAT", seatGuid);
+      dispatch("getSeatOrderInfo", seatGuid);
     }
   },
-  clearSeat({state, commit}){
-    commit("CLEAR_SELECT_SEAT");
+  clearSeat({commit}) {
+    commit("SET_SELECTED_SEAT", {});
     commit("RESET_ORDER");
     commit("RESET_ORDER_PRODUCT");
   },
@@ -75,9 +83,9 @@ const actions = {
       seatServiceStatus: data.seatServiceStatus,
     });
   },
-  async toggleLock({state, commit}) {
+  async toggleSeatLock({state, commit}) {
     await PosSeatService.toggleLock(state.selectedSeat.guid);
-    commit("TOGGLE_LOCK", state.selectedSeat);
+    commit("TOGGLE_LOCK");
   }
 };
 

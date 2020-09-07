@@ -1,11 +1,11 @@
 /* Store module pattern */
-import PosOrderStoreUtil from "@/store/pos/util/pos.order.store.util";
+import PosOrderStoreUtil from "@/store/pos/utils/pos.order.store.util";
 import PosOrderProductService from "@/service/pos/pos.order-product.service";
+import OrderProductStatus from "@/enum/OrderProductStatus";
 
 const state = {
   savedOrderProduct: [],
   unsavedOrderProduct: [],
-  orderProductStatus: PosOrderStoreUtil.orderProductStatus,
   activeOrderProductGroup: null
 };
 const mutations = {
@@ -57,7 +57,7 @@ const mutations = {
   }
 };
 const actions = {
-  addOrderProduct({state, commit}, {storeProduct}) {
+  addOrderProduct({state, commit}, storeProduct) {
     /**
      * code check product status before add
      *
@@ -69,8 +69,8 @@ const actions = {
     commit("SET_ORDER_PRODUCT_QUANTITY", {orderProduct, quantity});
   },
   checkOrderProductStatus({state, commit}) {
-    const temp = state.savedOrderProduct.filter(od => od.orderProductStatus === state.orderProductStatus.CREATED ||
-      od.orderProductStatus === state.orderProductStatus.PREPARING);
+    const temp = state.savedOrderProduct.filter(od => od.orderProductStatus === OrderProductStatus.value.CREATED ||
+      od.orderProductStatus === OrderProductStatus.value.PREPARING);
     if (!temp.length) {
       commit("CHANGE_SEAT_STATUS", {
         targetSeat: state.selectedSeat,

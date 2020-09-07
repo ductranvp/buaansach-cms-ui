@@ -2,16 +2,9 @@
 import Constants from "@/utils/constants";
 import PosStoreProductService from "@/service/pos/pos.store-product.service";
 
-const storeProductStatus = {
-  AVAILABLE: "AVAILABLE",
-  UNAVAILABLE: "UNAVAILABLE",
-  STOP_TRADING: "STOP_TRADING"
-};
-
 const state = {
   allStoreProducts: [],
-  displayStoreProducts: [],
-  storeProductStatus: storeProductStatus
+  displayStoreProducts: []
 };
 const mutations = {
   SET_ALL_STORE_PRODUCT(state, allStoreProducts) {
@@ -28,7 +21,7 @@ const mutations = {
 };
 const actions = {
   changeDisplayStoreProduct({state, commit}, categoryGuid) {
-    let displayStoreProducts;
+    let displayStoreProducts = [];
     if (categoryGuid === Constants.DEFAULT_CATEGORY_GUID) displayStoreProducts = state.allStoreProducts;
     else {
       const cat = state.allCategories.find(category => category.guid === categoryGuid);

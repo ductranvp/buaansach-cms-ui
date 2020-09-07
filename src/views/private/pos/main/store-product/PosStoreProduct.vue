@@ -103,6 +103,7 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
+  import OrderStatus from '@/enum/OrderStatus';
 
   export default {
     name: "PosStoreProduct",
@@ -112,7 +113,6 @@
         selectedCategory: state => state.posMachine.selectedCategory,
         selectedSeat: state => state.posMachine.selectedSeat,
         currentOrder: state => state.posMachine.currentOrder,
-        orderStatus: state => state.posMachine.orderStatus,
       })
     },
     data() {
@@ -128,6 +128,7 @@
           2: 4,
           3: 6,
         },
+        orderStatus: OrderStatus.value,
         imageClasses: {
           1: "image-height-1",
           2: "image-height-2",
@@ -174,7 +175,7 @@
           MessageUtils.error("Không thể thêm sản phẩm đã hết hàng!");
           return;
         }
-        this.$store.dispatch("posMachine/addOrderProduct", {storeProduct: storeProduct});
+        this.$store.dispatch("posMachine/addOrderProduct", storeProduct);
       },
       queryStoreProduct(keyword, cb) {
         keyword = keyword.trim();
