@@ -46,6 +46,11 @@ const actions = {
     let {data} = await PosStoreNotificationService.getListStoreNotification(
       params);
 
+    data.forEach(item => {
+      const seatData = state.allSeatsObject[item.seatGuid];
+      item.title = seatData.seatName + " - " + seatData.areaName;
+    });
+
     switch (type) {
       case StoreNotificationType.value.ORDER_UPDATE:
         commit('SET_ORDER_NOTIFICATIONS', data);

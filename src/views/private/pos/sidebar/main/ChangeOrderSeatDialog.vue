@@ -48,6 +48,7 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
+  import SeatStatus from '@/enum/SeatStatus';
 
   export default {
     name: "ChangeOrderSeatDialog",
@@ -70,13 +71,14 @@
           selectedSeatGuid: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
           ],
-        }
+        },
+        seatStatus: SeatStatus.value
       };
     },
     methods: {
       changeAreaGuid(areaGuid) {
         const selectedArea = this.allAreas.find(area => area.guid === areaGuid);
-        this.emptySeats = selectedArea.listSeat.filter(seat => seat.seatStatus === 'EMPTY');
+        this.emptySeats = selectedArea.listSeat.filter(seat => seat.seatStatus === this.seatStatus.EMPTY);
       },
       show() {
         this.dialogFormVisible = true;
@@ -98,9 +100,10 @@
         try {
           let startDate = new Date();
           startDate.setHours(0, 0, 0, 0);
-          await this.$store.dispatch("posMachine/getStoreOrderNotifications", {
+          await this.$store.dispatch("posMachine/getStoreNotifications", {
             storeGuid: this.$route.params.storeGuid,
             startDate: startDate,
+            type: null,
             hidden: null,
           });
         } catch (e) {

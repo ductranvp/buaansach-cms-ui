@@ -29,7 +29,7 @@
               <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
                 <i class="el-icon-money"></i>
                 <span>Tổng: </span>
-                <span v-if="totalAmount > 0">{{totalAmount | priceAppend}}</span>
+                <span v-if="orderTotalAmount > 0">{{orderTotalAmount | priceAppend}}</span>
                 <span v-else>0</span>
               </el-button>
             </el-col>
@@ -47,7 +47,7 @@
       <el-footer height="auto">
         <el-row type="flex" align="middle">
           <el-col :span="20">
-            <el-button :loading="isLoading" :disabled="currentOrder.orderStatus === 'CREATED'" type="success"
+            <el-button :loading="isLoading" :disabled="currentOrder.orderStatus === orderStatus.CREATED" type="success"
                        @click="completeOrder(customerPay)" class="full-width text-large padding-20-10">
               <i class="el-icon-printer"></i>
               <span>Thanh toán: </span>
@@ -73,45 +73,28 @@
   import Bill from "@/views/private/pos/bill/Bill";
   import MessageUtils from "@/utils/message.util";
   import hotkeys from "hotkeys-js";
+  import OrderProductStatus from '@/enum/OrderProductStatus';
+  import PriceUtils from '@/utils/price.util';
+  import OrderStatus from '@/enum/OrderStatus';
+  import PaymentMethod from '@/enum/PaymentMethod';
 
   export default {
     name: "BasicPurchase",
     components: {Bill},
     computed: {
       ...mapState({
-        turnOnOrderGroup: state => state.posMachine.turnOnOrderGroup,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
         selectedSeat: state => state.posMachine.selectedSeat,
         currentOrder: state => state.posMachine.currentOrder,
-        totalAmount: state => state.posMachine.currentOrder.totalAmount,
-        orderProductStatus: state => state.posMachine.orderProductStatus,
+        orderTotalAmount: state => state.posMachine.currentOrder.orderTotalAmount,
         discountAmount: state => {
-          let amount = 0;
-          let total = state.posMachine.currentOrder.totalAmount;
-          let discount = state.posMachine.currentOrder.orderDiscount;
-          let discountType = state.posMachine.currentOrder.orderDiscountType;
-          if (discount) {
-            if (discountType === "VALUE") {
-              amount = discount;
-            } else {
-              amount = (Math.floor(total * discount / 100));
-            }
-          }
-          return amount > 0 ? amount : 0;
+          const {orderTotalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
+          return PriceUtils.getDiscountAmount(orderTotalAmount, orderDiscount, orderDiscountType);
         },
         payAmount: state => {
-          let amount = state.posMachine.currentOrder.totalAmount;
-          let discount = state.posMachine.currentOrder.orderDiscount;
-          let discountType = state.posMachine.currentOrder.orderDiscountType;
-          if (discount) {
-            if (discountType === "VALUE") {
-              amount = amount - discount;
-            } else {
-              amount = amount - (Math.floor(amount * discount / 100));
-            }
-          }
-          return amount > 0 ? amount : 0;
+          const {orderTotalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
+          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType);
         },
       })
     },
@@ -119,6 +102,9 @@
       return {
         isLoading: false,
         customerPay: null,
+        orderProductStatus: OrderProductStatus.value,
+        orderStatus: OrderStatus.value,
+        paymentMethod: PaymentMethod.value,
       };
     },
     mounted() {
@@ -163,10 +149,6 @@
           return;
         }
 
-        if (this.isEditCustomerPhone) {
-          MessageUtils.error("Số điện thoại khách chưa được lưu");
-          return;
-        }
         if (customerPay === null || customerPay === "") {
           MessageUtils.error("Vui lòng nhập số tiền khách đưa");
           return;
@@ -176,7 +158,7 @@
           return;
         }
         const payload = {
-          paymentMethod: "CASH",
+          paymentMethod: this.paymentMethod.CASH,
           paymentNote: null,
         };
         try {
@@ -185,20 +167,6 @@
           this.isLoading = false;
           vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(customerPay * 1000)), function () {
             // this function is called when print is done;
-
-            // if order group is turned on
-            if (vm.turnOnOrderGroup) {
-              let temp = {
-                orderGuid: vm.currentOrder.guid,
-                seatName: vm.selectedSeat.seatName,
-                areaName: vm.selectedSeat.areaName,
-                totalAmount: vm.totalAmount,
-                payAmount: vm.payAmount,
-                discountAmount: vm.discountAmount,
-              };
-              vm.$store.commit("posMachine/ADD_ORDER_GROUP", temp);
-            }
-
             vm.$store.dispatch("posMachine/printDone");
             vm.customerPay = null;
             MessageUtils.success("Thanh toán thành công");

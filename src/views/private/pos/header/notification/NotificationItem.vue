@@ -124,7 +124,7 @@
           return;
         }
 
-        if (this.selectedSeat.guid !== notification.seat.guid) {
+        if (this.selectedSeat.guid !== notification.seatGuid) {
           await this.$store.dispatch('posMachine/selectSeat', notification.seatGuid);
         }
 
@@ -145,7 +145,8 @@
         try {
           this.isLoading = true;
           const {data} = await PosStoreNotificationService.updateStoreNotification(payload);
-          notification = data;
+          notification.storeNotificationStatus = data.storeNotificationStatus;
+          notification.firstSeenBy = data.firstSeenBy;
         } finally {
           this.isLoading = false;
         }
@@ -160,6 +161,7 @@
           this.isLoading = true;
           await PosStoreNotificationService.toggleVisibility(payload);
           notification.storeNotificationHidden = hidden;
+          console.log(this.$store.posMachine.orderNotifications);
         } finally {
           this.isLoading = false;
         }

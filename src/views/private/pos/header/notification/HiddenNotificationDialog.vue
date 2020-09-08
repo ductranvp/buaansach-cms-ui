@@ -4,19 +4,20 @@
     :close-on-click-modal="false"
     :before-close="beforeClose"
     :destroy-on-close="true"
+    :title="dialogTitle"
     :show-close="false"
   >
     <el-main>
-<!--      <el-row v-if="!listInvisibleNotification.length">-->
-<!--        <el-alert class="padding-20" type="warning" :closable="false">-->
-<!--          <span class="text-large">Chưa có thông báo nào bị ẩn trong ngày hôm nay</span>-->
-<!--        </el-alert>-->
-<!--      </el-row>-->
-<!--      <template v-else>-->
-<!--        <el-row class="notification-item" v-for="item in listInvisibleNotification" :key="item.guid">-->
-<!--          <store-order-notification-item :selectable="false" :notification="item" :show-username="true"/>-->
-<!--        </el-row>-->
-<!--      </template>-->
+      <el-row v-if="!listHiddenNotification.length">
+        <el-alert class="padding-20" type="warning" :closable="false">
+          <span class="text-large">Chưa có thông báo nào bị ẩn trong ngày hôm nay</span>
+        </el-alert>
+      </el-row>
+      <template v-else>
+        <el-row class="notification-item" v-for="item in listHiddenNotification" :key="item.guid">
+          <notification-item :selectable="false" :notification="item" :show-username="true" :type="type"/>
+        </el-row>
+      </template>
     </el-main>
     <div slot="footer">
       <el-button @click="hide">
@@ -29,9 +30,12 @@
 <script>
 
   import {mapState} from 'vuex';
+  import StoreNotificationType from '@/enum/StoreNotificationType';
+  import NotificationItem from '@/views/private/pos/header/notification/NotificationItem';
 
   export default {
     name: 'HiddenNotificationDialog',
+    components: {NotificationItem},
     props: {
       type: {
         type: String,
@@ -40,11 +44,25 @@
     },
     computed: {
       ...mapState({
+        listHiddenNotification(state) {
+          return this.getListHiddenNotificationByType(state);
+        },
       }),
+      dialogTitle() {
+        switch (this.type) {
+          case StoreNotificationType.value.CALL_WAITER:
+            return 'Thông báo gọi nhân viên đã ẩn';
+          case StoreNotificationType.value.PAY_REQUEST:
+            return 'Thông báo gọi thanh toán đã ẩn';
+          case StoreNotificationType.value.ORDER_UPDATE:
+            return 'Thông báo gọi món đã ẩn';
+          default:
+            return 'Thông báo đã ẩn';
+        }
+      },
     },
     data() {
       return {
-        isEdit: false,
         isLoading: false,
         dialogFormVisible: false,
       };
@@ -58,6 +76,21 @@
       },
       beforeClose(done) {
         done();
+      },
+      getListHiddenNotificationByType(state) {
+        let notifications = [];
+        switch (this.type) {
+          case StoreNotificationType.value.CALL_WAITER:
+            notifications = state.posMachine.callWaiterNotifications;
+            break;
+          case StoreNotificationType.value.PAY_REQUEST:
+            notifications = state.posMachine.payRequestNotifications;
+            break;
+          case StoreNotificationType.value.ORDER_UPDATE:
+            notifications = state.posMachine.orderNotifications;
+            break;
+        }
+        return notifications.filter(item => item.storeNotificationHidden);
       },
     },
   };

@@ -23,7 +23,7 @@ const PosOrderService = {
    * Lấy thông tin đơn theo vị trí
    * @param {String} params - seatGuid
    * */
-  getSeatCurrentOrder(params) {
+  getSeatOrder(params) {
     return request.get(baseUrl + "/get-seat-order/" + params);
   },
 

@@ -12,17 +12,16 @@
 </template>
 
 <script>
-  import TopToolbar from "@/views/private/pos/sidebar/main/modules/TopToolbar";
-  import MainBodyLayout from "@/views/private/pos/sidebar/main/MainBodyLayout";
-  import BottomToolbar from "@/views/private/pos/sidebar/main/modules/BottomToolbar";
-  import {mapState} from "vuex";
+  import TopToolbar from '@/views/private/pos/sidebar/main/modules/TopToolbar';
+  import MainBodyLayout from '@/views/private/pos/sidebar/main/MainBodyLayout';
+  import BottomToolbar from '@/views/private/pos/sidebar/main/modules/BottomToolbar';
+  import {mapState} from 'vuex';
 
   export default {
-    name: "PosSidebarMain",
+    name: 'PosSidebarMain',
     components: {BottomToolbar, MainBodyLayout, TopToolbar},
     computed: {
       ...mapState({
-        unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
         currentOrder: state => state.posMachine.currentOrder,
       }),
     },

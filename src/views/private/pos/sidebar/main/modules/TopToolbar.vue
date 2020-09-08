@@ -13,10 +13,10 @@
             </el-tooltip>
           </div>
           <div class="padding-right-10">
-            <el-tooltip :content="'Giờ vào: ' + $moment(currentOrder.orderCheckinTime).format('HH:mm:ss - DD/MM/YYYY')">
+            <el-tooltip :content="'Giờ vào: ' + $moment(currentOrder.createdDate).format('HH:mm:ss - DD/MM/YYYY')">
               <el-tag type="info" effect="dark" size="medium">
                 <i class="el-icon-time padding-right-5"></i>
-                <span>{{currentOrder.orderCheckinTime | moment("HH:mm")}}</span>
+                <span>{{currentOrder.createdDate | moment("HH:mm")}}</span>
               </el-tag>
             </el-tooltip>
           </div>

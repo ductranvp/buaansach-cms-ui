@@ -24,7 +24,7 @@
       </el-main>
 
     </el-container>
-    <div class="mask" v-if="currentOrder.guid && currentOrder.orderStatus === 'CREATED'">
+    <div class="mask" v-if="currentOrder.guid && currentOrder.orderStatus === orderStatus.CREATED">
       <div class="mask-text">
         <span class="bg-warning text-white padding-10-15 text-bold" style="border-radius: 4px">Đang chờ tiếp nhận</span>
       </div>
@@ -37,6 +37,7 @@
   import SavedOrder from "@/views/private/pos/sidebar/main/modules/SavedOrder";
   import UnsavedOrder from "@/views/private/pos/sidebar/main/modules/UnsavedOrder";
   import CreateOrder from "@/views/private/pos/sidebar/main/modules/CreateOrder";
+  import OrderStatus from '@/enum/OrderStatus';
 
   export default {
     name: "MainBodyLayout",
@@ -52,6 +53,11 @@
       unsavedOrderProduct: function () {
         this.scrollToEnd();
       },
+    },
+    data(){
+      return  {
+        orderStatus: OrderStatus.value
+      };
     },
     methods: {
       scrollToEnd() {

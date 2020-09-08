@@ -1,8 +1,8 @@
 /* Store module pattern */
-import PosOrderService from "@/service/pos/pos.order.service";
-import MessageUtils from "@/utils/message.util";
-import SeatStatus from "@/enum/SeatStatus";
-import SeatServiceStatus from "@/enum/SeatServiceStatus";
+import PosOrderService from '@/service/pos/pos.order.service';
+import MessageUtils from '@/utils/message.util';
+import SeatStatus from '@/enum/SeatStatus';
+import SeatServiceStatus from '@/enum/SeatServiceStatus';
 
 const state = {
   currentOrder: {},
@@ -13,44 +13,44 @@ const mutations = {
   SET_CURRENT_ORDER(state, currentOrder) {
     state.currentOrder = currentOrder;
   },
-  SET_IS_LOADING_ORDER(state, status){
+  SET_IS_LOADING_ORDER(state, status) {
     state.isLoadingOrder = status;
   },
   RESET_ORDER(state) {
     state.currentOrder = {};
     state.isLoadingOrder = false;
-  }
+  },
 };
 const actions = {
   async createOrder({state, commit}) {
     const payload = {
-      seatGuid: state.selectedSeat.guid
+      seatGuid: state.selectedSeat.guid,
     };
     const {data} = await PosOrderService.createOrder(payload);
-    commit("SET_CURRENT_ORDER", data);
-    commit("CHANGE_SEAT_STATUS", {
+    commit('SET_CURRENT_ORDER', data);
+    commit('CHANGE_SEAT_STATUS', {
       seatStatus: SeatStatus.value.NON_EMPTY,
-      seatServiceStatus: SeatServiceStatus.value.UNFINISHED
+      seatServiceStatus: SeatServiceStatus.value.UNFINISHED,
     });
   },
   async updateOrder({state, commit}) {
     let posOrderUpdate = {
       orderGuid: state.currentOrder.guid,
-      listOrderProduct: state.unsavedOrderProduct
+      listOrderProduct: state.unsavedOrderProduct,
     };
     const {data} = await PosOrderService.updateOrder(posOrderUpdate);
-    commit("SET_CURRENT_ORDER", data);
-    commit("SET_SAVED_ORDER_PRODUCT", data.listOrderProduct);
-    commit("SET_UNSAVED_ORDER_PRODUCT", []);
-    commit("CHANGE_SEAT_STATUS", {
+    commit('SET_CURRENT_ORDER', data);
+    commit('SET_SAVED_ORDER_PRODUCT', data.listOrderProduct);
+    commit('SET_UNSAVED_ORDER_PRODUCT', []);
+    commit('CHANGE_SEAT_STATUS', {
       targetSeat: state.selectedSeat,
       seatStatus: SeatStatus.value.NON_EMPTY,
-      seatServiceStatus: SeatServiceStatus.value.UNFINISHED
+      seatServiceStatus: SeatServiceStatus.value.UNFINISHED,
     });
   },
   async receiveOrder({state, dispatch}) {
     await PosOrderService.receiveOrder(state.currentOrder.guid);
-    dispatch("getSeatOrderInfo", state.selectedSeat.guid);
+    dispatch('getSeatOrderInfo', state.selectedSeat.guid);
   },
   async completeOrder({state, commit}, payload) {
     const posPurchaseOrder = {
@@ -61,13 +61,13 @@ const actions = {
     await PosOrderService.purchaseOrder(posPurchaseOrder);
   },
   printDone({commit, state}) {
-    commit("CHANGE_SEAT_STATUS", {
+    commit('CHANGE_SEAT_STATUS', {
       targetSeat: state.selectedSeat,
       seatStatus: SeatStatus.value.EMPTY,
-      seatServiceStatus: SeatServiceStatus.value.FINISHED
+      seatServiceStatus: SeatServiceStatus.value.FINISHED,
     });
-    commit("RESET_ORDER");
-    commit("RESET_ORDER_PRODUCT");
+    commit('RESET_ORDER');
+    commit('RESET_ORDER_PRODUCT');
   },
   async changeOrderSeat({dispatch, state, commit}, newSeatGuid) {
     if (!newSeatGuid) return;
@@ -77,54 +77,53 @@ const actions = {
       orderGuid: state.currentOrder.guid,
     };
     await PosOrderService.changeOrderSeat(posOrderSeatChange);
-    // commit("CHANGE_SEAT_STATUS", {
-    //   targetSeat: state.selectedSeat,
-    //   seatStatus: SeatStatus.value.EMPTY,
-    //   seatServiceStatus: SeatServiceStatus.value.FINISHED
-    // });
-    commit("RESET_ORDER");
-    commit("RESET_ORDER_PRODUCT");
-  },
-  async cancelOrder({state, commit}, cancelReason) {
-    const orderChange = {
-      orderGuid: state.currentOrder.guid,
-      cancelReason: cancelReason
-    };
-    await PosOrderService.cancelOrder(orderChange);
     commit("CHANGE_SEAT_STATUS", {
       targetSeat: state.selectedSeat,
       seatStatus: SeatStatus.value.EMPTY,
       seatServiceStatus: SeatServiceStatus.value.FINISHED
     });
-    commit("RESET_ORDER");
-    commit("RESET_ORDER_PRODUCT");
+    commit('RESET_ORDER');
+    commit('RESET_ORDER_PRODUCT');
+  },
+  async cancelOrder({state, commit}, cancelReason) {
+    const orderChange = {
+      orderGuid: state.currentOrder.guid,
+      cancelReason: cancelReason,
+    };
+    await PosOrderService.cancelOrder(orderChange);
+    commit('CHANGE_SEAT_STATUS', {
+      targetSeat: state.selectedSeat,
+      seatStatus: SeatStatus.value.EMPTY,
+      seatServiceStatus: SeatServiceStatus.value.FINISHED,
+    });
+    commit('RESET_ORDER');
+    commit('RESET_ORDER_PRODUCT');
   },
   async getSeatOrderInfo({commit, dispatch}, seatGuid) {
-    commit("SET_IS_LOADING_ORDER", true);
+    commit('SET_IS_LOADING_ORDER', true);
     try {
-      const {data} = await PosOrderService.getSeatCurrentOrder(seatGuid);
+      const {data} = await PosOrderService.getSeatOrder(seatGuid);
       if (data.guid) {
-        commit("SET_CURRENT_ORDER", data);
-        commit("SET_SAVED_ORDER_PRODUCT", data.listOrderProduct);
-        commit("SET_UNSAVED_ORDER_PRODUCT", []);
+        commit('SET_CURRENT_ORDER', data);
+        commit('SET_SAVED_ORDER_PRODUCT', data.listOrderProduct);
+        commit('SET_UNSAVED_ORDER_PRODUCT', []);
       } else {
-        commit("RESET_ORDER");
-        commit("RESET_ORDER_PRODUCT");
+        commit('RESET_ORDER');
+        commit('RESET_ORDER_PRODUCT');
       }
     } catch (error) {
-      MessageUtils.error("Lấy thông tin đơn hàng thất bại, vui lòng thử lại");
+      MessageUtils.error('Lấy thông tin đơn hàng thất bại, vui lòng thử lại');
     }
-    commit("SET_IS_LOADING_ORDER", false);
-    dispatch("reloadSeat", seatGuid);
+    setTimeout(() => {commit('SET_IS_LOADING_ORDER', false);}, 300);
+    dispatch('reloadSeat', seatGuid);
   },
 };
-
 
 const PosOrderStore = {
   namespaced: true,
   state,
   mutations,
-  actions
+  actions,
 };
 
 export default PosOrderStore;

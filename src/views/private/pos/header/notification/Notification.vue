@@ -65,62 +65,26 @@
     },
     computed: {
       ...mapState({
-        listNotification: function(state) {
-          let notifications = [];
-          switch (this.type) {
-            case StoreNotificationType.value.CALL_WAITER:
-              notifications = state.posMachine.callWaiterNotifications;
-              break;
-            case StoreNotificationType.value.PAY_REQUEST:
-              notifications = state.posMachine.payRequestNotifications;
-              break;
-            case StoreNotificationType.value.ORDER_UPDATE:
-              notifications = state.posMachine.orderNotifications;
-              break;
-          }
-          return notifications;
+        listNotification(state) {
+          return this.getListNotificationByType(state);
         },
-        listSeen: function(state) {
-          let notifications = [];
-          switch (this.type) {
-            case StoreNotificationType.value.CALL_WAITER:
-              notifications = state.posMachine.callWaiterNotifications;
-              break;
-            case StoreNotificationType.value.PAY_REQUEST:
-              notifications = state.posMachine.payRequestNotifications;
-              break;
-            case StoreNotificationType.value.ORDER_UPDATE:
-              notifications = state.posMachine.orderNotifications;
-              break;
-          }
-          return notifications.filter(item => !item.storeNotificationHidden &&
-            item.storeOrderStatus === StoreNotificationStatus.value.SEEN);
+        listSeen(state) {
+          return this.getListNotificationByType(state).
+            filter(item => item.storeNotificationStatus === StoreNotificationStatus.value.SEEN);
         },
-        listUnseen: function(state) {
-          let notifications = [];
-          switch (this.type) {
-            case StoreNotificationType.value.CALL_WAITER:
-              notifications = state.posMachine.callWaiterNotifications;
-              break;
-            case StoreNotificationType.value.PAY_REQUEST:
-              notifications = state.posMachine.payRequestNotifications;
-              break;
-            case StoreNotificationType.value.ORDER_UPDATE:
-              notifications = state.posMachine.orderNotifications;
-              break;
-          }
-          return notifications.filter(item => !item.storeNotificationHidden &&
-            item.storeOrderStatus === StoreNotificationStatus.value.UNSEEN);
+        listUnseen(state) {
+          return this.getListNotificationByType(state).
+            filter(item => item.storeNotificationStatus === StoreNotificationStatus.value.UNSEEN);
         },
       }),
       notificationTitle() {
         switch (this.type) {
           case StoreNotificationType.value.CALL_WAITER:
-            return 'Thông báo gọi nhân viên';
+            return 'Gọi nhân viên';
           case StoreNotificationType.value.PAY_REQUEST:
-            return 'Thông báo gọi thanh toán';
+            return 'Gọi thanh toán';
           case StoreNotificationType.value.ORDER_UPDATE:
-            return 'Thông báo gọi món';
+            return 'Gọi món';
           default:
             return 'Thông báo';
         }
@@ -147,6 +111,21 @@
       };
     },
     methods: {
+      getListNotificationByType(state) {
+        let notifications = [];
+        switch (this.type) {
+          case StoreNotificationType.value.CALL_WAITER:
+            notifications = state.posMachine.callWaiterNotifications;
+            break;
+          case StoreNotificationType.value.PAY_REQUEST:
+            notifications = state.posMachine.payRequestNotifications;
+            break;
+          case StoreNotificationType.value.ORDER_UPDATE:
+            notifications = state.posMachine.orderNotifications;
+            break;
+        }
+        return notifications.filter(item => !item.storeNotificationHidden);
+      },
       async reloadNotification() {
         try {
           this.isLoading = true;

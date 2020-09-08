@@ -48,16 +48,16 @@
                    :body-style="{ padding: '0px' }"
                    shadow="never">
             <div style="position: relative"
-                 :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'pointer-disabled' : ''">
+                 :class="storeProduct.storeProductStatus === storeProductStatus.AVAILABLE ? 'pointer-disabled' : ''">
               <el-image
-                :class="[storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'grayscale' : '', imageClasses[itemSize]]"
+                :class="[storeProduct.storeProductStatus === storeProductStatus.AVAILABLE ? 'grayscale' : '', imageClasses[itemSize]]"
                 @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productThumbnailUrl"
                 class="store-product-image">
                 <div slot="error" class="image-error-slot full-size">
                   <i class="el-icon-picture-outline"></i>
                 </div>
               </el-image>
-              <div v-if="storeProduct.storeProductStatus === 'UNAVAILABLE'"
+              <div v-if="storeProduct.storeProductStatus === storeProductStatus.AVAILABLE"
                    style="position: relative; margin-top:-32px">
                 <el-tag class="full-width no-border-radius text-center" type="danger" style="height: 32px">
                   <span>Tạm Hết Hàng</span>
@@ -66,7 +66,7 @@
             </div>
             <el-divider class="full-width margin-0"></el-divider>
             <div @click="addOrderProduct(storeProduct)" class="padding-5 text-small"
-                 :class="storeProduct.storeProductStatus === 'UNAVAILABLE' ? 'pointer-disabled' : ''">
+                 :class="storeProduct.storeProductStatus === storeProductStatus.UNAVAILABLE ? 'pointer-disabled' : ''">
               <div>{{storeProduct.productCode}}</div>
               <div class="text-bold text-single-line">
                 <el-tooltip class="item" effect="dark" :content="storeProduct.productName" placement="top-start">
@@ -82,11 +82,11 @@
                   <i class="fas el-icon-fa-edit"></i>
                 </el-button>
                 <el-dropdown-menu class="padding-0" slot="dropdown">
-                  <el-dropdown-item v-if="storeProduct.storeProductStatus === 'AVAILABLE'"
-                                    @click.native="changeStoreProductStatus(storeProduct, 'UNAVAILABLE')">
+                  <el-dropdown-item v-if="storeProduct.storeProductStatus === storeProductStatus.AVAILABLE"
+                                    @click.native="changeStoreProductStatus(storeProduct, storeProductStatus.UNAVAILABLE)">
                     <span>Hết hàng</span>
                   </el-dropdown-item>
-                  <el-dropdown-item @click.native="changeStoreProductStatus(storeProduct, 'AVAILABLE')" v-else>
+                  <el-dropdown-item @click.native="changeStoreProductStatus(storeProduct, storeProductStatus.AVAILABLE)" v-else>
                     <span>Đã có hàng</span>
                   </el-dropdown-item>
                 </el-dropdown-menu>
@@ -104,6 +104,7 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import OrderStatus from '@/enum/OrderStatus';
+  import StoreProductStatus from '@/enum/StoreProductStatus';
 
   export default {
     name: "PosStoreProduct",
@@ -119,7 +120,7 @@
       return {
         isRefreshing: false,
         isLoading: false,
-        filterDebounce: 400,
+        filterDebounce: 300,
         filterStoreProduct: "",
         filteredStoreProducts: [],
         itemSize: 2,
@@ -133,15 +134,13 @@
           1: "image-height-1",
           2: "image-height-2",
           3: "image-height-3",
-        }
+        },
+        storeProductStatus: StoreProductStatus.value
       };
     },
     watch: {
       selectedCategory: function () {
         this.filterStoreProduct = "";
-      },
-      filterStoreProduct: function (val) {
-        this.isLoading = val;
       }
     },
     methods: {
@@ -171,7 +170,7 @@
           MessageUtils.error("Vui lòng tiếp nhận đơn trước khi thêm món!");
           return;
         }
-        if (storeProduct.storeProductStatus === 'UNAVAILABLE') {
+        if (storeProduct.storeProductStatus === this.storeProductStatus.UNAVAILABLE) {
           MessageUtils.error("Không thể thêm sản phẩm đã hết hàng!");
           return;
         }
@@ -192,10 +191,10 @@
         try {
           this.$set(storeProduct, "isLoading", true);
           await this.$store.dispatch("posMachine/changeStoreProductStatus", payload);
-          this.$set(storeProduct, "isLoading", false);
         } catch (e) {
-          this.$set(storeProduct, "isLoading", false);
           MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        } finally {
+          this.$set(storeProduct, "isLoading", false);
         }
       }
     }

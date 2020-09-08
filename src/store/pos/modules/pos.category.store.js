@@ -4,6 +4,7 @@ import DefaultEntity from "@/utils/default-entity";
 
 const state = {
   allCategories: [],
+  allCategoriesObject: {},
   selectedCategory: DefaultEntity.category,
 };
 const mutations = {

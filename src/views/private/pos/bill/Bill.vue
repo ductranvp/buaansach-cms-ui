@@ -19,14 +19,14 @@
         selectedSeat: state => state.posMachine.selectedSeat,
         currentOrder: state => state.posMachine.currentOrder,
         savedOrderProduct: state => state.posMachine.savedOrderProduct,
-        totalAmount: state => state.posMachine.currentOrder.totalAmount,
+        orderTotalAmount: state => state.posMachine.currentOrder.orderTotalAmount,
         discountAmount: state => {
-          const {totalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
-          return PriceUtils.getDiscountAmount(totalAmount, orderDiscount, orderDiscountType);
+          const {orderTotalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
+          return PriceUtils.getDiscountAmount(orderTotalAmount, orderDiscount, orderDiscountType);
         },
         payAmount: state => {
-          const {totalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
-          return PriceUtils.getPayAmount(totalAmount, orderDiscount, orderDiscountType);
+          const {orderTotalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
+          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType);
         },
       })
     },
@@ -131,7 +131,7 @@
       },
       getBillSummary(customerPay) {
         let tableContent = "<table>";
-        tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.totalAmount) + "</td></tr>";
+        tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.orderTotalAmount) + "</td></tr>";
         tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.discountAmount) + "</td></tr>";
         tableContent += "</table>";
         tableContent += "<div class='divider'></div>";

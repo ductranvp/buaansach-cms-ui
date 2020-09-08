@@ -55,6 +55,7 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import CancelOrderDialog from "@/views/private/pos/sidebar/main/dialog/CancelOrderDialog";
+  import OrderProductStatus from '@/enum/OrderProductStatus';
 
   export default {
     name: "BottomToolbar",
@@ -65,7 +66,7 @@
         selectedCategory: state => state.posMachine.selectedCategory,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
         isAllOrderProductDone: state => {
-          const temp = state.posMachine.savedOrderProduct.filter(item => item.orderProductStatus === state.posMachine.orderProductStatus.PREPARING);
+          const temp = state.posMachine.savedOrderProduct.filter(item => item.orderProductStatus === OrderProductStatus.value.PREPARING);
           return temp.length === 0;
         },
       })

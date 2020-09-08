@@ -11,7 +11,7 @@
     </audio>
     <check-printer ref="checkPrinter"/>
     <el-row class="full-size flex-wrap" type="flex" align="middle">
-      <el-col :span="8">
+      <el-col :span="12">
         <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">
           <i class="el-icon-s-data"></i>
           <span class="hidden-md-and-down">Thống kê</span>
@@ -22,15 +22,11 @@
             <span class="hidden-md-and-down">{{ serverTime | moment('HH:mm:ss')}}</span>
           </el-button>
         </el-tooltip>
-      </el-col>
-
-      <el-col :span="8">
-        <el-row class="hidden-md-and-down" type="flex" align="middle" justify="center">
           <el-dropdown trigger="click" @command="changeStoreStatus">
             <el-button size="small" type="success" :title="currentStore.storeName">
               <i class="fas el-icon-fa-store"></i>
-              <span v-if="currentStore.storeName" class="text-light text-bold">
-                  {{currentStore.storeCode}} - {{truncate(currentStore.storeName, 20)}}
+              <span class="text-light text-bold">
+                  {{currentStore.storeCode}}
                 </span>
             </el-button>
             <el-dropdown-menu class="padding-0" slot="dropdown">
@@ -46,10 +42,34 @@
           </el-dropdown>
           <el-tag size="small" type="success" v-if="currentStore.storeStatus === 'OPENING'">Mở cửa</el-tag>
           <el-tag size="small" type="danger" v-if="currentStore.storeStatus === 'CLOSED'">Đóng cửa</el-tag>
-        </el-row>
       </el-col>
 
-      <el-col :span="8">
+<!--      <el-col :span="8">-->
+<!--        <el-row class="hidden-md-and-down" type="flex" align="middle" justify="center">-->
+<!--          <el-dropdown trigger="click" @command="changeStoreStatus">-->
+<!--            <el-button size="small" type="success" :title="currentStore.storeName">-->
+<!--              <i class="fas el-icon-fa-store"></i>-->
+<!--              <span class="text-light text-bold">-->
+<!--                  {{currentStore.storeCode}}-->
+<!--                </span>-->
+<!--            </el-button>-->
+<!--            <el-dropdown-menu class="padding-0" slot="dropdown">-->
+<!--              <el-dropdown-item command="CLOSED" v-if="currentStore.storeStatus === 'OPENING'">-->
+<!--                <i class="el-icon-close padding-right-10"></i>-->
+<!--                <span>Đóng cửa</span>-->
+<!--              </el-dropdown-item>-->
+<!--              <el-dropdown-item command="OPENING" v-if="currentStore.storeStatus === 'CLOSED'">-->
+<!--                <i class="el-icon-key padding-right-10"></i>-->
+<!--                <span>Mở cửa</span>-->
+<!--              </el-dropdown-item>-->
+<!--            </el-dropdown-menu>-->
+<!--          </el-dropdown>-->
+<!--          <el-tag size="small" type="success" v-if="currentStore.storeStatus === 'OPENING'">Mở cửa</el-tag>-->
+<!--          <el-tag size="small" type="danger" v-if="currentStore.storeStatus === 'CLOSED'">Đóng cửa</el-tag>-->
+<!--        </el-row>-->
+<!--      </el-col>-->
+
+      <el-col :span="12">
         <el-row type="flex" align="middle" justify="end">
           <el-row class="padding-right-20">
             <el-tooltip :content="muteSound ? 'Bấm để bật âm thanh thông báo' : 'Bấm để tắt âm thanh thông báo'">

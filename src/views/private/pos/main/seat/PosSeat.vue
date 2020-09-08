@@ -33,7 +33,6 @@
                 <el-row type="flex" align="middle">
                   <el-button size="medium" type="info"></el-button>
                   <span class="padding-left-10">Đã khóa</span>
-
                 </el-row>
               </div>
             </el-popover>
