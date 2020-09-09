@@ -63,6 +63,7 @@
               vm.isLoading = true;
               await this.$store.dispatch("posMachine/createOrder");
             } catch (error) {
+              console.log(error);
               const message = error.message || error.data.message;
               MessageUtils.error(message);
             } finally {

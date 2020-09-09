@@ -93,7 +93,7 @@
         return meta;
       },
       getBillProduct() {
-        const orderProduct = this.savedOrderProduct.filter(od => !od.orderProductStatus === OrderProductStatus.value.CANCELLED);
+        const orderProduct = this.savedOrderProduct.filter(od => od.orderProductStatus === OrderProductStatus.value.SERVED);
         let distinctProduct = {};
 
         orderProduct.forEach((op) => {

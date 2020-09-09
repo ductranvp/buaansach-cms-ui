@@ -29,8 +29,9 @@ const actions = {
     const {data} = await PosOrderService.createOrder(payload);
     commit('SET_CURRENT_ORDER', data);
     commit('CHANGE_SEAT_STATUS', {
+      targetSeat: state.selectedSeat,
       seatStatus: SeatStatus.value.NON_EMPTY,
-      seatServiceStatus: SeatServiceStatus.value.UNFINISHED,
+      seatServiceStatus: SeatServiceStatus.value.FINISHED,
     });
   },
   async updateOrder({state, commit}) {

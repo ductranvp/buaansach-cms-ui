@@ -48,16 +48,16 @@
                    :body-style="{ padding: '0px' }"
                    shadow="never">
             <div style="position: relative"
-                 :class="storeProduct.storeProductStatus === storeProductStatus.AVAILABLE ? 'pointer-disabled' : ''">
+                 :class="storeProduct.storeProductStatus === storeProductStatus.UNAVAILABLE ? 'pointer-disabled' : ''">
               <el-image
-                :class="[storeProduct.storeProductStatus === storeProductStatus.AVAILABLE ? 'grayscale' : '', imageClasses[itemSize]]"
+                :class="[storeProduct.storeProductStatus === storeProductStatus.UNAVAILABLE ? 'grayscale' : '', imageClasses[itemSize]]"
                 @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productThumbnailUrl"
                 class="store-product-image">
                 <div slot="error" class="image-error-slot full-size">
                   <i class="el-icon-picture-outline"></i>
                 </div>
               </el-image>
-              <div v-if="storeProduct.storeProductStatus === storeProductStatus.AVAILABLE"
+              <div v-if="storeProduct.storeProductStatus === storeProductStatus.UNAVAILABLE"
                    style="position: relative; margin-top:-32px">
                 <el-tag class="full-width no-border-radius text-center" type="danger" style="height: 32px">
                   <span>Tạm Hết Hàng</span>

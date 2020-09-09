@@ -2,6 +2,8 @@
 import PosOrderStoreUtil from "@/store/pos/utils/pos.order.store.util";
 import PosOrderProductService from "@/service/pos/pos.order-product.service";
 import OrderProductStatus from "@/enum/OrderProductStatus";
+import SeatServiceStatus from '@/enum/SeatServiceStatus';
+import SeatStatus from '@/enum/SeatStatus';
 
 const state = {
   savedOrderProduct: [],
@@ -74,8 +76,8 @@ const actions = {
     if (!temp.length) {
       commit("CHANGE_SEAT_STATUS", {
         targetSeat: state.selectedSeat,
-        seatStatus: state.seatStatus.NON_EMPTY,
-        seatServiceStatus: state.seatServiceStatus.FINISHED
+        seatStatus: SeatStatus.value.NON_EMPTY,
+        seatServiceStatus: SeatServiceStatus.value.FINISHED
       });
     }
   },
@@ -87,13 +89,13 @@ const actions = {
     await PosOrderProductService.serveOrderProduct(orderProductChange);
     commit("SET_ORDER_PRODUCT_STATUS", {
       orderProduct: orderProduct,
-      status: state.orderProductStatus.SERVED
+      status: OrderProductStatus.value.SERVED
     });
     dispatch("checkOrderProductStatus");
   },
   async serveAllOrderProduct({state, commit, dispatch}) {
     const listPreparingOrderProduct = state.savedOrderProduct
-      .filter(item => item.orderProductStatus === state.orderProductStatus.PREPARING);
+      .filter(item => item.orderProductStatus === OrderProductStatus.value.PREPARING);
     let orderProductServeDto = {
       storeGuid: state.currentStore.guid,
       orderGuid: state.currentOrder.guid,
@@ -103,7 +105,7 @@ const actions = {
     listPreparingOrderProduct.forEach(orderProduct => {
       commit("SET_ORDER_PRODUCT_STATUS", {
         orderProduct: orderProduct,
-        status: state.orderProductStatus.SERVED
+        status: OrderProductStatus.value.SERVED
       });
     });
     dispatch("checkOrderProductStatus");
