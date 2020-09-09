@@ -100,7 +100,6 @@
               {orderProduct: product, storeGuid: vm.$route.params.storeGuid});
             vm.$set(product, "isLoading", false);
           } catch (error) {
-            console.log(error);
             vm.$set(product, "isLoading", false);
             MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
           }

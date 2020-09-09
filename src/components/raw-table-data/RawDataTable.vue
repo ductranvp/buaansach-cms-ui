@@ -8,11 +8,19 @@
       :default-sort="defaultSort"
       :size="tableSize"
       :fit="true"
+      @selection-change="selectChange"
       stripe
       border>
       <slot name="expand">
         <!-- action definitions here -->
       </slot>
+
+      <el-table-column
+        v-if="selectable" type="selection" width="55">
+      </el-table-column>
+
+      <el-table-column v-if="showIndex" type="index" :index="indexMethod" :label="$t('common.entity.audit.index')">
+      </el-table-column>
 
       <el-table-column v-if="showIndex" type="index" :index="indexMethod" :label="$t('common.entity.audit.index')">
       </el-table-column>
@@ -28,7 +36,7 @@
                          :label="$t('common.entity.audit.' + audit)">
           <template slot-scope="{row}">
             <span v-if="audit === 'createdDate' ||  audit === 'lastModifiedDate'">
-              {{ row[audit] | moment("HH:mm - DD/MM/YYYY") }}
+              {{ row[audit] | moment('HH:mm - DD/MM/YYYY') }}
             </span>
             <span v-else>{{row[audit]}}</span>
           </template>
@@ -57,35 +65,40 @@
 
 <script>
   export default {
-    name: "RawDataTable",
+    name: 'RawDataTable',
     props: {
       highlightCurrentRow: Boolean,
       showIndex: Boolean,
       showAudit: Boolean,
+      selectable: Boolean,
+      selectChange: {
+        type: Function,
+        default: () => {},
+      },
       customAudit: {
         type: Array,
         default: () => {
-          return ["createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"];
-        }
+          return ['createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate'];
+        },
       },
       tableSize: {
         type: String,
-        default: "small"
+        default: 'small',
       },
       data: Array,
       filter: Object,
       filterMethod: Function,
       defaultSort: {
         type: Object,
-        default: function () {
-          return {prop: "createdDate", order: "ascending"};
-        }
+        default: function() {
+          return {prop: 'createdDate', order: 'ascending'};
+        },
       },
       config: Object,
       showPagination: {
         type: Boolean,
-        default: true
-      }
+        default: true,
+      },
     },
     created() {
       this.renderTable();
@@ -101,22 +114,22 @@
           pageSize: this.config && this.config.pageSize ? this.config.pageSize : 20,
           pageSizes: this.config && this.config.pageSizes ? this.config.pageSizes : [10, 20, 30, 50, 100],
           sort: {
-            sortDirection: this.defaultSort.order === 'descending' ? "DESC" : "ASC",
+            sortDirection: this.defaultSort.order === 'descending' ? 'DESC' : 'ASC',
             sortField: this.defaultSort.prop,
-          }
-        }
+          },
+        },
       };
     },
     watch: {
-      data: function (val) {
+      data: function(val) {
         this.renderTable();
       },
       filter: {
         deep: true,
         handler(val) {
           this.onFilterChange(val);
-        }
-      }
+        },
+      },
     },
     methods: {
       indexMethod(index) {
@@ -147,8 +160,8 @@
           }
           this.tableData = temp.slice(startIndex, endIndex);
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

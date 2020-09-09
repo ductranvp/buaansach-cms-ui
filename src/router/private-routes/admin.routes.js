@@ -94,6 +94,15 @@ const AdminRoutes = [
       title: "private.pageTitle.admin.adminVoucherPage",
       roles: [Roles.ADMIN]
     }
+  },
+  {
+    path: "sale",
+    name: "adminSalePage",
+    component: () => import("@/views/private/admin/sale/AdminSale"),
+    meta: {
+      title: "private.pageTitle.admin.adminVoucherPage",
+      roles: [Roles.ADMIN]
+    }
   }
 ];
 

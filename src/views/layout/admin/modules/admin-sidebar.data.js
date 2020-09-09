@@ -53,6 +53,13 @@ const mixinSidebarData = {
           },
         },
         {
+          routeName: 'adminSalePage',
+          meta: {
+            icon: 'el-icon-price-tag',
+            title: 'layout.adminSidebar.adminSalePage',
+          },
+        },
+        {
           routeName: 'adminReportPage',
           meta: {
             icon: 'el-icon-s-marketing',

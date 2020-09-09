@@ -161,7 +161,6 @@
           this.isLoading = true;
           await PosStoreNotificationService.toggleVisibility(payload);
           notification.storeNotificationHidden = hidden;
-          console.log(this.$store.posMachine.orderNotifications);
         } finally {
           this.isLoading = false;
         }
