@@ -14,28 +14,54 @@
         </el-row>
       </el-header>
       <el-main class="full-size padding-20">
-        <el-form onsubmit="return false">
-          <el-form-item>
-            <el-row type="flex" align="bottom">
-              <el-col :span="11">
-                <input-label label="Mã giảm giá" optional/>
-                <el-input ref="voucherCode"
-                          @keyup.native.enter="applyVoucher"
-                          v-model="voucherCode"></el-input>
+<!--        <el-form onsubmit="return false">-->
+<!--          <el-form-item>-->
+<!--            <el-row type="flex" align="bottom">-->
+<!--              <el-col :span="11">-->
+<!--                <input-label label="Mã giảm giá" optional/>-->
+<!--                <el-input ref="voucherCode"-->
+<!--                          @keyup.native.enter="applyVoucher"-->
+<!--                          v-model="voucherCode"></el-input>-->
+<!--              </el-col>-->
+<!--              <el-col :span="11" :offset="2">-->
+<!--                <el-button-->
+<!--                  @click="applyVoucher"-->
+<!--                  :loading="isLoading"-->
+<!--                  class="full-width"-->
+<!--                  type="success"-->
+<!--                  plain>-->
+<!--                  <span>Áp Dụng</span>-->
+<!--                </el-button>-->
+<!--              </el-col>-->
+<!--            </el-row>-->
+<!--          </el-form-item>-->
+<!--        </el-form>-->
+        <el-row style="overflow-y: auto">
+          <el-card shadow="never" v-for="sale in storeSales" :key="sale.guid" class="margin-bottom-10">
+            <el-row type="flex" align="middle" style="min-height: 30px;" class="padding-bottom-10">
+              <el-col>
+                <strong class="text-success">{{sale.saleName}}</strong>
               </el-col>
-              <el-col :span="11" :offset="2">
-                <el-button
-                  @click="applyVoucher"
-                  :loading="isLoading"
-                  class="full-width"
-                  type="success"
-                  plain>
-                  <span>Áp Dụng</span>
-                </el-button>
-              </el-col>
+              <el-tag type="success" size="mini" v-if="sale.guid === currentOrder.saleGuid">Đã áp dụng</el-tag>
             </el-row>
-          </el-form-item>
-        </el-form>
+            <el-row type="flex" align="middle">
+              <el-col>
+                <span>Giảm giá: </span>
+                <span v-if="sale.saleDiscountType === discountTypes.PERCENT">{{sale.saleDiscount}}%</span>
+                <span v-else>{{sale.saleDiscount | priceAppend}}</span>
+              </el-col>
+              <div>
+                <el-button size="mini" type="danger" @click="cancelSale(sale)"
+                           v-if="sale.guid === currentOrder.saleGuid" :loading="sale.isLoading">
+                  <span>Hủy</span>
+                </el-button>
+                <el-button size="mini" type="success" @click="applySale(sale)" v-else :loading="sale.isLoading">
+                  <span>Áp dụng</span>
+                </el-button>
+              </div>
+            </el-row>
+          </el-card>
+        </el-row>
       </el-main>
       <el-footer height="auto" id="no_border">
         <el-row type="flex" align="middle">
@@ -52,12 +78,16 @@
 
 <script>
   import {mapState} from 'vuex';
+  import PosSaleService from '@/service/pos/pos.sale.service';
+  import MessageUtils from '@/utils/message.util';
+  import DiscountType from '@/enum/DiscountType';
 
   export default {
     name: 'AdvancedPurchase',
     computed: {
       ...mapState({
         currentOrder: state => state.posMachine.currentOrder,
+        currentStore: state => state.posMachine.currentStore,
         selectedSeat: state => state.posMachine.selectedSeat,
       }),
     },
@@ -67,6 +97,8 @@
         drawerVisible: false,
         direction: 'ltr',
         voucherCode: null,
+        storeSales: [],
+        discountTypes: DiscountType.value,
       };
     },
     methods: {
@@ -75,12 +107,37 @@
           this.$refs.voucherCode.focus();
       },
       async applyVoucher() {
-
       },
       async cancelVoucher() {
 
       },
+      async applySale(sale) {
+        try {
+          sale.isLoading = true;
+          await PosSaleService.applySale({
+            saleGuid: sale.guid,
+            orderGuid: this.currentOrder.guid,
+          });
+          await this.$store.dispatch('posMachine/getSeatOrderInfo', this.selectedSeat.guid);
+        } catch (error) {
+          MessageUtils.error(error.message || error.data.message);
+        } finally {
+          sale.isLoading = false;
+        }
+      },
+      async cancelSale(sale) {
+        try {
+          sale.isLoading = true;
+          await PosSaleService.cancelSale(this.currentOrder.guid);
+          await this.$store.dispatch('posMachine/getSeatOrderInfo', this.selectedSeat.guid);
+        } catch (error) {
+          MessageUtils.error(error.message || error.data.message);
+        } finally {
+          sale.isLoading = false;
+        }
+      },
       show() {
+        this.loadData();
         this.drawerVisible = true;
       },
       hide() {
@@ -94,10 +151,29 @@
         this.resetForm();
         done();
       },
+      async loadData() {
+        try {
+          this.storeSales = [];
+          let {data} = await PosSaleService.getListStoreSale(this.currentStore.guid);
+          data = data.map(item => {
+            item.isLoading = false;
+            return item;
+          });
+          this.storeSales = data;
+        } catch (e) {
+          MessageUtils.error('Lỗi tải danh sách khuyến mãi');
+        }
+      },
     },
   };
 </script>
 
 <style scoped>
+  /deep/ .el-card__body {
+    padding: 10px !important;
+  }
 
+  /deep/ .el-card__header {
+    padding: 10px !important;
+  }
 </style>

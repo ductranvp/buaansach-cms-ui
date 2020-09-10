@@ -44,6 +44,12 @@
         </el-col>
       </el-form-item>
 
+      <el-form-item prop="saleActivated">
+        <el-checkbox v-model="form.saleActivated">
+          <span>Kích hoạt</span>
+        </el-checkbox>
+      </el-form-item>
+
       <el-form-item>
         <input-label label="Các điều kiện áp dụng" optional/>
         <el-select @change="selectChange" multiple class="full-width" v-model="form.conditions">
@@ -132,7 +138,6 @@
       create() {
         this.isEdit = false;
         this.form = {
-          ...this.form,
           saleDiscountType: DiscountType.value.PERCENT,
           saleActivated: true,
           dateRange: [],

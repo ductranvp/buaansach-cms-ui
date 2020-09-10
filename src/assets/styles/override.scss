@@ -20,3 +20,7 @@ h1,h2,h3,h4,p,b {
 .el-loading-spinner .path{
     stroke: $--color-success !important;
 }
+
+.el-drawer{
+    overflow-y: auto;
+}

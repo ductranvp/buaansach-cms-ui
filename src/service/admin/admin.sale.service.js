@@ -20,10 +20,7 @@ const AdminSaleService = {
   },
   deleteSale(params) {
     return request.delete(baseUrl + '/delete/' + params);
-  },
-  applySale(payload) {
-    return request.put(baseUrl + '/apply', payload);
-  },
+  }
 };
 
 export default AdminSaleService;

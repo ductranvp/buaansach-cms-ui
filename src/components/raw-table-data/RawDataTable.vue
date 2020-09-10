@@ -22,9 +22,6 @@
       <el-table-column v-if="showIndex" type="index" :index="indexMethod" :label="$t('common.entity.audit.index')">
       </el-table-column>
 
-      <el-table-column v-if="showIndex" type="index" :index="indexMethod" :label="$t('common.entity.audit.index')">
-      </el-table-column>
-
       <slot>
         <!-- column definitions here -->
       </slot>
