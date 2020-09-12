@@ -25,7 +25,7 @@
           <el-tooltip placement="top" content="Tiền khách sẽ đưa" v-if="type === notificationType.PAY_REQUEST">
             <el-tag class="margin-left-10" size="small" type="success">
               <i class="el-icon-money"></i>
-              <span>{{notification.payAmount | priceAppend}}</span>
+              <span>{{notification.payRequestNotification.storePayRequestAmount | priceAppend}}</span>
             </el-tag>
           </el-tooltip>
         </el-col>

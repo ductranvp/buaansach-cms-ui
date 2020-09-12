@@ -34,35 +34,40 @@
 </template>
 
 <script>
-  import {mapState} from "vuex";
-  import MessageUtils from "@/utils/message.util";
+  import {mapState} from 'vuex';
+  import MessageUtils from '@/utils/message.util';
 
   export default {
-    name: "PosSidebarHeader",
+    name: 'PosSidebarHeader',
     computed: {
       ...mapState({
         selectedSeat: state => state.posMachine.selectedSeat,
-      })
+      }),
     },
     data() {
       return {
-        isLocking: false
+        isLocking: false,
       };
+    },
+    watch: {
+      selectedSeat: function(val) {
+        console.log(val);
+      },
     },
     methods: {
       async toggleSeatLock() {
         const vm = this;
         try {
           vm.isLocking = true;
-          await vm.$store.dispatch("posMachine/toggleSeatLock");
-          setTimeout(function () {
+          await vm.$store.dispatch('posMachine/toggleSeatLock');
+          setTimeout(function() {
             vm.isLocking = false;
           }, 300);
         } catch (e) {
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+          MessageUtils.error('Đã có lỗi xảy ra, vui lòng thử lại sau!');
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

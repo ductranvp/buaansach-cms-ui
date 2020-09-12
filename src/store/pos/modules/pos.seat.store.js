@@ -1,6 +1,7 @@
 /* Store module pattern */
 import MessageBoxUtils from "@/utils/message-box.util";
 import PosSeatService from "@/service/pos/pos.seat.service";
+import AppUtils from '@/utils/app.util';
 
 const state = {
   allSeats: [],
@@ -23,36 +24,24 @@ const mutations = {
     if (targetSeat.guid === state.selectedSeat.guid) {
       state.selectedSeat.seatStatus = seatStatus;
       state.selectedSeat.seatServiceStatus = seatServiceStatus;
-    }
-    /* Cập nhật trạng thái cho ghế trong danh sách */
-    for (let i = 0; i < state.allAreas.length; i++) {
-      let area = state.allAreas[i];
-      if (area.guid === targetSeat.areaGuid) {
-        const idx = area.listSeat.findIndex(seat => seat.guid === targetSeat.guid);
-        if (idx !== -1) {
-          area.listSeat[idx].seatStatus = seatStatus;
-          area.listSeat[idx].seatServiceStatus = seatServiceStatus;
-          area.listSeat.splice(idx, 1, area.listSeat[idx]);
-          break;
+    } else {
+      /* Cập nhật trạng thái cho ghế trong danh sách */
+      for (let i = 0; i < state.allAreas.length; i++) {
+        let area = state.allAreas[i];
+        if (area.guid === targetSeat.areaGuid) {
+          const idx = area.listSeat.findIndex(seat => seat.guid === targetSeat.guid);
+          if (idx !== -1) {
+            area.listSeat[idx].seatStatus = seatStatus;
+            area.listSeat[idx].seatServiceStatus = seatServiceStatus;
+            area.listSeat.splice(idx, 1, area.listSeat[idx]);
+            break;
+          }
         }
       }
     }
   },
   TOGGLE_LOCK(state) {
     state.selectedSeat.seatLocked = !state.selectedSeat.seatLocked;
-    /* Cập nhật trạng thái cho ghế trong danh sách */
-    for (let i = 0; i < state.allAreas.length; i++) {
-      let area = state.allAreas[i];
-      if (area.guid === state.selectedSeat.areaGuid) {
-        const idx = area.listSeat.findIndex(seat => seat.guid === state.selectedSeat.guid);
-        if (idx !== -1) {
-          area.listSeat[idx].seatLocked = !area.listSeat[idx].seatLocked;
-          area.listSeat.splice(idx, 1, area.listSeat[idx]);
-          break;
-        }
-      }
-    }
-
   }
 };
 const actions = {

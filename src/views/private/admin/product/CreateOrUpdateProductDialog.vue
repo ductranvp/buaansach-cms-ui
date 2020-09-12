@@ -231,8 +231,8 @@
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
         },
-        productStatus: ProductStatus.withLabel,
-        productType: ProductType.withLabel
+        productStatus: ProductStatus.optionArray,
+        productType: ProductType.optionArray
       };
     },
     methods: {
@@ -247,8 +247,8 @@
       create() {
         this.isEdit = false;
         this.form = {
-          productStatus: ProductStatus.values.AVAILABLE,
-          productType: ProductType.values.MAIN_PRODUCT,
+          productStatus: ProductStatus.value.AVAILABLE,
+          productType: ProductType.value.MAIN_PRODUCT,
           productActivated: true,
           categories: []
         };

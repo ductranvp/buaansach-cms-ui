@@ -20,9 +20,18 @@ function getDiscountAmount(total, discount, discountType) {
   return Math.max(amount, 0);
 }
 
+function getProductPrice(normalPrice, discount, discountType) {
+  let amount = normalPrice;
+  if (discount) {
+    amount = amount - getDiscountAmount(normalPrice, discount, discountType);
+  }
+  return Math.max(amount, 0);
+}
+
 const PriceUtils = {
   getPayAmount: getPayAmount,
-  getDiscountAmount: getDiscountAmount
+  getDiscountAmount: getDiscountAmount,
+  getProductPrice: getProductPrice
 };
 
 export default PriceUtils;

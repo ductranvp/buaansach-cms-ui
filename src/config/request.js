@@ -44,7 +44,7 @@ request.interceptors.response.use(
         break;
       case 403:
         store.dispatch("user/getAccount");
-        router.push({name: "forbiddenPage"}).then();
+        router.push({name: "forbiddenPage"});
         break;
     }
     if (error.response) return Promise.reject(error.response);

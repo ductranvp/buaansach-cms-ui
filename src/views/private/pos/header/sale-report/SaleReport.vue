@@ -361,11 +361,11 @@
         this.parsedReportData.listOnline = this.reportData.filter(item => item.orderType === this.orderType.ONLINE);
 
         this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          return acc + item.totalAmount;
+          return acc + item.orderTotalAmount;
         }, 0);
 
         this.parsedReportData.totalRealRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          let payAmount = PriceUtils.getPayAmount(item.totalAmount, item.orderDiscount, item.orderDiscountType);
+          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType);
           return acc + payAmount;
         }, 0);
 
@@ -373,7 +373,7 @@
           this.parsedReportData.totalRealRevenue;
 
         this.parsedReportData.totalDiscount = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          let discountAmount = PriceUtils.getDiscountAmount(item.totalAmount, item.orderDiscount,
+          let discountAmount = PriceUtils.getDiscountAmount(item.orderTotalAmount, item.orderDiscount,
             item.orderDiscountType);
           return acc + discountAmount;
         }, 0);
