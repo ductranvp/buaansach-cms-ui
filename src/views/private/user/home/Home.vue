@@ -5,7 +5,7 @@
         <el-col class="padding-5" :lg="6" :md="8" :sm="12" :xs="24" v-for="store in storeUser" :key="store.storeGuid">
           <el-card :body-style="{ padding: '0px' }" shadow="never">
             <el-row>
-              <el-image lazy class="image" :src="store.storeImageUrl">
+              <el-image lazy class="image" fit="cover" :src="getMediaUrl(store.storeImageUrl) || defaultStoreImage">
                 <div slot="error" class="image-error-slot full-size">
                   <i class="el-icon-picture-outline"></i>
                 </div>

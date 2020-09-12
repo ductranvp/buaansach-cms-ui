@@ -1,7 +1,7 @@
 <template>
   <el-row type="flex" align="middle">
     <el-col :span="4" :xs="24">
-      <el-image class="product-image" :src="row.productThumbnailUrl" fit="cover" :preview-src-list="[row.productThumbnailUrl]">
+      <el-image class="product-image" :src="getMediaUrl(row.productThumbnailUrl)" fit="cover" :preview-src-list="[getMediaUrl(row.productThumbnailUrl)]">
         <div slot="error" class="image-error-slot full-size">
           <i class="el-icon-picture-outline"></i>
         </div>

@@ -9,7 +9,7 @@
       <el-avatar
         :shape="shape"
         :size="size"
-        :src="user.avatarUrl || circleUrl"
+        :src="getMediaUrl(user.avatarUrl) || circleUrl"
       >
       </el-avatar>
     </el-tooltip>

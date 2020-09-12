@@ -1,20 +1,24 @@
-export function uppercase(value) {
-  return value.toUpperCase();
-}
+const filters = {
+  uppercase(value) {
+    return value.toUpperCase();
+  },
 
-export function lowercase(value) {
-  if (value)
-    return value.toLowerCase();
-}
+  lowercase(value) {
+    if (value)
+      return value.toLowerCase();
+  },
 
-export function priceAppend(value, unit) {
-  if (unit) unit = " " + unit;
-  else unit = "₫";
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + unit;
-}
+  priceAppend(value, unit) {
+    if (unit) unit = " " + unit;
+    else unit = "₫";
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + unit;
+  },
 
-export function pricePrepend(value, unit) {
-  if (unit) unit = unit + " ";
-  else unit = "";
-  return unit + value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
+  capitalize(value) {
+    if (!value) return '';
+    value = value.toString();
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  }
+
+};
+export default filters;

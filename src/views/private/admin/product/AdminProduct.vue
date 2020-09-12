@@ -60,7 +60,7 @@
 
         <el-table-column prop="productThumbnailUrl" label="Hình" width="72px">
           <template slot-scope="{row}">
-            <el-image class="product-thumbnail" :src="row.productThumbnailUrl" :preview-src-list="[row.productThumbnailUrl]">
+            <el-image class="product-thumbnail" :src="getMediaUrl(row.productThumbnailUrl)" :preview-src-list="[getMediaUrl(row.productThumbnailUrl)]">
               <div slot="error" class="image-error-slot full-size">
                 <i class="el-icon-picture-outline"></i>
               </div>

@@ -137,7 +137,7 @@
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
-          :image-url-prop.sync="form.productThumbnailUrl"
+          :image-url-prop="getMediaUrl(form.productThumbnailUrl)"
         />
       </el-form-item>
 

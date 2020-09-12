@@ -3,8 +3,8 @@
     <el-row class="full-size" :gutter="10">
       <el-col :md="10" :sm="24">
         <div class="text-center">
-          <el-image lazy class="store-image" :src="adminCurrentStore.storeImageUrl"
-                    fit="cover" :preview-src-list="[adminCurrentStore.storeImageUrl]">
+          <el-image lazy class="store-image" :src="getMediaUrl(adminCurrentStore.storeImageUrl)"
+                    fit="cover" :preview-src-list="[getMediaUrl(adminCurrentStore.storeImageUrl)]">
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
             </div>

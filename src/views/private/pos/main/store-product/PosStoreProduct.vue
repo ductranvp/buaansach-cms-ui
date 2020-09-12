@@ -51,7 +51,7 @@
                  :class="storeProduct.storeProductStatus === storeProductStatus.UNAVAILABLE ? 'pointer-disabled' : ''">
               <el-image
                 :class="[storeProduct.storeProductStatus === storeProductStatus.UNAVAILABLE ? 'grayscale' : '', imageClasses[itemSize]]"
-                @click.native="addOrderProduct(storeProduct)" :src="storeProduct.productThumbnailUrl"
+                @click.native="addOrderProduct(storeProduct)" :src="getMediaUrl(storeProduct.productThumbnailUrl)"
                 class="store-product-image">
                 <div slot="error" class="image-error-slot full-size">
                   <i class="el-icon-picture-outline"></i>

@@ -117,7 +117,7 @@
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
-          :image-url-prop.sync="form.storeImageUrl"
+          :image-url-prop="getMediaUrl(form.storeImageUrl)"
         />
       </el-form-item>
     </el-form>
