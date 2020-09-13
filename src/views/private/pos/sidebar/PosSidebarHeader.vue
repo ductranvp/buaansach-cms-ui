@@ -49,11 +49,6 @@
         isLocking: false,
       };
     },
-    watch: {
-      selectedSeat: function(val) {
-        console.log(val);
-      },
-    },
     methods: {
       async toggleSeatLock() {
         const vm = this;

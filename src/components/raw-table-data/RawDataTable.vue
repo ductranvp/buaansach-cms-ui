@@ -3,6 +3,7 @@
     <el-table
       class="full-width"
       :highlight-current-row="highlightCurrentRow"
+      :default-expand-all="defaultExpandAll"
       :data="tableData"
       :sortable="true"
       :default-sort="defaultSort"
@@ -68,6 +69,7 @@
       showIndex: Boolean,
       showAudit: Boolean,
       selectable: Boolean,
+      defaultExpandAll: Boolean,
       selectChange: {
         type: Function,
         default: () => {},

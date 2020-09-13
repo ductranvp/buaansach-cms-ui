@@ -5,7 +5,8 @@
     <el-col class="padding-right-10" @click.native="clickNotification(notification)">
       <div>
         <b>{{notification.title}}</b>
-        <em v-if="type === notificationType.ORDER_UPDATE"> ({{notification.orderNotification.numberOfProduct }} loại sản phẩm)</em>
+        <em v-if="type === notificationType.ORDER_UPDATE"> ({{notification.orderNotification.numberOfProduct }} loại sản
+          phẩm)</em>
       </div>
       <el-row type="flex" align="middle">
         <el-col>
@@ -20,6 +21,12 @@
               <i class="el-icon-s-claim"></i>
               <span v-if="notification.createdBy === 'anonymousUser'">Khách</span>
               <span v-else>{{notification.createdBy}}</span>
+            </el-tag>
+          </el-tooltip>
+          <el-tooltip placement="top" content="Phương thức thanh toán" v-if="type === notificationType.PAY_REQUEST">
+            <el-tag v-if="notification.payRequestNotification.storePayRequestMethod" class="margin-left-10" size="small" type="warning">
+              <i class="el-icon-money"></i>
+              <span>{{paymentMethod[notification.payRequestNotification.storePayRequestMethod]}}</span>
             </el-tag>
           </el-tooltip>
           <el-tooltip placement="top" content="Tiền khách sẽ đưa" v-if="type === notificationType.PAY_REQUEST">
@@ -82,6 +89,7 @@
   import StoreNotificationType from '@/enum/StoreNotificationType';
   import PosStoreNotificationService from '@/service/pos/pos.store-notification.service';
   import StoreStatus from '@/enum/StoreStatus';
+  import PaymentMethod from '@/enum/PaymentMethod';
 
   export default {
     name: 'NotificationItem',
@@ -113,6 +121,7 @@
       return {
         notificationStatus: StoreNotificationStatus.value,
         notificationType: StoreNotificationType.value,
+        paymentMethod: PaymentMethod.label,
         isLoading: false,
       };
     },

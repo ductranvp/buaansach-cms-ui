@@ -7,7 +7,6 @@ import UserRoutes from "@/router/private-routes/user.routes";
 import Roles from "@/config/security/roles";
 import PosStoreService from "@/service/pos/pos.store.service";
 import CustomerCareRoutes from "@/router/private-routes/customer-care.routes";
-import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -44,7 +43,7 @@ const router = new VueRouter({
     },
     /* For pos page */
     {
-      path: "/pos/:storeGuid",
+      path: "/store/:storeGuid",
       name: "posPage",
       component: () => import("@/views/layout/pos/PosLayout"),
       beforeEnter: async (to, from, next) => {
