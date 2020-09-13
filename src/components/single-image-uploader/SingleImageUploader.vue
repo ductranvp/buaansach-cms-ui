@@ -21,7 +21,7 @@
       <img v-if="displayImageUrl" :src="displayImageUrl" class="image" alt="" />
     </el-upload>
     <el-button
-      v-if="selectedImage != null || displayImageUrl != null"
+      v-if="showClearBtn && (selectedImage != null || displayImageUrl != null)"
       @click="clearImage"
       size="small"
       >{{ $t("components.singleImageUploader.clearBtn") }}
@@ -34,7 +34,11 @@ export default {
   name: "SingleImageUploader",
   props: {
     containerClass: Object,
-    imageUrlProp: String
+    imageUrlProp: String,
+    showClearBtn: {
+      type: Boolean,
+      default: true
+    }
   },
   data() {
     return {

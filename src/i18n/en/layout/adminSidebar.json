@@ -9,6 +9,7 @@
     "adminTrackerPage": "System Tracker",
     "adminSettingPage": "Setting",
     "adminVoucherPage": "Voucher",
-    "adminSalePage": "Sale"
+    "adminSalePage": "Sale",
+    "adminBannerPage": "Banner"
   }
 }

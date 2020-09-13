@@ -60,6 +60,13 @@ const mixinSidebarData = {
           },
         },
         {
+          routeName: 'adminBannerPage',
+          meta: {
+            icon: 'el-icon-picture',
+            title: 'layout.adminSidebar.adminBannerPage',
+          },
+        },
+        {
           routeName: 'adminReportPage',
           meta: {
             icon: 'el-icon-s-marketing',
