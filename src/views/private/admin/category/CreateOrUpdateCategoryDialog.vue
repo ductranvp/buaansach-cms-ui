@@ -18,9 +18,9 @@
         <el-input v-model="form.categoryNameEng"></el-input>
       </el-form-item>
 
-      <el-form-item prop="categoryActivated">
-        <el-checkbox v-model="form.categoryActivated">
-          <span>Kích hoạt</span>
+      <el-form-item prop="categoryHidden">
+        <el-checkbox v-model="form.categoryHidden">
+          <span>Ẩn</span>
         </el-checkbox>
       </el-form-item>
     </el-form>
@@ -56,7 +56,7 @@
           categoryImageUrl: null,
           categoryThumbnailUrl: null,
           categoryPosition: null,
-          categoryActivated: true,
+          categoryHidden: null,
         },
         formRules: {
           categoryName: [
@@ -71,9 +71,7 @@
     methods: {
       create() {
         this.isEdit = false;
-        this.form = {
-          categoryActivated: true,
-        };
+        this.form = {};
         this.show();
       },
       edit(entity) {
@@ -89,9 +87,7 @@
         this.dialogFormVisible = false;
       },
       resetForm() {
-        this.form = {
-          categoryActivated: true,
-        };
+        this.form = {};
         this.$refs.dialogForm.clearValidate();
         this.$refs.dialogForm.resetFields();
       },

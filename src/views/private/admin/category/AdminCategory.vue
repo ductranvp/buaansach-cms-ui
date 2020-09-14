@@ -17,10 +17,10 @@
         <el-table-column label="STT" type="index"></el-table-column>
         <el-table-column label="Tên Danh Mục (Tiếng Việt)" prop="categoryName"></el-table-column>
         <el-table-column label="Tên Danh Mục (Tiếng Anh)" prop="categoryNameEng"></el-table-column>
-        <el-table-column label="Kích Hoạt" prop="categoryActivated">
+        <el-table-column label="Ẩn" prop="categoryHidden">
           <template slot-scope="{row}">
-            <el-tag v-if="row.categoryActivated" type="success">Bật</el-tag>
-            <el-tag v-else type="danger">Tắt</el-tag>
+            <el-tag v-if="row.categoryHidden" type="danger">Có</el-tag>
+            <el-tag v-else type="success">Không</el-tag>
           </template>
         </el-table-column>
         <template slot="action">

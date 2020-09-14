@@ -32,16 +32,6 @@
             <span>{{row.productPrice | priceAppend}}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="storeProductHidden" label="Ẩn">
-          <template slot-scope="{row}">
-            <el-tag type="danger" v-if="row.storeProductHidden">
-              <span>Ẩn</span>
-            </el-tag>
-            <el-tag v-else type="success">
-              <span>Hiện</span>
-            </el-tag>
-          </template>
-        </el-table-column>
         <el-table-column prop="storeProductStatus" label="Kho">
           <template slot-scope="{row}">
 
