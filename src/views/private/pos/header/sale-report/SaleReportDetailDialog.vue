@@ -123,10 +123,9 @@
             }
           },
           seatGuid: {label: "Vị trí", display: true, type: 'seat'},
-          orderCheckinTime: {label: "Giờ vào", display: true, type: "time", sortable: true},
-          orderCheckoutTime: {label: "Giờ ra", display: true, type: "time", sortable: true},
-          customerPhone: {label: "SĐT khách", display: true},
-          cashierLogin: {label: "Thu ngân", display: true},
+          createdDate: {label: "Giờ vào", display: true, type: "time", sortable: true},
+          orderCustomerPhone: {label: "SĐT khách", display: true},
+          orderReceivedBy: {label: "Thu ngân", display: true},
           orderDiscount: {label: "Giảm giá", display: false},
           orderDiscountType: {
             label: "Loại giảm giá", display: false,
@@ -136,8 +135,7 @@
               PERCENT: {label: "Phần trăm", color: "primary"},
             }
           },
-          totalAmount: {label: "Tổng đơn", display: false},
-          orderNote: {label: "Ghi chú", display: false},
+          orderTotalAmount: {label: "Tổng đơn", display: false},
           orderCancelReason: {label: "Lí do hủy", display: false},
         }
       };
@@ -150,7 +148,7 @@
         if (type === 'purchased') {
           this.columns.orderDiscount.display = true;
           this.columns.orderDiscountType.display = true;
-          this.columns.totalAmount.display = true;
+          this.columns.orderTotalAmount.display = true;
         }
         this.originalReportData = data;
         this.reportData = data;
@@ -159,8 +157,7 @@
       resetDisplay() {
         this.columns.orderDiscount.display = false;
         this.columns.orderDiscountType.display = false;
-        this.columns.totalAmount.display = false;
-        this.columns.orderNote.display = false;
+        this.columns.orderTotalAmount.display = false;
         this.columns.orderCancelReason.display = false;
       },
       hide() {
@@ -180,7 +177,7 @@
       onSearch() {
         if (this.searchKey) {
           this.reportData = this.originalReportData.filter(item => item.orderCode.includes(this.searchKey) ||
-            (item.customerPhone && item.customerPhone.includes(this.searchKey)));
+            (item.orderCustomerPhone && item.orderCustomerPhone.includes(this.searchKey)));
         } else {
           this.reportData = this.originalReportData;
         }
