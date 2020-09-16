@@ -3,7 +3,7 @@
     <cancel-order-dialog ref="cancelOrderDialog"/>
     <el-row style="overflow: hidden" class="full-size" type="flex" align="middle" v-if="currentOrder.guid">
       <el-col class="full-height">
-        <el-row type="flex" align="middle" class="full-size" v-if="currentOrder.orderStatus ==='CREATED'">
+        <el-row type="flex" align="middle" class="full-size" v-if="currentOrder.orderStatus === orderStatusValue.CREATED">
           <el-col class="full-height">
             <el-button :loading="isLoading" type="success"
                        class="no-border no-border-radius full-size text-small"
@@ -52,13 +52,15 @@
 </template>
 
 <script>
-  import {mapState} from "vuex";
-  import MessageUtils from "@/utils/message.util";
-  import CancelOrderDialog from "@/views/private/pos/sidebar/main/dialog/CancelOrderDialog";
+  import {mapState} from 'vuex';
+  import CancelOrderDialog from '@/views/private/pos/sidebar/main/dialog/CancelOrderDialog';
   import OrderProductStatus from '@/enum/OrderProductStatus';
+  import ErrorUtils from '@/utils/error.util';
+  import OrderStatus from '@/enum/OrderStatus';
+  import ErrorCode from '@/enum/ErrorCode';
 
   export default {
-    name: "BottomToolbar",
+    name: 'BottomToolbar',
     components: {CancelOrderDialog},
     computed: {
       ...mapState({
@@ -66,14 +68,16 @@
         selectedCategory: state => state.posMachine.selectedCategory,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
         isAllOrderProductDone: state => {
-          const temp = state.posMachine.savedOrderProduct.filter(item => item.orderProductStatus === OrderProductStatus.value.PREPARING);
+          const temp = state.posMachine.savedOrderProduct.filter(
+            item => item.orderProductStatus === OrderProductStatus.value.PREPARING);
           return temp.length === 0;
         },
-      })
+      }),
     },
     data() {
       return {
         isLoading: false,
+        orderStatusValue: OrderStatus.value
       };
     },
     methods: {
@@ -83,51 +87,46 @@
       async receiveOrder() {
         try {
           this.isLoading = true;
-          await this.$store.dispatch("posMachine/receiveOrder");
+          await this.$store.dispatch('posMachine/receiveOrder');
           this.isLoading = false;
         } catch (error) {
           this.isLoading = false;
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+          ErrorUtils.showErrorMessage(error);
         }
       },
       async updateOrder() {
-        const vm = this;
         try {
-          vm.isLoading = true;
-          await this.$store.dispatch("posMachine/updateOrder");
-          vm.isLoading = false;
+          this.isLoading = true;
+          await this.$store.dispatch('posMachine/updateOrder');
+          this.isLoading = false;
         } catch (error) {
-          const message = error.message || error.data.message;
-          if (message.includes("productStopTrading")) {
+          this.isLoading = false;
+          const errorMsg = error.message || error.data.message;
+          if (errorMsg === ErrorCode.value.STORE_PRODUCT_STOP_TRADING) {
             this.refreshStoreProduct();
-            MessageUtils.error("Danh sách sản phẩm đã thay đổi. Vui lòng kiểm tra lại");
-          } else {
-            MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
           }
-          vm.isLoading = false;
+          ErrorUtils.showErrorMessage(error);
         }
       },
       async refreshStoreProduct() {
-        const vm = this;
         try {
-          await vm.$store.dispatch("posMachine/getAllCategory", vm.$route.params.storeGuid);
-          await vm.$store.dispatch("posMachine/changeCategory", vm.selectedCategory.guid);
-        } catch (e) {
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+          await this.$store.dispatch('posMachine/getAllCategory', this.$route.params.storeGuid);
+          await this.$store.dispatch('posMachine/changeCategory', this.selectedCategory.guid);
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
         }
       },
       async serveAllOrderProduct() {
-        const vm = this;
         try {
-          vm.isLoading = true;
-          await this.$store.dispatch("posMachine/serveAllOrderProduct");
-          vm.isLoading = false;
+          this.isLoading = true;
+          await this.$store.dispatch('posMachine/serveAllOrderProduct');
+          this.isLoading = false;
         } catch (error) {
-          vm.isLoading = false;
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+          this.isLoading = false;
+          ErrorUtils.showErrorMessage(error);
         }
-      }
-    }
+      },
+    },
   };
 </script>
 

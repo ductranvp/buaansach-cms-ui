@@ -32,6 +32,16 @@
             <span>{{row.productPrice | priceAppend}}</span>
           </template>
         </el-table-column>
+        <el-table-column prop="productActivated" label="Kích hoạt">
+          <template slot-scope="{row}">
+            <el-tag type="success" v-if="row.productActivated">
+              <span>Bật</span>
+            </el-tag>
+            <el-tag type="danger" v-else>
+              <span>Tắt</span>
+            </el-tag>
+          </template>
+        </el-table-column>
         <el-table-column prop="storeProductStatus" label="Kho">
           <template slot-scope="{row}">
 

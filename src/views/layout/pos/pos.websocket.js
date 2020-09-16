@@ -90,6 +90,7 @@ const PosWebsocket = {
           break;
         case WebSocketConstants.GUEST_STORE_PAY_REQUEST:
           this.$store.commit("posMachine/ADD_PAY_REQUEST_NOTIFICATION", notification);
+          reloadSeatIfActive(this);
           MessageUtils.info(notification.title + " yêu cầu thanh toán.");
           this.playAudio("store_pay_request_sound");
           break;
@@ -105,6 +106,12 @@ const PosWebsocket = {
           MessageUtils.info(notification.title + " đã gọi món.");
           this.playAudio("store_order_sound");
           break;
+      }
+
+      function reloadSeatIfActive(vm){
+        vm.$store.dispatch("posMachine/getSeatOrderInfo", seatData.guid).then(() => {
+          vm.scrollToEnd();
+        });
       }
 
       function handleSeatChange(vm) {
