@@ -23,11 +23,11 @@
                   <span class="padding-left-10">Còn trống</span>
                 </el-row>
                 <el-row class="padding-bottom-5" type="flex" align="middle">
-                  <el-button size="medium" type="warning"></el-button>
+                  <el-button size="medium" type="success"></el-button>
                   <span class="padding-left-10">Đang dùng, đã phục vụ xong</span>
                 </el-row>
                 <el-row class="padding-bottom-5" type="flex" align="middle">
-                  <el-button size="medium" type="danger"></el-button>
+                  <el-button size="medium" type="warning"></el-button>
                   <span class="padding-left-10">Đang dùng, chưa phục vụ xong</span>
                 </el-row>
                 <el-row type="flex" align="middle">
@@ -39,6 +39,9 @@
 
             <el-button v-popover:guidePopover class="bg-yellowgreen no-border" size="mini">
               <span><i class="el-icon-help"></i><span>Chú thích</span></span>
+            </el-button>
+            <el-button class="bg-yellowgreen no-border" size="mini" @click="groupPurchase">
+              <span><i class="el-icon-money"></i><span>Thanh toán nhóm</span></span>
             </el-button>
           </el-row>
         </el-col>
@@ -64,8 +67,8 @@
                            :style="{borderColor: area.areaColor, boxShadow: selectedSeat.guid === seat.guid ? '0 0 1px 2px ' + area.areaColor : ''}"
                            :class="[
                            seat.seatLocked ? 'bg-info' : '',
-                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'FINISHED' && !seat.seatLocked ? 'bg-warning' : '',
-                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'UNFINISHED' && !seat.seatLocked ? 'bg-danger' : '']"
+                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'FINISHED' && !seat.seatLocked ? 'bg-success text-white' : '',
+                           seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'UNFINISHED' && !seat.seatLocked ? 'bg-warning text-white' : '']"
                            class="pointer" shadow="never" @click.native="changeSeat(seat)">
                     <div class="text-center text-small padding-10-5">
                       <span>{{seat.seatName}}</span>
@@ -77,6 +80,7 @@
           </el-row>
         </template>
       </el-row>
+      <group-purchase-dialog ref="groupPurchaseDialog" />
     </el-main>
   </el-container>
 </template>
@@ -86,12 +90,13 @@
   import Constants from '@/utils/constants';
   import MessageUtils from '@/utils/message.util';
   import hotkeys from 'hotkeys-js';
+  import GroupPurchaseDialog from '@/views/private/pos/main/seat/dialog/GroupPurchaseDialog';
 
   export default {
     name: 'PosSeat',
+    components: {GroupPurchaseDialog},
     computed: {
       ...mapState({
-        displaySeats: state => state.posMachine.displaySeats,
         allAreas: state => state.posMachine.allAreas,
         selectedArea: state => state.posMachine.selectedArea,
         selectedSeat: state => state.posMachine.selectedSeat,
@@ -124,6 +129,9 @@
       hotkeys.setScope('posMachine');
     },
     methods: {
+      groupPurchase(){
+        this.$refs.groupPurchaseDialog.show();
+      },
       async refreshSeat() {
         const vm = this;
         try {

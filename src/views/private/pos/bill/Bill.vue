@@ -46,6 +46,7 @@
         style += ".logo {width: 42px; height: 34px; padding-right: 5px}";
         style += ".flex-center {display:flex; flex-direction: row; align-items: center; justify-content: center}";
         style += ".divider {border-top: 1px dashed black}";
+        style += '.double-divider {border-top: 2px solid black}';
         style += "table {font-size: 8pt;width: 100%;}";
         style += "th {text-align: left;}";
         style += "h1,h2,h3,h4 {margin: 10px 0px;}";
@@ -71,6 +72,10 @@
       },
       getDate() {
         return this.$moment().format("DD/MM/YYYY HH:mm");
+      },
+      getOrderProductPrice(orderProduct) {
+        const {orderProductPrice, orderProductDiscount, orderProductDiscountType} = orderProduct;
+        return PriceUtils.getProductPrice(orderProductPrice, orderProductDiscount, orderProductDiscountType);
       },
       getBillMeta() {
         let meta = "<table>";
@@ -118,7 +123,7 @@
           tbody += "<td>" + distinctProduct[key].productCode + "</td>";
           tbody += "<td>" + this.formatPrice(distinctProduct[key].orderProductPrice) + "</td>";
           tbody += "<td>" + distinctProduct[key].orderProductQuantity + "</td>";
-          tbody += "<td class='text-right'>" + this.formatPrice(distinctProduct[key].orderProductPrice * distinctProduct[key].orderProductQuantity) + "</td>";
+          tbody += "<td class='text-right'>" + this.formatPrice(this.getOrderProductPrice(distinctProduct[key])) + "</td>";
           tbody += "</tr>";
         });
         tbody += "</tbody>";

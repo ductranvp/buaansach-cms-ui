@@ -61,8 +61,24 @@ const PosOrderService = {
    * @param {String} payload.cancelReason
    * */
   cancelOrder(payload) {
-    return request.put(baseUrl + "/cancel", payload);
-  }
+    return request.put(baseUrl + '/cancel', payload);
+  },
+
+  /**
+   * @param {String} payload.storeGuid
+   * @param {Array<String>} payload.listSeatGuid
+   * */
+  getListOrderByListSeat(payload) {
+    return request.post(baseUrl + '/get-list-order-by-list-seat', payload);
+  },
+
+  /**
+   * @param {Array<String>} payload.listSeatGuid
+   * @param {String} payload.paymentNote
+   * */
+  purchaseListOrder(payload) {
+    return request.put(baseUrl + '/purchase-group-order', payload);
+  },
 };
 
 export default PosOrderService;
