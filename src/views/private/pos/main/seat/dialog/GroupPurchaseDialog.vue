@@ -224,7 +224,13 @@
             item.seat = this.selectedSeats.find(seat => seat.guid === item.seatGuid) || {};
             return item;
           });
-          this.listOrder = data;
+          let listOrder = [];
+          this.selectedSeats.forEach(seat => {
+            let order = data.find(item => item.seatGuid === seat.guid) || {};
+            order.seat = seat;
+            listOrder.push(order);
+          });
+          this.listOrder = listOrder;
         } catch (error) {
           ErrorUtils.showErrorMessage(error);
         } finally {

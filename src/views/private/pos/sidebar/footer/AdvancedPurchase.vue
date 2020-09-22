@@ -43,19 +43,27 @@
                 <strong class="text-success">{{sale.saleName}}</strong>
               </el-col>
               <el-tag type="success" size="mini" v-if="sale.guid === currentOrder.saleGuid">Đã áp dụng</el-tag>
+              <el-tag v-else-if="!isSaleTimeValid(sale)" type="danger" size="mini">Ngoài thời gian sử dụng</el-tag>
             </el-row>
             <el-row type="flex" align="middle">
-              <el-col>
-                <span>Giảm giá: </span>
-                <span v-if="sale.saleDiscountType === discountTypes.PERCENT">{{sale.saleDiscount}}%</span>
-                <span v-else>{{sale.saleDiscount | priceAppend}}</span>
+              <el-col class="text-small" style="line-height: 22px">
+                <div>
+                  <span>Giảm giá: </span>
+                  <span v-if="sale.saleDiscountType === discountTypes.PERCENT">{{sale.saleDiscount}}%</span>
+                  <span v-else>{{sale.saleDiscount | priceAppend}}</span>
+                </div>
+                <div v-if="sale.timeCondition">
+                  <span>Thời gian: </span>
+                  <span>{{sale.timeCondition.validFrom | moment("DD/MM/YYYY")}}</span>
+                  <span> - {{sale.timeCondition.validUntil | moment("DD/MM/YYYY")}}</span>
+                </div>
               </el-col>
               <div>
                 <el-button size="mini" type="danger" @click="cancelSale(sale)"
                            v-if="sale.guid === currentOrder.saleGuid" :loading="sale.isLoading">
                   <span>Hủy</span>
                 </el-button>
-                <el-button size="mini" type="success" @click="applySale(sale)" v-else :loading="sale.isLoading">
+                <el-button v-else-if="isSaleTimeValid(sale)" size="mini" type="success" @click="applySale(sale)" :loading="sale.isLoading">
                   <span>Áp dụng</span>
                 </el-button>
               </div>
@@ -151,6 +159,13 @@
         this.resetForm();
         done();
       },
+      isSaleTimeValid(sale){
+        if (!sale.timeCondition) return true;
+        let start = (new Date(sale.timeCondition.validFrom)).getTime();
+        let end = (new Date(sale.timeCondition.validUntil)).getTime();
+        let now = (new Date()).getTime();
+        return !(now < start || now > end);
+      },
       async loadData() {
         try {
           this.storeSales = [];
@@ -159,6 +174,7 @@
             item.isLoading = false;
             return item;
           });
+          console.log(data);
           this.storeSales = data;
         } catch (e) {
           MessageUtils.error('Lỗi tải danh sách khuyến mãi');

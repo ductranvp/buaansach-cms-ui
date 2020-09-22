@@ -1,7 +1,7 @@
 const Constants = {
     SERVER_API_URL: process.env.VUE_APP_SERVER_API_URL,
     APP_MODE: process.env.VUE_APP_MODE_FLAG,
-    CUSTOMER_UI_SEAT_PREFIX_URL: process.env.VUE_APP_CUSTOMER_UI_URL + "/order/seat=",
+    CUSTOMER_UI_SEAT_PREFIX_URL: process.env.VUE_APP_CUSTOMER_UI_URL + "/goi-mon/",
     APP_TITLE: "app.pageTitle",
     DEFAULT_LANGUAGE: "vi",
     DEFAULT_AREA_GUID: "all",

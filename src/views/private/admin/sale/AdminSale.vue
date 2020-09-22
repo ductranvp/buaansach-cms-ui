@@ -25,7 +25,7 @@
         <template slot="action">
           <el-table-column label="Thao tác" width="250">
             <template slot-scope="{row}">
-              <el-button size="mini" type="primary" @click="assignSale(row)">Tùy chọn</el-button>
+              <el-button v-if="row.saleConditions.includes(saleConditionValues.STORE_LIMIT)" size="mini" type="primary" @click="assignSale(row)">Cửa hàng</el-button>
               <el-button size="mini" type="warning" @click="editSale(row)">Sửa</el-button>
               <el-button size="mini" type="danger" @click="deleteSale(row)">Xóa</el-button>
             </template>
@@ -53,7 +53,8 @@
       return {
         sales: [],
         discountTypeLabels: DiscountType.label,
-        saleConditionLabels: SaleCondition.label
+        saleConditionLabels: SaleCondition.label,
+        saleConditionValues: SaleCondition.value
       };
     },
     created() {
