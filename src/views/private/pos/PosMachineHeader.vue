@@ -152,6 +152,7 @@
   import ServerTimeService from '@/service/shared/server-time.service';
   import Notification from '@/views/private/pos/header/notification/Notification';
   import StoreNotificationType from '@/enum/StoreNotificationType';
+  import StorageKey from '@/utils/storage-key';
 
   export default {
     name: 'PosMachineHeader',
@@ -176,7 +177,7 @@
       };
     },
     created() {
-      const muteSound = localStorage.getItem('muteSound');
+      const muteSound = localStorage.getItem(StorageKey.localStorageKeys.MUTE_SOUND);
       this.muteSound = muteSound === 'yes';
       this.getServerTime();
     },
@@ -205,9 +206,9 @@
       toggleSound() {
         this.muteSound = !this.muteSound;
         if (this.muteSound) {
-          localStorage.setItem('muteSound', 'yes');
+          localStorage.setItem(StorageKey.localStorageKeys.MUTE_SOUND, 'yes');
         } else {
-          localStorage.setItem('muteSound', 'no');
+          localStorage.setItem(StorageKey.localStorageKeys.MUTE_SOUND, 'no');
         }
       },
       downloadTeamViewer() {

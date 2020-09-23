@@ -174,7 +174,6 @@
             item.isLoading = false;
             return item;
           });
-          console.log(data);
           this.storeSales = data;
         } catch (e) {
           MessageUtils.error('Lỗi tải danh sách khuyến mãi');

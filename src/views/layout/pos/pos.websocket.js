@@ -3,6 +3,7 @@ import MessageUtils from "@/utils/message.util";
 import WebSocketConstants from "@/utils/websocket.constants";
 import SeatStatus from "@/enum/SeatStatus";
 import SeatServiceStatus from "@/enum/SeatServiceStatus";
+import StorageKey from '@/utils/storage-key';
 
 const PosWebsocket = {
   computed: {
@@ -67,7 +68,7 @@ const PosWebsocket = {
       }
     },
     playAudio(elementId){
-      if (localStorage.getItem("muteSound") !== "yes") {
+      if (localStorage.getItem(StorageKey.localStorageKeys.MUTE_SOUND) !== "yes") {
         let sound = document.getElementById(elementId);
         if (sound && sound.paused) {
           sound.play();

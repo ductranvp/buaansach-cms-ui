@@ -4,6 +4,7 @@ import "@/assets/styles/nprogress.scss"; // progress bar style
 import AuthUtils from "@/utils/auth.util"; // get token from cookie
 import AppUtils from "@/utils/app.util";
 import store from "@/store";
+import StorageKey from '@/utils/storage-key';
 
 NProgress.configure({ showSpinner: true }); // NProgress Configuration
 
@@ -40,7 +41,7 @@ router.beforeEach(async (to, from, next) => {
       }
     } else {
       /* and have no token => login */
-      sessionStorage.setItem("requested-url", to.fullPath);
+      sessionStorage.setItem(StorageKey.sessionStorageKeys.REQUESTED_URL, to.fullPath);
       next("/login");
     }
   } else {

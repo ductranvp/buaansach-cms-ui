@@ -1,7 +1,8 @@
 import router from "@/router";
 import store from "@/store";
+import StorageKey from '@/utils/storage-key';
 
-const accessToken = "access-token";
+const accessToken = StorageKey.common.ACCESS_TOKEN;
 
 function getToken() {
   return (

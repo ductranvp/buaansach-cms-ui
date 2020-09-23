@@ -26,6 +26,7 @@
   import PosSeatLayout from "@/views/private/pos/main/seat/PosSeatLayout";
   import PosStoreProductLayout from "@/views/private/pos/main/store-product/PosStoreProductLayout";
   import hotkeys from 'hotkeys-js';
+  import StorageKey from '@/utils/storage-key';
 
   export default {
     name: "PosMachineMain",
@@ -44,7 +45,7 @@
     },
     data() {
       return {
-        posSize: localStorage.getItem("posMainSize") ? JSON.parse(localStorage.getItem("posMainSize")) : 50
+        posSize: localStorage.getItem(StorageKey.localStorageKeys.POS_MAIN_SIZE) ? JSON.parse(localStorage.getItem(StorageKey.localStorageKeys.POS_MAIN_SIZE)) : 50
       };
     },
     created() {
@@ -61,7 +62,7 @@
       changePosSize(value) {
         if (value > 90) this.posSize = 90;
         if (value < 10) this.posSize = 10;
-        localStorage.setItem("posMainSize", this.posSize);
+        localStorage.setItem(StorageKey.localStorageKeys.POS_MAIN_SIZE, this.posSize);
       }
     }
   };

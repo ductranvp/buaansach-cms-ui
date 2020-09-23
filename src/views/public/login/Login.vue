@@ -65,6 +65,7 @@
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import {mapState} from "vuex";
+  import StorageKey from '@/utils/storage-key';
 
   export default {
     name: "Login",
@@ -130,9 +131,9 @@
         });
       },
       redirect() {
-        const redirect = sessionStorage.getItem("requested-url");
+        const redirect = sessionStorage.getItem(StorageKey.sessionStorageKeys.REQUESTED_URL);
         if (redirect && redirect !== "/home") {
-          sessionStorage.removeItem("requested-url");
+          sessionStorage.removeItem(StorageKey.sessionStorageKeys.REQUESTED_URL);
           this.$router.push({path: redirect});
         } else {
           this.$router.push({path: AppUtils.redirectBasedOnRole()});

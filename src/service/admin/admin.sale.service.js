@@ -12,7 +12,7 @@ const AdminSaleService = {
   getListSale() {
     return request.get(baseUrl + '/list');
   },
-  getListStoreSale(storeGuid) {
+  getListSaleByStore(storeGuid) {
     return request.get(baseUrl + '/list-by-store/' + storeGuid);
   },
   updateSale(payload) {
