@@ -25,8 +25,8 @@
           return PriceUtils.getDiscountAmount(orderTotalAmount, orderDiscount, orderDiscountType);
         },
         payAmount: state => {
-          const {orderTotalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
-          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType);
+          const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost} = state.posMachine.currentOrder;
+          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost);
         },
       })
     },
@@ -138,6 +138,7 @@
         let tableContent = "<table>";
         tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.orderTotalAmount) + "</td></tr>";
         tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.discountAmount) + "</td></tr>";
+        tableContent += "<tr><th>DÙNG ĐIỂM</th><td class='text-right'>" + this.currentOrder.orderPointValue + " (" + this.formatPrice(this.currentOrder.orderPointCost) + ")</td></tr>";
         tableContent += "</table>";
         tableContent += "<div class='divider'></div>";
         tableContent += "<table>";

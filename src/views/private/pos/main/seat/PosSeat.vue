@@ -47,7 +47,7 @@
         </el-col>
         <div class="text-right padding-right-5">
           <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshSeat">
-            <span><i class="el-icon-refresh" v-if="!isRefreshing"></i><span>Làm mới (F9)</span></span>
+            <span><i class="el-icon-refresh" v-if="!isRefreshing"></i><span>Làm mới (F4)</span></span>
           </el-button>
         </div>
       </el-row>
@@ -66,11 +66,12 @@
                   <el-card :body-style="{padding: '0'}"
                            :style="{borderColor: area.areaColor, boxShadow: selectedSeat.guid === seat.guid ? '0 0 1px 2px ' + area.areaColor : ''}"
                            :class="[
-                           seat.seatLocked ? 'bg-info' : '',
+                           seat.seatLocked ? 'bg-info text-white' : '',
                            seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'FINISHED' && !seat.seatLocked ? 'bg-success text-white' : '',
                            seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'UNFINISHED' && !seat.seatLocked ? 'bg-warning text-white' : '']"
                            class="pointer" shadow="never" @click.native="changeSeat(seat)">
                     <div class="text-center text-small padding-10-5">
+                      <i class="el-icon-lock padding-right-5" v-if="seat.seatLocked"></i>
                       <span>{{seat.seatName}}</span>
                     </div>
                   </el-card>
@@ -121,7 +122,7 @@
       hotkeys.filter = function(event) {
         return true;
       };
-      hotkeys('f9', 'posMachine', function(event, handler) {
+      hotkeys('f4', 'posMachine', function(event, handler) {
         if (!vm.isRefreshing) {
           vm.refreshSeat();
         }

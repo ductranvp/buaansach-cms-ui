@@ -16,6 +16,15 @@ const PosSeatService = {
    * */
   toggleLock(params) {
     return request.put(baseUrl + "/toggle-lock/" + params);
+  },
+
+  /**
+   * Khóa/Mở list chỗ ngồi
+   * @param {Array<String>} payload.listSeatGuid
+   * @param {Boolean} payload.locked
+   * */
+  toggleLockList(payload) {
+    return request.put(baseUrl + "/toggle-lock-list", payload);
   }
 };
 

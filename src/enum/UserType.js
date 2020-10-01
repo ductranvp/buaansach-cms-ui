@@ -1,11 +1,11 @@
 const UserType = {
-  valueArray: ['INTERNAL', 'EXTERNAL'],
-  labelArray: ['Nội bộ', 'Bên ngoài'],
-  value: {INTERNAL: 'INTERNAL', EXTERNAL: 'EXTERNAL'},
-  label: {INTERNAL: 'Nội bộ', EXTERNAL: 'Bên ngoài'},
+  valueArray: ['INTERNAL', 'CUSTOMER'],
+  labelArray: ['Nội bộ', 'Khách hàng'],
+  value: {INTERNAL: 'INTERNAL', CUSTOMER: 'CUSTOMER'},
+  label: {INTERNAL: 'Nội bộ', CUSTOMER: 'Khách hàng'},
   optionArray: [
     {value: 'INTERNAL', label: 'Nội bộ'},
-    {value: 'EXTERNAL', label: 'Bên ngoài'},
+    {value: 'CUSTOMER', label: 'Khách hàng'},
   ],
 };
 export default UserType;

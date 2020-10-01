@@ -37,6 +37,18 @@ const mutations = {
   TOGGLE_LOCK(state) {
     state.selectedSeat.seatLocked = !state.selectedSeat.seatLocked;
   },
+  TOGGLE_LOCK_LIST(state, {listSeatGuid, locked}) {
+    for (let i = 0; i < state.allAreas.length; i++) {
+      let area = state.allAreas[i];
+      for (let j = 0; j < area.listSeat.length; j++){
+        let seat = area.listSeat[j];
+        if (listSeatGuid.includes(seat.guid)){
+          area.listSeat[j].seatLocked = locked;
+          area.listSeat.splice(j, 1, area.listSeat[j]);
+        }
+      }
+    }
+  },
   TOGGLE_CHECK(state, targetSeat) {
     /* Cập nhật trạng thái cho ghế trong danh sách */
     for (let i = 0; i < state.allAreas.length; i++) {

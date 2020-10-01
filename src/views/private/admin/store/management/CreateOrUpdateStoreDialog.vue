@@ -88,7 +88,6 @@
                   show-word-limit></el-input>
       </el-form-item>
 
-
       <el-form-item prop="storeStatus">
         <el-row type="flex" align="bottom">
           <el-col :span="11">
@@ -110,6 +109,14 @@
             </el-checkbox>
           </el-col>
         </el-row>
+      </el-form-item>
+
+      <el-form-item>
+        <input-label label="Cho phép tích điểm"/>
+        <el-checkbox v-model="form.storeRewardPointActivated">
+          <span v-if="form.storeRewardPointActivated">Bật</span>
+          <span v-else>Tắt</span>
+        </el-checkbox>
       </el-form-item>
 
       <el-form-item>

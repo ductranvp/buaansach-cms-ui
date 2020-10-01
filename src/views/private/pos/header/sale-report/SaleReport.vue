@@ -365,7 +365,7 @@
         }, 0);
 
         this.parsedReportData.totalRealRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType);
+          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType, item.orderPointCost);
           return acc + payAmount;
         }, 0);
 

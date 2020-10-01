@@ -33,7 +33,7 @@
       <el-form-item prop="bannerActivated">
         <input-label label="Kích hoạt" required/>
         <el-checkbox v-model="form.bannerActivated">
-          <span v-if="form.storeActivated">Bật</span>
+          <span v-if="form.bannerActivated">Bật</span>
           <span v-else>Tắt</span>
         </el-checkbox>
       </el-form-item>

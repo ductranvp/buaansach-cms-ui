@@ -17,17 +17,19 @@
               <el-row :gutter="10" class="full-size margin-0">
                 <el-col v-for="seat in area.listSeat" class="margin-bottom-10" :span="3" :key="seat.guid">
                   <el-card :body-style="{padding: '0'}"
+                           style="position: relative"
                            class="pointer"
                            @click.native="toggleSeatSelection(seat)"
                            :class="[
                            seat.checked ? 'bg-selected text-white' : '',
-                           seat.seatLocked ? 'bg-info' : '',
+                           seat.seatLocked ? 'bg-info text-white' : '',
                            seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'FINISHED' && !seat.seatLocked ? 'bg-success text-white' : '',
                            seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'UNFINISHED' && !seat.seatLocked ? 'bg-warning text-white' : '']">
                     <div class="text-center text-small padding-10-5">
-                      <i class="el-icon-success" v-if="seat.checked"></i>
-                      <span class="padding-left-5">{{seat.seatName}}</span>
+                      <i class="el-icon-lock padding-right-5" v-if="seat.seatLocked"></i>
+                      <span>{{seat.seatName}}</span>
                     </div>
+<!--                    <i v-if="seat.seatLocked" class="el-icon-lock" style="position: absolute; right: 0; top: 0"></i>-->
                   </el-card>
                 </el-col>
               </el-row>
@@ -39,7 +41,15 @@
               <el-button @click="hide">
                 <span>{{$t('common.entity.action.close')}}</span>
               </el-button>
-              <el-button type="primary" @click="getListOrderByListSeat" :disabled="!selectedSeats.length"
+              <el-button type="danger" @click="toggleLockList(true)" :disabled="!selectedSeats.length"
+                         :loading="isLoading">
+                <span>Khóa</span>
+              </el-button>
+              <el-button type="warning" @click="toggleLockList(false)" :disabled="!selectedSeats.length"
+                         :loading="isLoading">
+                <span>Mở Khóa</span>
+              </el-button>
+              <el-button type="primary" @click="getListOrderByListSeat" :disabled="!selectedSeats.length || !isAllSeatLocked"
                          :loading="isLoading">
                 <span>Tính tiền</span>
               </el-button>
@@ -47,7 +57,7 @@
           </el-footer>
         </el-container>
       </el-main>
-      <el-aside width="500px">
+      <el-aside width="600px">
         <el-container direction="vertical" v-if="listOrder.length">
           <el-main>
             <raw-data-table :data="listOrder" :show-pagination="false">
@@ -58,14 +68,25 @@
                   <span>{{row.seat.areaName}}</span>
                 </template>
               </el-table-column>
+              <el-table-column label="SĐT">
+                <template slot-scope="{row}">
+                  <span>{{row.orderCustomerPhone}}</span>
+                </template>
+              </el-table-column>
               <el-table-column label="Tổng đơn">
                 <template slot-scope="{row}">
                   <span>{{row.orderTotalAmount | priceAppend}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="Khuyến mãi">
+              <el-table-column label="KM">
                 <template slot-scope="{row}">
                   <span>{{getDiscountAmount(row) | priceAppend}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="Dùng điểm">
+                <template slot-scope="{row}">
+                  <span>{{row.orderPointValue}}</span>
+                  <span v-if="row.orderPointValue">  ({{row.orderPointCost | priceAppend}})</span>
                 </template>
               </el-table-column>
               <el-table-column label="Thanh toán">
@@ -128,6 +149,7 @@
   import ErrorUtils from '@/utils/error.util';
   import PriceUtils from '@/utils/price.util';
   import BillGroup from '@/views/private/pos/bill/BillGroup';
+  import PosSeatService from '@/service/pos/pos.seat.service';
 
   export default {
     name: 'GroupPurchaseDialog',
@@ -139,6 +161,12 @@
         selectedSeat: state => state.posMachine.selectedSeat,
         unsavedOrderProduct: state => state.posMachine.unsavedOrderProduct,
       }),
+      isAllSeatLocked(){
+        for (let i = 0; i < this.selectedSeats.length; i++){
+          if (!this.selectedSeats[i].seatLocked) return false;
+        }
+        return true;
+      }
     },
     data() {
       return {
@@ -152,8 +180,8 @@
     },
     methods: {
       getPayAmount(order) {
-        const {orderTotalAmount, orderDiscount, orderDiscountType} = order;
-        return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType);
+        const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost} = order;
+        return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost);
       },
       getDiscountAmount(order) {
         const {orderTotalAmount, orderDiscount, orderDiscountType} = order;
@@ -264,6 +292,7 @@
             }
             vm.customerPay = null;
             MessageUtils.success("Thanh toán thành công");
+            vm.toggleLockList(false);
             vm.hide();
           });
         } catch (error) {
@@ -272,6 +301,19 @@
           this.isLoading = false;
         }
       },
+      async toggleLockList(locked){
+        try {
+          const listSeatGuid = this.selectedSeats.map(item => item.guid);
+          const payload = {
+            listSeatGuid,
+            locked
+          };
+          await PosSeatService.toggleLockList(payload);
+          await this.$store.commit("posMachine/TOGGLE_LOCK_LIST", payload);
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
+        }
+      }
     },
   };
 </script>

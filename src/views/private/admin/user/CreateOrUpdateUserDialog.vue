@@ -67,32 +67,22 @@
         </el-col>
 
         <el-col :span="11" :offset="2">
-          <el-form-item prop="userType">
-            <input-label label="Loại tài khoản" required/>
-            <el-select :disabled="currentUser.userLogin === form.userLogin" class="full-width" v-model="form.userType">
+          <el-form-item prop="authorities">
+            <input-label label="Nhóm Quyền" required/>
+            <el-select :disabled="currentUser.userLogin === form.userLogin" multiple class="full-width"
+                       v-model="form.authorities">
               <el-option
-                v-for="type in userTypes"
-                :key="type.value"
-                :label="type.label"
-                :value="type.value">
+                      v-for="auth in authorities"
+                      :key="auth.value"
+                      :label="auth.label"
+                      :value="auth.value">
               </el-option>
             </el-select>
           </el-form-item>
         </el-col>
       </el-form-item>
 
-      <el-form-item prop="authorities">
-        <input-label label="Nhóm Quyền" required/>
-        <el-select :disabled="currentUser.userLogin === form.userLogin" multiple class="full-width"
-                   v-model="form.authorities">
-          <el-option
-            v-for="auth in authorities"
-            :key="auth.value"
-            :label="auth.label"
-            :value="auth.value">
-          </el-option>
-        </el-select>
-      </el-form-item>
+
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="hide($event)">
@@ -133,7 +123,6 @@
           userPhone: null,
           userPassword: null,
           userActivated: null,
-          userType: null,
           authorities: null,
           fullName: null,
           langKey: null,
@@ -180,7 +169,6 @@
         },
         languages: Language.optionArray,
         authorities: Authority.optionArray,
-        userTypes: UserType.optionArray,
       };
     },
     methods: {
@@ -195,7 +183,6 @@
         this.form = {
           langKey: Language.value.vi,
           userActivated: true,
-          userType: UserType.value.INTERNAL,
           authorities: [],
         };
         this.formRules.userPassword = [

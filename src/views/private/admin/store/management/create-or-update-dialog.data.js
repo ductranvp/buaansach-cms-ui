@@ -19,6 +19,7 @@ const mixinData = {
         storeTaxCode: null,
         storeBusinessHours: null,
         storeActivated: null,
+        storeRewardPointActivated: null,
       },
       formRules: {
         storeName: [

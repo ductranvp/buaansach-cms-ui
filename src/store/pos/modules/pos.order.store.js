@@ -56,6 +56,7 @@ const actions = {
   async completeOrder({state, commit}, payload) {
     const posPurchaseOrder = {
       orderGuid: state.currentOrder.guid,
+      orderPointValue: state.currentOrder.orderPointValue,
       paymentMethod: payload.paymentMethod,
       paymentNote: payload.paymentNote,
     };

@@ -1,7 +1,7 @@
 <template>
   <el-container direction="vertical">
     <el-main>
-      <el-divider content-position="left">Thống kê truy cập trang buaansach.com.vn</el-divider>
+      <el-divider content-position="left">Thống kê truy cập trang {{customerDomain}}</el-divider>
       <el-row class="padding-bottom-10">
         <el-row type="flex" align="middle">
           <div class="padding-right-10">
@@ -59,6 +59,7 @@
   import RawDataTable from '@/components/raw-table-data/RawDataTable';
   import AdminTrackerRowDetail from '@/views/private/admin/tracker/AdminTrackerRowDetail';
   import AdminPageViewService from '@/service/admin/admin.page-view.service';
+  import Constants from '@/utils/constants';
 
   export default {
     name: 'AdminTracker',
@@ -94,6 +95,7 @@
         isRefreshing: false,
         isLoading: true,
         dateFormat: 'HH:mm:ss dd/MM/yyyy',
+        customerDomain: Constants.CUSTOMER_UI_URL,
         pickerOptions: {
           shortcuts: [
             {

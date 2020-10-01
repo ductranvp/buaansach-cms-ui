@@ -13,6 +13,7 @@ const mixinMethod = {
       this.form = {
         storeStatus: StoreStatus.value.OPENING,
         storeActivated: true,
+        storeRewardPointActivated: true,
       };
       this.show();
     },

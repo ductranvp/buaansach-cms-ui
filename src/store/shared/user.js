@@ -31,6 +31,7 @@ const actions = {
       i18n.changeLanguage(state.info.langKey);
     } catch (error) {
       dispatch("logout");
+      await Promise.reject(error);
     }
   },
 
@@ -52,7 +53,6 @@ const actions = {
     commit("SET_INFO", {});
     commit("SET_AUTHORITIES", []);
     commit("SET_AUTHENTICATED", false);
-    AuthUtils.removeToken();
   }
 };
 

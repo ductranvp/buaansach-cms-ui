@@ -17,7 +17,7 @@
         currentStore: state => state.posMachine.currentStore,
       }),
     },
-    data(){
+    data() {
       return {
         listOrder: [],
         customerPay: null,
@@ -36,15 +36,15 @@
         const {orderProductPrice, orderProductDiscount, orderProductDiscountType} = orderProduct;
         return PriceUtils.getProductPrice(orderProductPrice, orderProductDiscount, orderProductDiscountType);
       },
-      getOrderDiscount(order){
+      getOrderDiscount(order) {
         const {orderTotalAmount, orderDiscount, orderDiscountType} = order;
         return PriceUtils.getDiscountAmount(orderTotalAmount, orderDiscount, orderDiscountType);
       },
-      getOrderPayAmount(order){
-        const {orderTotalAmount, orderDiscount, orderDiscountType} = order;
-        return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType);
+      getOrderPayAmount(order) {
+        const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost} = order;
+        return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost);
       },
-      getListOrderPayAmount(listOrder){
+      getListOrderPayAmount(listOrder) {
         let total = 0;
         listOrder.forEach(order => {
           total += this.getOrderPayAmount(order);
@@ -147,18 +147,23 @@
         let tableContent = '<table>';
         tableContent += '<tr><th>TỔNG TIỀN</th><td class=\'text-right\'>' + this.formatPrice(order.orderTotalAmount) +
           '</td></tr>';
-        tableContent += '<tr><th>GIẢM GIÁ</th><td class=\'text-right\'>' + this.formatPrice(this.getOrderDiscount(order)) +
+        tableContent += '<tr><th>GIẢM GIÁ</th><td class=\'text-right\'>' +
+          this.formatPrice(this.getOrderDiscount(order)) +
           '</td></tr>';
+        tableContent += '<tr><th>DÙNG ĐIỂM</th><td class=\'text-right\'>' + order.orderPointValue + ' (' +
+          this.formatPrice(order.orderPointCost) + 'đ)</td></tr>';
         tableContent += '</table>';
         tableContent += '<table>';
-        tableContent += '<tr><th>THANH TOÁN</th><td class=\'text-right\'><b>' + this.formatPrice(this.getOrderPayAmount(order)) +
+        tableContent += '<tr><th>THANH TOÁN</th><td class=\'text-right\'><b>' +
+          this.formatPrice(this.getOrderPayAmount(order)) +
           '</b></td></tr>';
         tableContent += '</table>';
         return tableContent;
       },
       getTotalBillSummary() {
         let tableContent = '<table>';
-        tableContent += '<tr><th>TỔNG THANH TOÁN</th><td class=\'text-right\'><b>' + this.formatPrice(this.getListOrderPayAmount(this.listOrder)) +
+        tableContent += '<tr><th>TỔNG THANH TOÁN</th><td class=\'text-right\'><b>' +
+          this.formatPrice(this.getListOrderPayAmount(this.listOrder)) +
           '</b></td></tr>';
         tableContent += '<tr><th>TIỀN KHÁCH ĐƯA</th><td class=\'text-right\'>' + this.formatPrice(this.customerPay) +
           '</td></tr>';

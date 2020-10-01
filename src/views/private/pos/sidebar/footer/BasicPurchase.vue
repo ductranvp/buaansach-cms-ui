@@ -5,33 +5,22 @@
       <el-main class="full-size">
         <el-container direction="vertical">
           <el-row type="flex" align="middle" style="height: 40px">
-            <el-col class="full-height">
-              <el-input ref="orderCustomerPhone" disabled v-model="currentOrder.orderCustomerPhone"
-                        placeholder="Số điện thoại khách">
-                <i slot="prefix" class="el-input__icon el-icon-phone"></i>
-              </el-input>
-            </el-col>
-          </el-row>
-          <el-divider class="margin-0 full-width bg-success"></el-divider>
-          <el-row type="flex" align="middle" style="height: 40px">
-            <el-col :span="12" class="full-height">
-              <el-input ref="customerPay" @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay"
-                        placeholder="Khách đưa (F4)">
-                <i slot="prefix" class="el-input__icon el-icon-money"></i>
-                <el-button class="full-size" style="color: #606266" disabled slot="suffix">
-                  <span>x1000</span>
-                </el-button>
-              </el-input>
-            </el-col>
+              <el-col class="full-height" :span="12">
+                <el-input ref="orderCustomerPhone" disabled v-model="currentOrder.orderCustomerPhone"
+                          placeholder="Số điện thoại khách">
+                  <i slot="prefix" class="el-input__icon el-icon-phone"></i>
+                </el-input>
+              </el-col>
             <el-col :span="12" class="full-height">
               <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
-                <i class="el-icon-money"></i>
-                <span>Trả lại: </span>
-                <span v-if="customerPay*1000 > payAmount">{{customerPay*1000 - payAmount | priceAppend}}</span>
-                <span v-else>0</span>
+                <i class="el-icon-present"></i>
+                <span>Dùng điểm: </span>
+                <span>{{currentOrder.orderPointValue}} </span>
+                <span v-if="currentOrder.orderPointValue">({{currentOrder.orderPointCost | priceAppend}})</span>
               </el-button>
             </el-col>
           </el-row>
+
           <el-divider class="margin-0 full-width bg-success"></el-divider>
           <el-row type="flex" align="middle" style="height: 40px">
             <el-col :span="12" class="full-height">
@@ -51,6 +40,26 @@
               </el-button>
             </el-col>
           </el-row>
+          <el-divider class="margin-0 full-width bg-success"></el-divider>
+          <el-row type="flex" align="middle" style="height: 40px">
+            <el-col :span="12" class="full-height">
+              <el-input ref="customerPay" @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay"
+                        placeholder="Khách đưa (F9)">
+                <i slot="prefix" class="el-input__icon el-icon-money"></i>
+                <el-button class="full-size" style="color: #606266" disabled slot="suffix">
+                  <span>x1000</span>
+                </el-button>
+              </el-input>
+            </el-col>
+            <el-col :span="12" class="full-height">
+              <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
+                <i class="el-icon-money"></i>
+                <span>Trả lại: </span>
+                <span v-if="customerPay*1000 > payAmount">{{customerPay*1000 - payAmount | priceAppend}}</span>
+                <span v-else>0</span>
+              </el-button>
+            </el-col>
+          </el-row>
         </el-container>
       </el-main>
       <el-footer height="auto">
@@ -65,7 +74,7 @@
             </el-button>
           </el-col>
           <el-col :span="4">
-            <el-tooltip class="item" effect="dark" content="Tùy chọn khác (F7)" placement="top">
+            <el-tooltip class="item" effect="dark" content="Tùy chọn khác" placement="top">
               <el-button type="warning" class="text-large full-width padding-20-10" @click="showAdvancedPurchase">
                 <i class="fas el-icon-fa-tags"></i>
               </el-button>
@@ -102,8 +111,8 @@
           return PriceUtils.getDiscountAmount(orderTotalAmount, orderDiscount, orderDiscountType);
         },
         payAmount: state => {
-          const {orderTotalAmount, orderDiscount, orderDiscountType} = state.posMachine.currentOrder;
-          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType);
+          const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost} = state.posMachine.currentOrder;
+          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost);
         },
       })
     },
@@ -121,11 +130,8 @@
       hotkeys.filter = function (event) {
         return true;
       };
-      hotkeys('f4', 'posMachine', function (event, handler) {
+      hotkeys('f9', 'posMachine', function (event, handler) {
         vm.$refs.customerPay.focus();
-      });
-      hotkeys('f7', 'posMachine', function (event, handler) {
-        vm.showAdvancedPurchase();
       });
       hotkeys.setScope("posMachine");
     },

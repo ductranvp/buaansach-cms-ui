@@ -40,7 +40,7 @@ request.interceptors.response.use(
     const errorCode = error.status || (error.response && error.response.status) || 0;
     switch (errorCode) {
       case 401:
-        AuthUtils.logout();
+        AuthUtils.logout(true);
         break;
       case 403:
         store.dispatch("user/getAccount");

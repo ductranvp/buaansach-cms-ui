@@ -89,7 +89,9 @@
               required: true,
               message: this.$t("common.entity.validation.required"),
               trigger: "blur"
-            }
+            },
+            {min: 4, message: this.$t("common.entity.validation.minlength", {min: 4}), trigger: "blur"},
+            {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"},
           ]
         },
         isLoading: false
