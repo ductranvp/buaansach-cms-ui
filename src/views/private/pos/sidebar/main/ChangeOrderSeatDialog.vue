@@ -49,6 +49,7 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import SeatStatus from '@/enum/SeatStatus';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "ChangeOrderSeatDialog",
@@ -106,8 +107,8 @@
             type: null,
             hidden: null,
           });
-        } catch (e) {
-          MessageUtils.error("Lỗi tải thông báo");
+        } catch (error) {
+          ErrorUtils.showActionErrorMessage(error, "Lỗi tải thông báo");
         }
       },
       submit() {
@@ -125,7 +126,7 @@
               MessageUtils.success("Chuyển bàn thành công!");
             } catch (error) {
               vm.isLoading = false;
-              MessageUtils.error("Chuyển bàn không thành công!");
+              ErrorUtils.showActionErrorMessage(error, "Chuyển bàn không thành công!");
             }
           }
         });

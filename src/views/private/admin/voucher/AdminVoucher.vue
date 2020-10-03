@@ -121,9 +121,9 @@
       };
     },
     created() {
-      this.getAllStore();
-      this.getListVoucher();
-      this.getVoucherInventoryStatus();
+      // this.getAllStore();
+      // this.getListVoucher();
+      // this.getVoucherInventoryStatus();
     },
     methods: {
       async getAllStore() {

@@ -131,10 +131,6 @@
       };
     },
     methods: {
-      truncate(string, maxlength) {
-        if (string.length > maxlength) return string.substr(0, maxlength) + "...";
-        return string;
-      },
       downloadImage() {
         let link = document.createElement("a"); //Create <a>
         link.href = this.$refs.qrcode.$el.currentSrc; //Image Base64 Goes here

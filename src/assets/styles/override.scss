@@ -24,3 +24,18 @@ h1,h2,h3,h4,p,b {
 .el-drawer{
     overflow-y: auto;
 }
+
+.el-checkbox__input.is-checked .el-checkbox__inner {
+    background-color: $--color-success !important;
+    border-color: $--color-success !important;
+}
+
+@media only screen and (max-width: 600px) {
+    .el-message-box {
+        width: 90% !important;
+    }
+}
+
+.el-alert__description {
+    word-break: keep-all !important;
+}

@@ -105,6 +105,7 @@
   import MessageUtils from "@/utils/message.util";
   import OrderStatus from '@/enum/OrderStatus';
   import StoreProductStatus from '@/enum/StoreProductStatus';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "PosStoreProduct",
@@ -153,8 +154,8 @@
           setTimeout(function () {
             vm.isRefreshing = false;
           }, 300);
-        } catch (e) {
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        } catch (error) {
+          ErrorUtils.showActionErrorMessage(error);
         }
       },
       addOrderProduct(storeProduct) {
@@ -191,8 +192,8 @@
         try {
           this.$set(storeProduct, "isLoading", true);
           await this.$store.dispatch("posMachine/changeStoreProductStatus", payload);
-        } catch (e) {
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        } catch (error) {
+          ErrorUtils.showActionErrorMessage(error);
         } finally {
           this.$set(storeProduct, "isLoading", false);
         }

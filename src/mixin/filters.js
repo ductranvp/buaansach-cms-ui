@@ -18,7 +18,11 @@ const filters = {
     if (!value) return '';
     value = value.toString();
     return value.charAt(0).toUpperCase() + value.slice(1);
-  }
+  },
 
+  truncate(value, length) {
+    if (value.length > length) return value.substr(0, length) + '...';
+    return value;
+  }
 };
 export default filters;

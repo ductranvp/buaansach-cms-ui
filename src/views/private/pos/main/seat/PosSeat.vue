@@ -92,6 +92,7 @@
   import MessageUtils from '@/utils/message.util';
   import hotkeys from 'hotkeys-js';
   import GroupPurchaseDialog from '@/views/private/pos/main/seat/dialog/GroupPurchaseDialog';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: 'PosSeat',
@@ -142,8 +143,8 @@
           setTimeout(function() {
             vm.isRefreshing = false;
           }, 300);
-        } catch (e) {
-          MessageUtils.error('Đã có lỗi xảy ra, vui lòng thử lại sau!');
+        } catch (error) {
+          ErrorUtils.showActionErrorMessage(error);
         }
       },
       changeSeat(seat) {

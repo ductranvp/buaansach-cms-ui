@@ -87,8 +87,8 @@
 <script>
   import {mapState} from 'vuex';
   import PosSaleService from '@/service/pos/pos.sale.service';
-  import MessageUtils from '@/utils/message.util';
   import DiscountType from '@/enum/DiscountType';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: 'AdvancedPurchase',
@@ -128,7 +128,7 @@
           });
           await this.$store.dispatch('posMachine/getSeatOrderInfo', this.selectedSeat.guid);
         } catch (error) {
-          MessageUtils.error(error.message || error.data.message);
+          ErrorUtils.showActionErrorMessage(error);
         } finally {
           sale.isLoading = false;
         }
@@ -139,7 +139,7 @@
           await PosSaleService.cancelSale(this.currentOrder.guid);
           await this.$store.dispatch('posMachine/getSeatOrderInfo', this.selectedSeat.guid);
         } catch (error) {
-          MessageUtils.error(error.message || error.data.message);
+          ErrorUtils.showActionErrorMessage(error);
         } finally {
           sale.isLoading = false;
         }
@@ -175,8 +175,8 @@
             return item;
           });
           this.storeSales = data;
-        } catch (e) {
-          MessageUtils.error('Lỗi tải danh sách khuyến mãi');
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error, "Lỗi tải danh sách khuyến mãi");
         }
       },
     },

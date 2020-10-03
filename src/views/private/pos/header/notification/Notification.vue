@@ -47,12 +47,12 @@
 
 <script>
   import {mapState} from 'vuex';
-  import MessageUtils from '@/utils/message.util';
   import HiddenNotificationDialog from '@/views/private/pos/header/notification/HiddenNotificationDialog';
   import StoreNotificationType from '@/enum/StoreNotificationType';
   import NotificationItem from '@/views/private/pos/header/notification/NotificationItem';
   import StoreNotificationStatus from '@/enum/StoreNotificationStatus';
   import PosStoreNotificationService from '@/service/pos/pos.store-notification.service';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: 'Notification',
@@ -137,8 +137,8 @@
             type: this.type,
             hidden: null,
           });
-        } catch (e) {
-          MessageUtils.error('Lỗi tải thông báo');
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error, 'Lỗi tải thông báo');
         } finally {
           this.isLoading = false;
         }

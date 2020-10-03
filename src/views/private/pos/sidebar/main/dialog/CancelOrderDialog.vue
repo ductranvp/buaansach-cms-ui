@@ -37,6 +37,7 @@
 
   import MessageUtils from "@/utils/message.util";
   import {mapState} from "vuex";
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "CancelOrderDialog",
@@ -112,8 +113,8 @@
               await vm.$store.dispatch("posMachine/cancelOrder", vm.cancelReason);
               MessageUtils.success("Hủy đơn thành công");
               vm.hide();
-            } catch (e) {
-              MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+            } catch (error) {
+              ErrorUtils.showActionErrorMessage(error);
             }
 
           }

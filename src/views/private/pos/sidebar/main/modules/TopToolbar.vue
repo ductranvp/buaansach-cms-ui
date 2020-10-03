@@ -86,6 +86,7 @@
   import Constants from "@/utils/constants";
   import hotkeys from "hotkeys-js";
   import CancelOrderDialog from "@/views/private/pos/sidebar/main/dialog/CancelOrderDialog";
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "TopToolbar",
@@ -131,8 +132,8 @@
           setTimeout(function () {
             vm.isRefreshing = false;
           }, 300);
-        } catch (e) {
-          MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+        } catch (error) {
+          ErrorUtils.showActionErrorMessage(error);
         }
       },
       cancelOrder() {

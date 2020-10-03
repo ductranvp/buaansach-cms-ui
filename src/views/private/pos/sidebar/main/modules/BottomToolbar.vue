@@ -57,7 +57,7 @@
   import OrderProductStatus from '@/enum/OrderProductStatus';
   import ErrorUtils from '@/utils/error.util';
   import OrderStatus from '@/enum/OrderStatus';
-  import ErrorCode from '@/enum/ErrorCode';
+  import ErrorStringCode from '@/enum/ErrorStringCode';
 
   export default {
     name: 'BottomToolbar',
@@ -102,10 +102,10 @@
         } catch (error) {
           this.isLoading = false;
           const errorMsg = error.message || error.data.message;
-          if (errorMsg === ErrorCode.value.STORE_PRODUCT_STOP_TRADING) {
+          if (errorMsg === ErrorStringCode.value.STORE_PRODUCT_STOP_TRADING) {
             this.refreshStoreProduct();
           }
-          ErrorUtils.showErrorMessage(error);
+          ErrorUtils.showActionErrorMessage(error);
         }
       },
       async refreshStoreProduct() {
@@ -113,7 +113,7 @@
           await this.$store.dispatch('posMachine/getAllCategory', this.$route.params.storeGuid);
           await this.$store.dispatch('posMachine/changeCategory', this.selectedCategory.guid);
         } catch (error) {
-          ErrorUtils.showErrorMessage(error);
+          ErrorUtils.showActionErrorMessage(error);
         }
       },
       async serveAllOrderProduct() {
@@ -123,7 +123,7 @@
           this.isLoading = false;
         } catch (error) {
           this.isLoading = false;
-          ErrorUtils.showErrorMessage(error);
+          ErrorUtils.showActionErrorMessage(error);
         }
       },
     },

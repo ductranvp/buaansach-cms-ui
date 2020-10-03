@@ -35,7 +35,6 @@
 </template>
 
 <script>
-  import NotificationUtils from "@/utils/notification.util";
   import UserService from "@/service/shared/user.service";
   import MessageUtils from "@/utils/message.util";
 

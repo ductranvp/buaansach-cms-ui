@@ -1,31 +1,31 @@
-import {mapState} from "vuex";
-import MessageUtils from "@/utils/message.util";
-import WebSocketConstants from "@/utils/websocket.constants";
-import WebsocketStatus from "@/enum/WebsocketStatus";
+import {mapState} from 'vuex';
+import MessageUtils from '@/utils/message.util';
+import WebsocketStatus from '@/enum/WebsocketStatus';
+import WebsocketEndpoints from '@/utils/websocket.endpoints';
 
 const AdminWebsocket = {
   computed: {
     ...mapState({
       wsStompClient: state => state.websocket.wsStompClient,
       wsConnected: state => state.websocket.wsConnected,
-    })
+    }),
   },
   data() {
     return {
       subscription: null,
       retry: 0,
-      maxRetry: 30
+      maxRetry: 30,
     };
   },
   watch: {
-    wsConnected: function (val) {
+    wsConnected: function(val) {
       if (val) {
         if (this.subscription) {
           this.unsubscribeTopics();
           this.subscribeTopics();
         }
       }
-    }
+    },
   },
   async created() {
     this.subscribeTopics();
@@ -36,8 +36,9 @@ const AdminWebsocket = {
   methods: {
     subscribeTopics() {
       try {
-        this.subscription = this.wsStompClient.subscribe(WebSocketConstants.TOPIC_ADMIN_TRACKER, this.onTrackerEventReceived);
-        this.$store.dispatch("adminStore/getActiveUsers");
+        this.subscription = this.wsStompClient.subscribe(WebsocketEndpoints.TOPIC_ADMIN_TRACKER,
+          this.onTrackerEventReceived);
+        this.$store.dispatch('adminStore/getActiveUsers');
       } catch (e) {
         this.retry++;
         if (this.retry < this.maxRetry) {
@@ -45,7 +46,7 @@ const AdminWebsocket = {
             this.subscribeTopics();
           }, 1000);
         } else {
-          MessageUtils.error("Không thể đăng ký kênh nhận thông báo. Hãy thử tải lại trang.", 0);
+          MessageUtils.error('Không thể đăng ký kênh nhận thông báo. Hãy thử tải lại trang.', 0);
         }
       }
     },
@@ -59,11 +60,11 @@ const AdminWebsocket = {
       const data = JSON.parse(payload.body);
       data.vm = this;
       if (data.status === WebsocketStatus.value.CONNECTED) {
-        this.$store.commit("adminStore/ADD_USER_SESSION", data);
+        this.$store.commit('adminStore/ADD_USER_SESSION', data);
       } else {
-        this.$store.commit("adminStore/REMOVE_USER_SESSION", data);
+        this.$store.commit('adminStore/REMOVE_USER_SESSION', data);
       }
     },
-  }
+  },
 };
 export default AdminWebsocket;

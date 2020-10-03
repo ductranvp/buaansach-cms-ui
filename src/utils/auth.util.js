@@ -25,21 +25,22 @@ function removeToken() {
 
 function hasAnyAuthority(authorities) {
   for (let i = 0; i < authorities.length; i++) {
-    if (store.getters.authorities.includes(authorities[i])) {
+    if (store.state.user.authorities.includes(authorities[i])) {
       return true;
     }
   }
   return false;
 }
 
-async function logout(noRedirect) {
+async function logout(noRedirect, redirectRouteName) {
   /*routeName is the route that we want to redirect to when logged out*/
   await store.dispatch('websocket/disconnectWS');
   await store.dispatch('user/logout');
   removeToken();
 
   if (!noRedirect) {
-    router.push({name: 'loginPage'}).catch(() => {
+    const routeName = redirectRouteName ? redirectRouteName : 'loginPage';
+    router.push({name: routeName}).catch(() => {
     });
   }
 }

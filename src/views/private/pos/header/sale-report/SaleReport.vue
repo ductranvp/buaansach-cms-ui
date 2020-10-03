@@ -219,21 +219,16 @@
   import PosStoreUserService from '@/service/pos/pos.store-user-service';
   import hasAnyRole from '@/utils/has-any-role';
   import MessageUtils from '@/utils/message.util';
-  import {mapState} from 'vuex';
   import SaleReportDetailDialog from '@/views/private/pos/header/sale-report/SaleReportDetailDialog';
   import PriceUtils from '@/utils/price.util';
   import StoreUserRole from '@/enum/StoreUserRole';
   import OrderStatus from '@/enum/OrderStatus';
   import OrderType from '@/enum/OrderType';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: 'SaleReport',
     components: {SaleReportDetailDialog},
-    computed: {
-      ...mapState({
-        currentUser: state => state.user.info,
-      }),
-    },
     data() {
       const defaultEnd = new Date();
       const defaultStart = new Date();
@@ -387,7 +382,7 @@
           this.reportData = data;
           this.parseReportData();
         } catch (error) {
-          MessageUtils.error('Lỗi tải thông tin thống kê, vui lòng thử lại sau!');
+          ErrorUtils.showActionErrorMessage(error, 'Lỗi tải thông tin thống kê, vui lòng thử lại sau!');
         }
       },
       async getSaleReport() {
@@ -403,16 +398,17 @@
           const {data} = await PosSaleReportService.getSaleReport(this.form);
           this.reportData = data;
           this.parseReportData();
-        } catch (e) {
-          MessageUtils.error('Lỗi tải thông tin thống kê, vui lòng thử lại sau!');
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error, 'Lỗi tải thông tin thống kê, vui lòng thử lại sau!');
         }
       },
       async getListStoreUser() {
         try {
           const {data} = await PosStoreUserService.getStoreUser(this.$route.params.storeGuid);
           this.listStoreUser = data;
-        } catch (e) {
+        } catch (error) {
           MessageUtils.error('Lỗi tải danh sách nhân viên, vui lòng thử lại sau!');
+          ErrorUtils.showErrorMessage(error, 'Lỗi tải danh sách nhân viên, vui lòng thử lại sau!');
         }
       },
     },

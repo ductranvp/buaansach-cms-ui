@@ -1,6 +1,2 @@
-const getters = {
-  userInfo: state => state.user.info,
-  authorities: state => state.user.authorities,
-  websocket: state => state.websocket,
-};
+const getters = {};
 export default getters;

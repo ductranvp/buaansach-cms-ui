@@ -5,9 +5,10 @@ import * as Stomp from "webstomp-client";
 import Constants from "@/utils/constants";
 import {Notification} from "element-ui";
 import NotificationUtils from "@/utils/notification.util";
-import WebSocketConstants from "@/utils/websocket.constants";
+import WebsocketConstants from "@/utils/websocket.constants";
 import CloudFlareService from "@/service/shared/cloudflare.service";
 import AppUtils from "@/utils/app.util";
+import WebsocketEndpoints from '@/utils/websocket.endpoints';
 
 const state = {
   wsError: null,
@@ -90,7 +91,7 @@ const actions = {
             alert("Không thể tự kết nối lại với máy chủ, trang web sẽ được tải lại.");
             location.reload();
           }
-        }, WebSocketConstants.RECONNECT_DELAY);
+        }, WebsocketConstants.RECONNECT_DELAY);
       }
     );
   },
@@ -112,7 +113,7 @@ const actions = {
     } catch (e) {
       // error get cloudFlare trace
     }
-    state.wsStompClient.send(WebSocketConstants.APP_ACTIVITY, // destination
+    state.wsStompClient.send(WebsocketEndpoints.APP_ACTIVITY, // destination
       JSON.stringify(activity), // body
       {} // header
     );

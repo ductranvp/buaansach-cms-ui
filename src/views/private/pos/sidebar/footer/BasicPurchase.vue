@@ -95,6 +95,7 @@
   import PriceUtils from '@/utils/price.util';
   import OrderStatus from '@/enum/OrderStatus';
   import PaymentMethod from '@/enum/PaymentMethod';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "BasicPurchase",
@@ -188,7 +189,7 @@
           });
         } catch (error) {
           this.isLoading = false;
-          MessageUtils.error("Thanh toán không thành công, vui lòng thử lại");
+          ErrorUtils.showActionErrorMessage(error, "Thanh toán không thành công, vui lòng thử lại");
         }
 
       },

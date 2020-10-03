@@ -99,19 +99,12 @@
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import AdminUserService from "@/service/admin/admin.user.service";
-  import {mapState} from "vuex";
   import Constants from "@/utils/constants";
   import Authority from "@/enum/Authority";
   import Language from "@/enum/Language";
-  import UserType from "@/enum/UserType";
 
   export default {
     name: "CreateOrUpdateUserDialog",
-    computed: {
-      ...mapState({
-        currentUser: state => state.user.info
-      })
-    },
     data() {
       return {
         dialogFormVisible: false,

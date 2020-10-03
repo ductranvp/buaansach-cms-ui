@@ -72,6 +72,7 @@
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
   import CancelOrderProductDialog from "@/views/private/pos/sidebar/main/dialog/CancelOrderProductDialog";
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "SavedOrder",
@@ -101,7 +102,7 @@
             vm.$set(product, "isLoading", false);
           } catch (error) {
             vm.$set(product, "isLoading", false);
-            MessageUtils.error("Đã có lỗi xảy ra, vui lòng thử lại sau!");
+            ErrorUtils.showActionErrorMessage(error);
           }
         }
       },

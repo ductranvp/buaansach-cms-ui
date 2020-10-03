@@ -4,10 +4,10 @@ import Constants from "@/utils/constants";
 import i18n from "@/i18n";
 
 function redirectBasedOnRole() {
-  if (store.getters.authorities.includes(Roles.ADMIN)) return "/admin";
-  if (store.getters.authorities.includes(Roles.MODERATOR)) return "/moderator";
-  if (store.getters.authorities.includes(Roles.PARTNER)) return "/partner";
-  if (store.getters.authorities.includes(Roles.CUSTOMER_CARE)) return "/customer-care";
+  if (store.state.user.authorities.includes(Roles.ADMIN)) return "/admin";
+  if (store.state.user.authorities.includes(Roles.MODERATOR)) return "/moderator";
+  if (store.state.user.authorities.includes(Roles.PARTNER)) return "/partner";
+  if (store.state.user.authorities.includes(Roles.CUSTOMER_CARE)) return "/customer-care";
   else return "/home";
 }
 
@@ -41,12 +41,22 @@ function parseCloudFlareTrace(trace){
   return data;
 }
 
+function getNumberErrorCode(error){
+  return error.status || error.data.status;
+}
+
+function getStringErrorCode(error){
+  return error.message || error.data.message;
+}
+
 const AppUtils = {
   redirectBasedOnRole: redirectBasedOnRole,
   generatePageTitle: generatePageTitle,
   deepCopy: deepCopy,
   setAttrs: setAttrs,
-  parseCloudFlareTrace: parseCloudFlareTrace
+  parseCloudFlareTrace: parseCloudFlareTrace,
+  getNumberErrorCode: getNumberErrorCode,
+  getStringErrorCode: getStringErrorCode,
 };
 
 export default AppUtils;

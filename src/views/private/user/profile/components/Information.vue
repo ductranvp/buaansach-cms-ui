@@ -1,7 +1,7 @@
 <template>
   <el-row>
     <el-form ref="userForm" :model="form" :rules="formRules">
-      <el-form-item prop="firstName">
+      <el-form-item prop="fullName">
         <input-label label="Tên" required/>
         <el-input v-model="form.fullName" maxlength="50" show-word-limit></el-input>
       </el-form-item>
@@ -15,8 +15,8 @@
         </el-col>
         <el-col :span="11" :offset="2">
           <el-form-item prop="userPhone">
-            <input-label label="SĐT" optional/>
-            <el-input v-model="form.userPhone" maxlength="10" show-word-limit></el-input>
+            <input-label label="SĐT"/>
+            <el-input disabled v-model="form.userPhone" maxlength="10" show-word-limit></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -24,7 +24,7 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="userGender">
-            <input-label label="Giới tính" required/>
+            <input-label label="Giới tính"/>
             <el-select class="full-width" v-model="form.userGender">
               <el-option v-for="item in gender" :key="item.value" :value="item.value" :label="item.label"></el-option>
             </el-select>
@@ -40,7 +40,7 @@
 
       <el-form-item>
         <el-form-item prop="userAddress">
-          <input-label label="Địa chỉ" optional/>
+          <input-label label="Địa chỉ"/>
           <el-input v-model="form.userAddress" maxlength="255" show-word-limit></el-input>
         </el-form-item>
       </el-form-item>
@@ -58,19 +58,14 @@
 </template>
 
 <script>
-  import {mapState} from 'vuex';
   import UserService from '@/service/shared/user.service';
   import MessageUtils from '@/utils/message.util';
   import Gender from '@/enum/Gender';
   import Constants from '@/utils/constants';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: 'Information',
-    computed: {
-      ...mapState({
-        currentUser: state => state.user.info,
-      }),
-    },
     data() {
       return {
         isLoading: false,
@@ -89,16 +84,16 @@
             {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
             {max: 100, message: this.$t('common.entity.validation.maxlength', {max: 100}), trigger: 'blur'},
           ],
-          userGender: [
-            {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
-          ],
-          userPhone: [
-            {
-              pattern: Constants.PHONE_REGEX,
-              message: this.$t('common.entity.validation.pattern', {pattern: Constants.PHONE_REGEX}),
-              trigger: 'blur',
-            },
-          ],
+          // userGender: [
+          //   {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
+          // ],
+          // userPhone: [
+          //   {
+          //     pattern: Constants.PHONE_REGEX,
+          //     message: this.$t('common.entity.validation.pattern', {pattern: Constants.PHONE_REGEX}),
+          //     trigger: 'blur',
+          //   },
+          // ],
           userEmail: [
             {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
             {type: 'email', message: this.$t('common.entity.validation.email'), trigger: 'blur'},
@@ -123,9 +118,9 @@
               await UserService.updateUser(this.form, null);
               MessageUtils.success('Cập nhật thành công!');
               vm.isLoading = false;
-            } catch (e) {
+            } catch (error) {
               vm.isLoading = false;
-              MessageUtils.error('Đã có lỗi xảy ra, vui lòng thử lại sau!');
+              ErrorUtils.showActionErrorMessage(error);
             }
           }
           await vm.$store.dispatch('user/getAccount');

@@ -1,4 +1,4 @@
-import store from "@/store";
+import store from '@/store';
 
 /**
  * @param {Array} value
@@ -7,14 +7,12 @@ import store from "@/store";
  */
 export default function hasAnyRole(value) {
   if (value && value instanceof Array && value.length > 0) {
-    const roles = store.getters.authorities || [];
+    const roles = store.state.user.authorities || [];
     const permissionRoles = value;
 
-    const hasPermission = roles.some(role => {
+    return roles.some(role => {
       return permissionRoles.includes(role);
     });
-
-    return hasPermission;
   } else {
     // console.error(`need roles! Like v-permission="['admin','editor']"`);
     return false;

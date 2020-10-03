@@ -38,6 +38,7 @@
   import {mapState} from 'vuex';
   import MessageUtils from '@/utils/message.util';
   import hotkeys from 'hotkeys-js';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: 'PosSidebarHeader',
@@ -72,8 +73,8 @@
           setTimeout(function() {
             vm.isLocking = false;
           }, 300);
-        } catch (e) {
-          MessageUtils.error('Đã có lỗi xảy ra, vui lòng thử lại sau!');
+        } catch (error) {
+          ErrorUtils.showActionErrorMessage(error);
         }
       },
     },

@@ -1,12 +1,24 @@
-import ErrorCode from '@/enum/ErrorCode';
+import ErrorStringCode from '@/enum/ErrorStringCode';
 import MessageUtils from '@/utils/message.util';
+import AppUtils from '@/utils/app.util';
 
 const ErrorUtils = {
-  showErrorMessage(error, duration){
-    const errorCode = error.message || error.data.message;
-    const message = ErrorCode.label[errorCode];
+  showErrorMessage(error, defaultMessage, duration){
+    const stringCode = AppUtils.getStringErrorCode(error);
+    let message = defaultMessage || "Đã có lỗi xảy ra";
+    if (stringCode) {
+      message = ErrorStringCode.label[stringCode] || stringCode;
+    }
     MessageUtils.error(message, duration);
-  }
+  },
+  showActionErrorMessage(error, defaultMessage, duration){
+    const stringCode = AppUtils.getStringErrorCode(error);
+    let message = defaultMessage || "Đã có lỗi xảy ra, vui lòng thử lại sau";
+    if (stringCode) {
+      message = ErrorStringCode.label[stringCode] || stringCode;
+    }
+    MessageUtils.error(message, duration);
+  },
 };
 
 export default ErrorUtils;

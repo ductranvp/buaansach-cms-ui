@@ -20,8 +20,8 @@
 
 <script>
   import {mapState} from "vuex";
-  import MessageUtils from "@/utils/message.util";
   import Constants from "@/utils/constants";
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "CreateOrder",
@@ -39,13 +39,13 @@
           customerPhone: null,
         },
         formRules: {
-          customerPhone: [
-            {
-              pattern: Constants.PHONE_REGEX,
-              message: "Số điện thoại không hợp lệ",
-              trigger: "blur"
-            }
-          ]
+          // customerPhone: [
+          //   {
+          //     pattern: Constants.PHONE_REGEX,
+          //     message: "Số điện thoại không hợp lệ",
+          //     trigger: "blur"
+          //   }
+          // ]
         },
       };
     },
@@ -63,8 +63,7 @@
               vm.isLoading = true;
               await this.$store.dispatch("posMachine/createOrder");
             } catch (error) {
-              const message = error.message || error.data.message;
-              MessageUtils.error(message);
+              ErrorUtils.showActionErrorMessage(error);
             } finally {
               vm.isLoading = false;
             }

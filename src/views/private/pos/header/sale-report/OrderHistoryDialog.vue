@@ -108,6 +108,7 @@
   import MessageUtils from '@/utils/message.util';
   import OrderProductHistoryDialog from '@/views/private/pos/header/sale-report/OrderProductHistoryDialog';
   import OrderTimelineStatus from '@/enum/OrderTimelineStatus';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: 'OrderHistoryDialog',
@@ -153,8 +154,8 @@
           const {data} = await PosOrderProductService.getOrderProductByOrderGuid(order.guid);
           this.listOrderProduct = data;
           this.parseHistory(order.orderStatusTimeline);
-        } catch (e) {
-          MessageUtils.error('Lỗi tải dữ liệu, vui lòng thử lại sau!');
+        } catch (error) {
+          ErrorUtils.showActionErrorMessage(error, 'Lỗi tải dữ liệu, vui lòng thử lại sau!');
         }
         this.isLoading = false;
       },

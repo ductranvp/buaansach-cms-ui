@@ -112,7 +112,6 @@
   import CreateOrUpdateUserDialog from "@/views/private/admin/user/CreateOrUpdateUserDialog";
   import AdminUserService from "@/service/admin/admin.user.service";
   import DataTable from "@/components/data-table/DataTable";
-  import {mapState} from "vuex";
   import NotificationUtils from "@/utils/notification.util";
   import MessageUtils from "@/utils/message.util";
   import AdminUserRowDetail from "@/views/private/admin/user/AdminUserRowDetail";
@@ -122,11 +121,6 @@
   export default {
     name: "AdminUserManagement",
     components: {AdminUserRowDetail, DataTable, CreateOrUpdateUserDialog},
-    computed: {
-      ...mapState({
-        currentUser: state => state.user.info
-      })
-    },
     data() {
       return {
         isLoading: false,

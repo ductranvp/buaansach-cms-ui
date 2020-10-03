@@ -77,6 +77,7 @@
   import hasAnyRole from "@/utils/has-any-role";
   import StoreUserRole from '@/enum/StoreUserRole';
   import Authority from '@/enum/Authority';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "Home",
@@ -111,7 +112,7 @@
           this.isLoading = false;
         } catch (error) {
           this.isLoading = false;
-          NotificationUtils.error(error.message || error.data.message);
+          ErrorUtils.showErrorMessage(error);
         }
       }
     }

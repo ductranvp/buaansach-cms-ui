@@ -96,19 +96,12 @@
   import AddStoreUserDialog from "@/views/private/admin/store/detail/user/AddStoreUserDialog";
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
-  import {mapState} from "vuex";
   import AdminStoreUserRowDetail from "@/views/private/admin/store/detail/user/AdminStoreUserRowDetail";
   import StoreUserRole from "@/enum/StoreUserRole";
-  import StoreUserStatus from "@/enum/StoreUserStatus";
 
   export default {
     name: "AdminStoreUser",
     components: {AdminStoreUserRowDetail, AddStoreUserDialog, RawDataTable, CreateOrUpdateStoreUserDialog},
-    computed: {
-      ...mapState({
-        currentUser: state => state.user.info
-      })
-    },
     data() {
       return {
         storeUserRoleLabels: StoreUserRole.label,
