@@ -63,13 +63,13 @@
         </template>
         <el-table-column prop="userType" label="Loại tài khoản" width="160px">
           <template slot-scope="{row}">
-            <el-tag size="mini">{{userTypes.find(item => item.value === row.userType).label}}</el-tag>
+            <el-tag size="mini">{{userTypeLabel[row.userType]}}</el-tag>
           </template>
         </el-table-column>
         <el-table-column prop="authorities" label="Nhóm Quyền" width="160px">
           <template slot-scope="{row}">
             <div v-for="role in row.authorities" :key="role">
-              <el-tag size="mini">{{authorities.find(item => item.value === role).label}}</el-tag>
+              <el-tag size="mini">{{authorityLabel[role]}}</el-tag>
             </div>
           </template>
         </el-table-column>
@@ -138,8 +138,8 @@
           lastModifiedBy: {label: 'Người sửa cuối', display: false},
           lastModifiedDate: {label: 'Ngày sửa cuối', display: false, type: 'time', sortable: true},
         },
-        authorities: Authority.optionArray,
-        userTypes: UserType.optionArray,
+        authorityLabel: Authority.label,
+        userTypeLabel: UserType.label,
       };
     },
     methods: {
