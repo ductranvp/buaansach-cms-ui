@@ -19,7 +19,7 @@
           <el-tooltip placement="top" content="Người gọi" v-if="type === notificationType.ORDER_UPDATE">
             <el-tag class="margin-left-10" size="small" type="info">
               <i class="el-icon-s-claim"></i>
-              <span v-if="notification.createdBy === 'anonymousUser'">Khách</span>
+              <span v-if="notification.createdBy === 'anonymousUser'">Ẩn danh</span>
               <span v-else>{{notification.createdBy}}</span>
             </el-tag>
           </el-tooltip>

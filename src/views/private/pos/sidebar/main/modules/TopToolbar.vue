@@ -34,7 +34,7 @@
 <!--                </qrcode>-->
                 <div class="text-center">Đã bao gồm mã đơn:</div>
                 <qrcode class="pointer" @click.native="goto(selectedSeat.guid, currentOrder.guid)"
-                        :value="seatPrefixUrl + selectedSeat.guid + '?resume=' + currentOrder.guid"
+                        :value="seatPrefixUrl + selectedSeat.guid + '?' + seatResumeParam + '=' + currentOrder.guid"
                         :options="{ width: 150 }">
                 </qrcode>
               </div>
@@ -100,6 +100,7 @@
     data() {
       return {
         seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
+        seatResumeParam: Constants.CUSTOMER_UI_SEAT_RESUME_PARAM,
         isRefreshing: false,
       };
     },

@@ -3,6 +3,7 @@ const Constants = {
     APP_MODE: process.env.VUE_APP_MODE_FLAG,
     CUSTOMER_UI_URL: process.env.VUE_APP_CUSTOMER_UI_URL,
     CUSTOMER_UI_SEAT_PREFIX_URL: process.env.VUE_APP_CUSTOMER_UI_URL + "/goi-mon/",
+    CUSTOMER_UI_SEAT_RESUME_PARAM: "resume",
     APP_TITLE: "app.pageTitle",
     DEFAULT_LANGUAGE: "vi",
     DEFAULT_AREA_GUID: "all",
