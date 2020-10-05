@@ -10,6 +10,7 @@
   import PriceUtils from "@/utils/price.util";
   import AreaType from "@/enum/AreaType";
   import OrderProductStatus from "@/enum/OrderProductStatus";
+  import DiscountType from '@/enum/DiscountType';
 
   export default {
     name: "Bill",
@@ -34,6 +35,7 @@
       formatPrice(value, unit) {
         if (unit) unit = " " + unit;
         else unit = "";
+        if (value === undefined || value == null) return value;
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + unit;
       },
       getStyle() {
@@ -137,7 +139,11 @@
       getBillSummary(customerPay) {
         let tableContent = "<table>";
         tableContent += "<tr><th>TỔNG TIỀN</th><td class='text-right'>" + this.formatPrice(this.orderTotalAmount) + "</td></tr>";
-        tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.discountAmount) + "</td></tr>";
+        if (this.currentOrder.orderDiscountType === DiscountType.value.PERCENT){
+          tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.currentOrder.orderDiscount + "% (" + this.formatPrice(this.discountAmount) + ")</td></tr>";
+        } else {
+          tableContent += "<tr><th>GIẢM GIÁ</th><td class='text-right'>" + this.formatPrice(this.discountAmount) + "</td></tr>";
+        }
         tableContent += "<tr><th>DÙNG ĐIỂM</th><td class='text-right'>" + this.currentOrder.orderPointValue + " (" + this.formatPrice(this.currentOrder.orderPointCost) + ")</td></tr>";
         tableContent += "</table>";
         tableContent += "<div class='divider'></div>";

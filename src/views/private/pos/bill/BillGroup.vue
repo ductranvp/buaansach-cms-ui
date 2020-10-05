@@ -9,6 +9,7 @@
   import {mapState} from 'vuex';
   import PriceUtils from '@/utils/price.util';
   import AreaType from '@/enum/AreaType';
+  import DiscountType from '@/enum/DiscountType';
 
   export default {
     name: 'BillGroup',
@@ -27,6 +28,7 @@
       formatPrice(value, unit) {
         if (unit) unit = ' ' + unit;
         else unit = '';
+        if (value === undefined || value == null) return value;
         return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + unit;
       },
       getDate() {
@@ -147,11 +149,16 @@
         let tableContent = '<table>';
         tableContent += '<tr><th>TỔNG TIỀN</th><td class=\'text-right\'>' + this.formatPrice(order.orderTotalAmount) +
           '</td></tr>';
-        tableContent += '<tr><th>GIẢM GIÁ</th><td class=\'text-right\'>' +
-          this.formatPrice(this.getOrderDiscount(order)) +
-          '</td></tr>';
+        if (order.orderDiscountType === DiscountType.value.PERCENT) {
+          tableContent += '<tr><th>GIẢM GIÁ</th><td class=\'text-right\'>' +
+            order.orderDiscount + '% (' + this.formatPrice(this.getOrderDiscount(order)) + ')</td></tr>';
+        } else {
+          tableContent += '<tr><th>GIẢM GIÁ</th><td class=\'text-right\'>' +
+            this.formatPrice(this.getOrderDiscount(order)) +
+            '</td></tr>';
+        }
         tableContent += '<tr><th>DÙNG ĐIỂM</th><td class=\'text-right\'>' + order.orderPointValue + ' (' +
-          this.formatPrice(order.orderPointCost) + 'đ)</td></tr>';
+          this.formatPrice(order.orderPointCost) + ')</td></tr>';
         tableContent += '</table>';
         tableContent += '<table>';
         tableContent += '<tr><th>THANH TOÁN</th><td class=\'text-right\'><b>' +

@@ -30,7 +30,8 @@
             <el-form-item>
               <el-alert style="line-height: 24px" type="error" :closable="false">
                 <span slot="title">Lưu ý:</span>
-                <span>Không lưu mật khẩu nếu dùng chung máy tính</span>
+                <div>Không lưu mật khẩu nếu dùng chung máy tính</div>
+                <div>Mỗi lần đăng nhập sẽ có hiệu lực trong 24 giờ</div>
               </el-alert>
             </el-form-item>
             <!--          <el-form-item prop="rememberMe">-->
