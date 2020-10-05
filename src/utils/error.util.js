@@ -1,16 +1,24 @@
-import router from "@/router";
+import ErrorStringCode from '@/enum/ErrorStringCode';
+import MessageUtils from '@/utils/message.util';
+import AppUtils from '@/utils/app.util';
 
 const ErrorUtils = {
-  blockAccessToStore(storeGuid) {
-    router.push({
-      name: "forbiddenPage", params: {
-        errorMessage: "<span class='text-center text-light'>Bạn không có quyền truy cập cửa hàng này!<br>" +
-          "Nếu đây là lỗi, hãy gửi yêu cầu tại <a class='text-light' href=\"/\">đây</a><br>" +
-          "Cảm ơn!</span>"
-      }
-    }).then(r => {
-    });
-  }
+  showErrorMessage(error, defaultMessage, duration){
+    const stringCode = AppUtils.getStringErrorCode(error);
+    let message = defaultMessage || "Đã có lỗi xảy ra";
+    if (stringCode) {
+      message = ErrorStringCode.label[stringCode] || stringCode;
+    }
+    MessageUtils.error(message, duration);
+  },
+  showActionErrorMessage(error, defaultMessage, duration){
+    const stringCode = AppUtils.getStringErrorCode(error);
+    let message = defaultMessage || "Đã có lỗi xảy ra, vui lòng thử lại sau";
+    if (stringCode) {
+      message = ErrorStringCode.label[stringCode] || stringCode;
+    }
+    MessageUtils.error(message, duration);
+  },
 };
 
 export default ErrorUtils;

@@ -8,10 +8,11 @@ import Constants from "@/utils/constants";
 import en from "element-ui/lib/locale/lang/en";
 import vi from "element-ui/lib/locale/lang/vi";
 import locale from "element-ui/lib/locale";
+import StorageKey from '@/utils/storage-key';
 
 Vue.use(VueI18n);
 
-let currentLang = localStorage.getItem("currentLanguage") || Constants.DEFAULT_LANGUAGE;
+let currentLang = localStorage.getItem(StorageKey.localStorageKeys.CURRENT_LANGUAGE) || Constants.DEFAULT_LANGUAGE;
 
 locale.use(currentLang === "en" ? en : vi);
 
@@ -37,7 +38,7 @@ i18n.changeLanguage = lang => {
     default:
       locale.use(en);
   }
-  localStorage.setItem("currentLanguage", lang);
+  localStorage.setItem(StorageKey.localStorageKeys.CURRENT_LANGUAGE, lang);
   store.commit("translation/SET_LANGUAGE", lang, {root: true});
 };
 

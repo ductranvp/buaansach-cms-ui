@@ -16,7 +16,7 @@
 <script>
   import AuthUtils from "@/utils/auth.util";
   import {mapState} from "vuex";
-  import Hamburger from "@/components/hamburger/index";
+  import Hamburger from "@/components/hamburger/Humburger";
   import MessageBoxUtils from "@/utils/message-box.util";
 
   export default {

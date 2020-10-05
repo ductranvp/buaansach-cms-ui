@@ -82,8 +82,8 @@
     },
     methods: {
       create() {
-        this.form = {};
         this.isEdit = false;
+        this.form = {};
         this.show();
       },
       edit(entity) {

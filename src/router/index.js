@@ -7,7 +7,6 @@ import UserRoutes from "@/router/private-routes/user.routes";
 import Roles from "@/config/security/roles";
 import PosStoreService from "@/service/pos/pos.store.service";
 import CustomerCareRoutes from "@/router/private-routes/customer-care.routes";
-import store from "@/store";
 
 Vue.use(VueRouter);
 
@@ -20,38 +19,37 @@ const router = new VueRouter({
     {
       path: "/",
       component: () => import("@/views/layout/user/UserLayout"),
-      redirect: "/home",
+      redirect: {name: 'homePage'},
       children: [...UserRoutes]
     },
     /* For admin to manage all system */
     {
       path: "/admin",
       component: () => import("@/views/layout/admin/AdminLayout"),
-      redirect: "/admin/dashboard",
+      redirect: {name: 'adminDashboardPage'},
       children: [...AdminRoutes]
     },
     {
       path: "/customer-care",
       component: () => import("@/views/layout/customer-care/CustomerCareLayout"),
-      redirect: "/customer-care/dashboard",
+      redirect: {name: 'customerCareDashboardPage'},
       children: [...CustomerCareRoutes]
     },
     /* For partner to manage stores */
     {
-      path: "/management/:storeGuid",
+      path: "/partner/:storeGuid",
       component: () => import("@/views/layout/partner/PartnerLayout"),
       children: [...PartnerRoutes]
     },
-    /* For pos machine */
+    /* For pos page */
     {
-      path: "/pos/:storeGuid",
+      path: "/store/:storeGuid",
       name: "posPage",
-      component: () => import("@/views/layout/pos-machine/PosMachineLayout"),
+      component: () => import("@/views/layout/pos/PosLayout"),
       beforeEnter: async (to, from, next) => {
         try {
           const {data} = await PosStoreService.checkAccessibility(to.params.storeGuid);
           if (!data) await router.push({name: "forbiddenPage"});
-          store.commit("posMachine/SET_CURRENT_STORE_GUID", to.params.storeGuid);
           next();
         } catch (error) {
           await router.push({name: "homePage"});
@@ -65,7 +63,7 @@ const router = new VueRouter({
     {
       path: "/sale-report/:storeGuid",
       name: "saleReportPage",
-      component: () => import("@/views/private/pos-machine/header/sale-report/SaleReport"),
+      component: () => import("@/views/private/pos/header/sale-report/SaleReport"),
       meta: {
         title: "private.pageTitle.saleReportPage",
         roles: [Roles.USER]

@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="Tạo hoặc cập nhật cửa hàng"
+    title="Tạo hoặc sửa cửa hàng"
     :before-close="beforeClose"
     :visible.sync="dialogFormVisible"
     :close-on-click-modal="false"
@@ -88,7 +88,6 @@
                   show-word-limit></el-input>
       </el-form-item>
 
-
       <el-form-item prop="storeStatus">
         <el-row type="flex" align="bottom">
           <el-col :span="11">
@@ -97,26 +96,35 @@
               <el-option
                 v-for="item in storeStatus"
                 :key="item.value"
-                :label="$t(item.label)"
+                :label="item.label"
                 :value="item.value">
               </el-option>
             </el-select>
           </el-col>
           <el-col :span="11" :offset="2">
+            <input-label label="Kích hoạt"/>
             <el-checkbox v-model="form.storeActivated">
-              <span>{{$t('private.adminStoreManagementPage.store.storeActivated')}}</span>
+              <span v-if="form.storeActivated">Bật</span>
+              <span v-else>Tắt</span>
             </el-checkbox>
           </el-col>
         </el-row>
       </el-form-item>
 
+      <el-form-item>
+        <input-label label="Cho phép tích điểm"/>
+        <el-checkbox v-model="form.storeRewardPointActivated">
+          <span v-if="form.storeRewardPointActivated">Bật</span>
+          <span v-else>Tắt</span>
+        </el-checkbox>
+      </el-form-item>
 
       <el-form-item>
         <input-label :label="$t('private.adminStoreManagementPage.store.storeImageUrl')" optional/>
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
-          :image-url-prop.sync="form.storeImageUrl"
+          :image-url-prop="getMediaUrl(form.storeImageUrl)"
         />
       </el-form-item>
     </el-form>

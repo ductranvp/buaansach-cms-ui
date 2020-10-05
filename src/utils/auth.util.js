@@ -1,7 +1,8 @@
-import router from "@/router";
-import store from "@/store";
+import router from '@/router';
+import store from '@/store';
+import StorageKey from '@/utils/storage-key';
 
-const accessToken = "access-token";
+const accessToken = StorageKey.common.ACCESS_TOKEN;
 
 function getToken() {
   return (
@@ -13,7 +14,8 @@ function setToken(token, rememberMe) {
   if (rememberMe) {
     localStorage.setItem(accessToken, token);
   } else {
-    sessionStorage.setItem(accessToken, token);
+    localStorage.setItem(accessToken, token);
+    // sessionStorage.setItem(accessToken, token);
   }
 }
 
@@ -24,30 +26,31 @@ function removeToken() {
 
 function hasAnyAuthority(authorities) {
   for (let i = 0; i < authorities.length; i++) {
-    if (store.getters.roles.includes(authorities[i])) {
+    if (store.state.user.authorities.includes(authorities[i])) {
       return true;
     }
   }
   return false;
 }
 
-function logout() {
+async function logout(noRedirect, redirectRouteName) {
   /*routeName is the route that we want to redirect to when logged out*/
-  store.dispatch("websocket/disconnectWS");
-  store.dispatch("user/logout").then(() => {
-    localStorage.clear();
-    sessionStorage.clear();
-    router.push("/login").catch(() => {
+  await store.dispatch('websocket/disconnectWS');
+  await store.dispatch('user/logout');
+  removeToken();
+
+  if (!noRedirect) {
+    const routeName = redirectRouteName ? redirectRouteName : 'loginPage';
+    router.push({name: routeName}).catch(() => {
     });
-  });
+  }
 }
 
 const AuthUtils = {
   getToken: getToken,
   setToken: setToken,
-  removeToken: removeToken,
   hasAnyAuthority: hasAnyAuthority,
-  logout: logout
+  logout: logout,
 };
 
 export default AuthUtils;

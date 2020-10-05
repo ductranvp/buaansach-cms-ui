@@ -45,11 +45,25 @@ const mixinSidebarData = {
             title: 'layout.adminSidebar.adminUserPage',
           },
         },
+        // {
+        //   routeName: 'adminVoucherPage',
+        //   meta: {
+        //     icon: 'el-icon-price-tag',
+        //     title: 'layout.adminSidebar.adminVoucherPage',
+        //   },
+        // },
         {
-          routeName: 'adminVoucherPage',
+          routeName: 'adminSalePage',
           meta: {
             icon: 'el-icon-price-tag',
-            title: 'layout.adminSidebar.adminVoucherPage',
+            title: 'layout.adminSidebar.adminSalePage',
+          },
+        },
+        {
+          routeName: 'adminBannerPage',
+          meta: {
+            icon: 'el-icon-picture',
+            title: 'layout.adminSidebar.adminBannerPage',
           },
         },
         {

@@ -1,3 +1,5 @@
+import StoreStatus from "@/enum/StoreStatus";
+
 const mixinData = {
   data() {
     return {
@@ -10,13 +12,14 @@ const mixinData = {
         storeName: null,
         storeAddress: null,
         storeImageUrl: null,
-        storeStatus: "OPENING",
+        storeStatus: null,
         storeOwnerName: null,
         storeOwnerPhone: null,
         storeOwnerEmail: null,
         storeTaxCode: null,
         storeBusinessHours: null,
-        storeActivated: true,
+        storeActivated: null,
+        storeRewardPointActivated: null,
       },
       formRules: {
         storeName: [
@@ -46,16 +49,7 @@ const mixinData = {
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
         ]
       },
-      storeStatus: [
-        {
-          label: "private.adminStoreManagementPage.storeStatus.opening",
-          value: "OPENING"
-        },
-        {
-          label: "private.adminStoreManagementPage.storeStatus.closed",
-          value: "CLOSED"
-        },
-      ]
+      storeStatus: StoreStatus.optionArray
     };
   }
 };

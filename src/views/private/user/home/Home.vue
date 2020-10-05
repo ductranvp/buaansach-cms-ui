@@ -5,7 +5,7 @@
         <el-col class="padding-5" :lg="6" :md="8" :sm="12" :xs="24" v-for="store in storeUser" :key="store.storeGuid">
           <el-card :body-style="{ padding: '0px' }" shadow="never">
             <el-row>
-              <el-image lazy class="image" :src="store.storeImageUrl">
+              <el-image lazy class="image" fit="cover" :src="getMediaUrl(store.storeImageUrl) || defaultStoreImage">
                 <div slot="error" class="image-error-slot full-size">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -47,8 +47,9 @@
                   </el-button>
                 </el-col>
                 <el-col
-                  v-if="store.storeUserRole === 'STORE_OWNER' || store.storeUserRole === 'STORE_MANAGER' || hasAnyRole(['ROLE_ADMIN'])">
-                  <el-button v-if="hasAnyRole(['ROLE_ADMIN'])" type="success" plain class="full-width" size="medium"
+                  v-if="store.storeUserRole === storeUserRole.STORE_OWNER || store.storeUserRole === storeUserRole.STORE_MANAGER
+                  || hasAnyRole([authority.ROLE_ADMIN])">
+                  <el-button v-if="hasAnyRole([authority.ROLE_ADMIN])" type="success" plain class="full-width" size="medium"
                              @click="goTo('adminStoreDetailOverviewPage', store.storeGuid)">
                     <i class="el-icon-s-tools"></i>
                     <span>Quản lý</span>
@@ -71,9 +72,12 @@
 </template>
 
 <script>
-  import StoreUserService from "@/service/common/store-user.service";
+  import StoreUserService from "@/service/shared/store-user.service";
   import NotificationUtils from "@/utils/notification.util";
   import hasAnyRole from "@/utils/has-any-role";
+  import StoreUserRole from '@/enum/StoreUserRole';
+  import Authority from '@/enum/Authority';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "Home",
@@ -82,6 +86,8 @@
         isLoading: false,
         openNewTab: false,
         storeUser: [],
+        storeUserRole: StoreUserRole.value,
+        authority: Authority.value
       };
     },
     created() {
@@ -106,7 +112,7 @@
           this.isLoading = false;
         } catch (error) {
           this.isLoading = false;
-          NotificationUtils.error(error.message || error.data.message);
+          ErrorUtils.showErrorMessage(error);
         }
       }
     }

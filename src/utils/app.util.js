@@ -4,9 +4,10 @@ import Constants from "@/utils/constants";
 import i18n from "@/i18n";
 
 function redirectBasedOnRole() {
-  if (store.getters.roles.includes(Roles.ADMIN)) return "/admin";
-  if (store.getters.roles.includes(Roles.MANAGER)) return "/manager";
-  if (store.getters.roles.includes(Roles.CUSTOMER_CARE)) return "/customer-care";
+  if (store.state.user.authorities.includes(Roles.ADMIN)) return "/admin";
+  if (store.state.user.authorities.includes(Roles.MODERATOR)) return "/moderator";
+  if (store.state.user.authorities.includes(Roles.PARTNER)) return "/partner";
+  if (store.state.user.authorities.includes(Roles.CUSTOMER_CARE)) return "/customer-care";
   else return "/home";
 }
 
@@ -23,12 +24,9 @@ function deepCopy(object) {
 }
 
 function setAttrs(vm, currentObj, newObj) {
-  const temp = deepCopy(currentObj);
   Object.keys(newObj).forEach(key => {
     vm.$set(currentObj, key, newObj[key]);
   });
-  vm.$set(currentObj, "createdBy", temp['createdBy']);
-  vm.$set(currentObj, "createdDate", temp['createdDate']);
 }
 
 function parseCloudFlareTrace(trace){
@@ -43,12 +41,24 @@ function parseCloudFlareTrace(trace){
   return data;
 }
 
+function getNumberErrorCode(error){
+  if (!error) return -1;
+  return error.status || error.data.status;
+}
+
+function getStringErrorCode(error){
+  if (!error) return "";
+  return error.message || error.data.message;
+}
+
 const AppUtils = {
   redirectBasedOnRole: redirectBasedOnRole,
   generatePageTitle: generatePageTitle,
   deepCopy: deepCopy,
   setAttrs: setAttrs,
-  parseCloudFlareTrace: parseCloudFlareTrace
+  parseCloudFlareTrace: parseCloudFlareTrace,
+  getNumberErrorCode: getNumberErrorCode,
+  getStringErrorCode: getStringErrorCode,
 };
 
 export default AppUtils;

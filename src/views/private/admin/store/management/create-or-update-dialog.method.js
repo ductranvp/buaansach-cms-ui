@@ -1,6 +1,7 @@
 import AdminStoreService from "@/service/admin/admin.store.service";
 import AppUtils from "@/utils/app.util";
 import NotificationUtils from "@/utils/notification.util";
+import StoreStatus from "@/enum/StoreStatus";
 
 const mixinMethod = {
   methods: {
@@ -10,8 +11,9 @@ const mixinMethod = {
     create() {
       this.isEdit = false;
       this.form = {
-        storeStatus: "OPENING",
+        storeStatus: StoreStatus.value.OPENING,
         storeActivated: true,
+        storeRewardPointActivated: true,
       };
       this.show();
     },

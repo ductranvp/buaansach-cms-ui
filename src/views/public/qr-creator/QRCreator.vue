@@ -67,7 +67,7 @@
                 <el-form-item>
                   <div class="text-center">
                     <qrcode ref="qrcode" class="pointer" :value="form.text"
-                            :options="{ logo: form.logo, width: form.qrSize, margin: form.qrMargin, color: {dark: form.dark, light: form.light} }"
+                            :options="{ width: form.qrSize, margin: form.qrMargin, color: {dark: form.dark, light: form.light} }"
                             tag="img"></qrcode>
                   </div>
                 </el-form-item>
@@ -131,10 +131,6 @@
       };
     },
     methods: {
-      truncate(string, maxlength) {
-        if (string.length > maxlength) return string.substr(0, maxlength) + "...";
-        return string;
-      },
       downloadImage() {
         let link = document.createElement("a"); //Create <a>
         link.href = this.$refs.qrcode.$el.currentSrc; //Image Base64 Goes here

@@ -8,6 +8,8 @@
     "adminReportPage": "Report Management",
     "adminTrackerPage": "System Tracker",
     "adminSettingPage": "Setting",
-    "adminVoucherPage": "Voucher"
+    "adminVoucherPage": "Voucher",
+    "adminSalePage": "Sale",
+    "adminBannerPage": "Banner"
   }
 }

@@ -3,8 +3,8 @@
     <el-row class="full-size" :gutter="10">
       <el-col :md="10" :sm="24">
         <div class="text-center">
-          <el-image lazy class="store-image" :src="adminCurrentStore.storeImageUrl"
-                    fit="cover" :preview-src-list="[adminCurrentStore.storeImageUrl]">
+          <el-image lazy class="store-image" :src="getMediaUrl(adminCurrentStore.storeImageUrl)"
+                    fit="cover" :preview-src-list="[getMediaUrl(adminCurrentStore.storeImageUrl)]">
             <div slot="error" class="image-error-slot full-size">
               <i class="el-icon-picture-outline"></i>
             </div>
@@ -14,7 +14,6 @@
       <el-col :md="14" :sm="24">
         <div>
           <el-card shadow="never" class="full-size">
-
             <div>
               <table>
                 <tr>
@@ -32,37 +31,22 @@
                 <tr>
                   <td>Trạng thái</td>
                   <td>
-                    <el-tag
-                      size="small"
-                      type="success"
-                      effect="dark"
-                      v-if="adminCurrentStore.storeStatus === 'OPENING'"
-                    >{{ $t("private.adminStoreManagementPage.storeStatus.opening") }}
+                    <el-tag size="small" type="success" v-if="adminCurrentStore.storeStatus === 'OPENING'">
+                      <span>Mở cửa</span>
                     </el-tag>
-                    <el-tag
-                      size="small"
-                      type="danger"
-                      effect="dark"
-                      v-else
-                    >{{ $t("private.adminStoreManagementPage.storeStatus.closed") }}
+                    <el-tag size="small" type="danger" v-else>
+                      <span>Đóng cửa</span>
                     </el-tag>
                   </td>
                 </tr>
                 <tr>
                   <td>Kích hoạt</td>
                   <td>
-                    <el-tag
-                      size="small"
-                      type="success"
-                      effect="dark"
-                      v-if="adminCurrentStore.storeActivated">{{$t("private.adminStoreManagementPage.storeActivated.activated") }}
+                    <el-tag size="small" type="success" v-if="adminCurrentStore.storeActivated">
+                      <span>Bật</span>
                     </el-tag>
-                    <el-tag
-                      size="small"
-                      type="danger"
-                      effect="dark"
-                      v-else
-                    >{{ $t("private.adminStoreManagementPage.storeActivated.deactivated") }}
+                    <el-tag size="small" type="danger" v-else>
+                      <span>Tắt</span>
                     </el-tag>
                   </td>
                 </tr>
@@ -84,8 +68,7 @@
                 </tr>
                 <tr>
                   <td>Giờ hoạt động</td>
-                  <td><span v-if="adminCurrentStore.storeBusinessHours">{{adminCurrentStore.storeBusinessHours}}</span>
-                  </td>
+                  <td>{{adminCurrentStore.storeBusinessHours}}</td>
                 </tr>
               </table>
               <el-divider class="margin-15-0"></el-divider>

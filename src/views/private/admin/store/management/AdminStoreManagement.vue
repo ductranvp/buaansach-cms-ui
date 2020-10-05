@@ -40,19 +40,13 @@
         <el-table-column prop="storeName" sortable :label="$t('private.adminStoreManagementPage.store.storeName')">
         </el-table-column>
 
-<!--        <el-table-column prop="storeOwnerName" :label="$t('private.adminStoreManagementPage.store.storeOwnerName')">-->
-<!--        </el-table-column>-->
-
-<!--        <el-table-column prop="storeOwnerPhone" :label="$t('private.adminStoreManagementPage.store.storeOwnerPhone')">-->
-<!--        </el-table-column>-->
-
         <el-table-column prop="storeStatus" :label="$t('private.adminStoreManagementPage.store.storeStatus')">
           <template slot-scope="{ row }">
-            <el-tag type="success" v-if="row.storeStatus === 'OPENING'">
-              <span>{{ $t("private.adminStoreManagementPage.storeStatus.opening") }}</span>
+            <el-tag type="success" v-if="row.storeStatus === storeStatus.OPENING">
+              <span>Mở cửa</span>
             </el-tag>
-            <el-tag type="danger" v-if="row.storeStatus === 'CLOSED'">
-              <span>{{ $t("private.adminStoreManagementPage.storeStatus.closed") }}</span>
+            <el-tag type="danger" v-else>
+              <span>Đóng cửa</span>
             </el-tag>
           </template>
         </el-table-column>
@@ -60,10 +54,10 @@
         <el-table-column prop="storeActivated" :label="$t('private.adminStoreManagementPage.store.storeActivated')">
           <template slot-scope="{ row }">
             <el-tag type="success" v-if="row.storeActivated">
-              <span>{{ $t("private.adminStoreManagementPage.storeActivated.activated") }}</span>
+              <span>Bật</span>
             </el-tag>
             <el-tag type="danger" v-else>
-              <span>{{ $t("private.adminStoreManagementPage.storeActivated.deactivated") }}</span>
+              <span>Tắt</span>
             </el-tag>
           </template>
         </el-table-column>
@@ -92,12 +86,14 @@
   import AdminStoreService from "@/service/admin/admin.store.service";
   import DataTable from "@/components/data-table/DataTable";
   import AdminStoreManagementRowDetail from "@/views/private/admin/store/management/AdminStoreManagementRowDetail";
+  import StoreStatus from "@/enum/StoreStatus";
 
   export default {
     name: "AdminStoreManagement",
     components: {AdminStoreManagementRowDetail, CreateOrUpdateStoreDialog, DataTable},
     data() {
       return {
+        storeStatus: StoreStatus.value,
         isLoading: false,
         searchKey: "",
         filter: {

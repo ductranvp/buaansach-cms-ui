@@ -9,6 +9,24 @@
           <span>{{$t("private.adminStoreDetailSeatPage.displayByArea")}}</span>
         </el-radio-button>
       </el-radio-group>
+      <el-row>
+        <el-row>
+          <el-col :span="11">
+              <el-color-picker
+                      v-model="form.dark"
+                      color-format="hex"
+                      :predefine="predefineColors">
+              </el-color-picker>
+          </el-col>
+          <el-col :span="11" :offset="2">
+              <el-color-picker
+                      v-model="form.light"
+                      color-format="hex"
+                      :predefine="predefineColors">
+              </el-color-picker>
+          </el-col>
+        </el-row>
+      </el-row>
       <el-row type="flex" align="middle">
         <el-col :span="12">
           <div>Canh lề:</div>
@@ -37,7 +55,7 @@
         <el-card shadow="never">
           <div class="text-center">
             <qrcode :ref="seat.guid" class="pointer" @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid"
-                    :options="{ width: colSize*40, margin: marginSize }" tag="img"></qrcode>
+                    :options="{ width: colSize*40, margin: marginSize, color: {dark: form.dark, light: form.light} }" tag="img"></qrcode>
           </div>
           <div class="text-center">
             <span class="text-normal">{{seat.seatName}} - {{seat.areaName}}</span>
@@ -76,6 +94,8 @@
   export default {
     name: "AdminStoreDetailSeat",
     data() {
+      const defaultColors = Object.keys(Constants.COLOR).map(item => Constants.COLOR[item]);
+
       return {
         isDownloading: false,
         colSize: 4,
@@ -85,6 +105,22 @@
         seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
         areas: [],
         seats: [],
+        form: {
+          dark: "#000000",
+          light: "#ffffff",
+        },
+        predefineColors: [
+          ...defaultColors,
+          '#000000',
+          '#ffffff',
+          '#ff4500',
+          '#ff8c00',
+          '#ffd700',
+          '#90ee90',
+          '#00ced1',
+          '#1e90ff',
+          '#c71585'
+        ]
       };
     },
     created() {

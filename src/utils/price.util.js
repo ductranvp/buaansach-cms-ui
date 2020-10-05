@@ -1,26 +1,38 @@
-function getPayAmount(total, discount, discountType) {
+import DiscountType from "@/enum/DiscountType";
+
+function getPayAmount(total, discount, discountType, pointCost) {
   let amount = total;
   if (discount) {
     amount = amount - getDiscountAmount(total, discount, discountType);
   }
-  return amount > 0 ? amount : 0;
+  if (pointCost) amount = amount - pointCost;
+  return Math.max(amount, 0);
 }
 
 function getDiscountAmount(total, discount, discountType) {
   let amount = 0;
   if (discount) {
-    if (discountType === "VALUE") {
+    if (discountType === DiscountType.value.VALUE) {
       amount = discount;
     } else {
       amount = (Math.floor(total * discount / 100));
     }
   }
-  return amount > 0 ? amount : 0;
+  return Math.max(amount, 0);
+}
+
+function getProductPrice(normalPrice, discount, discountType) {
+  let amount = normalPrice;
+  if (discount) {
+    amount = amount - getDiscountAmount(normalPrice, discount, discountType);
+  }
+  return Math.max(amount, 0);
 }
 
 const PriceUtils = {
   getPayAmount: getPayAmount,
-  getDiscountAmount: getDiscountAmount
+  getDiscountAmount: getDiscountAmount,
+  getProductPrice: getProductPrice
 };
 
 export default PriceUtils;

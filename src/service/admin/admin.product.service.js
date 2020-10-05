@@ -1,13 +1,50 @@
 import request from "@/config/request";
-import CoreService from "@/service/core.service";
+import CoreService from "@/service/shared/core.service";
 
 const baseUrl = "api/v1/admin/product";
 
 const AdminProductService = {
+  /**
+   * @param {Object} payload
+   * @param {String} payload.productName
+   * @param {String} payload.productNameEng
+   * @param {String} payload.productUnit
+   * @param {String} payload.productUnitEng
+   * @param {String} payload.productDescription
+   * @param {String} payload.productDescriptionEng
+   * @param {String} payload.productImageUrl
+   * @param {String} payload.productThumbnailUrl
+   * @param {String} payload.productStatus
+   * @param {String} payload.productType
+   * @param {String} payload.productRootPrice
+   * @param {String} payload.productPrice
+   * @param {String} payload.productActivated
+   * @param {String} payload.categories
+   * @param {Image} image
+   * */
   createProduct(payload, image) {
     const formData = CoreService.processFormDataWithImage(payload, image);
     return request.post(baseUrl + "/create", formData, CoreService.formDataConfig);
   },
+
+  /**
+   * @param {Object} payload
+   * @param {String} payload.productName
+   * @param {String} payload.productNameEng
+   * @param {String} payload.productUnit
+   * @param {String} payload.productUnitEng
+   * @param {String} payload.productDescription
+   * @param {String} payload.productDescriptionEng
+   * @param {String} payload.productImageUrl
+   * @param {String} payload.productThumbnailUrl
+   * @param {String} payload.productStatus
+   * @param {String} payload.productType
+   * @param {String} payload.productRootPrice
+   * @param {String} payload.productPrice
+   * @param {String} payload.productActivated
+   * @param {String} payload.categories
+   * @param {Image} image
+   * */
   updateProduct(payload, image) {
     const formData = CoreService.processFormDataWithImage(payload, image);
     return request.put(baseUrl + "/update", formData, CoreService.formDataConfig);

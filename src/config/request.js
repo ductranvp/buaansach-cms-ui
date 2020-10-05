@@ -3,6 +3,7 @@ import constants from "@/utils/constants";
 import AuthUtils from "@/utils/auth.util";
 import router from "@/router";
 import store from "@/store";
+import AppUtils from '@/utils/app.util';
 
 const baseUrl = constants.SERVER_API_URL;
 const timeout = 100000; // 100 seconds
@@ -37,18 +38,15 @@ request.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
-    const errorCode = error.status || (error.response && error.response.status) || 0;
-    switch (errorCode) {
-      case 401:
-        AuthUtils.logout();
-        break;
-      case 403:
-        store.dispatch("user/getAccount");
-        router.push({name: "forbiddenPage"}).then();
-        break;
+    const errorCode = AppUtils.getNumberErrorCode(error.response);
+    if (errorCode === 401) {
+      AuthUtils.logout().then(null);
     }
-    if (error.response) return Promise.reject(error.response);
-    return Promise.reject(error);
+    if (errorCode === 403) {
+      store.dispatch("user/getAccount");
+      router.push({name: "forbiddenPage"});
+    }
+    return Promise.reject(error.response);
   }
 );
 

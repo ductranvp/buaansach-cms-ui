@@ -3,7 +3,7 @@
     <el-main class="full-size padding-10">
       <el-row :gutter="20">
         <el-col :span="6" :xs="24" class="margin-bottom-10">
-          <user-card :user="user"/>
+          <user-card :user="currentUser"/>
         </el-col>
         <el-col :span="18" :xs="24">
           <el-card shadow="never">
@@ -26,7 +26,6 @@
 </template>
 
 <script>
-  import {mapGetters} from "vuex";
   import UserCard from "@/views/private/user/profile/components/UserCard";
   import Information from "@/views/private/user/profile/components/Information";
   import ChangePassword from "@/views/private/user/profile/components/ChangePassword";
@@ -34,11 +33,6 @@
   export default {
     name: "User",
     components: {ChangePassword, Information, UserCard},
-    computed: {
-      ...mapGetters({
-        user: "info"
-      })
-    },
     data() {
       return {
         activeTab: "info"

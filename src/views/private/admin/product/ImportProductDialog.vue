@@ -66,7 +66,7 @@
     components: {RawDataTable},
     data() {
       return {
-        multipleCategory: true,
+        multipleCategory: false,
         isLoading: false,
         dialogFormVisible: false,
         headerRows: [],
@@ -117,7 +117,7 @@
         const vm = this;
         let validProducts = [];
         this.csvData.forEach(item => {
-          if (item.productName && item.productStatus && item.productType && item.productDisplay && item.productPrice && item.categories && item.categories.length){
+          if (item.productName && item.productNameEng && item.productStatus && item.productType && item.productPrice && item.categories && item.categories.length){
             let temp = JSON.parse(JSON.stringify(item));
             temp.image = item.image;
             temp.categories = vm.categories.filter(category => temp.categories.includes(category.guid));

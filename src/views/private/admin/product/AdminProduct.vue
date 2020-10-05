@@ -2,6 +2,7 @@
   <el-container class="full-size" direction="vertical">
     <sort-product-dialog @hasChange="hasChange" ref="sortProductDialog" />
     <import-product-dialog @hasChange="hasChange" ref="importProductDialog" />
+    <create-or-update-product-dialog @saved="reloadTableData" ref="productDialog"/>
     <div>
       <el-row :gutter="10">
         <el-col :span="10">
@@ -59,7 +60,7 @@
 
         <el-table-column prop="productThumbnailUrl" label="Hình" width="72px">
           <template slot-scope="{row}">
-            <el-image class="product-thumbnail" :src="row.productThumbnailUrl" :preview-src-list="[row.productThumbnailUrl]">
+            <el-image class="product-thumbnail" :src="getMediaUrl(row.productThumbnailUrl)" :preview-src-list="[getMediaUrl(row.productThumbnailUrl)]">
               <div slot="error" class="image-error-slot full-size">
                 <i class="el-icon-picture-outline"></i>
               </div>
@@ -72,6 +73,8 @@
         <el-table-column prop="productName" label="Tên sản phẩm">
           <template slot-scope="{row}">
             <span class="no-break-word">{{row.productName}}</span>
+            <el-divider class="margin-0"></el-divider>
+            <span class="no-break-word">{{row.productNameEng}}</span>
           </template>
         </el-table-column>
 
@@ -89,10 +92,17 @@
           </template>
         </el-table-column>
 
-        <el-table-column min-width="100px" prop="productType" label="Loại sản phẩm">
+<!--        <el-table-column min-width="100px" prop="productType" label="Loại sản phẩm">-->
+<!--          <template slot-scope="{row}">-->
+<!--            <el-tag v-if="row.productType === 'MAIN_PRODUCT'" type="primary">Sản phẩm chính</el-tag>-->
+<!--            <el-tag v-else type="primary">Sản phẩm phụ</el-tag>-->
+<!--          </template>-->
+<!--        </el-table-column>-->
+
+        <el-table-column min-width="100px" prop="productActivated" label="Kích hoạt">
           <template slot-scope="{row}">
-            <el-tag v-if="row.productType === 'MAIN_PRODUCT'" type="primary">Sản phẩm chính</el-tag>
-            <el-tag v-else type="primary">Sản phẩm phụ</el-tag>
+            <el-tag v-if="row.productActivated" type="success">Bật</el-tag>
+            <el-tag v-else type="danger">Tắt</el-tag>
           </template>
         </el-table-column>
 
@@ -129,7 +139,6 @@
         </template>
       </data-table>
     </div>
-    <create-or-update-product-dialog @productSaved="reloadTableData" ref="productDialog"/>
   </el-container>
 </template>
 

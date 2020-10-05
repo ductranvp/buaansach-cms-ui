@@ -8,20 +8,21 @@
     <el-form ref="userForm" :model="form" :rules="formRules">
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="login">
+          <el-form-item prop="userLogin">
             <input-label label="Tên đăng nhập" required/>
-            <el-input maxlength="50" ref="login" :disabled="isEdit" v-model="form.login" show-word-limit></el-input>
+            <el-input maxlength="50" ref="userLogin" :disabled="isEdit" v-model="form.userLogin"
+                      show-word-limit></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :span="11" :offset="2">
-          <el-form-item prop="password">
+          <el-form-item prop="userPassword">
             <input-label label="Mật khẩu" required/>
             <el-input autocomplete="new-password"
                       :disabled="isEdit"
-                      ref="password"
+                      ref="userPassword"
                       maxlength="100"
-                      v-model="form.password"
+                      v-model="form.userPassword"
                       type="password"
                       show-word-limit
                       show-password></el-input>
@@ -29,34 +30,23 @@
         </el-col>
       </el-form-item>
 
-      <el-form-item>
-        <el-col :span="11">
-          <el-form-item prop="lastName">
-            <input-label label="Họ" required/>
-            <el-input ref="lastName" maxlength="50" v-model="form.lastName" show-word-limit></el-input>
-          </el-form-item>
-        </el-col>
-
-        <el-col :span="11" :offset="2">
-          <el-form-item prop="firstName">
-            <input-label label="Tên" required/>
-            <el-input maxlength="50" v-model="form.firstName" show-word-limit></el-input>
-          </el-form-item>
-        </el-col>
+      <el-form-item prop="fullName">
+        <input-label label="Họ Tên" required/>
+        <el-input ref="fullName" maxlength="100" v-model="form.fullName" show-word-limit></el-input>
       </el-form-item>
 
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="email">
+          <el-form-item prop="userEmail">
             <input-label label="Email" required/>
-            <el-input ref="email" maxlength="255" v-model="form.email" show-word-limit></el-input>
+            <el-input ref="userEmail" maxlength="255" v-model="form.userEmail" show-word-limit></el-input>
           </el-form-item>
         </el-col>
 
         <el-col :span="11" :offset="2">
-          <el-form-item prop="phone">
-            <input-label label="SĐT" optional/>
-            <el-input maxlength="10" v-model="form.phone" show-word-limit></el-input>
+          <el-form-item prop="userPhone">
+            <input-label label="SĐT" required/>
+            <el-input maxlength="10" :disabled="isEdit" v-model="form.userPhone" show-word-limit></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
@@ -78,18 +68,21 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="authorities">
-            <input-label label="Quyền" required/>
-            <el-select :disabled="currentUser.login === form.login" multiple class="full-width" v-model="form.authorities">
+            <input-label label="Nhóm Quyền" required/>
+            <el-select :disabled="currentUser.userLogin === form.userLogin" multiple class="full-width"
+                       v-model="form.authorities">
               <el-option
-                v-for="lang in roles"
-                :key="lang.value"
-                :label="lang.label"
-                :value="lang.value">
+                      v-for="auth in authorities"
+                      :key="auth.value"
+                      :label="auth.label"
+                      :value="auth.value">
               </el-option>
             </el-select>
           </el-form-item>
         </el-col>
       </el-form-item>
+
+
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="hide($event)">
@@ -106,60 +99,59 @@
   import AppUtils from "@/utils/app.util";
   import NotificationUtils from "@/utils/notification.util";
   import AdminUserService from "@/service/admin/admin.user.service";
-  import {mapState} from "vuex";
+  import Constants from "@/utils/constants";
+  import Authority from "@/enum/Authority";
+  import Language from "@/enum/Language";
 
   export default {
     name: "CreateOrUpdateUserDialog",
-    computed: {
-      ...mapState({
-        currentUser: state => state.user.info
-      })
-    },
     data() {
       return {
         dialogFormVisible: false,
         isEdit: false,
         isLoading: false,
         form: {
-          firstName: null,
-          lastName: null,
-          login: null,
-          password: null,
-          email: null,
-          phone: null,
-          langKey: "vi",
-          authorities: [],
+          userLogin: null,
+          userEmail: null,
+          userPhone: null,
+          userPassword: null,
+          userActivated: null,
+          authorities: null,
+          fullName: null,
+          langKey: null,
         },
         formRules: {
-          firstName: [
+          userLogin: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
+            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"},
+            {
+              pattern: Constants.LOGIN_REGEX,
+              message: this.$t("common.entity.validation.pattern", {pattern: Constants.LOGIN_REGEX}),
+              trigger: "blur"
+            }
           ],
-          lastName: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
-          ],
-          login: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
-          ],
-          password: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-            {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"},
-            {min: 4, message: this.$t("common.entity.validation.minlength", {min: 4}), trigger: "blur"}
-          ],
-          email: [
+          userEmail: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {type: 'email', message: this.$t("common.entity.validation.email"), trigger: "blur"},
             {max: 255, message: this.$t("common.entity.validation.maxlength", {max: 255}), trigger: "blur"}
           ],
-          phone: [
+          userPhone: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 10, message: this.$t("common.entity.validation.maxlength", {max: 10}), trigger: "blur"},
             {
-              pattern: "^(09|03|07|08|05)+([0-9]{8})$",
-              message: this.$t("common.entity.validation.pattern", {pattern: "^(09|03|07|08|05)+([0-9]{8})$"}),
+              pattern: Constants.PHONE_REGEX,
+              message: this.$t("common.entity.validation.pattern", {pattern: Constants.PHONE_REGEX}),
               trigger: "blur"
             }
+          ],
+          userPassword: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+            {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"},
+            {min: 4, message: this.$t("common.entity.validation.minlength", {min: 4}), trigger: "blur"}
+          ],
+          fullName: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ],
           langKey: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
@@ -168,38 +160,25 @@
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
           ],
         },
-        languages: [
-          {label: "Tiếng Việt", value: "vi"},
-          {label: "English", value: "en"}
-        ],
-        roles: [
-          {label: "Quản trị viên", value: "ROLE_ADMIN"},
-          {label: "Điều hành viên", value: "ROLE_MODERATOR"},
-          {label: "Chăm sóc khách hàng", value: "ROLE_CUSTOMER_CARE"},
-          {label: "Người dùng", value: "ROLE_USER"}
-        ]
+        languages: Language.optionArray,
+        authorities: Authority.optionArray,
       };
     },
     methods: {
       onOpened() {
         if (this.isEdit) {
-          this.$refs.lastName.focus();
+          this.$refs.fullName.focus();
         } else {
-          this.$refs.login.focus();
+          this.$refs.userLogin.focus();
         }
       },
       create() {
         this.form = {
-          firstName: null,
-          lastName: null,
-          login: null,
-          password: null,
-          email: null,
-          phone: null,
-          langKey: "vi",
+          langKey: Language.value.vi,
+          userActivated: true,
           authorities: [],
         };
-        this.formRules.password = [
+        this.formRules.userPassword = [
           {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
           {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"},
           {min: 4, message: this.$t("common.entity.validation.minlength", {min: 4}), trigger: "blur"}
@@ -208,7 +187,7 @@
         this.show();
       },
       edit(user) {
-        this.formRules.password = [];
+        this.formRules.userPassword = [];
         this.form = AppUtils.deepCopy(user);
         this.isEdit = true;
         this.show();
@@ -238,12 +217,12 @@
               } else {
                 await AdminUserService.createUser(vm.form);
               }
-              vm.isLoading = false;
               vm.$emit("saved");
               vm.hide();
             } catch (error) {
-              vm.isLoading = false;
               NotificationUtils.error(error.message || error.data.message);
+            } finally {
+              vm.isLoading = false;
             }
           }
         });

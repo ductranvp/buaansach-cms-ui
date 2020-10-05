@@ -10,6 +10,8 @@
       "adminTrackerPage": "System Tracker",
       "adminSettingPage": "Setting",
       "adminVoucherPage": "Voucher Management",
+      "adminSalePage": "Sale Management",
+      "adminBannerPage": "Banner Management",
       "adminStoreDetailPage": "Detail - Store",
       "adminStoreProductPage": "Product - Store",
       "adminStoreDetailOverviewPage": "Overview - Store",

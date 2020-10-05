@@ -22,17 +22,45 @@
         </el-col>
 
         <el-col :span="11" :offset="2">
-          <el-form-item prop="productUnit">
-            <input-label label="Đơn vị" optional/>
-            <el-input ref="productUnit" v-model="form.productUnit" maxlength="50" show-word-limit></el-input>
+          <el-form-item prop="productNameEng">
+            <input-label label="Tên sản phẩm (Tiếng Anh)" required/>
+            <el-input ref="productNameEng" v-model="form.productNameEng" maxlength="100" show-word-limit></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>
 
-      <el-form-item prop="productDescription">
-        <input-label label="Mô tả" optional/>
-        <el-input type="textarea" rows="5" v-model="form.productDescription" maxlength="2000"
-                  show-word-limit></el-input>
+      <el-form-item>
+        <el-col :span="11">
+          <el-form-item prop="productUnit">
+            <input-label label="Đơn vị" required/>
+            <el-input ref="productUnit" v-model="form.productUnit" maxlength="50" show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="productUnitEng">
+            <input-label label="Đơn vị (Tiếng Anh)" required/>
+            <el-input ref="productUnitEng" v-model="form.productUnitEng" maxlength="50" show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
+
+      <el-form-item>
+        <el-col :span="11">
+          <el-form-item prop="productDescription">
+            <input-label label="Mô tả" optional/>
+            <el-input type="textarea" rows="5" v-model="form.productDescription" maxlength="2000"
+                      show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="productDescriptionEng">
+            <input-label label="Mô tả (Tiếng Anh)" optional/>
+            <el-input type="textarea" rows="5" v-model="form.productDescriptionEng" maxlength="2000"
+                      show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
       </el-form-item>
 
       <el-form-item>
@@ -81,15 +109,12 @@
 
       <el-form-item>
         <el-col :span="11">
-          <el-form-item prop="productDisplay">
-            <input-label label="Hiển thị" required/>
-            <el-select v-model="form.productDisplay" class="full-width">
-              <el-option v-for="item in productDisplay"
-                         :key="item.value"
-                         :label="item.label"
-                         :value="item.value">
-              </el-option>
-            </el-select>
+          <el-form-item prop="productActivated">
+            <input-label label="Kích hoạt"/>
+            <el-checkbox v-model="form.productActivated">
+              <span v-if="form.productActivated">Bật</span>
+              <span v-else>Tắt</span>
+            </el-checkbox>
           </el-form-item>
         </el-col>
         <el-col :span="11" :offset="2">
@@ -112,7 +137,7 @@
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
-          :image-url-prop.sync="form.productThumbnailUrl"
+          :image-url-prop="getMediaUrl(form.productThumbnailUrl)"
         />
       </el-form-item>
 
@@ -133,6 +158,8 @@
   import NotificationUtils from "@/utils/notification.util";
   import AdminProductService from "@/service/admin/admin.product.service";
   import AdminCategoryService from "@/service/admin/admin.category.service";
+  import ProductType from "@/enum/ProductType";
+  import ProductStatus from "@/enum/ProductStatus";
 
   export default {
     name: "CreateOrUpdateProductDialog",
@@ -146,18 +173,22 @@
           guid: null,
           productCode: null,
           productName: null,
+          productNameEng: null,
           productUnit: null,
+          productUnitEng: null,
           productDescription: null,
+          productDescriptionEng: null,
           productImageUrl: null,
           productThumbnailUrl: null,
           productStatus: null,
           productType: null,
-          productDisplay: null,
           productRootPrice: null,
-          productDiscount: null,
           productPrice: null,
+          productDiscount: null,
+          productDiscountType: null,
           productPosition: null,
-          productSaleGuid: null,
+          productActivated: null,
+          saleGuid: null,
           categories: [],
         },
         formRules: {
@@ -165,16 +196,25 @@
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
           ],
+          productNameEng: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+            {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
+          ],
           productUnit: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
+            {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
+          ],
+          productUnitEng: [
+            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
             {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
           ],
           productDescription: [
             {max: 2000, message: this.$t("common.entity.validation.maxlength", {max: 2000}), trigger: "blur"}
           ],
-          productStatus: [
-            {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          productDescriptionEng: [
+            {max: 2000, message: this.$t("common.entity.validation.maxlength", {max: 2000}), trigger: "blur"}
           ],
-          productDisplay: [
+          productStatus: [
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
           productType: [
@@ -191,19 +231,8 @@
             {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
           ],
         },
-        productStatus: [
-          {label: "Có sẵn", value: "AVAILABLE"},
-          {label: "Tạm hết hàng", value: "UNAVAILABLE"},
-          {label: "Ngừng kinh doanh", value: "STOP_TRADING"}
-        ],
-        productType: [
-          {label: "Sản phẩm chính", value: "MAIN_PRODUCT"},
-          {label: "Sản phẩm phụ", value: "SUB_PRODUCT"},
-        ],
-        productDisplay: [
-          {label: "Mặc định", value: "DEFAULT"},
-          {label: "Nổi bật", value: "HIGHLIGHT"},
-        ]
+        productStatus: ProductStatus.optionArray,
+        productType: ProductType.optionArray
       };
     },
     methods: {
@@ -218,9 +247,10 @@
       create() {
         this.isEdit = false;
         this.form = {
-          productStatus: "AVAILABLE",
-          productType: "MAIN_PRODUCT",
-          productDisplay: "DEFAULT"
+          productStatus: ProductStatus.value.AVAILABLE,
+          productType: ProductType.value.MAIN_PRODUCT,
+          productActivated: true,
+          categories: []
         };
         this.show();
       },
@@ -245,7 +275,7 @@
         done();
       },
       onOpened() {
-        this.$refs.productName.focus();
+        if (!this.isEdit) this.$refs.productName.focus();
       },
       submit() {
         this.$refs.productForm.validate(async valid => {
@@ -253,19 +283,19 @@
             let image = this.$refs.singleImageUploader.getSelectedImage();
             try {
               this.isLoading = true;
-              let payload = JSON.parse(JSON.stringify(this.form));
+              let payload = AppUtils.deepCopy(this.form);
               payload.categories = this.categories.filter(category => this.form.categories.includes(category.guid));
               if (this.isEdit && this.form.guid) {
                 await AdminProductService.updateProduct(payload, image);
               } else {
                 await AdminProductService.createProduct(payload, image);
               }
-              this.isLoading = false;
-              this.$emit("productSaved");
+              this.$emit("saved");
               this.hide();
             } catch (error) {
-              this.isLoading = false;
               NotificationUtils.error(error.message || error.data.message);
+            } finally {
+              this.isLoading = false;
             }
           }
         });

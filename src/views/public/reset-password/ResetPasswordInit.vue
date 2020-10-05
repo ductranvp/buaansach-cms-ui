@@ -33,7 +33,7 @@
 </template>
 
 <script>
-  import AccountService from "@/service/account.service";
+  import UserService from "@/service/shared/user.service";
   import MessageBoxUtils from "@/utils/message-box.util";
 
   export default {
@@ -65,7 +65,7 @@
         const vm = this;
         vm.$refs.resetPasswordForm.validate(valid => {
           if (valid) {
-            AccountService.resetPasswordInit(vm.form.email).then(function () {
+            UserService.resetPasswordInit(vm.form.email).then(function () {
               MessageBoxUtils.showAlert(vm.$t("public.resetPasswordInitPage.alertTitle"),
                 vm.$t("public.resetPasswordInitPage.alertMessage"), false, function () {
                   vm.$router.push({name: 'loginPage'});

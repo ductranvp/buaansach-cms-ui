@@ -2,7 +2,6 @@
   <el-dialog
     :visible.sync="dialogVisible"
     :close-on-press-escape="true"
-    :modal="false"
     :before-close="beforeClose"
     title="Sắp xếp danh mục"
     :destroy-on-close="true">

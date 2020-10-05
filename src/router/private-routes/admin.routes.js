@@ -1,5 +1,5 @@
 import Roles from "@/config/security/roles";
-import AdminStoreDetailChildren from "@/router/private-routes/admin/admin-store-detail.children.routes";
+import AdminStoreDetailChildren from "@/router/private-routes/admin/admin.store-detail.routes";
 
 const AdminRoutes = [
   {
@@ -92,6 +92,24 @@ const AdminRoutes = [
     component: () => import("@/views/private/admin/voucher/AdminVoucher"),
     meta: {
       title: "private.pageTitle.admin.adminVoucherPage",
+      roles: [Roles.ADMIN]
+    }
+  },
+  {
+    path: "sale",
+    name: "adminSalePage",
+    component: () => import("@/views/private/admin/sale/AdminSale"),
+    meta: {
+      title: "private.pageTitle.admin.adminSalePage",
+      roles: [Roles.ADMIN]
+    }
+  },
+  {
+    path: "banner",
+    name: "adminBannerPage",
+    component: () => import("@/views/private/admin/banner/AdminBanner"),
+    meta: {
+      title: "private.pageTitle.admin.adminBannerPage",
       roles: [Roles.ADMIN]
     }
   }
