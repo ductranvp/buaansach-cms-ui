@@ -160,13 +160,17 @@
                   <span class="text-bold">Khuyến mãi</span>
                 </el-row>
                 <el-row type="flex" align="middle" style="height: 40px">
-                  <el-col>
+                  <el-col :span="8">
                     <span class="text-small">Trên hóa đơn: </span>
                     <span class="text-very-large text-bold">{{parsedReportData.totalDiscount | priceAppend}}</span>
                   </el-col>
-                  <el-col>
+                  <el-col :span="8">
                     <span class="text-small">Thực tế: </span>
-                    <span class="text-very-large text-bold">{{parsedReportData.totalRealDiscount | priceAppend}}</span>
+                    <span class="text-very-large text-bold">{{parsedReportData.totalRealDiscount - parsedReportData.totalPointCost| priceAppend}}</span>
+                  </el-col>
+                  <el-col :span="8">
+                    <span class="text-small">Điểm thưởng: </span>
+                    <span class="text-very-large text-bold">{{parsedReportData.totalPointCost | priceAppend}}</span>
                   </el-col>
                 </el-row>
               </el-main>
@@ -303,6 +307,7 @@
           totalDiscount: 0,
           totalRealDiscount: 0,
           totalRealRevenue: 0,
+          totalPointCost: 0,
           listTotal: [],
           listCancelled: [],
           listPurchased: [],
@@ -357,6 +362,10 @@
 
         this.parsedReportData.totalRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
           return acc + item.orderTotalAmount;
+        }, 0);
+
+        this.parsedReportData.totalPointCost = this.parsedReportData.listPurchased.reduce((acc, item) => {
+          return acc + item.orderPointCost;
         }, 0);
 
         this.parsedReportData.totalRealRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
