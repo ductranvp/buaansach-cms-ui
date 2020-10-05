@@ -9,6 +9,15 @@
     </el-header>
     <el-main>
       <raw-data-table :data="sales" show-index>
+        <el-table-column prop="saleImageUrl" label="Hình">
+          <template slot-scope="{row}">
+            <el-image style="height: 50px" fit="cover" :src="getMediaUrl(row.saleImageUrl)" :preview-src-list="[getMediaUrl(row.saleImageUrl)]">
+              <div slot="error" class="image-error-slot full-size">
+                <i class="el-icon-picture-outline"></i>
+              </div>
+            </el-image>
+          </template>
+        </el-table-column>
         <el-table-column prop="saleName" label="Tên Sale"/>
         <el-table-column prop="saleNameEng" label="Tên Sale (Eng)"/>
         <el-table-column prop="saleDiscount" label="Giảm giá"/>
@@ -84,5 +93,9 @@
 </script>
 
 <style scoped>
-
+  .sale-thumbnail {
+    height: 50px;
+    width: 50px;
+    object-fit: cover;
+  }
 </style>

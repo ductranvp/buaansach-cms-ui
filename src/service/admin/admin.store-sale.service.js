@@ -32,7 +32,7 @@ const AdminStoreSaleService = {
   },
 
   /**
-   * @param {{storeGuid: String, saleGuid: String}} payload
+   * @param {{storeGuid: String, saleGuid: String, revert: Boolean}} payload
    * */
   makePrimary(payload) {
     return request.put(baseUrl + '/make-primary', payload);

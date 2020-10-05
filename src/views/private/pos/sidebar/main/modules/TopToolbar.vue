@@ -82,7 +82,7 @@
 <script>
   import {mapState} from "vuex";
   import MessageUtils from "@/utils/message.util";
-  import ChangeOrderSeatDialog from "@/views/private/pos/sidebar/main/ChangeOrderSeatDialog";
+  import ChangeOrderSeatDialog from "@/views/private/pos/sidebar/main/dialog/ChangeOrderSeatDialog";
   import Constants from "@/utils/constants";
   import hotkeys from "hotkeys-js";
   import CancelOrderDialog from "@/views/private/pos/sidebar/main/dialog/CancelOrderDialog";

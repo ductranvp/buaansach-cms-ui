@@ -46,7 +46,7 @@
         <el-col :span="11" :offset="2">
           <el-form-item prop="userPhone">
             <input-label label="SĐT" required/>
-            <el-input maxlength="10" v-model="form.userPhone" show-word-limit></el-input>
+            <el-input maxlength="10" :disabled="isEdit" v-model="form.userPhone" show-word-limit></el-input>
           </el-form-item>
         </el-col>
       </el-form-item>

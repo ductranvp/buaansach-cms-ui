@@ -109,9 +109,20 @@ const PosWebsocket = {
           MessageUtils.info(notification.title + ' đã gọi món.');
           this.playAudio('store_order_sound');
           break;
+        case WebsocketMessages.GUEST_UPDATE_POINT:
+          reloadSeatIfActive(this);
+          if (this.selectedSeat.guid === seatData.guid)
+          MessageUtils.info(notification.title + ' đã cập nhật điểm thưởng.');
+          break;
+        case WebsocketMessages.GUEST_UPDATE_PHONE:
+          reloadSeatIfActive(this);
+          if (this.selectedSeat.guid === seatData.guid)
+          MessageUtils.info(notification.title + ' đã cập nhật số điện thoại.');
+          break;
       }
 
       function reloadSeatIfActive(vm) {
+        if (vm.selectedSeat.guid !== seatData.guid) return;
         vm.$store.dispatch('posMachine/getSeatOrderInfo', seatData.guid).then(() => {
           vm.scrollToEnd();
         });

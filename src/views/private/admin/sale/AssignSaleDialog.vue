@@ -27,8 +27,10 @@
             <el-table-column prop="storeName" label="Tên cửa hàng"/>
             <el-table-column prop="storeName" label="Sale chính">
               <template slot-scope="{row}">
-                <el-tag size="medium" type="primary" v-if="row.storePrimarySaleGuid === row.saleGuid">Đã là sale chính</el-tag>
-                <el-button type="primary" size="mini" @click="makePrimarySale(row)" v-else>Đặt làm sale chính</el-button>
+<!--                <el-tag size="medium" type="primary" v-if="row.storePrimarySaleGuid === row.saleGuid">Sale chính</el-tag>-->
+                <el-button type="danger" size="mini" @click="makePrimarySale(row, true)" v-if="row.storePrimarySaleGuid === row.saleGuid">Gỡ sale chính</el-button>
+
+                <el-button type="primary" size="mini" @click="makePrimarySale(row, false)" v-else>Đặt làm sale chính</el-button>
               </template>
             </el-table-column>
             <el-table-column label="Thao tác">
@@ -135,10 +137,15 @@
       onSelectChange(val) {
         this.selectedStores = val;
       },
-      async makePrimarySale(storeSale){
+      async makePrimarySale(storeSale, revert){
+        storeSale.revert = revert;
         await AdminStoreSaleService.makePrimary(storeSale);
-        storeSale.storePrimarySaleGuid = storeSale.saleGuid;
-      }
+        if (revert){
+          storeSale.storePrimarySaleGuid = null;
+        } else {
+          storeSale.storePrimarySaleGuid = storeSale.saleGuid;
+        }
+      },
     },
   };
 </script>

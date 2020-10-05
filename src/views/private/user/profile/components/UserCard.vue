@@ -10,6 +10,9 @@
       <el-row type="flex" justify="center" class="padding-top-10">
         <span class="user-name">{{ user.fullName }}</span>
       </el-row>
+      <el-row type="flex" justify="center" class="padding-top-5">
+        <span>{{ user.userLogin }}</span>
+      </el-row>
       <el-divider class="margin-15-0"/>
       <el-row>
         <div>

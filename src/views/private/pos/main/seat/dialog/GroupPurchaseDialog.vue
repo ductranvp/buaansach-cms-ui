@@ -18,6 +18,7 @@
                 <el-col v-for="seat in area.listSeat" class="margin-bottom-10" :span="3" :key="seat.guid">
                   <el-card :body-style="{padding: '0'}"
                            style="position: relative"
+                           :style="{borderColor: area.areaColor, boxShadow: seat.checked && seat.seatLocked ? '0 0 2px 3px ' + lockColor : ''}"
                            class="pointer"
                            @click.native="toggleSeatSelection(seat)"
                            :class="[
@@ -27,6 +28,7 @@
                            seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'UNFINISHED' && !seat.seatLocked ? 'bg-warning text-white' : '']">
                     <div class="text-center text-small padding-10-5">
                       <i class="el-icon-lock padding-right-5" v-if="seat.seatLocked"></i>
+                      <i class="el-icon-check padding-right-5" v-else-if="seat.checked"></i>
                       <span>{{seat.seatName}}</span>
                     </div>
 <!--                    <i v-if="seat.seatLocked" class="el-icon-lock" style="position: absolute; right: 0; top: 0"></i>-->
@@ -37,20 +39,33 @@
           </el-main>
           <el-footer height="auto">
             <el-divider class="margin-10-0"></el-divider>
+            <div class="text-center">
+              <el-tag type="danger" class="text-large">
+                <span>Chọn bàn </span>
+                <i class="el-icon-arrow-right"></i>
+                <span> Khóa </span>
+                <i class="el-icon-arrow-right"></i>
+                <span> Tính tiền</span>
+              </el-tag>
+            </div>
             <div class="text-center padding-10-0">
               <el-button @click="hide">
+                <i class="el-icon-close"></i>
                 <span>{{$t('common.entity.action.close')}}</span>
-              </el-button>
-              <el-button type="danger" @click="toggleLockList(true)" :disabled="!selectedSeats.length"
-                         :loading="isLoading">
-                <span>Khóa</span>
               </el-button>
               <el-button type="warning" @click="toggleLockList(false)" :disabled="!selectedSeats.length"
                          :loading="isLoading">
-                <span>Mở Khóa</span>
+                <i class="el-icon-unlock"></i>
+                <span>Mở</span>
+              </el-button>
+              <el-button type="danger" @click="toggleLockList(true)" :disabled="!selectedSeats.length"
+                         :loading="isLoading">
+                <i class="el-icon-lock"></i>
+                <span>Khóa</span>
               </el-button>
               <el-button type="primary" @click="getListOrderByListSeat" :disabled="!selectedSeats.length || !isAllSeatLocked"
                          :loading="isLoading">
+                <i class="el-icon-coin"></i>
                 <span>Tính tiền</span>
               </el-button>
             </div>
@@ -150,6 +165,7 @@
   import PriceUtils from '@/utils/price.util';
   import BillGroup from '@/views/private/pos/bill/BillGroup';
   import PosSeatService from '@/service/pos/pos.seat.service';
+  import Constants from '@/utils/constants';
 
   export default {
     name: 'GroupPurchaseDialog',
@@ -176,6 +192,7 @@
         dialogFormVisible: false,
         selectedSeats: [],
         listOrder: [],
+        lockColor: Constants.COLOR.DANGER
       };
     },
     methods: {
@@ -267,6 +284,14 @@
       },
       async submit() {
         const vm = this;
+        if (this.customerPay === null || this.customerPay === "") {
+          MessageUtils.error("Vui lòng nhập số tiền khách đưa");
+          return;
+        }
+        if (this.customerPay * 1000 < this.getTotalPayAmount()){
+          MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền cần thanh toán");
+          return;
+        }
         try {
           this.isLoading = true;
           const listSeatGuid = this.selectedSeats.map(item => item.guid);
@@ -321,5 +346,8 @@
 <style lang="scss" scoped>
   .bg-selected {
     background-color: $--color-primary !important;
+  }
+  .outline-danger {
+    box-shadow: 0 0 3px 2px green;
   }
 </style>

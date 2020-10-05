@@ -170,7 +170,7 @@
           return;
         }
         if (customerPay * 1000 < this.payAmount) {
-          MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền thanh toán");
+          MessageUtils.error("Số tiền khách đưa phải lớn hơn hoặc bằng số tiền cần thanh toán");
           return;
         }
         const payload = {

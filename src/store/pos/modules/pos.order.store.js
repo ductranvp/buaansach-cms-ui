@@ -68,6 +68,7 @@ const actions = {
       seatStatus: SeatStatus.value.EMPTY,
       seatServiceStatus: SeatServiceStatus.value.FINISHED,
     });
+    commit('SET_SEAT_LOCK', false);
     commit('RESET_ORDER');
     commit('RESET_ORDER_PRODUCT');
   },
@@ -79,11 +80,14 @@ const actions = {
       orderGuid: state.currentOrder.guid,
     };
     await PosOrderService.changeOrderSeat(posOrderSeatChange);
-    commit("CHANGE_SEAT_STATUS", {
-      targetSeat: state.selectedSeat,
-      seatStatus: SeatStatus.value.EMPTY,
-      seatServiceStatus: SeatServiceStatus.value.FINISHED
-    });
+
+    // Khong can thiet vi sau khi chuyen cho da reload lai toan bo khu vuc
+    // commit("CHANGE_SEAT_STATUS", {
+    //   targetSeat: state.selectedSeat,
+    //   seatStatus: SeatStatus.value.EMPTY,
+    //   seatServiceStatus: SeatServiceStatus.value.FINISHED
+    // });
+    // commit('SET_SEAT_LOCK', false);
     commit('RESET_ORDER');
     commit('RESET_ORDER_PRODUCT');
   },
@@ -98,6 +102,7 @@ const actions = {
       seatStatus: SeatStatus.value.EMPTY,
       seatServiceStatus: SeatServiceStatus.value.FINISHED,
     });
+    commit('SET_SEAT_LOCK', false);
     commit('RESET_ORDER');
     commit('RESET_ORDER_PRODUCT');
   },

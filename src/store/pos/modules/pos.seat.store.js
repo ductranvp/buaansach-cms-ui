@@ -37,6 +37,9 @@ const mutations = {
   TOGGLE_LOCK(state) {
     state.selectedSeat.seatLocked = !state.selectedSeat.seatLocked;
   },
+  SET_SEAT_LOCK(state, lock){
+    state.selectedSeat.seatLocked = lock;
+  },
   TOGGLE_LOCK_LIST(state, {listSeatGuid, locked}) {
     for (let i = 0; i < state.allAreas.length; i++) {
       let area = state.allAreas[i];

@@ -9,6 +9,14 @@
 
     <el-form ref="dialogForm" :model="form" :rules="formRules">
       <el-form-item>
+        <input-label label="Hình ảnh" optional/>
+        <single-image-uploader
+                ref="singleImageUploader"
+                :show-clear-btn="false"
+                :image-url-prop="getMediaUrl(form.saleImageUrl)"
+        />
+      </el-form-item>
+      <el-form-item>
         <el-col :span="11">
           <el-form-item prop="saleName">
             <input-label label="Tên Sale" required/>
@@ -194,10 +202,11 @@
             try {
               this.isLoading = true;
               const payload = this.getPayload();
+              const image = this.$refs.singleImageUploader.getSelectedImage();
               if (this.isEdit) {
-                await AdminSaleService.updateSale(payload);
+                await AdminSaleService.updateSale(payload, image);
               } else {
-                await AdminSaleService.createSale(payload);
+                await AdminSaleService.createSale(payload, image);
               }
               this.$emit('saved');
               this.hide();

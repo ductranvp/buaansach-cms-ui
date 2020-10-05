@@ -42,10 +42,12 @@ function parseCloudFlareTrace(trace){
 }
 
 function getNumberErrorCode(error){
+  if (!error) return -1;
   return error.status || error.data.status;
 }
 
 function getStringErrorCode(error){
+  if (!error) return "";
   return error.message || error.data.message;
 }
 
