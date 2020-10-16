@@ -5,7 +5,7 @@
                 <div class="padding-0-10">
                     <router-link to="/">
                         <el-tooltip content="Trang chủ">
-                            <img alt="logo" src="/logo_square.png" class="logo">
+                            <img alt="logo" :src="logoSquareImage" class="logo">
                         </el-tooltip>
                     </router-link>
                 </div>

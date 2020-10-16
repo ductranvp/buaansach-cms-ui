@@ -3,7 +3,7 @@
     <el-row class="full-size padding-0-10" type="flex" align="middle">
       <el-row type="flex" align="middle">
         <router-link to="/">
-          <img src="/logo_square.png" class="logo">
+          <img :src="logoSquareImage" class="logo">
         </router-link>
         <el-button class="padding-10" type="success" @click="goto('homePage')">
           <span class="hidden-xs-only">BỮA ĂN SẠCH</span>

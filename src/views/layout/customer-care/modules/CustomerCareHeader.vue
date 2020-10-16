@@ -10,16 +10,10 @@
       justify="space-between"
     >
       <el-col>
-<!--        <router-link to="/">-->
-<!--          <img src="/logo_square.png" class="bas-logo">-->
-<!--        </router-link>-->
         <el-button size="medium" type="success" @click="goBack">
           <i class="el-icon-arrow-left"></i>
           <span>Quay lại</span>
         </el-button>
-<!--        <el-button class="padding-10" type="success" @click="goto('homePage')">-->
-<!--          <span class="hidden-sm-and-down">BỮA ĂN SẠCH</span>-->
-<!--        </el-button>-->
       </el-col>
       <el-button type="success" size="medium" @click="goto('logout')">
         <i class="fas el-icon-fa-sign-out-alt"></i>
