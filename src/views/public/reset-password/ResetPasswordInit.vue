@@ -35,6 +35,8 @@
 <script>
   import UserService from "@/service/shared/user.service";
   import MessageBoxUtils from "@/utils/message-box.util";
+  import Constants from '@/utils/constants';
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "ResetPasswordInit",
@@ -63,14 +65,22 @@
     methods: {
       submit() {
         const vm = this;
-        vm.$refs.resetPasswordForm.validate(valid => {
+        vm.$refs.resetPasswordForm.validate(async valid => {
           if (valid) {
-            UserService.resetPasswordInit(vm.form.email).then(function () {
-              MessageBoxUtils.showAlert(vm.$t("public.resetPasswordInitPage.alertTitle"),
-                vm.$t("public.resetPasswordInitPage.alertMessage"), false, function () {
-                  vm.$router.push({name: 'loginPage'});
-                });
-            });
+            try {
+              vm.isLoading = true;
+              await UserService.resetPasswordInit({
+                email: vm.form.email,
+                domainType: Constants.CMS_UI_DOMAIN
+              });
+              MessageBoxUtils.showAlert("Thành công!", "Kiểm tra thư điện tử để đặt lại mật khẩu", false, function () {
+                vm.$router.push({name: 'loginPage'});
+              });
+            } catch (error) {
+              ErrorUtils.showErrorMessage(error);
+            } finally {
+              vm.isLoading = false;
+            }
           }
         });
       }

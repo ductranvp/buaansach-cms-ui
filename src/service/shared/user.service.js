@@ -48,7 +48,8 @@ const UserService = {
   },
 
   /**
-   * @param {String} payload - Email
+   * @param {String} payload.email
+   * @param {String} payload.domainType
    * */
   resetPasswordInit(payload) {
     return request.post(baseUrl + "/reset-password/init", payload);

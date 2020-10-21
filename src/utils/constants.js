@@ -16,7 +16,9 @@ const Constants = {
       WARNING: "#e6a23c",
       DANGER: "#f56c6c",
       INFO: "#909399",
-    }
+    },
+  CMS_UI_DOMAIN: "CMS_UI_DOMAIN",
+  CUSTOMER_UI_DOMAIN: "CUSTOMER_UI_DOMAIN",
   }
 ;
 export default Constants;
