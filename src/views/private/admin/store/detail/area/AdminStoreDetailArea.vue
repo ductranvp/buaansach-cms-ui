@@ -62,6 +62,7 @@
             <el-tag type="danger" v-else>Tắt</el-tag>
           </template>
         </el-table-column>
+        <el-table-column prop="areaPosition" sortable label="Vị trí"/>
         <el-table-column
           prop="numberOfSeats"
           width="100px"

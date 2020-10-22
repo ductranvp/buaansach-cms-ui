@@ -49,16 +49,21 @@
         </el-row>
       </el-form-item>
 
+      <el-form-item prop="areaActivated">
+        <input-label label="Kích hoạt" required/>
+        <el-checkbox v-model="form.areaActivated">
+          <span v-if="form.areaActivated">Có</span>
+          <span v-else>Không</span>
+        </el-checkbox>
+      </el-form-item>
 
       <el-form-item>
         <el-row>
           <el-col :span="11">
-            <el-form-item prop="areaActivated">
-              <input-label label="Kích hoạt" required/>
-              <el-checkbox v-model="form.areaActivated">
-                <span v-if="form.areaActivated">Có</span>
-                <span v-else>Không</span>
-              </el-checkbox>
+            <el-form-item prop="areaPosition">
+              <input-label label="Vị trí" required/>
+              <el-input v-model="form.areaPosition">
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="11" :offset="2" v-if="!isEdit">
@@ -125,6 +130,7 @@
           areaType: null,
           areaColor: null,
           areaActivated: null,
+          areaPosition: null,
           seatPrefix: null,
           seatPrefixEng: null,
           numberOfSeats: null,
