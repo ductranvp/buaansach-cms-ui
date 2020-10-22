@@ -26,9 +26,18 @@
             <el-tag>{{discountTypeLabels[row.saleDiscountType]}}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="saleConditions" label="Các điều kiện">
+        <el-table-column prop="saleConditions" label="Các điều kiện" width="150px">
           <template slot-scope="{row}">
             <el-tag v-for="item in row.saleConditions.split(';')" :key="item">{{saleConditionLabels[item]}}</el-tag>
+          </template>
+        </el-table-column>
+        <el-table-column prop="timeCondition" label="Thời gian" width="150px">
+          <template slot-scope="{row}">
+            <div v-if="row.timeCondition">
+              <div>Từ {{row.timeCondition.validFrom | moment("HH:mm DD/MM/YYYY")}}</div>
+              <div>Đến {{row.timeCondition.validUntil | moment("HH:mm DD/MM/YYYY")}}</div>
+            </div>
+            <el-tag v-else>Không giới hạn</el-tag>
           </template>
         </el-table-column>
         <template slot="action">

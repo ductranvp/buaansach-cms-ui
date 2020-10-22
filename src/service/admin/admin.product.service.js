@@ -71,6 +71,9 @@ const AdminProductService = {
   },
   updateListProductPosition(payload){
     return request.put(baseUrl + "/update-list-position", payload);
+  },
+  toggleActivation(productGuid){
+    return request.put(baseUrl + "/toggle-activation", productGuid);
   }
 };
 

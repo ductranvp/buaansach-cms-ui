@@ -101,8 +101,8 @@
 
         <el-table-column min-width="100px" prop="productActivated" label="Kích hoạt">
           <template slot-scope="{row}">
-            <el-tag v-if="row.productActivated" type="success">Bật</el-tag>
-            <el-tag v-else type="danger">Tắt</el-tag>
+            <el-button type="success" size="small" v-if="row.productActivated" :loading="row.isLoading" @click="toggleProductActivation(row)">Đã bật</el-button>
+            <el-button type="danger" size="small" v-else :loading="row.isLoading" @click="toggleProductActivation(row)">Đã tắt</el-button>
           </template>
         </el-table-column>
 
@@ -153,6 +153,7 @@
   import SortProductDialog from "@/views/private/admin/product/SortProductDialog";
   import ImportProductDialog from "@/views/private/admin/product/ImportProductDialog";
   import AdminProductRowDetail from "@/views/private/admin/product/AdminProductRowDetail";
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "AdminProductManagement",
@@ -227,6 +228,17 @@
       },
       showImportDialog(){
         this.$refs.importProductDialog.show();
+      },
+      async toggleProductActivation(product){
+        try {
+          this.$set(product, "isLoading", true);
+          await AdminProductService.toggleActivation(product.guid);
+          product.productActivated = !product.productActivated;
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
+        } finally {
+          this.$set(product, "isLoading", false);
+        }
       }
     }
   };
