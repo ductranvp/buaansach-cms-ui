@@ -154,27 +154,39 @@
         </el-row>
         <el-row :gutter="10" type="flex" align="middle">
           <el-col :span="12">
-            <el-card shadow="never">
-              <el-main class="padding-10-20 bg-warning text-light">
-                <el-row>
-                  <span class="text-bold">Khuyến mãi</span>
-                </el-row>
-                <el-row type="flex" align="middle" style="height: 40px">
-                  <el-col :span="8">
-                    <span class="text-small">Trên hóa đơn: </span>
-                    <span class="text-very-large text-bold">{{parsedReportData.totalDiscount | priceAppend}}</span>
-                  </el-col>
-                  <el-col :span="8">
-                    <span class="text-small">Thực tế: </span>
-                    <span class="text-very-large text-bold">{{parsedReportData.totalRealDiscount - parsedReportData.totalPointCost| priceAppend}}</span>
-                  </el-col>
-                  <el-col :span="8">
-                    <span class="text-small">Điểm thưởng: </span>
-                    <span class="text-very-large text-bold">{{parsedReportData.totalPointCost | priceAppend}}</span>
-                  </el-col>
-                </el-row>
-              </el-main>
-            </el-card>
+            <el-row :gutter="10" type="flex" align="middle">
+              <el-col :span="16">
+                <el-card shadow="never">
+                  <el-main class="padding-10-20 bg-warning text-light">
+                    <el-row>
+                      <span class="text-bold">Khuyến mãi</span>
+                    </el-row>
+                    <el-row type="flex" align="middle" style="height: 40px">
+                      <el-col :span="12">
+                        <span class="text-small">Trên hóa đơn: </span>
+                        <span class="text-very-large text-bold">{{parsedReportData.totalDiscount | priceAppend}}</span>
+                      </el-col>
+                      <el-col :span="12">
+                        <span class="text-small">Thực tế: </span>
+                        <span class="text-very-large text-bold">{{parsedReportData.totalRealDiscount - parsedReportData.totalPointCost| priceAppend}}</span>
+                      </el-col>
+                    </el-row>
+                  </el-main>
+                </el-card>
+              </el-col>
+              <el-col :span="8">
+                <el-card shadow="never">
+                  <el-main class="padding-10-20 bg-warning text-light">
+                    <el-row>
+                      <span class="text-bold">Điểm thưởng</span>
+                    </el-row>
+                    <el-row type="flex" align="middle" style="height: 40px">
+                      <span class="text-very-large text-bold">{{parsedReportData.totalPointCost | priceAppend}}</span>
+                    </el-row>
+                  </el-main>
+                </el-card>
+              </el-col>
+            </el-row>
           </el-col>
           <el-col :span="12">
             <el-card shadow="never">
@@ -191,6 +203,10 @@
                     <span class="text-small">Thực tế: </span>
                     <span class="text-very-large text-bold">{{parsedReportData.totalRealRevenue | priceAppend}}</span>
                   </el-col>
+                  <el-col>
+                    <span class="text-small">Thực thu: </span>
+                    <span class="text-very-large text-bold">{{parsedReportData.totalRealMoney | priceAppend}}</span>
+                  </el-col>
                 </el-row>
               </el-main>
             </el-card>
@@ -204,11 +220,11 @@
           <ul class="text-large">
             <li><b>Khuyến mãi trên hóa đơn</b>: Tổng số tiền khuyến mãi dựa trên giá trị các mã khuyến mãi.</li>
             <li><b>Khuyến mãi thực tế</b>: Tổng số tiền khuyến mãi thực tế được hưởng. (VD: Khuyến mãi 50k cho đơn 30k
-              thì thực
-              tế khuyến mãi là 30k)
+              thì thực tế hưởng khuyến mãi là 30k)
             </li>
             <li><b>Doanh thu trên hóa đơn</b>: Tổng số tiền sản phẩm đã phục vụ của các hóa đơn.</li>
-            <li><b>Doanh thu thực tế</b>: Tổng số tiền phải thanh toán của các hóa đơn. (Là số tiền nhân viên thu về)
+            <li><b>Doanh thu thực tế</b>: Tổng số tiền phải thanh toán của các hóa đơn. (Sau khi đã trừ các khuyến mãi và điểm thưởng)
+            <li><b>Doanh thu thực thu</b>: Số tiền thu về theo nguyên tắc: >=500đ làm tròn lên, ngược lại làm tròn xuống.
             </li>
           </ul>
         </el-alert>
@@ -308,6 +324,7 @@
           totalRealDiscount: 0,
           totalRealRevenue: 0,
           totalPointCost: 0,
+          totalRealMoney: 0,
           listTotal: [],
           listCancelled: [],
           listPurchased: [],
@@ -370,6 +387,17 @@
 
         this.parsedReportData.totalRealRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
           let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType, item.orderPointCost);
+          return acc + payAmount;
+        }, 0);
+
+        this.parsedReportData.totalRealMoney = this.parsedReportData.listPurchased.reduce((acc, item) => {
+          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType, item.orderPointCost);
+          let remain = payAmount % 1000;
+          let div = Math.floor(payAmount / 1000);
+          if (remain !== 0) {
+            if (remain >= 500) payAmount = (div + 1) * 1000;
+            else payAmount = div * 1000;
+          }
           return acc + payAmount;
         }, 0);
 
