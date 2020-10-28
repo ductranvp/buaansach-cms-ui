@@ -3,9 +3,9 @@ FROM node:lts-alpine as build-stage
 ARG MODE
 WORKDIR /app
 COPY package*.json ./
-RUN npm install
+RUN yarn
 COPY . .
-RUN npm run build -- --mode $MODE
+RUN yarn build -- --mode $MODE
 
 # production stage
 FROM nginx:stable-alpine as production-stage
