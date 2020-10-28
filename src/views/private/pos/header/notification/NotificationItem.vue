@@ -1,73 +1,18 @@
 <template>
   <el-row v-loading="isLoading" type="flex" align="middle"
           class="padding-5-10 notification-item"
-          :class="notification.storeNotificationStatus === notificationStatus.UNSEEN ? 'unseen-notification' : ''">
+          :class="[
+            notification.storeNotificationStatus === notificationStatus.UNSEEN ? 'unseen-notification' : ''
+          ]">
     <el-col class="padding-right-10" @click.native="clickNotification(notification)">
-      <div>
-        <b>{{notification.title}}</b>
-        <em v-if="type === notificationType.ORDER_UPDATE"> ({{notification.orderNotification.numberOfProduct }} loại sản
-          phẩm)</em>
-      </div>
-      <el-row type="flex" align="middle">
-        <el-col>
-          <el-tooltip placement="top" :content="$moment(notification.createdDate).format('HH:mm:ss - DD/MM/YYYY')">
-            <el-tag size="small" type="info">
-              <i class="el-icon-time"></i>
-              <span>{{notification.createdDate | moment('HH:mm:ss')}}</span>
-            </el-tag>
-          </el-tooltip>
-          <el-tooltip placement="top" content="Người gọi" v-if="type === notificationType.ORDER_UPDATE">
-            <el-tag class="margin-left-10" size="small" type="info">
-              <i class="el-icon-s-claim"></i>
-              <span v-if="notification.createdBy === 'anonymousUser'">Ẩn danh</span>
-              <span v-else>{{notification.createdBy}}</span>
-            </el-tag>
-          </el-tooltip>
-          <el-tooltip placement="top" content="Phương thức thanh toán" v-if="type === notificationType.PAY_REQUEST">
-            <el-tag v-if="notification.payRequestNotification.storePayRequestMethod" class="margin-left-10" size="small" type="warning">
-              <i class="el-icon-money"></i>
-              <span>{{paymentMethod[notification.payRequestNotification.storePayRequestMethod]}}</span>
-            </el-tag>
-          </el-tooltip>
-          <el-tooltip placement="top" content="Tiền khách sẽ đưa" v-if="type === notificationType.PAY_REQUEST">
-            <el-tag class="margin-left-10" size="small" type="success">
-              <i class="el-icon-money"></i>
-              <span>{{notification.payRequestNotification.storePayRequestAmount | priceAppend}}</span>
-            </el-tag>
-          </el-tooltip>
-        </el-col>
-        <template v-if="!showUsername">
-          <el-tooltip placement="top" v-if="notification.firstSeenBy"
-                      :content="'Người xem đầu: ' + notification.firstSeenBy">
-            <el-tag class="margin-left-10" size="small" type="info">
-              <i class="fas el-icon-fa-eye margin-0"></i>
-            </el-tag>
-          </el-tooltip>
-          <el-tooltip placement="top" v-if="notification.storeNotificationHidden && notification.firstHiddenBy"
-                      :content="'Người ẩn đầu:' + notification.firstHiddenBy">
-            <el-tag class="margin-left-10" size="small" type="info">
-              <i class="fas el-icon-fa-eye-slash margin-0"></i>
-            </el-tag>
-          </el-tooltip>
-        </template>
-        <template v-else>
-          <el-tooltip placement="top" v-if="notification.firstSeenBy" content="Người xem đầu">
-            <el-tag class="margin-left-10" size="small" type="info">
-              <i class="fas el-icon-fa-eye"></i>
-              <span>{{notification.firstSeenBy}}</span>
-            </el-tag>
-          </el-tooltip>
-          <el-tooltip placement="top" v-if="notification.storeNotificationHidden && notification.firstHiddenBy"
-                      content="Người ẩn đầu">
-            <el-tag class="margin-left-10" size="small" type="info">
-              <i class="fas el-icon-fa-eye-slash"></i>
-              <span>{{notification.firstHiddenBy}}</span>
-            </el-tag>
-          </el-tooltip>
-        </template>
-      </el-row>
+      <order-update-item :notification="notification" :show-full-info="showFullInfo"
+                         v-if="type === notificationType.ORDER_UPDATE"/>
+      <pay-request-item :notification="notification" :show-full-info="showFullInfo"
+                        v-else-if="type === notificationType.PAY_REQUEST"/>
+      <call-waiter-item :notification="notification" :show-full-info="showFullInfo"
+                        v-else-if="type === notificationType.CALL_WAITER"/>
     </el-col>
-    <el-tooltip placement="top" content="Ẩn thông báo" v-if="!notification.storeNotificationHidden">
+    <el-tooltip placement="right" content="Ẩn thông báo" v-if="!notification.storeNotificationHidden">
       <el-button @click="toggleNotification(notification, true)" type="text"
                  class="text-info text-very-large">
         <i class="el-icon-close"></i>
@@ -89,14 +34,18 @@
   import StoreNotificationType from '@/enum/StoreNotificationType';
   import PosStoreNotificationService from '@/service/pos/pos.store-notification.service';
   import StoreStatus from '@/enum/StoreStatus';
-  import PaymentMethod from '@/enum/PaymentMethod';
+  import OrderUpdateItem from '@/views/private/pos/header/notification/item/OrderUpdateItem';
+  import PayRequestItem from '@/views/private/pos/header/notification/item/PayRequestItem';
+  import CallWaiterItem from '@/views/private/pos/header/notification/item/CallWaiterItem';
 
   export default {
     name: 'NotificationItem',
+    components: {CallWaiterItem, PayRequestItem, OrderUpdateItem},
     computed: {
       ...mapState({
         selectedSeat: state => state.posMachine.selectedSeat,
         currentStore: state => state.posMachine.currentStore,
+        activeOrderProductGroup: state => state.posMachine.activeOrderProductGroup,
       }),
     },
     props: {
@@ -104,7 +53,7 @@
         type: Boolean,
         default: true,
       },
-      showUsername: {
+      showFullInfo: {
         type: Boolean,
         default: false,
       },
@@ -121,7 +70,6 @@
       return {
         notificationStatus: StoreNotificationStatus.value,
         notificationType: StoreNotificationType.value,
-        paymentMethod: PaymentMethod.label,
         isLoading: false,
       };
     },
@@ -133,7 +81,7 @@
           return;
         }
 
-        if (this.selectedSeat.guid !== notification.seatGuid) {
+        if (this.selectedSeat.guid !== notification.seatGuid && this.type !== this.notificationType.CALL_WAITER) {
           await this.$store.dispatch('posMachine/selectSeat', notification.seatGuid);
         }
 

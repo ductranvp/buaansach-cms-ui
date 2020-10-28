@@ -1,12 +1,27 @@
 $--color-primary: #409EFF !default;
 $--color-success: #07a651 !default;
+$--color-info: #909399 !default;
 $--color-warning: #e6a23c !default;
 $--color-danger: #f56c6c !default;
-$--color-info: #909399 !default;
+
+/* Color */
+//$--color-primary-light: #ecf5ff !default;
+//$--color-success-light: #f0f9eb !default;
+//$--color-warning-light: #fdf6ec !default;
+//$--color-danger-light: #fef0f0 !default;
+//$--color-info-light: #f4f4f5 !default;
+
+/* Border Color */
+$--color-primary-light: #b3d8ff !default;
+$--color-success-light: #c2e7b0 !default;
+$--color-info-light: #d3d4d6 !default;
+$--color-warning-light: #f5dab1 !default;
+$--color-danger-light: #fbc4c4 !default;
 
 $--color-white: #fff !default;
 $--color-light: #e8f0fd !default;
 $--color-dark: #566a79 !default;
 $--color-yellowgreen: #9acd32 !default;
-$--color-warning-light: #fdd488 !default;
 $--color-border: #DCDFE6 !default;
+
+

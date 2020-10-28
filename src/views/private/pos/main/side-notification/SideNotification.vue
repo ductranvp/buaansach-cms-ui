@@ -1,48 +1,58 @@
 <template>
-  <el-dropdown :hide-on-click="false" trigger="click">
-    <!--Icon-->
-    <el-tooltip :content="notificationTitle">
-      <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
-        <el-button class="icon-button" type="success">
-          <i :class="iconClass"></i>
-        </el-button>
-      </el-badge>
-    </el-tooltip>
-    <!--Main-->
-    <el-dropdown-menu class="padding-0 notification" slot="dropdown" v-loading="isLoading">
-      <el-row class="bg-success text-light top-toolbar padding-5" type="flex" align="middle">
-        <el-col class="padding-right-10">
-          <span class="padding-right-10 text-bold">{{notificationTitle}} ({{today | moment('DD/MM/YYYY')}})</span>
+  <el-container class="full-size" direction="vertical" v-loading="isLoading">
+    <el-header class="padding-0-10 bg-yellowgreen" height="40px">
+      <el-row class="full-size" type="flex" align="middle">
+        <el-col>
+          <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
+            <el-button size="small" class="bg-yellowgreen no-border padding-0-10">
+              <span class="text-bold text-medium">{{notificationTitle}}</span>
+            </el-button>
+          </el-badge>
         </el-col>
-        <el-button size="mini" type="warning" @click="reloadNotification" :loading="isLoading">Làm mới</el-button>
+        <el-col class="text-right">
+          <el-tooltip content="Làm mới">
+            <el-button size="mini" type="success" plain @click="reloadNotification" :loading="isLoading">
+              <i class="el-icon-refresh"></i>
+            </el-button>
+          </el-tooltip>
+          <el-dropdown trigger="click">
+            <el-tooltip content="Tùy chọn">
+              <el-button class="margin-left-10" size="mini" type="success" plain>
+                <i class="el-icon-setting"></i>
+              </el-button>
+            </el-tooltip>
+            <el-dropdown-menu class="padding-0" slot="dropdown">
+              <el-dropdown-item @click.native="showHiddenNotification">
+                <i class="el-icon-close-notification"></i>
+                <span>Các thông báo đã ẩn</span>
+              </el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
+
+        </el-col>
       </el-row>
-      <el-dropdown-item v-if="!listNotification.length">
-        <el-row type="flex" align="middle" justify="center" class="padding-50-10">
-          <span>Chưa có thông báo nào</span>
-        </el-row>
-      </el-dropdown-item>
+    </el-header>
+    <el-main class="full-size show-vertical-scroll">
+      <el-row class="full-size" type="flex" align="middle" justify="center" v-if="!listNotification.length">
+        <span>Chưa có thông báo nào</span>
+      </el-row>
       <template v-else>
         <el-dropdown-item class="padding-0" v-for="(notification) in listNotification" :key="notification.guid">
           <notification-item :notification="notification" :type="type"/>
         </el-dropdown-item>
       </template>
-      <el-row class="bg-success text-light bottom-toolbar" type="flex" align="middle">
-        <el-col>
-          <el-button @click="hideSeenNotification" type="info" size="small" class="full-width no-border-radius">
-            <i class="fas el-icon-fa-eye-slash"></i>
-            <span>Ẩn thông báo đã xem</span>
-          </el-button>
-        </el-col>
-        <el-col>
-          <el-button @click="showHiddenNotification" type="info" size="small" class="full-width no-border-radius">
-            <i class="fas el-icon-fa-eye"></i>
-            <span>Các thông báo đã ẩn</span>
-          </el-button>
-        </el-col>
+    </el-main>
+    <el-footer height="auto">
+      <el-row v-if="listNotification.length" class="bg-success text-light bottom-toolbar" type="flex" align="middle">
+        <el-button @click="hideSeenNotification" type="danger" plain size="small"
+                   class="full-width no-border-radius" style="border-left-width: 0; border-right-width: 0">
+          <i class="fas el-icon-fa-eye-slash"></i>
+          <span>Ẩn thông báo đã xem</span>
+        </el-button>
       </el-row>
-    </el-dropdown-menu>
+    </el-footer>
     <hidden-notification-dialog :type="type" ref="hiddenNotificationDialog"/>
-  </el-dropdown>
+  </el-container>
 </template>
 
 <script>
@@ -55,7 +65,7 @@
   import ErrorUtils from '@/utils/error.util';
 
   export default {
-    name: 'Notification',
+    name: 'SideNotification',
     components: {NotificationItem, HiddenNotificationDialog},
     props: {
       type: {

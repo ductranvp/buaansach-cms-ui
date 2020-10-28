@@ -1,6 +1,6 @@
 <template>
   <el-container class="full-size" direction="vertical" v-loading="isLoading || isRefreshing">
-    <el-header class="bg-yellowgreen" height="36px">
+    <el-header class="bg-yellowgreen" height="40px">
       <el-row class="full-size" type="flex" align="middle">
         <el-col class="padding-left-5 hidden-sm-and-down">
           <el-row type="flex" align="middle">
@@ -61,7 +61,7 @@
               <template v-for="seat in area.listSeat">
                 <el-col class="margin-bottom-10"
                         v-if="displaySeatStatus === 'ALL' || seat.seatStatus === displaySeatStatus"
-                        :span="3"
+                        :span="4"
                         :key="seat.guid">
                   <el-card :body-style="{padding: '0'}"
                            :style="{borderColor: area.areaColor, boxShadow: selectedSeat.guid === seat.guid ? '0 0 1px 2px ' + area.areaColor : ''}"

@@ -15,7 +15,7 @@
       </el-row>
       <template v-else>
         <el-row class="notification-item" v-for="item in listHiddenNotification" :key="item.guid">
-          <notification-item :selectable="false" :notification="item" :show-username="true" :type="type"/>
+          <notification-item :selectable="false" :notification="item" :show-full-info="true" :type="type"/>
         </el-row>
       </template>
     </el-main>
@@ -97,4 +97,7 @@
 </script>
 
 <style scoped>
+  /deep/.notification-item i {
+    margin-right: 5px;
+  }
 </style>

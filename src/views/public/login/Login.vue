@@ -27,6 +27,11 @@
                       @keyup.enter.native="handleLogin"
               ></el-input>
             </el-form-item>
+            <el-form-item prop="rememberMe">
+              <el-checkbox v-model="loginForm.rememberMe" class="full-width">
+                <span class="text-light">{{ $t('public.loginPage.loginForm.rememberMe') }}</span>
+              </el-checkbox>
+            </el-form-item>
             <el-form-item>
               <el-alert style="line-height: 24px" type="error" :closable="false">
                 <span slot="title">Lưu ý:</span>
@@ -34,11 +39,6 @@
                 <div>Mỗi lần đăng nhập sẽ có hiệu lực trong 24 giờ</div>
               </el-alert>
             </el-form-item>
-            <!--          <el-form-item prop="rememberMe">-->
-            <!--            <el-checkbox v-model="loginForm.rememberMe" class="full-width">-->
-            <!--              <span class="text-light">{{ $t("public.loginPage.loginForm.rememberMe") }}</span>-->
-            <!--            </el-checkbox>-->
-            <!--          </el-form-item>-->
             <el-form-item>
               <div>
                 <el-button
@@ -66,7 +66,7 @@
 </template>
 
 <script>
-  import AppUtils from "@/utils/app.util";
+  import AppUtils from '@/utils/app.util';
   import StorageKey from '@/utils/storage-key';
   import MessageUtils from '@/utils/message.util';
   import ErrorUtils from '@/utils/error.util';
@@ -78,7 +78,7 @@
         loginForm: {
           principal: "",
           password: "",
-          rememberMe: false
+          rememberMe: true
         },
         loginRules: {
           principal: [

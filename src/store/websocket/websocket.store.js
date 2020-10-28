@@ -45,7 +45,7 @@ const mutations = {
   SET_ERROR(state) {
     if (!state.wsError) {
       state.wsError = Notification.error({
-        title: "Mất kết nối tới máy chủ!",
+        title: "Lỗi kết nối tới máy chủ!",
         message: "<span>Hãy kiểm tra các kết nối mạng!<br>Đang thực hiện kết nối lại..</span>",
         dangerouslyUseHTMLString: true,
         showClose: false,

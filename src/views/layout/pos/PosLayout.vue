@@ -1,11 +1,11 @@
 <template>
   <el-container v-loading="!ready" class="full-size" direction="horizontal">
-    <el-aside width="450px" class="aside">
-      <pos-machine-sidebar v-loading="currentStore.storeStatus ==='CLOSED' || isLoadingOrder"/>
+    <el-aside width="30%" class="aside">
+      <pos-machine-sidebar v-loading="currentStore.storeStatus === storeStatusValue.CLOSED || isLoadingOrder"/>
     </el-aside>
     <el-container class="full-size" direction="vertical">
       <pos-machine-header/>
-      <pos-machine-main v-loading="currentStore.storeStatus ==='CLOSED'" class="hidden-sm-and-down"/>
+      <pos-machine-main v-loading="currentStore.storeStatus === storeStatusValue.CLOSED"/>
     </el-container>
   </el-container>
 </template>
@@ -17,6 +17,7 @@
   import {mapState} from 'vuex';
   import PosWebsocket from '@/views/layout/pos/pos.websocket';
   import NotificationUtils from '@/utils/notification.util';
+  import StoreStatus from '@/enum/StoreStatus';
 
   export default {
     name: 'PosLayout',
@@ -30,7 +31,10 @@
       }),
     },
     data() {
-      return {askBeforeLeave: false};
+      return {
+        askBeforeLeave: false,
+        storeStatusValue: StoreStatus.value
+      };
     },
     mounted() {
       if (this.askBeforeLeave) {

@@ -56,11 +56,13 @@
         </el-row>
         <!--item note-->
         <el-row v-if="item.orderProductNote" type="flex" align="middle" class="full-size" style="margin-bottom: -15px;">
-          <el-tag type="warning" class="order-note full-width no-border-radius no-border" size="medium">
-            <el-tooltip :content="item.orderProductNote">
-              <span>Lưu ý: {{item.orderProductNote}}</span>
-            </el-tooltip>
-          </el-tag>
+<!--          <el-tag type="warning" class="order-note full-width no-border-radius no-border" size="medium">-->
+<!--            <el-tooltip :content="item.orderProductNote" placement="right">-->
+              <div class="text-bold text-small text-danger padding-left-10 padding-right-10 padding-bottom-10">
+                <span>Lưu ý: {{item.orderProductNote}}</span>
+              </div>
+<!--            </el-tooltip>-->
+<!--          </el-tag>-->
         </el-row>
       </el-card>
     </template>
@@ -125,7 +127,7 @@
   }
 
   .is-highlight {
-    background: $--color-warning-light;
+    background: $--color-success-light;
   }
 
   .timestamp {

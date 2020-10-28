@@ -1,9 +1,9 @@
 {
   "loginPage": {
     "loginForm": {
-      "username": "Tên đăng nhập hoặc email",
+      "username": "Tên đăng nhập, Email hoặc SĐT",
       "password": "Mật khẩu",
-      "rememberMe": "Ghi nhớ",
+      "rememberMe": "Lưu giữ đăng nhập",
       "loginBtn": "Đăng nhập",
       "forgotBtn": "Quên mật khẩu?"
     },

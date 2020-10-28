@@ -1,144 +1,125 @@
 <template>
-    <el-header class="bg-success" height="40px">
-        <audio style="display: none" id="store_order_sound">
-            <source :src="storeOrderSound" type="audio/mpeg">
-        </audio>
-        <audio style="display: none" id="call_waiter_sound">
-            <source :src="callWaiterSound" type="audio/mpeg">
-        </audio>
-        <audio style="display: none" id="store_pay_request_sound">
-            <source :src="storePayRequestSound" type="audio/mpeg">
-        </audio>
-        <check-printer ref="checkPrinter"/>
-        <el-row class="full-size flex-wrap" type="flex" align="middle">
-            <el-col :span="12">
-                <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">
-                    <i class="el-icon-s-data"></i>
-                    <span class="hidden-md-and-down">Thống kê</span>
+  <el-header class="bg-success" height="40px">
+    <audio style="display: none" id="store_order_sound">
+      <source :src="storeOrderSound" type="audio/mpeg">
+    </audio>
+    <audio style="display: none" id="call_waiter_sound">
+      <source :src="callWaiterSound" type="audio/mpeg">
+    </audio>
+    <audio style="display: none" id="store_pay_request_sound">
+      <source :src="storePayRequestSound" type="audio/mpeg">
+    </audio>
+    <check-printer ref="checkPrinter"/>
+    <el-row class="full-size flex-wrap" type="flex" align="middle">
+      <el-col :span="8">
+        <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">
+          <i class="el-icon-s-data"></i>
+          <span class="hidden-md-and-down">Thống kê</span>
+        </el-button>
+        <el-tooltip v-if="serverTime"
+                    :content="'Giờ hệ thống: ' + $moment(serverTime).format('HH:mm:ss DD/MM/YYYY')">
+          <el-button class="hidden-sm-and-down" size="small" type="success">
+            <i class="el-icon-time"></i>
+            <span class="hidden-md-and-down">{{ serverTime | moment('HH:mm:ss')}}</span>
+          </el-button>
+        </el-tooltip>
+      </el-col>
+
+      <el-col :span="8">
+        <el-dropdown trigger="click" @command="changeStoreStatus">
+          <el-button size="small" type="success" :title="currentStore.storeName">
+            <i class="fas el-icon-fa-store"></i>
+            <span class="text-light text-bold">{{currentStore.storeCode}}</span>
+            <span> - </span>
+            <span class="text-light text-bold">{{currentStore.storeName}}</span>
+          </el-button>
+          <el-dropdown-menu class="padding-0" slot="dropdown">
+            <el-dropdown-item command="CLOSED" v-if="currentStore.storeStatus === storeStatusValue.OPENING">
+              <i class="el-icon-close padding-right-10"></i>
+              <span>Đóng cửa</span>
+            </el-dropdown-item>
+            <el-dropdown-item command="OPENING" v-if="currentStore.storeStatus === storeStatusValue.CLOSED">
+              <i class="el-icon-key padding-right-10"></i>
+              <span>Mở cửa</span>
+            </el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
+        <el-tag size="small" type="success" v-if="currentStore.storeStatus === storeStatusValue.OPENING">Mở cửa</el-tag>
+        <el-tag size="small" type="danger" v-if="currentStore.storeStatus === storeStatusValue.CLOSED">Đóng cửa</el-tag>
+      </el-col>
+
+      <el-col :span="8">
+        <el-row type="flex" align="middle" justify="end">
+          <!--          <el-row type="flex" align="middle">-->
+          <!--            <notification :type="notificationType.ORDER_UPDATE"/>-->
+          <!--          </el-row>-->
+
+          <!--          <el-row class="padding-left-20" type="flex" align="middle">-->
+          <!--            <notification :type="notificationType.PAY_REQUEST"/>-->
+          <!--          </el-row>-->
+
+          <el-row class="padding-0-20" type="flex" align="middle">
+            <notification :type="notificationType.CALL_WAITER"/>
+          </el-row>
+
+          <el-row>
+            <el-tooltip>
+              <div slot="content">
+                <span v-if="muteSound">Bấm để bật âm thanh thông báo</span>
+                <span v-else>Bấm để tắt âm thanh thông báo</span>
+              </div>
+              <el-button @click="toggleSound" class="icon-button" type="success">
+                <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
+                <i v-else class="fas el-icon-fa-volume-up"></i>
+              </el-button>
+            </el-tooltip>
+          </el-row>
+
+          <el-row class="hidden-sm-and-down" type="flex" align="middle">
+            <el-button size="small" type="success">
+              <span>{{currentUser.fullName}}</span>
+            </el-button>
+          </el-row>
+
+          <el-row type="flex" align="middle">
+            <el-dropdown trigger="click" @command="goto">
+              <el-tooltip content="Menu">
+                <el-button class="icon-button" type="success">
+                  <i class="el-icon-menu"></i>
                 </el-button>
-                <el-tooltip v-if="serverTime"
-                            :content="'Giờ hệ thống: ' + $moment(serverTime).format('HH:mm:ss DD/MM/YYYY')">
-                    <el-button class="hidden-sm-and-down" size="small" type="success">
-                        <i class="el-icon-time"></i>
-                        <span class="hidden-md-and-down">{{ serverTime | moment('HH:mm:ss')}}</span>
-                    </el-button>
-                </el-tooltip>
-                <el-dropdown trigger="click" @command="changeStoreStatus">
-                    <el-button size="small" type="success" :title="currentStore.storeName">
-                        <i class="fas el-icon-fa-store"></i>
-                        <span class="text-light text-bold">
-                  {{currentStore.storeCode}}
-                </span>
-                    </el-button>
-                    <el-dropdown-menu class="padding-0" slot="dropdown">
-                        <el-dropdown-item command="CLOSED" v-if="currentStore.storeStatus === storeStatusValue.OPENING">
-                            <i class="el-icon-close padding-right-10"></i>
-                            <span>Đóng cửa</span>
-                        </el-dropdown-item>
-                        <el-dropdown-item command="OPENING" v-if="currentStore.storeStatus === storeStatusValue.CLOSED">
-                            <i class="el-icon-key padding-right-10"></i>
-                            <span>Mở cửa</span>
-                        </el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-                <el-tag size="small" type="success" v-if="currentStore.storeStatus === storeStatusValue.OPENING">Mở cửa</el-tag>
-                <el-tag size="small" type="danger" v-if="currentStore.storeStatus === storeStatusValue.CLOSED">Đóng cửa</el-tag>
-            </el-col>
-
-            <!--      <el-col :span="8">-->
-            <!--        <el-row class="hidden-md-and-down" type="flex" align="middle" justify="center">-->
-            <!--          <el-dropdown trigger="click" @command="changeStoreStatus">-->
-            <!--            <el-button size="small" type="success" :title="currentStore.storeName">-->
-            <!--              <i class="fas el-icon-fa-store"></i>-->
-            <!--              <span class="text-light text-bold">-->
-            <!--                  {{currentStore.storeCode}}-->
-            <!--                </span>-->
-            <!--            </el-button>-->
-            <!--            <el-dropdown-menu class="padding-0" slot="dropdown">-->
-            <!--              <el-dropdown-item command="CLOSED" v-if="currentStore.storeStatus === 'OPENING'">-->
-            <!--                <i class="el-icon-close padding-right-10"></i>-->
-            <!--                <span>Đóng cửa</span>-->
-            <!--              </el-dropdown-item>-->
-            <!--              <el-dropdown-item command="OPENING" v-if="currentStore.storeStatus === 'CLOSED'">-->
-            <!--                <i class="el-icon-key padding-right-10"></i>-->
-            <!--                <span>Mở cửa</span>-->
-            <!--              </el-dropdown-item>-->
-            <!--            </el-dropdown-menu>-->
-            <!--          </el-dropdown>-->
-            <!--          <el-tag size="small" type="success" v-if="currentStore.storeStatus === 'OPENING'">Mở cửa</el-tag>-->
-            <!--          <el-tag size="small" type="danger" v-if="currentStore.storeStatus === 'CLOSED'">Đóng cửa</el-tag>-->
-            <!--        </el-row>-->
-            <!--      </el-col>-->
-
-            <el-col :span="12">
-                <el-row type="flex" align="middle" justify="end">
-                    <el-row class="padding-right-20">
-                        <el-tooltip
-                                :content="muteSound ? 'Bấm để bật âm thanh thông báo' : 'Bấm để tắt âm thanh thông báo'">
-                            <el-button @click="toggleSound" class="icon-button" type="success">
-                                <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
-                                <i v-else class="fas el-icon-fa-volume-up"></i>
-                            </el-button>
-                        </el-tooltip>
-                    </el-row>
-
-                    <el-row type="flex" align="middle">
-                        <notification :type="notificationType.ORDER_UPDATE"/>
-                    </el-row>
-
-                    <el-row class="padding-left-20" type="flex" align="middle">
-                        <notification :type="notificationType.PAY_REQUEST"/>
-                    </el-row>
-
-                    <el-row class="padding-0-20" type="flex" align="middle">
-                        <notification :type="notificationType.CALL_WAITER"/>
-                    </el-row>
-
-                    <el-row class="hidden-sm-and-down" type="flex" align="middle">
-                        <el-button size="small" type="success">
-                            <span>{{currentUser.fullName}}</span>
-                        </el-button>
-                    </el-row>
-
-                    <el-row type="flex" align="middle">
-                        <el-dropdown trigger="click" @command="goto">
-                            <el-tooltip content="Menu">
-                                <el-button class="icon-button" type="success">
-                                    <i class="el-icon-menu"></i>
-                                </el-button>
-                            </el-tooltip>
-                            <el-dropdown-menu class="padding-0" slot="dropdown">
-                                <el-dropdown-item command="profilePage">
-                                    <i class="el-icon-user padding-right-10"></i>
-                                    <span>Tài khoản</span>
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="checkPrinter">
-                                    <i class="el-icon-printer padding-right-10"></i>
-                                    <span>Kiểm tra máy in</span>
-                                    <span></span>
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="downloadTeamViewer">
-                                    <i class="el-icon-s-promotion padding-right-10"></i>
-                                    <span>Tải TeamViewer</span>
-                                    <span></span>
-                                </el-dropdown-item>
-                                <el-dropdown-item @click.native="setupTeamViewer">
-                                    <i class="el-icon-help padding-right-10"></i>
-                                    <span>HD cài TeamViewer</span>
-                                    <span></span>
-                                </el-dropdown-item>
-                                <el-divider class="margin-0"></el-divider>
-                                <el-dropdown-item command="logout">
-                                    <i class="el-icon-switch-button padding-right-10"></i>
-                                    <span>Đăng xuất</span>
-                                </el-dropdown-item>
-                            </el-dropdown-menu>
-                        </el-dropdown>
-                    </el-row>
-                </el-row>
-            </el-col>
+              </el-tooltip>
+              <el-dropdown-menu class="padding-0" slot="dropdown">
+                <el-dropdown-item command="profilePage">
+                  <i class="el-icon-user padding-right-10"></i>
+                  <span>Tài khoản</span>
+                </el-dropdown-item>
+                <el-dropdown-item @click.native="checkPrinter">
+                  <i class="el-icon-printer padding-right-10"></i>
+                  <span>Kiểm tra máy in</span>
+                  <span></span>
+                </el-dropdown-item>
+                <el-dropdown-item @click.native="downloadTeamViewer">
+                  <i class="el-icon-s-promotion padding-right-10"></i>
+                  <span>Tải TeamViewer</span>
+                  <span></span>
+                </el-dropdown-item>
+                <el-dropdown-item @click.native="setupTeamViewer">
+                  <i class="el-icon-help padding-right-10"></i>
+                  <span>HD cài TeamViewer</span>
+                  <span></span>
+                </el-dropdown-item>
+                <el-divider class="margin-0"></el-divider>
+                <el-dropdown-item command="logout">
+                  <i class="el-icon-switch-button padding-right-10"></i>
+                  <span>Đăng xuất</span>
+                </el-dropdown-item>
+              </el-dropdown-menu>
+            </el-dropdown>
+          </el-row>
         </el-row>
-    </el-header>
+      </el-col>
+    </el-row>
+  </el-header>
 </template>
 
 <script>
@@ -176,7 +157,7 @@
         storePayRequestSound: StorePayRequestSound,
         muteSound: false,
         notificationType: StoreNotificationType.value,
-        storeStatusValue: StoreStatus.value
+        storeStatusValue: StoreStatus.value,
       };
     },
     created() {
@@ -256,15 +237,15 @@
 </script>
 
 <style scoped>
-    .icon-button {
-        padding: 0;
-        height: 32px;
-        width: 32px;
-        font-size: 22px
-    }
+  .icon-button {
+    padding: 0;
+    height: 32px;
+    width: 32px;
+    font-size: 22px
+  }
 
-    /deep/ .el-dropdown-menu__item {
-        line-height: 40px;
-        font-size: 16px;
-    }
+  /deep/ .el-dropdown-menu__item {
+    line-height: 40px;
+    font-size: 16px;
+  }
 </style>

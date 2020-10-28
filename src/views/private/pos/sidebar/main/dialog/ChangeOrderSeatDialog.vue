@@ -36,10 +36,10 @@
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="hide">
-        <span>{{ $t("common.entity.action.cancel") }}</span>
+        <span>{{ $t("common.entity.action.close") }}</span>
       </el-button>
       <el-button type="primary" @click="submit" :loading="isLoading">
-        <span>{{ $t("common.entity.action.save") }}</span>
+        <span>{{ $t("common.entity.action.ok") }}</span>
       </el-button>
     </div>
   </el-dialog>

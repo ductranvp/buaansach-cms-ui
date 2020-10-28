@@ -6,18 +6,15 @@
       <el-col :span="18" class="text-small">
         <el-row type="flex" align="middle">
           <div class="padding-right-10">
-            <el-tooltip :content="'Mã đơn: ' + currentOrder.orderCode">
-              <el-tag type="info" effect="dark" size="medium">
-                <i class="el-icon-tickets"></i>
-              </el-tag>
-            </el-tooltip>
-          </div>
-          <div class="padding-right-10">
-            <el-tooltip :content="'Giờ vào: ' + $moment(currentOrder.createdDate).format('HH:mm:ss - DD/MM/YYYY')">
-              <el-tag type="info" effect="dark" size="medium">
-                <i class="el-icon-time padding-right-5"></i>
+            <el-tooltip placement="bottom">
+                <div slot="content">
+                    <div>Mã đơn: {{currentOrder.orderCode}}</div>
+                    <div>Giờ vào: {{currentOrder.createdDate | moment("HH:mm:ss - DD/MM/YYYY")}}</div>
+                </div>
+              <el-button type="success" plain size="mini">
+                <i class="el-icon-time"></i>
                 <span>{{currentOrder.createdDate | moment("HH:mm")}}</span>
-              </el-tag>
+              </el-button>
             </el-tooltip>
           </div>
           <div class="padding-right-10">
@@ -27,11 +24,6 @@
               width="150"
               trigger="click">
               <div>
-<!--                <div>Không gồm mã đơn:</div>-->
-<!--                <qrcode class="pointer" @click.native="goto(selectedSeat.guid)"-->
-<!--                        :value="seatPrefixUrl + selectedSeat.guid"-->
-<!--                        :options="{ width: 150 }">-->
-<!--                </qrcode>-->
                 <div class="text-center">Đã bao gồm mã đơn:</div>
                 <qrcode class="pointer" @click.native="goto(selectedSeat.guid, currentOrder.guid)"
                         :value="seatPrefixUrl + selectedSeat.guid + '?' + seatResumeParam + '=' + currentOrder.guid"
@@ -61,8 +53,8 @@
       </el-col>
       <el-col :span="6" class="text-right">
         <el-dropdown trigger="click">
-          <el-button type="info" size="mini">
-            <i class="el-icon-s-unfold"></i>
+          <el-button type="warning" size="mini" plain>
+            <i class="el-icon-setting"></i>
             <span>Tùy chọn</span>
           </el-button>
           <el-dropdown-menu class="padding-0" slot="dropdown">

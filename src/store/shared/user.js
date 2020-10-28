@@ -1,6 +1,7 @@
 import AuthUtils from '@/utils/auth.util';
 import UserService from '@/service/shared/user.service';
 import i18n from '@/i18n';
+import AppUtils from '@/utils/app.util';
 
 const state = {
   userInfo: {},
@@ -23,8 +24,11 @@ const mutations = {
 const actions = {
   // account login (used by dispatched action in login page)
   async login({state, dispatch}, loginVM) {
-    const {data} = await UserService.authenticate(loginVM);
-    AuthUtils.setToken(data.accessToken, loginVM.rememberMe);
+    const payload = AppUtils.deepCopy(loginVM);
+    const rememberMe = payload.rememberMe;
+    payload.rememberMe = false;
+    const {data} = await UserService.authenticate(payload);
+    AuthUtils.setToken(data.accessToken, rememberMe);
     await dispatch('getAccount');
     i18n.changeLanguage(state.userInfo.langKey);
   },

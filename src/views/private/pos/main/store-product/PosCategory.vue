@@ -39,7 +39,7 @@
     },
     methods: {
       changeCategory(categoryGuid) {
-        this.$store.dispatch("posMachine/changeDisplayStoreProduct", categoryGuid);
+        this.$store.dispatch("posMachine/changeCategory", categoryGuid);
       }
     }
   };

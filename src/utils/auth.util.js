@@ -14,8 +14,8 @@ function setToken(token, rememberMe) {
   if (rememberMe) {
     localStorage.setItem(accessToken, token);
   } else {
-    localStorage.setItem(accessToken, token);
-    // sessionStorage.setItem(accessToken, token);
+    // localStorage.setItem(accessToken, token);
+    sessionStorage.setItem(accessToken, token);
   }
 }
 

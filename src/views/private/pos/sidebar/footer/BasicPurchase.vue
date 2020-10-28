@@ -14,7 +14,7 @@
             <el-col :span="12" class="full-height">
               <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
                 <i class="el-icon-present"></i>
-                <span>Dùng điểm: </span>
+                <span>Điểm: </span>
                 <span>{{currentOrder.orderPointValue}} </span>
                 <span v-if="currentOrder.orderPointValue">({{currentOrder.orderPointCost | priceAppend}})</span>
               </el-button>
@@ -36,7 +36,7 @@
                 <i class="el-icon-discount"></i>
                 <span>Giảm giá: </span>
                 <span v-if="discountAmount > 0">{{discountAmount | priceAppend}}</span>
-                <span v-else>0</span>
+                <span v-else>{{0 | priceAppend}}</span>
               </el-button>
             </el-col>
           </el-row>
@@ -46,7 +46,7 @@
               <el-input ref="customerPay" @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay"
                         placeholder="Khách đưa (F9)">
                 <i slot="prefix" class="el-input__icon el-icon-money"></i>
-                <el-button class="full-size" style="color: #606266" disabled slot="suffix">
+                <el-button class="full-size" style="color: #606266; padding: 12px 10px" disabled slot="suffix">
                   <span>x1000</span>
                 </el-button>
               </el-input>
