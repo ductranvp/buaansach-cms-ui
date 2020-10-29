@@ -1,5 +1,5 @@
 <template>
-  <el-header height="40px">
+  <el-header height="40px" class="bg-yellowgreen">
     <change-order-seat-dialog ref="changeSeatDialog"/>
     <cancel-order-dialog ref="cancelOrderDialog"/>
     <el-row v-if="currentOrder.guid" class="full-size padding-0-10" type="flex" align="middle" justify="center">
@@ -53,7 +53,7 @@
       </el-col>
       <el-col :span="6" class="text-right">
         <el-dropdown trigger="click">
-          <el-button type="warning" size="mini" plain>
+          <el-button type="success" size="mini" plain>
             <i class="el-icon-setting"></i>
             <span>Tùy chọn</span>
           </el-button>

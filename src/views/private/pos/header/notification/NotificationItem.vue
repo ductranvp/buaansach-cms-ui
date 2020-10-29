@@ -1,6 +1,6 @@
 <template>
   <el-row v-loading="isLoading" type="flex" align="middle"
-          class="padding-5-10 notification-item"
+          class="padding-top-5 padding-bottom-5 padding-left-10 notification-item"
           :class="[
             notification.storeNotificationStatus === notificationStatus.UNSEEN ? 'unseen-notification' : ''
           ]">
@@ -129,7 +129,8 @@
 <style lang="scss" scoped>
   .notification-item {
     line-height: 24px;
-    border-bottom: 1px solid #bbb
+    border-bottom: 1px solid #bbb;
+    color: $--color-dark;
   }
 
   .unseen-notification {

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-dark">
+    <div>
       <b>{{notification.title}}</b>
       <em> ({{paymentMethod[notification.payRequestNotification.storePayRequestMethod]}})</em>
     </div>

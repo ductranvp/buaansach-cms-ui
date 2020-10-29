@@ -1,7 +1,7 @@
 <template>
   <div>
-    <div class="text-dark">
-      <b>{{notification.title}}</b>
+    <div>
+      <span class="text-bold">{{notification.title}}</span>
       <em> ({{notification.orderNotification.numberOfProduct }} loại sản phẩm)</em>
     </div>
     <el-row type="flex" align="middle">

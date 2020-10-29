@@ -15,7 +15,7 @@
             <el-row v-for="area in allAreas" :key="area.guid">
               <el-divider class="margin-15-0">{{area.areaName}}</el-divider>
               <el-row :gutter="10" class="full-size margin-0">
-                <el-col v-for="seat in area.listSeat" class="margin-bottom-10" :span="3" :key="seat.guid">
+                <el-col v-for="seat in area.listSeat" class="margin-bottom-10" :span="4" :key="seat.guid">
                   <el-card :body-style="{padding: '0'}"
                            style="position: relative"
                            :style="{borderColor: area.areaColor, boxShadow: seat.checked && seat.seatLocked ? '0 0 2px 3px ' + lockColor : ''}"
@@ -72,7 +72,7 @@
           </el-footer>
         </el-container>
       </el-main>
-      <el-aside width="600px">
+      <el-aside width="50%">
         <el-container direction="vertical" v-if="listOrder.length">
           <el-main>
             <raw-data-table :data="listOrder" :show-pagination="false">

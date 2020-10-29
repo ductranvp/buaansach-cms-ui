@@ -18,7 +18,7 @@
       </el-row>
       <el-dropdown-item v-if="!listNotification.length">
         <el-row type="flex" align="middle" justify="center" class="padding-50-10">
-          <span>Chưa có thông báo nào</span>
+          <span class="text-dark text-bold">Chưa có thông báo</span>
         </el-row>
       </el-dropdown-item>
       <template v-else>
@@ -144,13 +144,20 @@
         }
       },
       async hideSeenNotification() {
-        let listGuid = this.listSeen.map(item => item.guid);
-        let payload = {
-          storeGuid: this.$route.params.storeGuid,
-          listGuid: listGuid,
-          hidden: true,
-        };
-        await PosStoreNotificationService.toggleVisibility(payload);
+        try {
+          this.isLoading = true;
+          let listGuid = this.listSeen.map(item => item.guid);
+          let payload = {
+            storeGuid: this.$route.params.storeGuid,
+            listGuid: listGuid,
+            hidden: true,
+          };
+          await PosStoreNotificationService.toggleVisibility(payload);
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
+        } finally {
+          this.isLoading = false;
+        }
         this.reloadNotification();
       },
       showHiddenNotification() {

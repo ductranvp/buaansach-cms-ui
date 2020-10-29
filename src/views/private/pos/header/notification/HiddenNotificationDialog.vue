@@ -4,9 +4,11 @@
     :close-on-click-modal="false"
     :before-close="beforeClose"
     :destroy-on-close="true"
-    :title="dialogTitle"
     :show-close="false"
   >
+    <div slot="title">
+      <span>{{dialogTitle}} ({{today | moment("DD/MM/YYYY")}})</span>
+    </div>
     <el-main>
       <el-row v-if="!listHiddenNotification.length">
         <el-alert class="padding-20" type="warning" :closable="false">
@@ -62,7 +64,10 @@
       },
     },
     data() {
+      let today = new Date();
+      today.setHours(0, 0, 0, 0);
       return {
+        today,
         isLoading: false,
         dialogFormVisible: false,
       };

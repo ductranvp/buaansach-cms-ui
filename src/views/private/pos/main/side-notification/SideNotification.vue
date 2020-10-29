@@ -3,11 +3,16 @@
     <el-header class="padding-0-10 bg-yellowgreen" height="40px">
       <el-row class="full-size" type="flex" align="middle">
         <el-col>
-          <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
-            <el-button size="small" class="bg-yellowgreen no-border padding-0-10">
-              <span class="text-bold text-medium">{{notificationTitle}}</span>
-            </el-button>
-          </el-badge>
+          <el-tooltip>
+            <div slot="content">
+              <span>{{today | moment("DD/MM/YYYY")}}</span>
+            </div>
+            <el-badge :value="listUnseen.length" :hidden="!listUnseen.length">
+              <el-button size="small" class="bg-yellowgreen no-border padding-right-15 padding-top-0 padding-bottom-0 padding-left-0">
+                <span class="text-bold text-medium">{{notificationTitle}}</span>
+              </el-button>
+            </el-badge>
+          </el-tooltip>
         </el-col>
         <el-col class="text-right">
           <el-tooltip content="Làm mới">
@@ -34,7 +39,7 @@
     </el-header>
     <el-main class="full-size show-vertical-scroll">
       <el-row class="full-size" type="flex" align="middle" justify="center" v-if="!listNotification.length">
-        <span>Chưa có thông báo nào</span>
+        <span class="text-dark text-bold">Chưa có thông báo</span>
       </el-row>
       <template v-else>
         <el-dropdown-item class="padding-0" v-for="(notification) in listNotification" :key="notification.guid">
@@ -154,13 +159,20 @@
         }
       },
       async hideSeenNotification() {
-        let listGuid = this.listSeen.map(item => item.guid);
-        let payload = {
-          storeGuid: this.$route.params.storeGuid,
-          listGuid: listGuid,
-          hidden: true,
-        };
-        await PosStoreNotificationService.toggleVisibility(payload);
+        try {
+          this.isLoading = true;
+          let listGuid = this.listSeen.map(item => item.guid);
+          let payload = {
+            storeGuid: this.$route.params.storeGuid,
+            listGuid: listGuid,
+            hidden: true,
+          };
+          await PosStoreNotificationService.toggleVisibility(payload);
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
+        } finally {
+          this.isLoading = false;
+        }
         this.reloadNotification();
       },
       showHiddenNotification() {

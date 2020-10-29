@@ -1,10 +1,13 @@
 <template>
   <el-container class="full-size" direction="vertical" v-loading="isLoading || isRefreshing">
     <el-header class="bg-yellowgreen" height="40px">
-      <el-row class="full-size" type="flex" align="middle">
-        <el-col class="padding-left-5 hidden-sm-and-down">
+      <el-row class="full-size padding-0-10" type="flex" align="middle">
+        <el-col class="hidden-sm-and-down">
           <el-row type="flex" align="middle">
-            <el-radio-group class="full-height hidden-md-and-down" :fill="color.WARNING" v-model="displaySeatStatus"
+            <el-button type="success" plain size="mini" @click="groupPurchase">
+              <span><i class="el-icon-money"></i><span>Thanh toán nhóm</span></span>
+            </el-button>
+            <el-radio-group class="full-height hidden-md-and-down padding-left-10" :fill="color.SUCCESS" v-model="displaySeatStatus"
                             size="mini">
               <el-radio-button class="full-height no-border-radius" v-for="status in seatStatus" :key="status.value"
                                :label="status.value">
@@ -37,18 +40,21 @@
               </div>
             </el-popover>
 
-            <el-button v-popover:guidePopover class="bg-yellowgreen no-border" size="mini">
-              <span><i class="el-icon-help"></i><span>Chú thích</span></span>
+            <el-button v-popover:guidePopover class="bg-yellowgreen no-border padding-0 margin-left-10" size="mini" circle>
+              <span class="text-very-large text-white">
+                <i class="el-icon-question"></i>
+              </span>
+<!--              <span>Chú thích</span>-->
             </el-button>
-            <el-button class="bg-yellowgreen no-border" size="mini" @click="groupPurchase">
-              <span><i class="el-icon-money"></i><span>Thanh toán nhóm</span></span>
-            </el-button>
+
           </el-row>
         </el-col>
-        <div class="text-right padding-right-5">
-          <el-button class="bg-yellowgreen no-border" :loading="isRefreshing" size="mini" @click="refreshSeat">
-            <span><i class="el-icon-refresh" v-if="!isRefreshing"></i><span>Làm mới (F4)</span></span>
-          </el-button>
+        <div class="text-right">
+          <el-tooltip content="Phím tắt: F4">
+            <el-button type="success" plain :loading="isRefreshing" size="mini" @click="refreshSeat">
+              <span><i class="el-icon-refresh" v-if="!isRefreshing"></i><span>Làm mới</span></span>
+            </el-button>
+          </el-tooltip>
         </div>
       </el-row>
     </el-header>

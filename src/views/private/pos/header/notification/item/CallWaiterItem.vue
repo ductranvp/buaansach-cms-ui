@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="text-dark">
+    <div>
       <b>{{notification.title}}</b>
     </div>
     <el-row type="flex" align="middle">

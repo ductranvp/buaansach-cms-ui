@@ -1,6 +1,6 @@
 <template>
   <el-container class="full-size" direction="horizontal">
-    <el-aside width="31%">
+    <el-aside width="33%">
       <side-notification :type="notificationType.PAY_REQUEST"/>
     </el-aside>
     <el-divider direction="vertical" class="full-height bg-success margin-0"></el-divider>

@@ -5,6 +5,7 @@ import computed from "@/mixin/computed";
 import defaultStoreImage from "@/assets/images/banner_success.png";
 import logoImage from "@/assets/images/logo.png";
 import logoSquareImage from "@/assets/images/logo_square.png";
+import noImage from "@/assets/images/no_image.png";
 
 Vue.mixin({
   filters,
@@ -12,7 +13,8 @@ Vue.mixin({
     return {
       defaultStoreImage,
       logoImage,
-      logoSquareImage
+      logoSquareImage,
+      noImage
     };
   },
   computed,

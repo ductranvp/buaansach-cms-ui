@@ -1,6 +1,6 @@
 <template>
   <el-drawer
-    size="450px"
+    size="30%"
     :close-on-click-modal="false"
     :visible.sync="drawerVisible"
     :direction="direction"
