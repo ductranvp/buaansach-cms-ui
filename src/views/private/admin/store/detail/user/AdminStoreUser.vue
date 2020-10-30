@@ -11,6 +11,7 @@
     <div class="margin-top-10">
       <raw-data-table ref="storeUserTable"
                       show-index
+                      v-loading="isLoading"
                       :data="storeUsers">
         <template slot="expand">
           <el-table-column type="expand">
@@ -20,6 +21,7 @@
           </el-table-column>
         </template>
         <el-table-column prop="userCode"
+                         width="64px"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.userCode')">
         </el-table-column>
         <el-table-column prop="userLogin"
@@ -51,14 +53,26 @@
             </el-tag>
           </template>
         </el-table-column>
+
+        <el-table-column prop="storeUserArea"
+                         label="Khu vực">
+          <template slot-scope="{row}" v-if="row.storeUserArea">
+            <template v-for="item in row.storeUserArea.split(';')">
+              <el-tag type="primary" :key="item" v-if="storeAreaObject[item]">
+                <span>{{storeAreaObject[item].areaName}}</span>
+              </el-tag>
+            </template>
+          </template>
+        </el-table-column>
+
         <el-table-column prop="storeUserActivated"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.activated')">
           <template slot-scope="{row}">
-            <el-button :disabled="currentUser.userLogin === row.userLogin" size="small" type="success"
+            <el-button :disabled="currentUser.userLogin === row.userLogin" :loading="row.isLoading" size="small" type="success"
                        @click="handleActivated(row)" v-if="row.storeUserActivated">
               <span>Đã kích hoạt</span>
             </el-button>
-            <el-button size="small" type="danger" @click="handleActivated(row)" v-else>
+            <el-button size="small" type="danger" :loading="row.isLoading" @click="handleActivated(row)" v-else>
               <span>Đã khóa</span>
             </el-button>
           </template>
@@ -66,7 +80,7 @@
         <template slot="action">
           <el-table-column
             :label="$t('common.entity.action.title')"
-            width="100px"
+            width="150px"
           >
             <template slot-scope="{ row }">
               <el-button
@@ -77,14 +91,21 @@
               >
                 <span>{{ $t("common.entity.action.edit") }}</span>
               </el-button>
+              <el-button
+                      size="mini"
+                      type="danger"
+                      plain
+                      @click="handleDelete(row)"
+              >
+                <span>{{ $t("common.entity.action.delete") }}</span>
+              </el-button>
             </template>
           </el-table-column>
         </template>
       </raw-data-table>
     </div>
-    <add-store-user-dialog @addStoreUser="handleCreated" ref="addStoreUserDialog"/>
-    <create-or-update-store-user-dialog @createStoreUser="handleCreated"
-                                        @updateStoreUser="handleUpdated"
+    <add-store-user-dialog :store-areas="storeAreas" @saved="getStoreUser" ref="addStoreUserDialog"/>
+    <create-or-update-store-user-dialog :store-areas="storeAreas" @saved="getStoreUser"
                                         ref="storeUserDialog"/>
   </el-container>
 </template>
@@ -98,6 +119,9 @@
   import NotificationUtils from "@/utils/notification.util";
   import AdminStoreUserRowDetail from "@/views/private/admin/store/detail/user/AdminStoreUserRowDetail";
   import StoreUserRole from "@/enum/StoreUserRole";
+  import AdminAreaService from '@/service/admin/admin.area.service';
+  import ErrorUtils from '@/utils/error.util';
+  import MessageBoxUtils from '@/utils/message-box.util';
 
   export default {
     name: "AdminStoreUser",
@@ -108,14 +132,18 @@
         isLoading: false,
         searchKey: null,
         storeUsers: [],
+        storeAreas: [],
+        storeAreaObject: {}
       };
     },
     watch: {
-      $route(to, from) {
+      async $route(to, from) {
+        await this.getStoreArea();
         this.getStoreUser();
       },
     },
-    created() {
+    async created() {
+      await this.getStoreArea();
       this.getStoreUser();
     },
     methods: {
@@ -125,31 +153,54 @@
       addStoreUser() {
         this.$refs.addStoreUserDialog.add();
       },
-      handleUpdated(data) {
-        for (let i = 0; i < this.storeUsers.length; i++) {
-          if (this.storeUsers[i].guid === data.guid) {
-            AppUtils.setAttrs(this, this.storeUsers[i], data);
-            break;
-          }
-        }
-      },
-      handleCreated(data) {
-        this.storeUsers.push(data);
-      },
       handleEdit(row) {
         this.$refs.storeUserDialog.edit(row);
       },
+      async handleDelete(row) {
+        await MessageBoxUtils.confirmPromise("Xoá người dùng: " + row.userLogin);
+        try {
+          this.isLoading = true;
+          await AdminStoreUserService.deleteStoreUser(row.guid);
+          this.getStoreUser();
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
+        } finally {
+          this.isLoading = false;
+        }
+      },
       async handleActivated(row) {
         try {
+          row.isLoading = true;
           await AdminStoreUserService.toggleActivation(row.guid);
           row.storeUserActivated = !row.storeUserActivated;
         } catch (error) {
-          NotificationUtils.error(error.message || error.data.message);
+          ErrorUtils.showErrorMessage(error);
+        } finally {
+          row.isLoading = false;
         }
       },
       async getStoreUser() {
-        const {data} = await AdminStoreUserService.getListStoreUserByStoreGuid(this.$route.params.storeGuid);
-        this.storeUsers = data;
+        try {
+          const {data} = await AdminStoreUserService.getListStoreUserByStoreGuid(this.$route.params.storeGuid);
+          this.storeUsers = data.map(item => {
+            item.isLoading = false;
+            return item;
+          });
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
+        }
+      },
+      async getStoreArea(){
+        try {
+          const {data} = await AdminAreaService.getListAreaByStoreGuid(this.$route.params.storeGuid);
+          this.storeAreas = data;
+          data.forEach(item => {
+            this.storeAreaObject[item.guid] = item;
+          });
+        } catch (error) {
+          ErrorUtils.showErrorMessage(error);
+        }
+
       }
     }
   };

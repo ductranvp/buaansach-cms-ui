@@ -5,6 +5,7 @@ const PosStoreNotificationService = {
   /**
    * Lấy danh sách thông báo
    * @param {String} params.storeGuid
+   * @param {String} params.listArea
    * @param {String} params.startDate
    * @param {String} params.type
    * @param {Boolean} params.hidden

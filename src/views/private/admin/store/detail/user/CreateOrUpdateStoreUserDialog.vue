@@ -1,100 +1,112 @@
 <template>
-    <el-dialog
-            :title="$t('private.adminStoreDetailHumanPage.dialog.title')"
-            :visible.sync="dialogFormVisible"
-            :before-close="beforeClose"
-            :close-on-click-modal="false"
-            @opened="dialogOpened"
-    >
-        <el-form ref="storeUserForm" :model="form" :rules="formRules">
-            <el-form-item>
-                <el-col :span="11">
-                    <el-form-item prop="userLogin">
-                        <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.userLogin')" required/>
-                        <el-input maxlength="50" ref="userLogin" :disabled="isEdit" v-model="form.userLogin"
-                                  show-word-limit></el-input>
-                    </el-form-item>
-                </el-col>
+  <el-dialog
+          :title="$t('private.adminStoreDetailHumanPage.dialog.title')"
+          :visible.sync="dialogFormVisible"
+          :before-close="beforeClose"
+          :close-on-click-modal="false"
+          @opened="dialogOpened"
+  >
+    <el-form ref="storeUserForm" :model="form" :rules="formRules">
+      <el-form-item>
+        <el-col :span="11">
+          <el-form-item prop="userLogin">
+            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.userLogin')" required/>
+            <el-input maxlength="50" ref="userLogin" :disabled="isEdit" v-model="form.userLogin"
+                      show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
 
-                <el-col :span="11" :offset="2">
-                    <el-form-item prop="userPassword">
-                        <input-label v-show="isEdit"
-                                     :label="$t('private.adminStoreDetailHumanPage.storeUser.passwordWithoutRequired')"/>
-                        <input-label v-show="!isEdit"
-                                     :label="$t('private.adminStoreDetailHumanPage.storeUser.password')" required/>
-                        <el-input autocomplete="new-password"
-                                  ref="userPassword"
-                                  maxlength="100"
-                                  v-model="form.userPassword"
-                                  type="password"
-                                  show-word-limit
-                                  show-password></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-form-item>
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="userPassword">
+            <input-label v-show="isEdit"
+                         :label="$t('private.adminStoreDetailHumanPage.storeUser.passwordWithoutRequired')"/>
+            <input-label v-show="!isEdit"
+                         :label="$t('private.adminStoreDetailHumanPage.storeUser.password')" required/>
+            <el-input autocomplete="new-password"
+                      ref="userPassword"
+                      maxlength="100"
+                      v-model="form.userPassword"
+                      type="password"
+                      show-word-limit
+                      show-password></el-input>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
 
-            <el-form-item>
-                <el-col :span="11">
-                    <el-form-item prop="userPhone">
-                        <input-label label="SĐT" required/>
-                        <el-input :disabled="isEdit" ref="userPhone" maxlength="10" v-model="form.userPhone"
-                                  show-word-limit></el-input>
-                    </el-form-item>
-                </el-col>
+      <el-form-item>
+        <el-col :span="11">
+          <el-form-item prop="userPhone">
+            <input-label label="SĐT" required/>
+            <el-input :disabled="isEdit" ref="userPhone" maxlength="10" v-model="form.userPhone"
+                      show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
 
-                <el-col :span="11" :offset="2">
-                    <el-form-item prop="userEmail">
-                        <input-label label="Email" required/>
-                        <el-input ref="userEmail" maxlength="255" v-model="form.userEmail" show-word-limit></el-input>
-                    </el-form-item>
-                </el-col>
-            </el-form-item>
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="userEmail">
+            <input-label label="Email" required/>
+            <el-input ref="userEmail" maxlength="255" v-model="form.userEmail" show-word-limit></el-input>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
 
 
-            <el-form-item prop="fullName">
-                <input-label label="Họ tên" required/>
-                <el-input ref="fullName" maxlength="100" v-model="form.fullName" show-word-limit></el-input>
-            </el-form-item>
+      <el-form-item prop="fullName">
+        <input-label label="Họ tên" required/>
+        <el-input ref="fullName" maxlength="100" v-model="form.fullName" show-word-limit></el-input>
+      </el-form-item>
 
-            <el-form-item>
-                <el-col :span="11">
-                    <el-form-item prop="storeUserRole">
-                        <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserRole')"/>
-                        <el-select class="full-width" v-model="form.storeUserRole">
-                            <el-option
-                                    v-for="item in storeUserRole"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
+      <el-form-item>
+        <el-col :span="11">
+          <el-form-item prop="storeUserRole">
+            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserRole')"/>
+            <el-select class="full-width" v-model="form.storeUserRole">
+              <el-option
+                      v-for="item in storeUserRole"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
 
-                <el-col :span="11" :offset="2">
-                    <el-form-item prop="storeUserStatus">
-                        <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserStatus')"/>
-                        <el-select class="full-width" v-model="form.storeUserStatus">
-                            <el-option
-                                    v-for="item in storeUserStatus"
-                                    :key="item.value"
-                                    :label="item.label"
-                                    :value="item.value">
-                            </el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-col>
-            </el-form-item>
-        </el-form>
-        <div slot="footer" class="dialog-footer">
-            <el-button @click="hide">
-                <span>{{ $t('common.entity.action.cancel') }}</span>
-            </el-button>
-            <el-button type="primary" @click="submit" :loading="isLoading">
-                <span>{{ $t('common.entity.action.save') }}</span>
-            </el-button>
-        </div>
-    </el-dialog>
+        <el-col :span="11" :offset="2">
+          <el-form-item prop="storeUserStatus">
+            <input-label :label="$t('private.adminStoreDetailHumanPage.storeUser.storeUserStatus')"/>
+            <el-select class="full-width" v-model="form.storeUserStatus">
+              <el-option
+                      v-for="item in storeUserStatus"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-form-item>
+
+      <el-form-item prop="storeUserArea">
+        <input-label label="Khu vực đảm nhiệm"/>
+        <el-select class="full-width" v-model="selectedAreaGuid" multiple>
+          <el-option
+                  v-for="status in storeAreas"
+                  :key="status.guid"
+                  :label="status.areaName"
+                  :value="status.guid">
+          </el-option>
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <div slot="footer" class="dialog-footer">
+      <el-button @click="hide">
+        <span>{{ $t('common.entity.action.cancel') }}</span>
+      </el-button>
+      <el-button type="primary" @click="submit" :loading="isLoading">
+        <span>{{ $t('common.entity.action.save') }}</span>
+      </el-button>
+    </div>
+  </el-dialog>
 </template>
 
 <script>
@@ -108,6 +120,12 @@
 
   export default {
     name: 'CreateOrUpdateStoreUserDialog',
+    props: {
+      storeAreas: {
+        type: Array,
+        default: () => [],
+      },
+    },
     computed: {
       ...mapState({
         adminCurrentStore: state => state.adminStore.adminCurrentStore,
@@ -118,6 +136,7 @@
         dialogFormVisible: false,
         isLoading: false,
         isEdit: false,
+        selectedAreaGuid: [],
         form: {
           guid: null,
           storeGuid: null,
@@ -128,6 +147,7 @@
           fullName: null,
           storeUserRole: null,
           storeUserStatus: null,
+          storeUserArea: null,
         },
         formRules: {
           userLogin: [
@@ -189,6 +209,7 @@
           storeUserRole: StoreUserRole.value.STORE_WAITER,
           storeUserStatus: StoreUserStatus.value.WORKING,
         };
+        this.selectedAreaGuid = [];
         this.formRules.userPassword = [
           {required: true, message: this.$t('common.entity.validation.required'), trigger: 'blur'},
           {max: 100, message: this.$t('common.entity.validation.maxlength', {max: 100}), trigger: 'blur'},
@@ -197,25 +218,26 @@
       },
       edit(storeUser) {
         this.isEdit = true;
+        this.selectedAreaGuid = [];
         this.formRules.userPassword = [
           {max: 100, message: this.$t('common.entity.validation.maxlength', {max: 100}), trigger: 'blur'},
         ];
         this.form = AppUtils.deepCopy(storeUser);
+        if (this.form.storeUserArea) this.selectedAreaGuid = this.form.storeUserArea.split(';');
         this.show();
       },
       submit() {
         this.$refs.storeUserForm.validate(async valid => {
           if (valid) {
             try {
-              let response;
               this.isLoading = true;
+              this.form.storeUserArea = this.selectedAreaGuid.join(';');
               if (!this.isEdit) {
-                response = await AdminStoreUserService.createStoreUser(this.form);
-                this.$emit('createStoreUser', response.data);
+                await AdminStoreUserService.createStoreUser(this.form);
               } else {
-                response = await AdminStoreUserService.updateStoreUser(this.form);
-                this.$emit('updateStoreUser', response.data);
+                await AdminStoreUserService.updateStoreUser(this.form);
               }
+              this.$emit('saved');
               this.hide();
               NotificationUtils.success(this.$t('common.entity.save.success'));
             } catch (error) {

@@ -13,8 +13,8 @@ const PosWebsocket = {
       wsConnected: state => state.websocket.wsConnected,
       currentStore: state => state.posMachine.currentStore,
       selectedSeat: state => state.posMachine.selectedSeat,
-      allAreas: state => state.posMachine.allAreas,
       allSeatsObject: state => state.posMachine.allSeatsObject,
+      allAreasObject: state => state.posMachine.allAreasObject,
     }),
   },
   data() {
@@ -80,6 +80,10 @@ const PosWebsocket = {
     onMessageReceived(payload) {
       const data = JSON.parse(payload.body);
       const seatData = this.allSeatsObject[data.payload.seatGuid];
+
+      /* Neu khu vuc khong thuoc phu trach cua user hien tai => Se khong tong tai vi tri nay */
+      if (!seatData) return;
+
       const notification = {
         ...data.payload,
         title: seatData.seatName + ' - ' + seatData.areaName,

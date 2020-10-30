@@ -6,7 +6,6 @@ const state = {
   allSeats: [],
   allSeatsObject: {},
   selectedSeat: {},
-  groupSelectedSeats: [],
 };
 const mutations = {
   SET_ALL_SEAT(state, allSeats) {

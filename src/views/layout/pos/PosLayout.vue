@@ -28,6 +28,7 @@
         ready: state => state.posMachine.ready,
         currentStore: state => state.posMachine.currentStore,
         isLoadingOrder: state => state.posMachine.isLoadingOrder,
+        allAreasObject: state => state.posMachine.allAreasObject
       }),
     },
     data() {
@@ -59,6 +60,7 @@
       startDate.setHours(0, 0, 0, 0);
       const payload = {
         storeGuid: this.$route.params.storeGuid,
+        listArea: Object.keys(this.allAreasObject).join(";"),
         startDate: startDate,
         type: null,
         hidden: null, // null means get all

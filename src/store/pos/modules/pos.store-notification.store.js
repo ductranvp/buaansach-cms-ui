@@ -35,9 +35,10 @@ const mutations = {
 };
 const actions = {
   async getStoreNotifications(
-    {state, commit}, {storeGuid, startDate, type, hidden}) {
+    {state, commit}, {storeGuid, listArea, startDate, type, hidden}) {
     let params = {
       storeGuid: storeGuid,
+      listArea: listArea,
       startDate: startDate,
       type: type,
       hidden: hidden,

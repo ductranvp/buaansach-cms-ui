@@ -56,7 +56,8 @@
     computed: {
       ...mapState({
         allAreas: state => state.posMachine.allAreas,
-        selectedArea: state => state.posMachine.selectedArea
+        selectedArea: state => state.posMachine.selectedArea,
+        allAreasObject: state => state.posMachine.allAreasObject
       })
     },
     data() {
@@ -103,6 +104,7 @@
           startDate.setHours(0, 0, 0, 0);
           await this.$store.dispatch("posMachine/getStoreNotifications", {
             storeGuid: this.$route.params.storeGuid,
+            listArea: Object.keys(this.allAreasObject).join(";"),
             startDate: startDate,
             type: null,
             hidden: null,

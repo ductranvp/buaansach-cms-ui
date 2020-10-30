@@ -91,6 +91,7 @@
           return this.getListNotificationByType(state).
             filter(item => item.storeNotificationStatus === StoreNotificationStatus.value.UNSEEN);
         },
+        allAreasObject: state => state.posMachine.allAreasObject
       }),
       notificationTitle() {
         switch (this.type) {
@@ -148,6 +149,7 @@
           startDate.setHours(0, 0, 0, 0);
           await this.$store.dispatch('posMachine/getStoreNotifications', {
             storeGuid: this.$route.params.storeGuid,
+            listArea: Object.keys(this.allAreasObject).join(";"),
             startDate: startDate,
             type: this.type,
             hidden: null,

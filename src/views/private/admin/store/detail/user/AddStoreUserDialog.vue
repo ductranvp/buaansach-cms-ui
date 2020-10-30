@@ -42,6 +42,18 @@
         </el-col>
       </el-form-item>
 
+      <el-form-item prop="storeUserArea">
+        <input-label label="Khu vực đảm nhiệm"/>
+        <el-select class="full-width" v-model="selectedAreaGuid" multiple>
+          <el-option
+                  v-for="status in storeAreas"
+                  :key="status.guid"
+                  :label="status.areaName"
+                  :value="status.guid">
+          </el-option>
+        </el-select>
+      </el-form-item>
+
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="hide">
@@ -60,18 +72,27 @@
   import NotificationUtils from "@/utils/notification.util";
   import StoreUserRole from "@/enum/StoreUserRole";
   import StoreUserStatus from "@/enum/StoreUserStatus";
+  import ErrorUtils from '@/utils/error.util';
 
   export default {
     name: "AddStoreUserDialog",
+    props: {
+      storeAreas: {
+        type: Array,
+        default: () => []
+      }
+    },
     data() {
       return {
         isLoading: false,
         dialogFormVisible: false,
+        selectedAreaGuid: [],
         form: {
           storeGuid: null,
           principal: null,
           storeUserRole: null,
           storeUserStatus: null,
+          storeUserArea: null,
         },
         formRules: {
           principal: [
@@ -99,6 +120,7 @@
         done();
       },
       add() {
+        this.selectedAreaGuid = [];
         this.form = {
           storeGuid: this.$route.params.storeGuid,
           storeUserRole: StoreUserRole.value.STORE_WAITER,
@@ -115,11 +137,12 @@
           if (valid) {
             try {
               this.isLoading = true;
-              const {data} = await AdminStoreUserService.addStoreUser(this.form);
-              this.$emit("addStoreUser", data);
+              this.form.storeUserArea = this.selectedAreaGuid.join(";");
+              await AdminStoreUserService.addStoreUser(this.form);
+              this.$emit("saved");
               this.hide();
             } catch (error) {
-              NotificationUtils.error(error.message || error.data.message);
+              ErrorUtils.showErrorMessage(error);
             } finally {
               this.isLoading = false;
             }

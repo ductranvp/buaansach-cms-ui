@@ -5,12 +5,18 @@ import DefaultEntity from "@/utils/default-entity";
 
 const state = {
   allAreas: [],
+  allAreasObject: {},
   selectedArea: DefaultEntity.area,
 };
 
 const mutations = {
   SET_ALL_AREA(state, allAreas) {
     state.allAreas = allAreas;
+    let allAreasObject = {};
+    allAreas.forEach(area => {
+      allAreasObject[area.guid] = area;
+    });
+    state.allAreasObject = allAreasObject;
   },
   SET_SELECTED_AREA(state, areaGuid) {
     if (areaGuid === DefaultEntity.area.guid) {
