@@ -9,6 +9,7 @@ import WebsocketConstants from "@/utils/websocket.constants";
 import CloudFlareService from "@/service/shared/cloudflare.service";
 import AppUtils from "@/utils/app.util";
 import WebsocketEndpoints from '@/utils/websocket.endpoints';
+import router from '@/router';
 
 const state = {
   wsError: null,
@@ -46,7 +47,7 @@ const mutations = {
     if (!state.wsError) {
       state.wsError = Notification.error({
         title: "Lỗi kết nối tới máy chủ!",
-        message: "<span>Hãy kiểm tra các kết nối mạng!<br>Đang thực hiện kết nối lại..</span>",
+        message: "<span>Tải lại trang hoặc kiểm tra các kết nối mạng!<br>Đang thực hiện kết nối lại..</span>",
         dangerouslyUseHTMLString: true,
         showClose: false,
         duration: 0
@@ -80,6 +81,10 @@ const actions = {
         dispatch("sendActivity", {});
       },
       function (error) {
+        if (router.currentRoute.name === 'loginPage'){
+          location.reload();
+          return;
+        }
         commit("SET_CONNECTED", false);
         commit("SET_STOMP_CLIENT", null);
         commit("SET_ERROR");

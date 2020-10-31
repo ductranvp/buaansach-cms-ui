@@ -25,9 +25,8 @@
           <raw-data-table :data="assignedStores">
             <el-table-column prop="storeCode" label="Mã cửa hàng"/>
             <el-table-column prop="storeName" label="Tên cửa hàng"/>
-            <el-table-column prop="storeName" label="Sale chính">
+            <el-table-column label="Sale chính">
               <template slot-scope="{row}">
-<!--                <el-tag size="medium" type="primary" v-if="row.storePrimarySaleGuid === row.saleGuid">Sale chính</el-tag>-->
                 <el-button type="danger" size="mini" @click="makePrimarySale(row, true)" v-if="row.storePrimarySaleGuid === row.saleGuid">Gỡ sale chính</el-button>
 
                 <el-button type="primary" size="mini" @click="makePrimarySale(row, false)" v-else>Đặt làm sale chính</el-button>

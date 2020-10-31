@@ -18,6 +18,13 @@ const AdminStoreSaleService = {
   },
 
   /**
+   * @param {String} params - storeGuid
+   * */
+  getListStoreSaleByStore(params) {
+    return request.get(baseUrl + '/list-by-store/' + params);
+  },
+
+  /**
    * @param {{guid: String, storeSaleActivated: Boolean, storeGuid: String, saleGuid: String}} payload
    * */
   updateStoreSale(payload) {

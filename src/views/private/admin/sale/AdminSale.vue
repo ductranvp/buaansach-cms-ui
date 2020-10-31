@@ -11,7 +11,7 @@
       <raw-data-table :data="sales" show-index>
         <el-table-column prop="saleImageUrl" label="Hình">
           <template slot-scope="{row}">
-            <el-image style="height: 50px" fit="cover" :src="getMediaUrl(row.saleImageUrl)" :preview-src-list="[getMediaUrl(row.saleImageUrl)]">
+            <el-image style="height: 50px; width: 50px" fit="cover" :src="getMediaUrl(row.saleImageUrl)" :preview-src-list="[getMediaUrl(row.saleImageUrl)]">
               <div slot="error" class="image-error-slot full-size">
                 <i class="el-icon-picture-outline"></i>
               </div>
