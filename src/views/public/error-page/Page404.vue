@@ -3,7 +3,7 @@
     <el-row type="flex" align="middle" justify="center" class="full-size column">
       <span class="error-code">404</span>
       <span class="error-description padding-20">Không tìm thấy trang bạn yêu cầu</span>
-      <el-button type="warning" @click="()=>{this.$router.push('/home')}">Về trang chủ</el-button>
+      <el-button type="warning" @click="pushRouteName('homePage')">Về trang chủ</el-button>
     </el-row>
   </el-container>
 </template>

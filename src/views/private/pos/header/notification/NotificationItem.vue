@@ -2,7 +2,8 @@
   <el-row v-loading="isLoading" type="flex" align="middle"
           class="padding-top-5 padding-bottom-5 padding-left-10 notification-item"
           :class="[
-            notification.storeNotificationStatus === notificationStatus.UNSEEN ? 'unseen-notification' : ''
+            notification.storeNotificationStatus === notificationStatus.UNSEEN ? 'unseen-notification' : '',
+            activeNotificationClass
           ]">
     <el-col class="padding-right-10" @click.native="clickNotification(notification)">
       <order-update-item :notification="notification" :show-full-info="showFullInfo"
@@ -46,9 +47,20 @@
         selectedSeat: state => state.posMachine.selectedSeat,
         currentStore: state => state.posMachine.currentStore,
         activeOrderProductGroup: state => state.posMachine.activeOrderProductGroup,
+        activeNotificationClass(state) {
+          if (this.onHiddenDialog) return '';
+          if (state.posMachine.activeNotificationGuid === this.notification.guid) {
+            return 'active-notification';
+          }
+          return '';
+        },
       }),
     },
     props: {
+      onHiddenDialog: {
+        type: Boolean,
+        default: false,
+      },
       selectable: {
         type: Boolean,
         default: true,
@@ -89,9 +101,15 @@
           this.markAsRead(notification);
         }
 
-        if (this.type === this.notificationType.ORDER_UPDATE) {
-          this.$store.commit('posMachine/SET_ACTIVE_ORDER_PRODUCT_GROUP',
-            notification.orderNotification.orderProductGroup);
+        switch (this.type) {
+          case this.notificationType.ORDER_UPDATE:
+            this.$store.commit('posMachine/SET_ACTIVE_ORDER_PRODUCT_GROUP',
+              notification.orderNotification.orderProductGroup);
+            this.$store.commit('posMachine/SET_ACTIVE_NOTIFICATION_GUID', notification.guid);
+            break;
+          case this.notificationType.PAY_REQUEST:
+            this.$store.commit('posMachine/SET_ACTIVE_NOTIFICATION_GUID', notification.guid);
+            break;
         }
       },
       async markAsRead(notification) {
@@ -129,12 +147,16 @@
 <style lang="scss" scoped>
   .notification-item {
     line-height: 24px;
-    border-bottom: 1px solid #bbb;
     color: $--color-dark;
   }
 
   .unseen-notification {
     background-color: $--color-warning-light;
+  }
+
+  .active-notification {
+    border: 2px dashed $--color-success;
+    /*box-shadow: 0 0 1px 2px;*/
   }
 
   .notification-item i {

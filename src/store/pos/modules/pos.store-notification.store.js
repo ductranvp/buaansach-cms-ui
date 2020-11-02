@@ -6,9 +6,13 @@ const state = {
   callWaiterNotifications: [],
   payRequestNotifications: [],
   orderNotifications: [],
+  activeNotificationGuid: null,
 };
 
 const mutations = {
+  SET_ACTIVE_NOTIFICATION_GUID(state, guid) {
+    state.activeNotificationGuid = guid;
+  },
   RESET_STORE_NOTIFICATION(state) {
     state.callWaiterNotifications = [];
     state.payRequestNotifications = [];
@@ -49,7 +53,7 @@ const actions = {
 
     data.forEach(item => {
       const seatData = state.allSeatsObject[item.seatGuid];
-      item.title = seatData.seatName + " - " + seatData.areaName;
+      item.title = seatData.seatName + ' - ' + seatData.areaName;
     });
 
     switch (type) {

@@ -24,6 +24,7 @@
       <template v-else>
         <el-dropdown-item class="padding-0" v-for="(notification) in listNotification" :key="notification.guid">
           <notification-item :notification="notification" :type="type"/>
+          <el-divider class="margin-0"></el-divider>
         </el-dropdown-item>
       </template>
       <el-row class="bg-success text-light bottom-toolbar" type="flex" align="middle">

@@ -88,7 +88,9 @@
       },
       edit(entity) {
         this.isEdit = true;
-        this.form = AppUtils.deepCopy(entity);
+        this.form = {
+          ...AppUtils.deepCopy(entity)
+        };
         this.show();
       },
       show() {
