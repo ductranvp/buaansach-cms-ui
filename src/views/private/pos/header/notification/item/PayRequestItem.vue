@@ -33,9 +33,9 @@
 
         <!--Payment-->
         <el-tooltip placement="top" content="Tiền khách sẽ đưa">
-          <el-tag class="margin-left-10" size="small" type="success">
+          <el-tag class="margin-left-10" size="small" type="success" effect="dark">
             <i class="el-icon-money"></i>
-            <span>{{notification.payRequestNotification.storePayRequestAmount | priceAppend}}</span>
+            <span class="text-small">{{notification.payRequestNotification.storePayRequestAmount | priceAppend}}</span>
           </el-tag>
         </el-tooltip>
       </el-col>
@@ -57,6 +57,9 @@
       </template>
 
     </el-row>
+    <div v-if="notification.payRequestNotification.keepTheChange">
+      <span class="text-bold text-danger">Khách không lấy tiền thừa</span>
+    </div>
   </div>
 </template>
 

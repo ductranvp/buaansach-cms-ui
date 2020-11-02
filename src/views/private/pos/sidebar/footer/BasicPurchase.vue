@@ -193,9 +193,6 @@
         }
 
       },
-      showFeedback() {
-        this.$refs.orderFeedbackDialog.show();
-      }
     }
   };
 </script>

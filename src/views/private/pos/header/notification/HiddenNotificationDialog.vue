@@ -18,7 +18,7 @@
       <template v-else>
         <el-row class="notification-item" v-for="item in listHiddenNotification" :key="item.guid">
           <notification-item :on-hidden-dialog="true" :selectable="false" :notification="item" :show-full-info="true" :type="type"/>
-          <el-divider class="margin-0"></el-divider>
+          <el-divider class="margin-0 notification-divider"></el-divider>
         </el-row>
       </template>
     </el-main>
