@@ -10,23 +10,23 @@
     </div>
     <el-form ref="dialogForm" :model="form" :rules="formRules">
       <el-form-item label="Chọn nhân viên">
-        <el-select v-model="form.listUser" multiple class="full-width" @change="changeSelectUser">
-          <el-option v-for="user in storeUsers" :key="user.userLogin" :label="user.fullName"
-                     :value="user.userLogin"></el-option>
+        <el-select v-model="form.listUserGuid" multiple class="full-width" @change="changeSelectUser">
+          <el-option v-for="storeUser in storeUsers" :key="storeUser.userGuid" :label="storeUser.fullName"
+                     :value="storeUser.userGuid"></el-option>
         </el-select>
       </el-form-item>
     </el-form>
-    <div v-if="form.listUser">
-      <el-row type="flex" align="middle" class="padding-10-0" v-for="userLogin in form.listUser" :key="userLogin">
+    <div v-if="form.listUserGuid">
+      <el-row type="flex" align="middle" class="padding-10-0" v-for="userGuid in form.listUserGuid" :key="userGuid">
         <el-col :span="5">
-          <span v-if="storeUsersObject[userLogin]">{{storeUsersObject[userLogin].fullName}}</span>
+          <span v-if="storeUsersObject[userGuid]">{{storeUsersObject[userGuid].fullName}}</span>
         </el-col>
         <el-col :span="5">
-          <el-checkbox v-model="allChecked[userLogin]" @change="toggleSelectAll($event, userLogin)">Cả tuần</el-checkbox>
+          <el-checkbox v-model="allChecked[userGuid]" @change="toggleSelectAll($event, userGuid)">Cả tuần</el-checkbox>
         </el-col>
         <el-col :span="14" >
-          <el-checkbox-group @change="changeSelectGroup($event, userLogin)" v-model="selectedWorkDays[userLogin]" class="full-width">
-            <el-checkbox v-for="item in weekDays" :key="userLogin + item" :label="item"></el-checkbox>
+          <el-checkbox-group @change="changeSelectGroup($event, userGuid)" v-model="selectedWorkDays[userGuid]" class="full-width">
+            <el-checkbox v-for="item in weekDays" :key="userGuid + item" :label="item"></el-checkbox>
           </el-checkbox-group>
         </el-col>
       </el-row>
@@ -58,8 +58,8 @@
         storeWorkShift: {},
         form: {
           storeWorkShiftGuid: null,
-          listUser: null,
-          listWorkDay: null,
+          listUserGuid: [],
+          listWorkDay: [],
         },
         selectedWorkDays: {},
         allChecked: {},
@@ -72,27 +72,27 @@
     methods: {
       edit(entity) {
         this.isEdit = true;
-        let listUserLogin = [];
+        let listUserGuid = [];
         this.selectedWorkDays = {};
         this.allChecked = {};
-        entity.listUser.forEach(workShiftUser => {
-          const login = workShiftUser.userLogin;
-          listUserLogin.push(login);
+        entity.listStoreWorkShiftUser.forEach(workShiftUser => {
+          const userGuid = workShiftUser.userGuid;
+          listUserGuid.push(userGuid);
           let userWorkDays = workShiftUser.workDay ? workShiftUser.workDay.split(";") : [];
-          this.$set(this.selectedWorkDays, login, userWorkDays);
+          this.$set(this.selectedWorkDays, userGuid, userWorkDays);
           if (userWorkDays.length === 7){
-            this.$set(this.allChecked, login, true);
+            this.$set(this.allChecked, userGuid, true);
           } else {
-            this.$set(this.allChecked, login, false);
+            this.$set(this.allChecked, userGuid, false);
           }
         });
-        listUserLogin = entity.listUser.map(item => item.userLogin);
+        listUserGuid = entity.listStoreWorkShiftUser.map(item => item.userGuid);
         this.storeWorkShift = {
           ...AppUtils.deepCopy(entity),
         };
         this.form = {
           storeWorkShiftGuid: entity.guid,
-          listUser: listUserLogin,
+          listUserGuid: listUserGuid,
           listWorkDay: []
         };
         this.show();
@@ -117,11 +117,11 @@
         this.$refs.dialogForm.validate(async valid => {
           if (valid) {
             try {
-              this.form.listUser.forEach((userLogin, index) => {
-                this.form.listWorkDay[index] = this.selectedWorkDays[userLogin].sort().join(";");
+              this.form.listUserGuid.forEach((userGuid, index) => {
+                this.form.listWorkDay[index] = this.selectedWorkDays[userGuid].sort().join(";");
               });
               this.isLoading = true;
-              await AdminStoreWorkShiftUserService.updateStoreWorkShift(this.form);
+              await AdminStoreWorkShiftUserService.updateStoreWorkShiftUser(this.form);
               this.$emit('saved');
               this.hide();
             } catch (error) {
@@ -132,25 +132,25 @@
           }
         });
       },
-      changeSelectGroup(value, userLogin){
-        if (this.selectedWorkDays[userLogin].length === 7){
-          this.$set(this.allChecked, userLogin, true);
+      changeSelectGroup(value, userGuid){
+        if (this.selectedWorkDays[userGuid].length === 7){
+          this.$set(this.allChecked, userGuid, true);
         } else {
-          this.$set(this.allChecked, userLogin, false);
+          this.$set(this.allChecked, userGuid, false);
         }
       },
-      toggleSelectAll(value, userLogin){
+      toggleSelectAll(value, userGuid){
         if (value){
-          this.$set(this.allChecked, userLogin, true);
-          this.$set(this.selectedWorkDays, userLogin, this.weekDays);
+          this.$set(this.allChecked, userGuid, true);
+          this.$set(this.selectedWorkDays, userGuid, this.weekDays);
         } else {
-          this.$set(this.allChecked, userLogin, false);
-          this.$set(this.selectedWorkDays, userLogin, []);
+          this.$set(this.allChecked, userGuid, false);
+          this.$set(this.selectedWorkDays, userGuid, []);
         }
       },
-      changeSelectUser(listUserLogin){
-        listUserLogin.forEach(userLogin => {
-          if (!this.selectedWorkDays[userLogin]) this.$set(this.selectedWorkDays, userLogin, []);
+      changeSelectUser(listUserGuid){
+        listUserGuid.forEach(userGuid => {
+          if (!this.selectedWorkDays[userGuid]) this.$set(this.selectedWorkDays, userGuid, []);
         });
       },
       async getStoreUser() {
@@ -161,7 +161,7 @@
             return item;
           });
           data.forEach(item => {
-            this.storeUsersObject[item.userLogin] = item;
+            this.storeUsersObject[item.userGuid] = item;
           });
         } catch (error) {
           ErrorUtils.showErrorMessage(error);

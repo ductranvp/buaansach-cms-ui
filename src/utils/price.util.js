@@ -1,11 +1,11 @@
 import DiscountType from "@/enum/DiscountType";
 
-function getPayAmount(total, discount, discountType, pointCost) {
+function getPayAmount(total, discount, discountType, pointValue) {
   let amount = total;
   if (discount) {
     amount = amount - getDiscountAmount(total, discount, discountType);
   }
-  if (pointCost) amount = amount - pointCost;
+  if (pointValue) amount = amount - pointValue;
   return Math.max(amount, 0);
 }
 

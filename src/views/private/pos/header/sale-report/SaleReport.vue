@@ -168,7 +168,7 @@
                       </el-col>
                       <el-col :span="12">
                         <span class="text-small">Thực tế: </span>
-                        <span class="text-very-large text-bold">{{parsedReportData.totalRealDiscount - parsedReportData.totalPointCost| priceAppend}}</span>
+                        <span class="text-very-large text-bold">{{parsedReportData.totalRealDiscount - parsedReportData.totalPointValue| priceAppend}}</span>
                       </el-col>
                     </el-row>
                   </el-main>
@@ -181,7 +181,7 @@
                       <span class="text-bold">Điểm thưởng</span>
                     </el-row>
                     <el-row type="flex" align="middle" style="height: 40px">
-                      <span class="text-very-large text-bold">{{parsedReportData.totalPointCost | priceAppend}}</span>
+                      <span class="text-very-large text-bold">{{parsedReportData.totalPointValue | priceAppend}}</span>
                     </el-row>
                   </el-main>
                 </el-card>
@@ -323,7 +323,7 @@
           totalDiscount: 0,
           totalRealDiscount: 0,
           totalRealRevenue: 0,
-          totalPointCost: 0,
+          totalPointValue: 0,
           totalRealMoney: 0,
           listTotal: [],
           listCancelled: [],
@@ -381,17 +381,17 @@
           return acc + item.orderTotalAmount;
         }, 0);
 
-        this.parsedReportData.totalPointCost = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          return acc + item.orderPointCost;
+        this.parsedReportData.totalPointValue = this.parsedReportData.listPurchased.reduce((acc, item) => {
+          return acc + item.orderPointValue;
         }, 0);
 
         this.parsedReportData.totalRealRevenue = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType, item.orderPointCost);
+          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType, item.orderPointValue);
           return acc + payAmount;
         }, 0);
 
         this.parsedReportData.totalRealMoney = this.parsedReportData.listPurchased.reduce((acc, item) => {
-          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType, item.orderPointCost);
+          let payAmount = PriceUtils.getPayAmount(item.orderTotalAmount, item.orderDiscount, item.orderDiscountType, item.orderPointValue);
           let remain = payAmount % 1000;
           let div = Math.floor(payAmount / 1000);
           if (remain !== 0) {

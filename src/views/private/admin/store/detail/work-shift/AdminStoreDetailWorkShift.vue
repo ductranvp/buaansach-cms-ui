@@ -29,17 +29,17 @@
             </div>
             <div>
               <el-row>
-                <template v-if="shift.listUser && shift.listUser.length">
-                  <el-row class="padding-bottom-10" type="flex" align="middle" v-for="user in shift.listUser" :key="user.userLogin">
+                <template v-if="shift.listStoreWorkShiftUser && shift.listStoreWorkShiftUser.length">
+                  <el-row class="padding-bottom-10" type="flex" align="middle" v-for="workShiftUser in shift.listStoreWorkShiftUser" :key="workShiftUser.userLogin">
                     <el-col>
                       <el-tag class="full-width">
-                        <span>{{user.fullName}}</span>
+                        <span>{{workShiftUser.fullName}}</span>
                       </el-tag>
                     </el-col>
                     <el-tooltip>
                       <div slot="content">
-                        <div>SĐT: {{user.userPhone}}</div>
-                        <div>Email: {{user.userEmail}}</div>
+                        <div>SĐT: {{workShiftUser.userPhone}}</div>
+                        <div>Email: {{workShiftUser.userEmail}}</div>
                       </div>
                       <el-button class="margin-left-10" type="info" size="small" plain>
                         <i class="el-icon-info"></i>

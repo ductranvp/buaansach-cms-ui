@@ -101,7 +101,6 @@
               <el-table-column label="Dùng điểm">
                 <template slot-scope="{row}">
                   <span>{{row.orderPointValue}}</span>
-                  <span v-if="row.orderPointValue">  ({{row.orderPointCost | priceAppend}})</span>
                 </template>
               </el-table-column>
               <el-table-column label="Thanh toán">
@@ -197,8 +196,8 @@
     },
     methods: {
       getPayAmount(order) {
-        const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost} = order;
-        return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost);
+        const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointValue} = order;
+        return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointValue);
       },
       getDiscountAmount(order) {
         const {orderTotalAmount, orderDiscount, orderDiscountType} = order;

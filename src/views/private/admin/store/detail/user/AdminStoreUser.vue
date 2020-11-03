@@ -24,10 +24,10 @@
                          width="64px"
                          :label="$t('private.adminStoreDetailHumanPage.storeUser.userCode')">
         </el-table-column>
-        <el-table-column prop="userLogin"
-                         sortable
-                         :label="$t('private.adminStoreDetailHumanPage.storeUser.userLogin')">
-        </el-table-column>
+<!--        <el-table-column prop="userLogin"-->
+<!--                         sortable-->
+<!--                         :label="$t('private.adminStoreDetailHumanPage.storeUser.userLogin')">-->
+<!--        </el-table-column>-->
         <el-table-column prop="fullName"
                          label="Họ tên">
         </el-table-column>

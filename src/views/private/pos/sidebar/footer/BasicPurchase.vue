@@ -16,7 +16,6 @@
                 <i class="el-icon-present"></i>
                 <span>Điểm: </span>
                 <span>{{currentOrder.orderPointValue}} </span>
-                <span v-if="currentOrder.orderPointValue">({{currentOrder.orderPointCost | priceAppend}})</span>
               </el-button>
             </el-col>
           </el-row>
@@ -112,8 +111,8 @@
           return PriceUtils.getDiscountAmount(orderTotalAmount, orderDiscount, orderDiscountType);
         },
         payAmount: state => {
-          const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost} = state.posMachine.currentOrder;
-          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointCost);
+          const {orderTotalAmount, orderDiscount, orderDiscountType, orderPointValue} = state.posMachine.currentOrder;
+          return PriceUtils.getPayAmount(orderTotalAmount, orderDiscount, orderDiscountType, orderPointValue);
         },
       })
     },
