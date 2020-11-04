@@ -109,6 +109,7 @@
             break;
           case this.notificationType.PAY_REQUEST:
             this.$store.commit('posMachine/SET_ACTIVE_NOTIFICATION_GUID', notification.guid);
+            this.$store.commit('posMachine/SET_ACTIVE_ORDER_PRODUCT_GROUP', null);
             break;
         }
       },

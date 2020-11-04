@@ -28,6 +28,14 @@ const filters = {
   truncate(value, length) {
     if (value && value.length > length) return value.substr(0, length) + '...';
     return value;
+  },
+
+  firstName(value){
+    if (value){
+      let arr = value.split(" ");
+      return arr[arr.length-1];
+    }
+    return value;
   }
 };
 export default filters;

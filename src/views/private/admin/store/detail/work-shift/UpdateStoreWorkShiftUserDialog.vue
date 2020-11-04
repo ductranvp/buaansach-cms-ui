@@ -26,7 +26,9 @@
         </el-col>
         <el-col :span="14" >
           <el-checkbox-group @change="changeSelectGroup($event, userGuid)" v-model="selectedWorkDays[userGuid]" class="full-width">
-            <el-checkbox v-for="item in weekDays" :key="userGuid + item" :label="item"></el-checkbox>
+            <el-checkbox v-for="item in weekDays" :key="userGuid + item.value" :label="item.value">
+              <span>{{item.label}}</span>
+            </el-checkbox>
           </el-checkbox-group>
         </el-col>
       </el-row>
@@ -63,7 +65,15 @@
         },
         selectedWorkDays: {},
         allChecked: {},
-        weekDays: ["2", "3", "4", "5", "6", "7", "CN"],
+        weekDays: [
+          {label: 'Thứ 2', value: 0},
+          {label: 'Thứ 3', value: 1},
+          {label: 'Thứ 4', value: 2},
+          {label: 'Thứ 5', value: 3},
+          {label: 'Thứ 6', value: 4},
+          {label: 'Thứ 7', value: 5},
+          {label: 'Chủ Nhật', value: 6},
+        ],
         formRules: {},
         storeUsers: [],
         storeUsersObject: {},
@@ -79,7 +89,7 @@
           const userGuid = workShiftUser.userGuid;
           listUserGuid.push(userGuid);
           let userWorkDays = workShiftUser.workDay ? workShiftUser.workDay.split(";") : [];
-          this.$set(this.selectedWorkDays, userGuid, userWorkDays);
+          this.$set(this.selectedWorkDays, userGuid, userWorkDays.map(item => Number(item)));
           if (userWorkDays.length === 7){
             this.$set(this.allChecked, userGuid, true);
           } else {
@@ -95,6 +105,7 @@
           listUserGuid: listUserGuid,
           listWorkDay: []
         };
+        console.log(this.selectedWorkDays);
         this.show();
       },
       show() {
@@ -142,7 +153,7 @@
       toggleSelectAll(value, userGuid){
         if (value){
           this.$set(this.allChecked, userGuid, true);
-          this.$set(this.selectedWorkDays, userGuid, this.weekDays);
+          this.$set(this.selectedWorkDays, userGuid, this.weekDays.map(item => item.value));
         } else {
           this.$set(this.allChecked, userGuid, false);
           this.$set(this.selectedWorkDays, userGuid, []);

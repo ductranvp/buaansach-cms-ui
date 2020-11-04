@@ -5,23 +5,6 @@
       <el-main class="full-size">
         <el-container direction="vertical">
           <el-row type="flex" align="middle" style="height: 40px">
-              <el-col class="full-height" :span="12">
-                <el-input ref="orderCustomerPhone" disabled v-model="currentOrder.orderCustomerPhone"
-                          placeholder="Số điện thoại khách">
-                  <i slot="prefix" class="el-input__icon el-icon-phone"></i>
-                </el-input>
-              </el-col>
-            <el-col :span="12" class="full-height">
-              <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
-                <i class="el-icon-present"></i>
-                <span>Điểm: </span>
-                <span>{{currentOrder.orderPointValue}} </span>
-              </el-button>
-            </el-col>
-          </el-row>
-
-          <el-divider class="margin-0 full-width bg-success"></el-divider>
-          <el-row type="flex" align="middle" style="height: 40px">
             <el-col :span="12" class="full-height">
               <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
                 <i class="el-icon-money"></i>
@@ -40,6 +23,24 @@
             </el-col>
           </el-row>
           <el-divider class="margin-0 full-width bg-success"></el-divider>
+
+          <el-row type="flex" align="middle" style="height: 40px">
+              <el-col class="full-height" :span="12">
+                <el-input ref="orderCustomerPhone" disabled v-model="currentOrder.orderCustomerPhone"
+                          placeholder="Số điện thoại khách">
+                  <i slot="prefix" class="el-input__icon el-icon-phone"></i>
+                </el-input>
+              </el-col>
+            <el-col :span="12" class="full-height">
+              <el-button style="color: #606266; padding: 12px 10px" disabled class="full-size text-left">
+                <i class="el-icon-present"></i>
+                <span>Điểm: </span>
+                <span>{{currentOrder.orderPointValue}} </span>
+              </el-button>
+            </el-col>
+          </el-row>
+          <el-divider class="margin-0 full-width bg-success"></el-divider>
+
           <el-row type="flex" align="middle" style="height: 40px">
             <el-col :span="12" class="full-height">
               <el-input ref="customerPay" @keyup.native.enter="completeOrder(customerPay)" v-model="customerPay"
@@ -59,6 +60,7 @@
               </el-button>
             </el-col>
           </el-row>
+          <el-divider class="margin-0 full-width bg-success"></el-divider>
         </el-container>
       </el-main>
       <el-footer height="auto">

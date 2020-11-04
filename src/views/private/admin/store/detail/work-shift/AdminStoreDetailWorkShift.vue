@@ -61,6 +61,9 @@
           </el-card>
         </el-col>
       </el-row>
+      <el-row class="margin-10-5">
+        <admin-store-work-shift-assign-table :store-work-shifts="storeWorkShifts" />
+      </el-row>
     </el-main>
   </el-container>
 </template>
@@ -73,10 +76,12 @@
   import ErrorUtils from '@/utils/error.util';
   import UpdateStoreWorkShiftUserDialog
     from '@/views/private/admin/store/detail/work-shift/UpdateStoreWorkShiftUserDialog';
+  import AdminStoreWorkShiftAssignTable
+    from '@/views/private/admin/store/detail/work-shift/AdminStoreWorkShiftAssignTable';
 
   export default {
     name: 'AdminStoreDetailWorkShift',
-    components: {UpdateStoreWorkShiftUserDialog, CreateOrUpdateStoreWorkShiftDialog},
+    components: {AdminStoreWorkShiftAssignTable, UpdateStoreWorkShiftUserDialog, CreateOrUpdateStoreWorkShiftDialog},
     data() {
       return {
         storeWorkShifts: [],
