@@ -4,7 +4,7 @@
       <el-main class="full-width">
         <el-row type="flex" class="full-width">
           <el-col :class="cellClass" :span="3"></el-col>
-          <el-col :span="3" v-for="day in weekDays" :key="day.value" :class="[day.value === activeDay ? activeDayClass : '', cellClass]">
+          <el-col :span="3" class="text-center" v-for="day in weekDays" :key="day.value" :class="[day.value === activeDay ? activeDayClass : '', cellClass]">
             <div class="text-bold padding-left-5">{{day.label}}</div>
           </el-col>
         </el-row>
@@ -111,7 +111,6 @@
             temp[item.userGuid] = item;
           });
           this.storeUsersObject = temp;
-          console.log(this.storeUsersObject);
         } catch (error) {
           ErrorUtils.showErrorMessage(error);
         }

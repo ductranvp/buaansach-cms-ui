@@ -54,9 +54,9 @@
         orderProduct: null,
         cancelReason: null,
         instantReasons: {
-          EMPLOYEE_ERROR: "Nhân viên thao tác nhầm",
-          CUSTOMER_ERROR_1: "Khách đặt nhầm",
-          CUSTOMER_ERROR_2: "Khách đổi ý không ăn nữa",
+          CANCEL_ORDER_1: "Làm demo, hướng dẫn...",
+          CANCEL_ORDER_2: "Nhân viên thao tác nhầm",
+          CANCEL_ORDER_3: "Khách không gọi món",
           OTHER: "Khác"
         },
         form: {

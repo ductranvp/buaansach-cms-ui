@@ -54,10 +54,10 @@
         orderProduct: null,
         cancelReason: null,
         instantReasons: {
-          PRODUCT_UNAVAILABLE: "Sản phẩm đã hết hàng",
-          EMPLOYEE_ERROR: "Nhân viên thao tác nhầm",
-          CUSTOMER_ERROR_1: "Khách gọi nhầm",
-          CUSTOMER_ERROR_2: "Khách đổi ý không ăn nữa",
+          CANCEL_ORDER_PRODUCT_1: "Làm demo, hướng dẫn...",
+          CANCEL_ORDER_PRODUCT_2: "Sản phẩm đã hết hàng",
+          CANCEL_ORDER_PRODUCT_3: "Nhân viên thao tác nhầm",
+          CANCEL_ORDER_PRODUCT_4: "Khách gọi nhầm",
           OTHER: "Khác"
         },
         form: {

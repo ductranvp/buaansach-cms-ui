@@ -105,7 +105,6 @@
           listUserGuid: listUserGuid,
           listWorkDay: []
         };
-        console.log(this.selectedWorkDays);
         this.show();
       },
       show() {
