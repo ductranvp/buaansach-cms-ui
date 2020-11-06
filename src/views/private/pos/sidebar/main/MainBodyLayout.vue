@@ -22,13 +22,15 @@
           </el-col>
         </el-row>
       </el-main>
-
     </el-container>
-    <div class="mask" v-if="currentOrder.guid && currentOrder.orderStatus === orderStatus.CREATED">
-      <div class="mask-text">
-        <span class="bg-warning text-white padding-10-15 text-bold" style="border-radius: 4px">Đang chờ tiếp nhận</span>
-      </div>
-    </div>
+    <el-row type="flex" class="mask" v-if="currentOrder.guid && currentOrder.orderStatus === orderStatus.CREATED">
+      <el-row type="flex" align="middle" justify="center" class="mask-text">
+        <el-col :span="16" class="bg-warning text-white padding-10 text-bold text-very-large" style="border-radius: 8px; line-height: 32px">
+          <div>Nhìn qua vị trí ngồi </div>
+          <div>trước khi tiếp nhận</div>
+        </el-col>
+      </el-row>
+    </el-row>
   </el-main>
 </template>
 
@@ -74,7 +76,7 @@
   .mask {
     position: absolute;
     z-index: 2000;
-    background-color: rgba(230, 162, 60, .2);
+    background-color: rgba(230, 162, 60, .4);
     margin: 0;
     top: 0;
     right: 0;
@@ -83,7 +85,7 @@
   }
   .mask-text {
     top: 50%;
-    margin-top: -21px;
+    margin-top: -36px;
     width: 100%;
     text-align: center;
     position: absolute;

@@ -56,7 +56,8 @@
         instantReasons: {
           CANCEL_ORDER_1: "Làm demo, hướng dẫn...",
           CANCEL_ORDER_2: "Nhân viên thao tác nhầm",
-          CANCEL_ORDER_3: "Khách không gọi món",
+          CANCEL_ORDER_3: "Khách không có ở bàn",
+          CANCEL_ORDER_4: "Khách không gọi món",
           OTHER: "Khác"
         },
         form: {

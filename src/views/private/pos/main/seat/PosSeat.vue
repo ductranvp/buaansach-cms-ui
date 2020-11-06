@@ -70,7 +70,7 @@
                         :span="4"
                         :key="seat.guid">
                   <el-card :body-style="{padding: '0'}"
-                           :style="{borderColor: area.areaColor, boxShadow: selectedSeat.guid === seat.guid ? '0 0 1px 2px ' + area.areaColor : ''}"
+                           :style="{borderColor: area.areaColor, boxShadow: selectedSeat.guid === seat.guid ? '0 0 2px 4px ' + area.areaColor : ''}"
                            :class="[
                            seat.seatLocked ? 'bg-info text-white' : '',
                            seat.seatStatus === 'NON_EMPTY' && seat.seatServiceStatus === 'FINISHED' && !seat.seatLocked ? 'bg-success text-white' : '',
