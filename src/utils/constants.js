@@ -1,7 +1,8 @@
 const Constants = {
-    SERVER_API_URL: process.env.VUE_APP_SERVER_API_URL,
     APP_MODE: process.env.VUE_APP_MODE_FLAG,
+    SERVER_API_URL: process.env.VUE_APP_SERVER_API_URL,
     CUSTOMER_UI_URL: process.env.VUE_APP_CUSTOMER_UI_URL,
+    CMS_UI_URL: process.env.VUE_APP_CMS_UI_URL,
     CUSTOMER_UI_SEAT_PREFIX_URL: process.env.VUE_APP_CUSTOMER_UI_URL + "/goi-mon/",
     CUSTOMER_UI_SEAT_RESUME_PARAM: "resume",
     APP_TITLE: "app.pageTitle",

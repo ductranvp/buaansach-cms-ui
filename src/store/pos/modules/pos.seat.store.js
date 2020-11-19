@@ -33,6 +33,18 @@ const mutations = {
       }
     }
   },
+  UPDATE_SEAT_INFO(state, targetSeat){
+    for (let i = 0; i < state.allAreas.length; i++) {
+      let area = state.allAreas[i];
+      if (area.guid === targetSeat.areaGuid) {
+        const idx = area.listSeat.findIndex(seat => seat.guid === targetSeat.guid);
+        if (idx !== -1) {
+          Object.assign(area.listSeat[idx], targetSeat);
+          break;
+        }
+      }
+    }
+  },
   TOGGLE_LOCK(state) {
     state.selectedSeat.seatLocked = !state.selectedSeat.seatLocked;
   },
@@ -88,11 +100,7 @@ const actions = {
   },
   async reloadSeat({state, commit}, seatGuid) {
     const {data} = await PosSeatService.getSeat(seatGuid);
-    commit('CHANGE_SEAT_STATUS', {
-      targetSeat: data,
-      seatStatus: data.seatStatus,
-      seatServiceStatus: data.seatServiceStatus,
-    });
+    commit('UPDATE_SEAT_INFO', data);
   },
   async toggleSeatLock({state, commit}) {
     await PosSeatService.toggleLock(state.selectedSeat.guid);

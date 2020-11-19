@@ -51,7 +51,7 @@
         </el-col>
         <div class="text-right">
           <el-tooltip content="Phím tắt: F4">
-            <el-button type="success" plain :loading="isRefreshing" size="mini" @click="refreshSeat">
+            <el-button type="success" plain :loading="isRefreshing" size="mini" @click="refreshAllSeat">
               <span><i class="el-icon-refresh" v-if="!isRefreshing"></i><span>Làm mới</span></span>
             </el-button>
           </el-tooltip>
@@ -131,7 +131,7 @@
       };
       hotkeys('f4', 'posMachine', function(event, handler) {
         if (!vm.isRefreshing) {
-          vm.refreshSeat();
+          vm.refreshAllSeat();
         }
       });
       hotkeys.setScope('posMachine');
@@ -140,14 +140,17 @@
       groupPurchase(){
         this.$refs.groupPurchaseDialog.show();
       },
-      async refreshSeat() {
-        const vm = this;
+      async refreshAllSeat() {
         try {
-          vm.isRefreshing = true;
-          await vm.$store.dispatch('posMachine/getAllArea', vm.$route.params.storeGuid);
-          await vm.$store.dispatch('posMachine/changeArea', vm.selectedArea.guid);
-          setTimeout(function() {
-            vm.isRefreshing = false;
+          this.isRefreshing = true;
+          const currentSeatGuid = this.selectedSeat.guid;
+          await this.$store.dispatch('posMachine/getAllArea', this.$route.params.storeGuid);
+          await this.$store.dispatch('posMachine/changeArea', this.selectedArea.guid);
+          if (currentSeatGuid){
+            await this.$store.dispatch('posMachine/selectSeat', currentSeatGuid);
+          }
+          setTimeout(() => {
+            this.isRefreshing = false;
           }, 300);
         } catch (error) {
           ErrorUtils.showActionErrorMessage(error);

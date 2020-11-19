@@ -3,7 +3,15 @@
     <el-main class="full-size padding-5">
       <el-row class="full-height flex-wrap" type="flex" align="top">
         <el-col class="padding-5" :lg="6" :md="8" :sm="12" :xs="24" v-for="store in storeUser" :key="store.storeGuid">
-          <el-card :body-style="{ padding: '0px' }" shadow="never">
+          <el-card style="position: relative" :body-style="{ padding: '0px'}" shadow="never">
+            <div style="position: absolute; top: 10px; right: 10px; z-index: 999;">
+              <el-button v-if="hasAnyRole([authority.ROLE_ADMIN])" type="warning" size="mini"
+                         @click="goTo('adminStoreDetailOverviewPage', store.storeGuid)">
+                <i class="el-icon-s-tools"></i>
+                <span>Quản lý</span>
+                <i v-if="openNewTab" class="el-icon-top-right"></i>
+              </el-button>
+            </div>
             <el-row>
               <el-image lazy class="image" fit="cover" :src="getMediaUrl(store.storeImageUrl) || defaultStoreImage">
                 <div slot="error" class="image-error-slot full-size">
@@ -49,13 +57,7 @@
                 <el-col
                   v-if="store.storeUserRole === storeUserRole.STORE_OWNER || store.storeUserRole === storeUserRole.STORE_MANAGER
                   || hasAnyRole([authority.ROLE_ADMIN])">
-                  <el-button v-if="hasAnyRole([authority.ROLE_ADMIN])" type="success" plain class="full-width" size="medium"
-                             @click="goTo('adminStoreDetailOverviewPage', store.storeGuid)">
-                    <i class="el-icon-s-tools"></i>
-                    <span>Quản lý</span>
-                    <i v-if="openNewTab" class="el-icon-top-right"></i>
-                  </el-button>
-                  <el-button v-else type="success" plain class="full-width" size="medium"
+                  <el-button type="success" plain class="full-width" size="medium"
                              @click="goTo('saleReportPage', store.storeGuid)">
                     <i class="el-icon-s-data"></i>
                     <span>Thống kê</span>

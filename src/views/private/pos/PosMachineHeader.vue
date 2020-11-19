@@ -12,10 +12,10 @@
     <check-printer ref="checkPrinter"/>
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
-        <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">
-          <i class="el-icon-s-data"></i>
-          <span class="hidden-md-and-down">Thống kê</span>
-        </el-button>
+        <!--        <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">-->
+        <!--          <i class="el-icon-s-data"></i>-->
+        <!--          <span class="hidden-md-and-down">Thống kê</span>-->
+        <!--        </el-button>-->
         <el-tooltip v-if="serverTime"
                     :content="'Giờ hệ thống: ' + $moment(serverTime).format('HH:mm:ss DD/MM/YYYY')">
           <el-button class="hidden-sm-and-down" size="small" type="success">
@@ -23,6 +23,24 @@
             <span class="hidden-md-and-down">{{ serverTime | moment('HH:mm:ss')}}</span>
           </el-button>
         </el-tooltip>
+
+        <el-popover
+                ref="qrPopover"
+                placement="bottom"
+                width="200"
+                trigger="click">
+          <div>
+            <qrcode :value="posMobileUrl" class="pointer" @click.native="openUrl()"
+                    :options="{ width: 200 }">
+            </qrcode>
+          </div>
+        </el-popover>
+        <el-button v-popover:qrPopover
+                   type="success"
+                   size="mini">
+          <i class="el-icon-mobile"></i>
+          <span>Trang QR</span>
+        </el-button>
       </el-col>
 
       <el-col :span="8">
@@ -50,14 +68,6 @@
 
       <el-col :span="8">
         <el-row type="flex" align="middle" justify="end">
-          <!--          <el-row type="flex" align="middle">-->
-          <!--            <notification :type="notificationType.ORDER_UPDATE"/>-->
-          <!--          </el-row>-->
-
-          <!--          <el-row class="padding-left-20" type="flex" align="middle">-->
-          <!--            <notification :type="notificationType.PAY_REQUEST"/>-->
-          <!--          </el-row>-->
-
           <el-row class="padding-0-20" type="flex" align="middle">
             <notification :type="notificationType.CALL_WAITER"/>
           </el-row>
@@ -137,6 +147,7 @@
   import StorageKey from '@/utils/storage-key';
   import ErrorUtils from '@/utils/error.util';
   import StoreStatus from '@/enum/StoreStatus';
+  import Constants from '@/utils/constants';
 
   export default {
     name: 'PosMachineHeader',
@@ -148,6 +159,9 @@
       ...mapState({
         currentStore: state => state.posMachine.currentStore,
       }),
+      posMobileUrl() {
+        return Constants.CMS_UI_URL + '/mobile/' + this.$route.params.storeGuid;
+      },
     },
     data() {
       return {
@@ -166,6 +180,9 @@
       this.getServerTime();
     },
     methods: {
+      openUrl(url, newTab){
+        window.open(this.posMobileUrl, '_blank');
+      },
       async getServerTime() {
         try {
           let start = (new Date()).getTime();

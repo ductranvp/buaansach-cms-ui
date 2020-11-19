@@ -43,9 +43,27 @@ const router = new VueRouter({
     },
     /* For pos page */
     {
-      path: "/store/:storeGuid",
+      path: "/desktop/:storeGuid",
       name: "posPage",
       component: () => import("@/views/layout/pos/PosLayout"),
+      beforeEnter: async (to, from, next) => {
+        try {
+          const {data} = await PosStoreService.checkAccessibility(to.params.storeGuid);
+          if (!data) await router.push({name: "forbiddenPage"});
+          next();
+        } catch (error) {
+          await router.push({name: "homePage"});
+        }
+      },
+      meta: {
+        title: "private.pageTitle.posPage",
+        roles: [Roles.USER]
+      }
+    },
+    {
+      path: "/mobile/:storeGuid",
+      name: "posMobilePage",
+      component: () => import("@/views/layout/pos-mobile/PosMobileLayout"),
       beforeEnter: async (to, from, next) => {
         try {
           const {data} = await PosStoreService.checkAccessibility(to.params.storeGuid);

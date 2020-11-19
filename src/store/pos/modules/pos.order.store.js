@@ -123,7 +123,6 @@ const actions = {
       MessageUtils.error('Lấy thông tin đơn hàng thất bại, vui lòng thử lại');
     }
     setTimeout(() => {commit('SET_IS_LOADING_ORDER', false);}, 300);
-    /* reload để tránh trường hợp dữ liệu client khác server*/
     dispatch('reloadSeat', seatGuid);
   },
 };
