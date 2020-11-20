@@ -1,7 +1,6 @@
 <template>
   <el-dialog
     :visible.sync="dialogFormVisible"
-    :close-on-click-modal="false"
     :before-close="beforeClose"
     :destroy-on-close="true"
     :show-close="false"

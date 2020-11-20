@@ -63,7 +63,7 @@ const actions = {
     };
     await PosOrderService.purchaseOrder(posPurchaseOrder);
   },
-  printDone({commit, state}) {
+  printDone({commit, state, dispatch}) {
     commit('CHANGE_SEAT_STATUS', {
       targetSeat: state.selectedSeat,
       seatStatus: SeatStatus.value.EMPTY,
@@ -92,7 +92,7 @@ const actions = {
     commit('RESET_ORDER');
     commit('RESET_ORDER_PRODUCT');
   },
-  async cancelOrder({state, commit}, cancelReason) {
+  async cancelOrder({state, commit, dispatch}, cancelReason) {
     const orderChange = {
       orderGuid: state.currentOrder.guid,
       cancelReason: cancelReason,

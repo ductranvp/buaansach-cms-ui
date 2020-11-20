@@ -30,27 +30,7 @@
           </el-tag>
         </el-tooltip>
       </el-col>
-
-      <template v-if="!showFullInfo">
-        <el-tooltip placement="top" v-if="notification.firstSeenBy">
-          <div slot="content">
-            <span>Người xem đầu: {{notification.firstSeenBy}}</span>
-          </div>
-          <el-tag class="margin-left-10" size="small" type="info">
-            <i class="fas el-icon-fa-eye margin-0"></i>
-          </el-tag>
-        </el-tooltip>
-        <el-tooltip placement="top" v-if="notification.storeNotificationHidden && notification.firstHiddenBy">
-          <div slot="content">
-            <span>Người ẩn đầu: {{notification.firstHiddenBy}}</span>
-          </div>
-          <el-tag class="margin-left-10" size="small" type="info">
-            <i class="fas el-icon-fa-eye-slash margin-0"></i>
-          </el-tag>
-        </el-tooltip>
-      </template>
-
-      <template v-else>
+      <template v-if="showFullInfo">
         <el-tooltip placement="top" v-if="notification.firstSeenBy" content="Người xem đầu">
           <el-tag class="margin-left-10" size="small" type="info">
             <i class="fas el-icon-fa-eye"></i>

@@ -37,7 +37,7 @@
         </el-popover>
         <el-button v-popover:qrPopover
                    type="success"
-                   size="mini">
+                   size="small">
           <i class="el-icon-mobile"></i>
           <span>Trang QR</span>
         </el-button>
@@ -62,8 +62,8 @@
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <el-tag size="small" type="success" v-if="currentStore.storeStatus === storeStatusValue.OPENING">Mở cửa</el-tag>
-        <el-tag size="small" type="danger" v-if="currentStore.storeStatus === storeStatusValue.CLOSED">Đóng cửa</el-tag>
+<!--        <el-tag size="small" type="success" v-if="currentStore.storeStatus === storeStatusValue.OPENING">Mở cửa</el-tag>-->
+<!--        <el-tag size="small" type="danger" v-if="currentStore.storeStatus === storeStatusValue.CLOSED">Đóng cửa</el-tag>-->
       </el-col>
 
       <el-col :span="8">
@@ -99,10 +99,10 @@
                 </el-button>
               </el-tooltip>
               <el-dropdown-menu class="padding-0" slot="dropdown">
-                <el-dropdown-item command="profilePage">
-                  <i class="el-icon-user padding-right-10"></i>
-                  <span>Tài khoản</span>
-                </el-dropdown-item>
+<!--                <el-dropdown-item command="profilePage">-->
+<!--                  <i class="el-icon-user padding-right-10"></i>-->
+<!--                  <span>Tài khoản</span>-->
+<!--                </el-dropdown-item>-->
                 <el-dropdown-item @click.native="checkPrinter">
                   <i class="el-icon-printer padding-right-10"></i>
                   <span>Kiểm tra máy in</span>

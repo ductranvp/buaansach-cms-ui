@@ -47,7 +47,7 @@
     data() {
       return {
         posSize: localStorage.getItem(StorageKey.localStorageKeys.POS_MAIN_SIZE) ? JSON.parse(
-          localStorage.getItem(StorageKey.localStorageKeys.POS_MAIN_SIZE)) : 50,
+          localStorage.getItem(StorageKey.localStorageKeys.POS_MAIN_SIZE)) : 45,
       };
     },
     created() {

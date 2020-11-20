@@ -38,8 +38,19 @@ const mutations = {
   },
 };
 const actions = {
-  async getStoreNotifications(
-    {state, commit}, {storeGuid, listArea, startDate, type, hidden}) {
+  async reloadAllStoreNotification({state, dispatch}){
+    let startDate = new Date();
+    startDate.setHours(0, 0, 0, 0);
+    const payload = {
+      storeGuid: state.currentStore.guid,
+      listArea: Object.keys(state.allAreasObject).join(";"),
+      startDate: startDate,
+      type: null,
+      hidden: null, // null means get all
+    };
+    await dispatch("getStoreNotifications", payload);
+  },
+  async getStoreNotifications({state, commit}, {storeGuid, listArea, startDate, type, hidden}) {
     let params = {
       storeGuid: storeGuid,
       listArea: listArea,
@@ -48,8 +59,7 @@ const actions = {
       hidden: hidden,
     };
 
-    let {data} = await PosStoreNotificationService.getListStoreNotification(
-      params);
+    let {data} = await PosStoreNotificationService.getListStoreNotification(params);
 
     data.forEach(item => {
       const seatData = state.allSeatsObject[item.seatGuid];

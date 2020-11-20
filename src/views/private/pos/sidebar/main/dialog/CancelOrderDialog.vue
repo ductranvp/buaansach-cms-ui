@@ -114,6 +114,7 @@
             try {
               vm.isLoading = true;
               await vm.$store.dispatch("posMachine/cancelOrder", vm.cancelReason);
+              vm.$store.dispatch("posMachine/reloadAllStoreNotification");
               MessageUtils.success("Hủy đơn thành công");
               vm.isLoading = false;
               vm.hide();

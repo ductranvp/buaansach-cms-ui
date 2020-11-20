@@ -33,6 +33,14 @@ const PosStoreNotificationService = {
    * */
   toggleVisibility(payload){
     return request.put(baseUrl + "/toggle-visibility", payload);
+  },
+
+  /**
+   * Ẩn/Hiện thông báo
+   * @param {String} notificationGuid
+   * */
+  togglePin(notificationGuid){
+    return request.put(baseUrl + "/toggle-pin", notificationGuid);
   }
 };
 

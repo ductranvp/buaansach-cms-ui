@@ -28,6 +28,7 @@
       "customerCareCustomerOrderPurchasedPage": "Customer Order Purchased"
     },
     "posPage": "POS",
+    "posMobilePage": "Pos Mobile",
     "saleReportPage": "Sale Report",
     "user": {
       "homePage": "Home",

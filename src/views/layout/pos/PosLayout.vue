@@ -54,19 +54,10 @@
         await this.$store.dispatch('posMachine/initState', this.$route.params.storeGuid);
       } catch (e) {
         NotificationUtils.error('Lỗi khởi tạo dữ liệu, vui lòng tải lại trang.', 0);
+        return;
       }
-
-      let startDate = new Date();
-      startDate.setHours(0, 0, 0, 0);
-      const payload = {
-        storeGuid: this.$route.params.storeGuid,
-        listArea: Object.keys(this.allAreasObject).join(";"),
-        startDate: startDate,
-        type: null,
-        hidden: null, // null means get all
-      };
       /* Lấy thông báo  */
-      this.$store.dispatch('posMachine/getStoreNotifications', payload);
+      this.$store.dispatch('posMachine/reloadAllStoreNotification');
     },
   };
 </script>

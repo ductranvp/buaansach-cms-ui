@@ -185,6 +185,7 @@
           vm.$refs.billPage.printBill(JSON.parse(JSON.stringify(customerPay * 1000)), function () {
             // this function is called when print is done;
             vm.$store.dispatch("posMachine/printDone");
+            vm.$store.dispatch("posMachine/reloadAllStoreNotification");
             vm.customerPay = null;
             MessageUtils.success("Thanh toán thành công");
           });

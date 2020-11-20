@@ -314,6 +314,7 @@
             if (vm.selectedSeats.find(item => item.guid === vm.selectedSeat.guid)) {
               vm.$store.dispatch("posMachine/printDone");
             }
+            vm.$store.dispatch("posMachine/reloadAllStoreNotification");
             vm.customerPay = null;
             MessageUtils.success("Thanh toán thành công");
             vm.toggleLockList(false);

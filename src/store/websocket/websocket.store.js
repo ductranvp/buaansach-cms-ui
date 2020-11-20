@@ -81,10 +81,6 @@ const actions = {
         dispatch("sendActivity", {});
       },
       function (error) {
-        if (router.currentRoute.name === 'loginPage'){
-          location.reload();
-          return;
-        }
         commit("SET_CONNECTED", false);
         commit("SET_STOMP_CLIENT", null);
         commit("SET_ERROR");

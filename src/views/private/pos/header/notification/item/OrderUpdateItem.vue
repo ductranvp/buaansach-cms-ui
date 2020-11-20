@@ -2,7 +2,7 @@
   <div>
     <div>
       <span class="text-bold">{{notification.title}}</span>
-      <em> ({{notification.orderNotification.numberOfProduct }} loại sản phẩm)</em>
+      <em> ({{notification.orderNotification.numberOfProduct }} loại sp)</em>
     </div>
     <el-row type="flex" align="middle">
       <el-col>

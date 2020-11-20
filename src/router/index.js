@@ -74,7 +74,7 @@ const router = new VueRouter({
         }
       },
       meta: {
-        title: "private.pageTitle.posPage",
+        title: "private.pageTitle.posMobilePage",
         roles: [Roles.USER]
       }
     },

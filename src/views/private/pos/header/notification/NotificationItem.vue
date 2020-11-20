@@ -5,7 +5,7 @@
             notification.storeNotificationStatus === notificationStatus.UNSEEN ? 'unseen-notification' : '',
             activeNotificationClass
           ]">
-    <el-col class="padding-right-10" @click.native="clickNotification(notification)">
+    <el-col style="line-height: 26px" class="padding-right-10" @click.native="clickNotification(notification)">
       <order-update-item :notification="notification" :show-full-info="showFullInfo"
                          v-if="type === notificationType.ORDER_UPDATE"/>
       <pay-request-item :notification="notification" :show-full-info="showFullInfo"
@@ -13,13 +13,26 @@
       <call-waiter-item :notification="notification" :show-full-info="showFullInfo"
                         v-else-if="type === notificationType.CALL_WAITER"/>
     </el-col>
-    <el-tooltip placement="right" content="Ẩn thông báo" v-if="!notification.storeNotificationHidden">
-      <el-button @click="toggleNotification(notification, true)" type="text"
-                 class="text-info text-very-large">
-        <i class="el-icon-close"></i>
+    <el-tooltip placement="top">
+      <div slot="content">
+        <span v-if="!notification.storeNotificationPin">Ghim</span>
+        <span v-else>Bỏ ghim</span>
+      </div>
+      <el-button @click="pinNotification(notification)" type="text"
+                 class="text-info">
+        <i class="fas el-icon-fa-thumbtack text-large"
+           :class="notification.storeNotificationPin ? 'text-success' : ''"></i>
       </el-button>
     </el-tooltip>
-    <el-tooltip placement="top" v-else content="Hiện lại thông báo">
+    <template v-if="!notification.storeNotificationHidden">
+      <el-tooltip placement="right" content="Ẩn thông báo" v-if="!notification.storeNotificationPin">
+        <el-button @click="toggleNotification(notification, true)" type="text"
+                   class="text-info text-very-large">
+          <i class="el-icon-close"></i>
+        </el-button>
+      </el-tooltip>
+    </template>
+    <el-tooltip placement="right" v-else content="Hiện lại thông báo">
       <el-button @click="toggleNotification(notification, false)" type="text"
                  class="text-info text-very-large">
         <i class="el-icon-refresh-right"></i>
@@ -137,6 +150,15 @@
           this.isLoading = true;
           await PosStoreNotificationService.toggleVisibility(payload);
           notification.storeNotificationHidden = hidden;
+        } finally {
+          this.isLoading = false;
+        }
+      },
+      async pinNotification(notification) {
+        try {
+          this.isLoading = true;
+          await PosStoreNotificationService.togglePin(notification.guid);
+          notification.storeNotificationPin = !notification.storeNotificationPin;
         } finally {
           this.isLoading = false;
         }
