@@ -1,113 +1,134 @@
 <template>
   <el-container class="full-size" direction="vertical">
-    <el-row class="text-center margin-bottom-10" type="flex" justify="space-around">
-      <el-radio-group v-model="displayType">
-        <el-radio-button label="SEAT">
-          <span>{{$t("private.adminStoreDetailSeatPage.displayBySeat")}}</span>
-        </el-radio-button>
-        <el-radio-button label="AREA">
-          <span>{{$t("private.adminStoreDetailSeatPage.displayByArea")}}</span>
-        </el-radio-button>
-      </el-radio-group>
-      <el-row>
+    <el-header height="auto">
+      <el-row class="text-center margin-bottom-10" type="flex" justify="space-around">
+        <el-radio-group v-model="displayType">
+          <el-radio-button label="SEAT">
+            <span>{{$t('private.adminStoreDetailSeatPage.displayBySeat')}}</span>
+          </el-radio-button>
+          <el-radio-button label="AREA">
+            <span>{{$t('private.adminStoreDetailSeatPage.displayByArea')}}</span>
+          </el-radio-button>
+        </el-radio-group>
         <el-row>
-          <el-col :span="11">
+          <el-row>
+            <el-col :span="6">
               <el-color-picker
-                      v-model="form.dark"
+                      v-model="colorConfig.colorDark"
                       color-format="hex"
                       :predefine="predefineColors">
               </el-color-picker>
+            </el-col>
+            <el-col :span="6">
+              <el-color-picker
+                      v-model="colorConfig.colorLight"
+                      color-format="hex"
+                      :predefine="predefineColors">
+              </el-color-picker>
+            </el-col>
+            <el-col :span="6">
+              <el-color-picker
+                      v-model="colorConfig.PO"
+                      color-format="hex"
+                      :predefine="predefineColors">
+              </el-color-picker>
+            </el-col>
+            <el-col :span="6">
+              <el-color-picker
+                      v-model="colorConfig.PI"
+                      color-format="hex"
+                      :predefine="predefineColors">
+              </el-color-picker>
+            </el-col>
+          </el-row>
+        </el-row>
+        <el-row type="flex" align="middle">
+          <el-col :span="12">
+            <el-checkbox v-model="hasLogo">Chèn Logo</el-checkbox>
           </el-col>
-          <el-col :span="11" :offset="2">
-              <el-color-picker
-                      v-model="form.light"
-                      color-format="hex"
-                      :predefine="predefineColors">
-              </el-color-picker>
+        </el-row>
+        <el-row type="flex" align="middle">
+          <el-col :span="12">
+            <div>{{$t('private.adminStoreDetailSeatPage.density')}}</div>
+          </el-col>
+          <el-col :span="12">
+            <el-input-number v-model="colSize" :min="3" :step="1" step-strictly :max="8"></el-input-number>
           </el-col>
         </el-row>
       </el-row>
-      <el-row type="flex" align="middle">
-        <el-col :span="12">
-          <div>Canh lề:</div>
-        </el-col>
-        <el-col :span="12">
-          <el-input-number v-model="marginSize" :min="0" :step="1" step-strictly :max="4"></el-input-number>
-        </el-col>
+      <el-row type="flex" align="middle" justify="center" class="padding-bottom-10">
+        <el-button @click="downloadAll" :loading="isDownloading">
+          <i class="el-icon-download"></i>
+          <span>Tải xuống tất cả</span>
+        </el-button>
       </el-row>
-      <el-row type="flex" align="middle">
-        <el-col :span="12">
-          <div>{{$t("private.adminStoreDetailSeatPage.density")}}</div>
-        </el-col>
-        <el-col :span="12">
-          <el-input-number v-model="colSize" :min="3" :step="1" step-strictly :max="8"></el-input-number>
-        </el-col>
-      </el-row>
-    </el-row>
-    <el-row type="flex" align="middle" justify="center" class="padding-bottom-10">
-      <el-button @click="downloadAll" :loading="isDownloading">
-        <i class="el-icon-download"></i>
-        <span>Tải xuống tất cả</span>
-      </el-button>
-    </el-row>
-    <el-row v-if="displayType === 'SEAT'" class="full-size flex-wrap margin-0" :gutter="10" type="flex">
-      <el-col class="margin-bottom-10" :span="colSize" v-for="seat in seats" :key="seat.guid">
-        <el-card shadow="never">
-          <div class="text-center">
-            <qrcode :ref="seat.guid" class="pointer" @click.native="goto(seat.guid)" :value="seatPrefixUrl + seat.guid"
-                    :options="{ width: colSize*40, margin: marginSize, color: {dark: form.dark, light: form.light} }" tag="img"></qrcode>
-          </div>
-          <div class="text-center">
-            <span class="text-normal">{{seat.seatName}} - {{seat.areaName}}</span>
-            <div class="padding-top-5">
-              <el-button @click="downloadImage(seat)" size="mini" class="full-width">Tải xuống</el-button>
-            </div>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
-    <el-row v-else class="full-size flex-wrap margin-0" :gutter="10" type="flex">
-      <div class="full-width" v-for="area in areas" :key="area.guid">
-        <el-divider>
-          <span>{{area.areaName}}</span>
-        </el-divider>
-        <el-col class="margin-bottom-10" :span="colSize" v-for="seat in area.listSeat" :key="seat.guid">
+    </el-header>
+    <el-main>
+      <el-row v-if="displayType === 'SEAT'" class="full-size flex-wrap margin-0" :gutter="10" type="flex">
+        <el-col class="margin-bottom-10" :span="colSize" v-for="seat in seats" :key="seat.guid">
           <el-card shadow="never">
             <div class="text-center">
-              <qrcode :value="seatPrefixUrl + seat.guid" :options="{ width: colSize*40 }"></qrcode>
+              <qr-code :text="seatPrefixUrl + seat.guid" :config="{width: colSize*40, height: colSize*40, ...colorConfig, logoWidth: 12 * colSize,
+    logoHeight: 12 * colSize,}" :has-logo="hasLogo"
+                       :ref="seat.guid" class="pointer" @click.native="goto(seat.guid)"/>
             </div>
             <div class="text-center">
-              <span>{{seat.seatName}}</span>
+              <span class="text-normal">{{seat.seatName}} - {{seat.areaName}}</span>
+              <div class="padding-top-5">
+                <el-button @click="downloadImage(seat)" size="mini" class="full-width">Tải xuống</el-button>
+              </div>
             </div>
           </el-card>
         </el-col>
-      </div>
-    </el-row>
+      </el-row>
+
+      <el-row v-else class="full-size flex-wrap margin-0" :gutter="10" type="flex">
+        <div class="full-width" v-for="area in areas" :key="area.guid">
+          <el-divider>
+            <span>{{area.areaName}}</span>
+          </el-divider>
+          <el-col class="margin-bottom-10" :span="colSize" v-for="seat in area.listSeat" :key="seat.guid">
+            <el-card shadow="never">
+              <div class="text-center">
+                <qr-code :text="seatPrefixUrl + seat.guid" :config="{width: colSize*40, height: colSize*40, ...colorConfig}" :has-logo="hasLogo"
+                         :ref="seat.guid" class="pointer" @click.native="goto(seat.guid)"/>
+              </div>
+              <div class="text-center">
+                <span>{{seat.seatName}}</span>
+              </div>
+            </el-card>
+          </el-col>
+        </div>
+      </el-row>
+    </el-main>
   </el-container>
 </template>
 
 <script>
-  import NotificationUtils from "@/utils/notification.util";
-  import AdminAreaService from "@/service/admin/admin.area.service";
-  import Constants from "@/utils/constants";
+  import NotificationUtils from '@/utils/notification.util';
+  import AdminAreaService from '@/service/admin/admin.area.service';
+  import Constants from '@/utils/constants';
+  import QrCode from '@/components/qr-code/QRCode';
+  import QrCodeUtils from '@/utils/qrcode.util';
 
   export default {
-    name: "AdminStoreDetailSeat",
+    name: 'AdminStoreDetailSeat',
+    components: {QrCode},
     data() {
       const defaultColors = Object.keys(Constants.COLOR).map(item => Constants.COLOR[item]);
 
       return {
         isDownloading: false,
-        colSize: 4,
+        colSize: 6,
         marginSize: 1,
-        displayType: "SEAT",
-        sortType: "NAME",
+        displayType: 'SEAT',
+        sortType: 'NAME',
         seatPrefixUrl: Constants.CUSTOMER_UI_SEAT_PREFIX_URL,
         areas: [],
         seats: [],
-        form: {
-          dark: "#000000",
-          light: "#ffffff",
+        hasLogo: true,
+        colorConfig: {
+          ...QrCodeUtils.colorConfig()
         },
         predefineColors: [
           ...defaultColors,
@@ -119,8 +140,8 @@
           '#90ee90',
           '#00ced1',
           '#1e90ff',
-          '#c71585'
-        ]
+          '#c71585',
+        ],
       };
     },
     created() {
@@ -133,20 +154,21 @@
     },
     methods: {
       downloadImage(seat) {
-        let link = document.createElement("a"); //Create <a>
-        link.href = this.$refs[seat.guid][0].$el.currentSrc; //Image Base64 Goes here
-        link.download = seat.seatName + " - " + seat.areaName + ".png"; //File name Here
+        let link = document.createElement('a'); //Create <a>
+        link.href = this.$refs[seat.guid][0].$el.children[1].currentSrc; //Image Base64 Goes here
+        link.download = seat.seatName + ' - ' + seat.areaName + '.png'; //File name Here
         document.body.appendChild(link);
         link.click();
         document.body.removeChild(link);
       },
-      downloadAll(){
+      downloadAll() {
         const vm = this;
         vm.isDownloading = true;
         let i = 0;
-        function download(i){
-          if (i < vm.seats.length){
-            setTimeout(()=> {
+
+        function download(i) {
+          if (i < vm.seats.length) {
+            setTimeout(() => {
               vm.downloadImage(vm.seats[i]);
               i++;
               download(i);
@@ -155,6 +177,7 @@
             vm.isDownloading = false;
           }
         }
+
         download(0);
       },
       goto(seatGuid) {
@@ -179,8 +202,8 @@
           }
 
         }
-      }
-    }
+      },
+    },
   };
 </script>
 
