@@ -1,22 +1,20 @@
-import QRCode from 'easyqrcodejs';
-import logoImage from '@/assets/images/logo_square.png';
+import QRCode from "easyqrcodejs";
+import logoImage from "@/assets/images/logo_square.png";
 
 // document: https://github.com/ushelp/EasyQRCodeJS#qrcode-api
 
 function basicConfig() {
   return {
-    width: 200,
-    height: 200,
     correctLevel: QRCode.CorrectLevel.M,
     dotScale: 1.0, // 0-1.0
-    quietZone: 10,
+    quietZone: 10
   };
 }
 
 function colorConfig() {
   return {
-    colorDark: '#00a54f',
-    colorLight: '#ffffff',
+    colorDark: "#00a54f",
+    colorLight: "#ffffff",
     PO: "#771314",
     PI: "#F58020",
     PO_TL: undefined,
@@ -24,7 +22,7 @@ function colorConfig() {
     PO_TR: undefined,
     PI_TR: undefined,
     PO_BL: undefined,
-    PI_BL: undefined,
+    PI_BL: undefined
   };
 }
 
@@ -34,13 +32,13 @@ function logoConfig() {
     logoWidth: 64,
     logoHeight: 64,
     logoBackgroundTransparent: true,
-    logoBackgroundColor: '#ffffff',
+    logoBackgroundColor: "#ffffff"
   };
 }
 
 function formatConfig() {
   return {
-    drawer: 'png', // canvas, svg
+    drawer: "png" // canvas, svg
   };
 }
 
@@ -48,20 +46,21 @@ function getConfig(hasLogo, customOption) {
   let config = {
     ...basicConfig(),
     ...colorConfig(),
-    ...formatConfig(),
+    ...formatConfig()
   };
-  if (hasLogo) config = {
-    ...config,
-    ...logoConfig(),
-  };
+  if (hasLogo)
+    config = {
+      ...config,
+      ...logoConfig()
+    };
   return {
     ...config,
-    ...customOption,
+    ...customOption
   };
 }
 
 const QrCodeUtils = {
   colorConfig,
-  getConfig,
+  getConfig
 };
 export default QrCodeUtils;
