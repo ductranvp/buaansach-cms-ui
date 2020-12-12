@@ -46,16 +46,15 @@
           />
         </el-row>
       </el-main>
-
-      <el-footer height="auto" class="padding-bottom-20">
-        <el-row type="flex" justify="center" align="middle">
-          <el-button
-            @click="goto(selectedSeat.guid, currentOrder.guid)"
-            type="warning"
-            >Mở liên kết trong QR</el-button
-          >
-        </el-row>
-      </el-footer>
+      <!--      <el-footer height="auto" class="padding-bottom-20">-->
+      <!--        <el-row type="flex" justify="center" align="middle">-->
+      <!--          <el-button-->
+      <!--            @click="goto(selectedSeat.guid, currentOrder.guid)"-->
+      <!--            type="warning"-->
+      <!--            >Mở liên kết trong QR</el-button-->
+      <!--          >-->
+      <!--        </el-row>-->
+      <!--      </el-footer>-->
     </el-container>
   </el-main>
 </template>

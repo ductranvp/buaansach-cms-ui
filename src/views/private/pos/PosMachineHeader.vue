@@ -211,6 +211,7 @@ export default {
   },
   methods: {
     openUrl(url, newTab) {
+      if (Constants.APP_MODE === "prod") return;
       window.open(this.posMobileUrl, "_blank");
     },
     async getServerTime() {
