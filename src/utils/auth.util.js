@@ -1,6 +1,6 @@
-import router from '@/router';
-import store from '@/store';
-import StorageKey from '@/utils/storage-key';
+import router from "@/router";
+import store from "@/store";
+import StorageKey from "@/utils/storage-key";
 
 const accessToken = StorageKey.common.ACCESS_TOKEN;
 
@@ -14,7 +14,6 @@ function setToken(token, rememberMe) {
   if (rememberMe) {
     localStorage.setItem(accessToken, token);
   } else {
-    // localStorage.setItem(accessToken, token);
     sessionStorage.setItem(accessToken, token);
   }
 }
@@ -35,14 +34,13 @@ function hasAnyAuthority(authorities) {
 
 async function logout(noRedirect, redirectRouteName) {
   /*routeName is the route that we want to redirect to when logged out*/
-  await store.dispatch('websocket/disconnectWS');
-  await store.dispatch('user/logout');
+  await store.dispatch("websocket/disconnectWS");
+  await store.dispatch("user/logout");
   removeToken();
 
   if (!noRedirect) {
-    const routeName = redirectRouteName ? redirectRouteName : 'loginPage';
-    router.push({name: routeName}).catch(() => {
-    });
+    const routeName = redirectRouteName ? redirectRouteName : "loginPage";
+    router.push({ name: routeName }).catch(() => {});
   }
 }
 
@@ -50,7 +48,7 @@ const AuthUtils = {
   getToken: getToken,
   setToken: setToken,
   hasAnyAuthority: hasAnyAuthority,
-  logout: logout,
+  logout: logout
 };
 
 export default AuthUtils;

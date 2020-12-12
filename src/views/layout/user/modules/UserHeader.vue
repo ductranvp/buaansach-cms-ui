@@ -3,24 +3,32 @@
     <el-row class="full-size padding-0-10" type="flex" align="middle">
       <el-row type="flex" align="middle">
         <router-link to="/">
-          <img :src="logoSquareImage" class="logo">
+          <img :src="logoSquareImage" class="logo" />
         </router-link>
         <el-button class="padding-10" type="success" @click="goto('homePage')">
           <span class="hidden-xs-only">BỮA ĂN SẠCH</span>
         </el-button>
       </el-row>
       <el-col class="text-right">
-        <el-button type="success" v-if="hasAnyRole([roles.ROLE_ADMIN])" @click="goto('adminDashboardPage')">
+        <el-button
+          type="success"
+          v-if="hasAnyRole([roles.ROLE_ADMIN])"
+          @click="goto('adminDashboardPage')"
+        >
           <i class="el-icon-s-tools"></i>
           <span class="hidden-sm-and-down">Quản trị viên</span>
         </el-button>
-        <el-button type="success" v-if="hasAnyRole([roles.ROLE_CUSTOMER_CARE])" @click="goto('customerCareDashboardPage')">
+        <el-button
+          type="success"
+          v-if="hasAnyRole([roles.ROLE_CUSTOMER_CARE])"
+          @click="goto('customerCareDashboardPage')"
+        >
           <i class="fas el-icon-fa-comment"></i>
           <span class="hidden-sm-and-down">Chăm sóc khách hàng</span>
         </el-button>
         <el-button type="success" @click="goto('profilePage')">
           <i class="el-icon-user-solid"></i>
-          <span class="hidden-sm-and-down">Tài Khoản</span>
+          <span class="hidden-sm-and-down">{{ currentUser.fullName }}</span>
         </el-button>
         <el-button type="success" @click="goto('logout')">
           <i class="fas el-icon-fa-sign-out-alt"></i>
@@ -32,38 +40,37 @@
 </template>
 
 <script>
-  import AuthUtils from "@/utils/auth.util";
-  import hasAnyRole from "@/utils/has-any-role";
-  import MessageBoxUtils from "@/utils/message-box.util";
-  import Authority from '@/enum/Authority';
+import AuthUtils from "@/utils/auth.util";
+import hasAnyRole from "@/utils/has-any-role";
+import MessageBoxUtils from "@/utils/message-box.util";
+import Authority from "@/enum/Authority";
 
-  export default {
-    name: "UserHeader",
-    methods: {
-      goto(routeName) {
-        if (routeName === "logout") {
-          MessageBoxUtils.confirm("Thoát tài khoản", function () {
-            AuthUtils.logout();
-          });
-        } else {
-          this.$router.push({name: routeName}).catch(() => {
-          });
-        }
-      },
-      hasAnyRole: hasAnyRole,
+export default {
+  name: "UserHeader",
+  methods: {
+    goto(routeName) {
+      if (routeName === "logout") {
+        MessageBoxUtils.confirm("Thoát tài khoản", function() {
+          AuthUtils.logout();
+        });
+      } else {
+        this.$router.push({ name: routeName }).catch(() => {});
+      }
     },
-    data() {
-      return {
-        roles: Authority.value
-      };
-    }
-  };
+    hasAnyRole: hasAnyRole
+  },
+  data() {
+    return {
+      roles: Authority.value
+    };
+  }
+};
 </script>
 
 <style scoped>
-  .logo {
-    width: 36px;
-    height: 36px;
-    vertical-align: middle;
-  }
+.logo {
+  width: 36px;
+  height: 36px;
+  vertical-align: middle;
+}
 </style>
