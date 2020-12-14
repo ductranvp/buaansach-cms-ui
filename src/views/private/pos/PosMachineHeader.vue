@@ -36,7 +36,7 @@
           width="200"
           trigger="click"
         >
-          <div>
+          <div class="text-center">
             <qr-code
               :text="posMobileUrl"
               class="pointer"

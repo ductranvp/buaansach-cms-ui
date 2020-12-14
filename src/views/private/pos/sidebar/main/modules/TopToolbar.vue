@@ -33,14 +33,14 @@
               ref="qrPopover"
               placement="bottom"
               trigger="click"
-              width="150"
+              width="200"
             >
-              <div>
+              <div class="text-center">
                 <div class="text-center">Đã bao gồm mã đơn:</div>
                 <qr-code
                   class="pointer"
                   @click.native="goto(selectedSeat.guid, currentOrder.guid)"
-                  :size="150"
+                  :size="200"
                   :config="qrConfig"
                   :text="
                     seatPrefixUrl +

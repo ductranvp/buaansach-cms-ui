@@ -20,33 +20,90 @@ const mixinData = {
         storeBusinessHours: null,
         storeActivated: null,
         storeRewardPointActivated: null,
+        storeAutoApplySale: null
       },
       formRules: {
         storeName: [
-          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-          {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
+          {
+            required: true,
+            message: this.$t("common.entity.validation.required"),
+            trigger: "blur"
+          },
+          {
+            max: 100,
+            message: this.$t("common.entity.validation.maxlength", {
+              max: 100
+            }),
+            trigger: "blur"
+          }
         ],
         storeAddress: [
-          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-          {max: 255, message: this.$t("common.entity.validation.maxlength", {max: 255}), trigger: "blur"}
+          {
+            required: true,
+            message: this.$t("common.entity.validation.required"),
+            trigger: "blur"
+          },
+          {
+            max: 255,
+            message: this.$t("common.entity.validation.maxlength", {
+              max: 255
+            }),
+            trigger: "blur"
+          }
         ],
         storeOwnerName: [
-          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-          {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
+          {
+            required: true,
+            message: this.$t("common.entity.validation.required"),
+            trigger: "blur"
+          },
+          {
+            max: 100,
+            message: this.$t("common.entity.validation.maxlength", {
+              max: 100
+            }),
+            trigger: "blur"
+          }
         ],
         storeOwnerPhone: [
-          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"},
-          {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
+          {
+            required: true,
+            message: this.$t("common.entity.validation.required"),
+            trigger: "blur"
+          },
+          {
+            max: 50,
+            message: this.$t("common.entity.validation.maxlength", { max: 50 }),
+            trigger: "blur"
+          }
         ],
         storeOwnerEmail: [
-          {type: 'email', message: this.$t("common.entity.validation.email"), trigger: "blur"},
-          {max: 100, message: this.$t("common.entity.validation.maxlength", {max: 100}), trigger: "blur"}
+          {
+            type: "email",
+            message: this.$t("common.entity.validation.email"),
+            trigger: "blur"
+          },
+          {
+            max: 100,
+            message: this.$t("common.entity.validation.maxlength", {
+              max: 100
+            }),
+            trigger: "blur"
+          }
         ],
         storeTaxCode: [
-          {max: 50, message: this.$t("common.entity.validation.maxlength", {max: 50}), trigger: "blur"}
+          {
+            max: 50,
+            message: this.$t("common.entity.validation.maxlength", { max: 50 }),
+            trigger: "blur"
+          }
         ],
         storeStatus: [
-          {required: true, message: this.$t("common.entity.validation.required"), trigger: "blur"}
+          {
+            required: true,
+            message: this.$t("common.entity.validation.required"),
+            trigger: "blur"
+          }
         ]
       },
       storeStatus: StoreStatus.optionArray

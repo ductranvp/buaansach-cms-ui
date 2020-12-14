@@ -9,7 +9,10 @@
     <el-form :model="form" ref="storeForm" :rules="formRules">
       <el-form-item>
         <el-form-item prop="storeName">
-          <input-label :label="$t('private.adminStoreManagementPage.store.storeName')" required/>
+          <input-label
+            :label="$t('private.adminStoreManagementPage.store.storeName')"
+            required
+          />
           <el-input
             ref="storeName"
             v-model="form.storeName"
@@ -21,7 +24,10 @@
       </el-form-item>
 
       <el-form-item prop="storeAddress">
-        <input-label :label="$t('private.adminStoreManagementPage.store.storeAddress')" required/>
+        <input-label
+          :label="$t('private.adminStoreManagementPage.store.storeAddress')"
+          required
+        />
         <el-input
           v-model="form.storeAddress"
           maxlength="255"
@@ -33,7 +39,12 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeOwnerName">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeOwnerName')" required/>
+            <input-label
+              :label="
+                $t('private.adminStoreManagementPage.store.storeOwnerName')
+              "
+              required
+            />
             <el-input
               v-model="form.storeOwnerName"
               maxlength="100"
@@ -45,7 +56,12 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="storeOwnerPhone">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeOwnerPhone')" required/>
+            <input-label
+              :label="
+                $t('private.adminStoreManagementPage.store.storeOwnerPhone')
+              "
+              required
+            />
             <el-input
               v-model="form.storeOwnerPhone"
               maxlength="50"
@@ -59,7 +75,12 @@
       <el-form-item>
         <el-col :span="11">
           <el-form-item prop="storeOwnerEmail">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeOwnerEmail')" optional/>
+            <input-label
+              :label="
+                $t('private.adminStoreManagementPage.store.storeOwnerEmail')
+              "
+              optional
+            />
             <el-input
               v-model="form.storeOwnerEmail"
               maxlength="100"
@@ -71,7 +92,10 @@
 
         <el-col :span="11" :offset="2">
           <el-form-item prop="storeTaxCode">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeTaxCode')" optional/>
+            <input-label
+              :label="$t('private.adminStoreManagementPage.store.storeTaxCode')"
+              optional
+            />
             <el-input
               v-model="form.storeTaxCode"
               maxlength="50"
@@ -83,26 +107,40 @@
       </el-form-item>
 
       <el-form-item prop="storeBusinessHours">
-        <input-label :label="$t('private.adminStoreManagementPage.store.storeBusinessHours')" optional/>
-        <el-input type="textarea" rows="5" v-model="form.storeBusinessHours" maxlength="255"
-                  show-word-limit></el-input>
+        <input-label
+          :label="
+            $t('private.adminStoreManagementPage.store.storeBusinessHours')
+          "
+          optional
+        />
+        <el-input
+          type="textarea"
+          rows="5"
+          v-model="form.storeBusinessHours"
+          maxlength="255"
+          show-word-limit
+        ></el-input>
       </el-form-item>
 
       <el-form-item prop="storeStatus">
         <el-row type="flex" align="bottom">
           <el-col :span="11">
-            <input-label :label="$t('private.adminStoreManagementPage.store.storeStatus')" required/>
+            <input-label
+              :label="$t('private.adminStoreManagementPage.store.storeStatus')"
+              required
+            />
             <el-select class="full-width" v-model="form.storeStatus">
               <el-option
                 v-for="item in storeStatus"
                 :key="item.value"
                 :label="item.label"
-                :value="item.value">
+                :value="item.value"
+              >
               </el-option>
             </el-select>
           </el-col>
           <el-col :span="11" :offset="2">
-            <input-label label="Kích hoạt"/>
+            <input-label label="Kích hoạt" />
             <el-checkbox v-model="form.storeActivated">
               <span v-if="form.storeActivated">Bật</span>
               <span v-else>Tắt</span>
@@ -112,15 +150,33 @@
       </el-form-item>
 
       <el-form-item>
-        <input-label label="Cho phép tích điểm"/>
-        <el-checkbox v-model="form.storeRewardPointActivated">
-          <span v-if="form.storeRewardPointActivated">Bật</span>
-          <span v-else>Tắt</span>
-        </el-checkbox>
+        <el-row type="flex">
+          <el-col :span="11">
+            <el-form-item>
+              <input-label label="Cho phép tích điểm" />
+              <el-checkbox v-model="form.storeRewardPointActivated">
+                <span v-if="form.storeRewardPointActivated">Bật</span>
+                <span v-else>Tắt</span>
+              </el-checkbox>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11" :offset="2">
+            <el-form-item>
+              <input-label label="Tự động apply sale" />
+              <el-checkbox v-model="form.storeAutoApplySale">
+                <span v-if="form.storeAutoApplySale">Bật</span>
+                <span v-else>Tắt</span>
+              </el-checkbox>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form-item>
 
       <el-form-item>
-        <input-label :label="$t('private.adminStoreManagementPage.store.storeImageUrl')" optional/>
+        <input-label
+          :label="$t('private.adminStoreManagementPage.store.storeImageUrl')"
+          optional
+        />
         <single-image-uploader
           ref="singleImageUploader"
           @imageCleared="onImageCleared"
@@ -140,15 +196,13 @@
 </template>
 
 <script>
-  import mixinData from "@/views/private/admin/store/management/create-or-update-dialog.data";
-  import mixinMethod from "@/views/private/admin/store/management/create-or-update-dialog.method";
+import mixinData from "@/views/private/admin/store/management/create-or-update-dialog.data";
+import mixinMethod from "@/views/private/admin/store/management/create-or-update-dialog.method";
 
-  export default {
-    name: "CreateOrUpdateStoreDialog",
-    mixins: [mixinData, mixinMethod],
-  };
+export default {
+  name: "CreateOrUpdateStoreDialog",
+  mixins: [mixinData, mixinMethod]
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>

@@ -38,8 +38,8 @@ export default {
         ...QrCodeUtils.getConfig(this.hasLogo),
         ...this.config,
         text: this.text,
-        width: this.size ? this.size : 200,
-        height: this.size ? this.size : 200
+        width: this.size || 150,
+        height: this.size || 150
       };
       this.qrCode = new QRCode(this.$el, options);
     },

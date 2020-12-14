@@ -22,7 +22,6 @@ router.beforeEach(async (to, from, next) => {
 
   /* If need authorities */
   if (to.meta && to.meta.roles && to.meta.roles.length > 0) {
-    console.log("test");
     /* and have a token => check role */
     if (AuthUtils.getToken()) {
       /* If roles is not saved in store or page is refreshed

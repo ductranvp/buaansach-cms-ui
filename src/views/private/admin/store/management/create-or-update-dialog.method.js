@@ -14,6 +14,7 @@ const mixinMethod = {
         storeStatus: StoreStatus.value.OPENING,
         storeActivated: true,
         storeRewardPointActivated: true,
+        storeAutoApplySale: true
       };
       this.show();
     },
