@@ -12,43 +12,51 @@
     <check-printer ref="checkPrinter" />
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
-        <!--        <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">-->
-        <!--          <i class="el-icon-s-data"></i>-->
-        <!--          <span class="hidden-md-and-down">Thống kê</span>-->
-        <!--        </el-button>-->
-        <el-tooltip
-          v-if="serverTime"
-          :content="
-            'Giờ hệ thống: ' + $moment(serverTime).format('HH:mm:ss DD/MM/YYYY')
-          "
-        >
-          <el-button class="hidden-sm-and-down" size="small" type="success">
-            <i class="el-icon-time"></i>
-            <span class="hidden-md-and-down">{{
-              serverTime | moment("HH:mm:ss")
-            }}</span>
-          </el-button>
-        </el-tooltip>
-
-        <el-popover
-          ref="qrPopover"
-          placement="bottom"
-          width="200"
-          trigger="click"
-        >
-          <div class="text-center">
-            <qr-code
-              :text="posMobileUrl"
-              class="pointer"
-              :size="200"
-              @click.native="openUrl()"
+        <el-row type="flex" align="middle">
+          <div>
+            <notification
+              :type="notificationType.CALL_WAITER"
+              placement="bottom-start"
             />
           </div>
-        </el-popover>
-        <el-button v-popover:qrPopover type="success" size="small">
-          <i class="el-icon-mobile"></i>
-          <span>Trang QR</span>
-        </el-button>
+          <div class="padding-left-20 padding-right-10">
+            <el-tooltip>
+              <div slot="content">
+                <span v-if="muteSound">Bấm để bật âm thanh thông báo</span>
+                <span v-else>Bấm để tắt âm thanh thông báo</span>
+              </div>
+              <el-button
+                @click="toggleSound"
+                class="icon-button"
+                type="success"
+              >
+                <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
+                <i v-else class="fas el-icon-fa-volume-up"></i>
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div>
+            <el-popover
+              ref="qrPopover"
+              placement="bottom"
+              width="200"
+              trigger="click"
+            >
+              <div class="text-center">
+                <qr-code
+                  :text="posMobileUrl"
+                  class="pointer"
+                  :size="200"
+                  @click.native="openUrl()"
+                />
+              </div>
+            </el-popover>
+            <el-button v-popover:qrPopover type="success" size="small">
+              <i class="el-icon-mobile"></i>
+              <span>Trang QR</span>
+            </el-button>
+          </div>
+        </el-row>
       </el-col>
 
       <el-col :span="8">
@@ -90,26 +98,24 @@
 
       <el-col :span="8">
         <el-row type="flex" align="middle" justify="end">
-          <el-row class="padding-0-20" type="flex" align="middle">
-            <notification :type="notificationType.CALL_WAITER" />
-          </el-row>
-
-          <el-row>
-            <el-tooltip>
-              <div slot="content">
-                <span v-if="muteSound">Bấm để bật âm thanh thông báo</span>
-                <span v-else>Bấm để tắt âm thanh thông báo</span>
-              </div>
-              <el-button
-                @click="toggleSound"
-                class="icon-button"
-                type="success"
-              >
-                <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
-                <i v-else class="fas el-icon-fa-volume-up"></i>
-              </el-button>
-            </el-tooltip>
-          </el-row>
+          <!--        <el-button class="hidden-sm-and-down" size="small" type="success" @click="gotoReport">-->
+          <!--          <i class="el-icon-s-data"></i>-->
+          <!--          <span class="hidden-md-and-down">Thống kê</span>-->
+          <!--        </el-button>-->
+          <el-tooltip
+            v-if="serverTime"
+            :content="
+              'Giờ hệ thống: ' +
+                $moment(serverTime).format('HH:mm:ss DD/MM/YYYY')
+            "
+          >
+            <el-button class="hidden-sm-and-down" size="small" type="success">
+              <i class="el-icon-time"></i>
+              <span class="hidden-md-and-down">{{
+                serverTime | moment("HH:mm:ss")
+              }}</span>
+            </el-button>
+          </el-tooltip>
 
           <el-row class="hidden-sm-and-down" type="flex" align="middle">
             <el-button size="small" type="success">
