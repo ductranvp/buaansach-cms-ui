@@ -19,13 +19,24 @@ export default {
     hasLogo: Boolean,
     config: Object
   },
+  computed: {
+    dataChanged() {
+      const { text, size, hasLogo, config } = this;
+      return {
+        text,
+        size,
+        hasLogo,
+        config
+      };
+    }
+  },
   data() {
     return {
       qrCode: null
     };
   },
   watch: {
-    config() {
+    dataChanged() {
       this.reload();
     }
   },
