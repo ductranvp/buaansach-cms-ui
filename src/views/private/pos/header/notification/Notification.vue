@@ -241,13 +241,6 @@ export default {
   bottom: 0;
 }
 
-.icon-button {
-  padding: 0;
-  height: 32px;
-  width: 32px;
-  font-size: 22px;
-}
-
 .notification {
   border: none;
   border-radius: 0;

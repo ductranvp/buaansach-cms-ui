@@ -26,6 +26,14 @@ const PosStoreService = {
   changeStoreStatus(payload) {
     return request.put(baseUrl + "/change-status", payload);
   },
+  /**
+   * Đóng/Mở tính năng bảo vệ chỗ ngồi
+   * @param {String} payload.storeGuid
+   * @param {String} payload.storeSeatProtected
+   * */
+  toggleSeatProtection(payload) {
+    return request.put(baseUrl + "/toggle-seat-protection", payload);
+  }
 };
 
 export default PosStoreService;

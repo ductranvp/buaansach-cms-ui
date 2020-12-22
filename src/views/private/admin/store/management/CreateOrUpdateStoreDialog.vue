@@ -173,6 +173,29 @@
       </el-form-item>
 
       <el-form-item>
+        <el-row type="flex">
+          <el-col :span="11">
+            <el-form-item>
+              <input-label label="Bảo vệ chỗ ngồi" />
+              <el-checkbox v-model="form.storeSeatProtected">
+                <span v-if="form.storeSeatProtected">Bật</span>
+                <span v-else>Tắt</span>
+              </el-checkbox>
+            </el-form-item>
+          </el-col>
+          <el-col :span="11" :offset="2">
+            <!--            <el-form-item>-->
+            <!--              <input-label label="Tự động apply sale" />-->
+            <!--              <el-checkbox v-model="form.storeAutoApplySale">-->
+            <!--                <span v-if="form.storeAutoApplySale">Bật</span>-->
+            <!--                <span v-else>Tắt</span>-->
+            <!--              </el-checkbox>-->
+            <!--            </el-form-item>-->
+          </el-col>
+        </el-row>
+      </el-form-item>
+
+      <el-form-item>
         <input-label
           :label="$t('private.adminStoreManagementPage.store.storeImageUrl')"
           optional

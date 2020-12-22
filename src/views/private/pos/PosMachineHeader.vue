@@ -19,7 +19,7 @@
               placement="bottom-start"
             />
           </div>
-          <div class="padding-left-20 padding-right-10">
+          <div class="padding-left-15">
             <el-tooltip>
               <div slot="content">
                 <span v-if="muteSound">Bấm để bật âm thanh thông báo</span>
@@ -30,12 +30,39 @@
                 class="icon-button"
                 type="success"
               >
-                <i v-if="muteSound" class="fas el-icon-fa-volume-mute"></i>
+                <i
+                  v-if="muteSound"
+                  class="fas el-icon-fa-volume-mute text-danger"
+                ></i>
                 <i v-else class="fas el-icon-fa-volume-up"></i>
               </el-button>
             </el-tooltip>
           </div>
-          <div>
+          <div class="padding-left-15">
+            <el-tooltip>
+              <div slot="content">
+                <span v-if="currentStore.storeSeatProtected"
+                  >Bấm để tắt bảo vệ chỗ ngồi</span
+                >
+                <span v-else>Bấm để bật bảo vệ chỗ ngồi</span>
+              </div>
+              <el-button
+                @click="toggleSeatProtection"
+                class="icon-button"
+                type="success"
+                :loading="isLoading"
+              >
+                <template v-if="!isLoading">
+                  <i
+                    v-if="currentStore.storeSeatProtected"
+                    class="fas el-icon-fa-chair"
+                  />
+                  <i v-else class="fas el-icon-fa-chair text-danger"></i>
+                </template>
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div class="padding-left-10">
             <el-popover
               ref="qrPopover"
               placement="bottom"
@@ -199,6 +226,7 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
       serverTime: null,
       storeOrderSound: StoreOrderSound,
       callWaiterSound: CallWaiterSound,
@@ -244,6 +272,21 @@ export default {
         localStorage.setItem(StorageKey.localStorageKeys.MUTE_SOUND, "yes");
       } else {
         localStorage.setItem(StorageKey.localStorageKeys.MUTE_SOUND, "no");
+      }
+    },
+    async toggleSeatProtection() {
+      try {
+        this.isLoading = true;
+        const { data } = await PosStoreService.toggleSeatProtection({
+          storeGuid: this.$route.params.storeGuid
+        });
+        this.$set(this.currentStore, "storeSeatProtected", data);
+      } catch (error) {
+        ErrorUtils.showErrorMessage(error);
+      } finally {
+        setTimeout(() => {
+          this.isLoading = false;
+        }, 300);
       }
     },
     downloadTeamViewer() {
@@ -303,13 +346,6 @@ export default {
 </script>
 
 <style scoped>
-.icon-button {
-  padding: 0;
-  height: 32px;
-  width: 32px;
-  font-size: 22px;
-}
-
 /deep/ .el-dropdown-menu__item {
   line-height: 40px;
   font-size: 16px;
