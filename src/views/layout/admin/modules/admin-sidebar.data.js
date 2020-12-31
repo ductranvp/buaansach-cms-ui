@@ -4,46 +4,46 @@ const mixinSidebarData = {
       variables: {
         menuBg: "#304156",
         menuText: "#bfcbd9",
-        menuActiveText: "#409EFF",
+        menuActiveText: "#409EFF"
       },
       menuProps: {
-        'default-active': '',
+        "default-active": ""
       },
       adminMenu: [
         {
-          routeName: 'adminDashboardPage',
+          routeName: "adminDashboardPage",
           meta: {
-            icon: 'el-icon-odometer',
-            title: 'layout.adminSidebar.adminDashboardPage',
-          },
+            icon: "el-icon-odometer",
+            title: "layout.adminSidebar.adminDashboardPage"
+          }
         },
         {
-          routeName: 'adminStoreManagementPage',
+          routeName: "adminStoreManagementPage",
           meta: {
-            icon: 'el-icon-s-shop',
-            title: 'layout.adminSidebar.adminStoreManagementPage',
-          },
+            icon: "el-icon-s-shop",
+            title: "layout.adminSidebar.adminStoreManagementPage"
+          }
         },
         {
-          routeName: 'adminCategoryPage',
+          routeName: "adminCategoryPage",
           meta: {
-            icon: 'el-icon-s-management',
-            title: 'layout.adminSidebar.adminCategoryPage',
-          },
+            icon: "el-icon-s-management",
+            title: "layout.adminSidebar.adminCategoryPage"
+          }
         },
         {
-          routeName: 'adminProductPage',
+          routeName: "adminProductPage",
           meta: {
-            icon: 'el-icon-food',
-            title: 'layout.adminSidebar.adminProductPage',
-          },
+            icon: "el-icon-food",
+            title: "layout.adminSidebar.adminProductPage"
+          }
         },
         {
-          routeName: 'adminUserPage',
+          routeName: "adminUserPage",
           meta: {
-            icon: 'el-icon-user-solid',
-            title: 'layout.adminSidebar.adminUserPage',
-          },
+            icon: "el-icon-user-solid",
+            title: "layout.adminSidebar.adminUserPage"
+          }
         },
         // {
         //   routeName: 'adminVoucherPage',
@@ -53,43 +53,50 @@ const mixinSidebarData = {
         //   },
         // },
         {
-          routeName: 'adminSalePage',
+          routeName: "adminSalePage",
           meta: {
-            icon: 'el-icon-price-tag',
-            title: 'layout.adminSidebar.adminSalePage',
-          },
+            icon: "el-icon-price-tag",
+            title: "layout.adminSidebar.adminSalePage"
+          }
         },
         {
-          routeName: 'adminBannerPage',
+          routeName: "adminBannerPage",
           meta: {
-            icon: 'el-icon-picture',
-            title: 'layout.adminSidebar.adminBannerPage',
-          },
+            icon: "el-icon-picture",
+            title: "layout.adminSidebar.adminBannerPage"
+          }
         },
         {
-          routeName: 'adminReportPage',
+          routeName: "adminRecipePage",
           meta: {
-            icon: 'el-icon-s-marketing',
-            title: 'layout.adminSidebar.adminReportPage',
-          },
+            icon: "el-icon-picture",
+            title: "layout.adminSidebar.adminRecipePage"
+          }
         },
         {
-          routeName: 'adminTrackerPage',
+          routeName: "adminReportPage",
           meta: {
-            icon: 'el-icon-s-help',
-            title: 'layout.adminSidebar.adminTrackerPage',
-          },
+            icon: "el-icon-s-marketing",
+            title: "layout.adminSidebar.adminReportPage"
+          }
         },
         {
-          routeName: 'adminSettingPage',
+          routeName: "adminTrackerPage",
           meta: {
-            icon: 'el-icon-setting',
-            title: 'layout.adminSidebar.adminSettingPage',
-          },
+            icon: "el-icon-s-help",
+            title: "layout.adminSidebar.adminTrackerPage"
+          }
         },
+        {
+          routeName: "adminSettingPage",
+          meta: {
+            icon: "el-icon-setting",
+            title: "layout.adminSidebar.adminSettingPage"
+          }
+        }
       ],
-      isCollapse: true,
+      isCollapse: true
     };
-  },
+  }
 };
 export default mixinSidebarData;

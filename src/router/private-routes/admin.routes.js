@@ -14,7 +14,8 @@ const AdminRoutes = [
   {
     path: "store-management",
     name: "adminStoreManagementPage",
-    component: () => import("@/views/private/admin/store/management/AdminStoreManagement"),
+    component: () =>
+      import("@/views/private/admin/store/management/AdminStoreManagement"),
     meta: {
       title: "private.pageTitle.admin.adminStoreManagementPage",
       roles: [Roles.ADMIN]
@@ -23,14 +24,13 @@ const AdminRoutes = [
   {
     path: "store-management/:storeGuid",
     name: "adminStoreDetailPage",
-    component: () => import("@/views/private/admin/store/detail/AdminStoreDetail"),
+    component: () =>
+      import("@/views/private/admin/store/detail/AdminStoreDetail"),
     meta: {
       title: "private.pageTitle.admin.adminStoreDetailPage",
       roles: [Roles.ADMIN]
     },
-    children: [
-      ...AdminStoreDetailChildren
-    ]
+    children: [...AdminStoreDetailChildren]
   },
   {
     path: "product-management",
@@ -110,6 +110,15 @@ const AdminRoutes = [
     component: () => import("@/views/private/admin/banner/AdminBanner"),
     meta: {
       title: "private.pageTitle.admin.adminBannerPage",
+      roles: [Roles.ADMIN]
+    }
+  },
+  {
+    path: "recipe",
+    name: "adminRecipePage",
+    component: () => import("@/views/private/admin/recipe/AdminRecipe"),
+    meta: {
+      title: "private.pageTitle.admin.adminRecipePage",
       roles: [Roles.ADMIN]
     }
   }

@@ -10,6 +10,7 @@
     "adminSettingPage": "Setting",
     "adminVoucherPage": "Voucher",
     "adminSalePage": "Sale",
-    "adminBannerPage": "Banner"
+    "adminBannerPage": "Banner",
+    "adminRecipePage": "Recipe"
   }
 }

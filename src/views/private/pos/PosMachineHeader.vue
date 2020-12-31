@@ -10,6 +10,7 @@
       <source :src="storePayRequestSound" type="audio/mpeg" />
     </audio>
     <check-printer ref="checkPrinter" />
+    <pos-recipe-dialog ref="recipeDialog" />
     <el-row class="full-size flex-wrap" type="flex" align="middle">
       <el-col :span="8">
         <el-row type="flex" align="middle">
@@ -62,7 +63,7 @@
               </el-button>
             </el-tooltip>
           </div>
-          <div class="padding-left-10">
+          <div class="padding-left-15">
             <el-popover
               ref="qrPopover"
               placement="bottom"
@@ -78,10 +79,34 @@
                 />
               </div>
             </el-popover>
-            <el-button v-popover:qrPopover type="success" size="small">
-              <i class="el-icon-mobile"></i>
-              <span>Trang QR</span>
-            </el-button>
+
+            <el-tooltip>
+              <div slot="content">
+                <span>Trang QR</span>
+              </div>
+              <el-button
+                v-popover:qrPopover
+                type="success"
+                size="small"
+                class="icon-button"
+              >
+                <i class="fas el-icon-fa-qrcode"></i>
+              </el-button>
+            </el-tooltip>
+          </div>
+          <div class="padding-left-15">
+            <el-tooltip>
+              <div slot="content">
+                <span>Tỉ lệ suất ăn</span>
+              </div>
+              <el-button
+                @click="showRecipeDialog"
+                class="icon-button"
+                type="success"
+              >
+                <i class="el-icon-tableware" />
+              </el-button>
+            </el-tooltip>
           </div>
         </el-row>
       </el-col>
@@ -208,10 +233,12 @@ import ErrorUtils from "@/utils/error.util";
 import StoreStatus from "@/enum/StoreStatus";
 import Constants from "@/utils/constants";
 import QrCode from "@/components/qr-code/QRCode";
+import PosRecipeDialog from "@/views/private/pos/dialog/PosRecipeDialog";
 
 export default {
   name: "PosMachineHeader",
   components: {
+    PosRecipeDialog,
     QrCode,
     Notification,
     CheckPrinter
@@ -244,6 +271,9 @@ export default {
     this.getServerTime();
   },
   methods: {
+    showRecipeDialog() {
+      this.$refs.recipeDialog.show();
+    },
     openUrl(url, newTab) {
       if (Constants.APP_MODE === "prod") return;
       window.open(this.posMobileUrl, "_blank");

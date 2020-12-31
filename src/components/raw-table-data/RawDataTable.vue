@@ -11,16 +11,21 @@
       :fit="true"
       @selection-change="selectChange"
       stripe
-      border>
+      border
+    >
       <slot name="expand">
         <!-- action definitions here -->
       </slot>
 
-      <el-table-column
-        v-if="selectable" type="selection" width="55">
+      <el-table-column v-if="selectable" type="selection" width="55">
       </el-table-column>
 
-      <el-table-column v-if="showIndex" type="index" :index="indexMethod" :label="$t('common.entity.audit.index')">
+      <el-table-column
+        v-if="showIndex"
+        type="index"
+        :index="indexMethod"
+        :label="$t('common.entity.audit.index')"
+      >
       </el-table-column>
 
       <slot>
@@ -28,15 +33,20 @@
       </slot>
 
       <template v-if="showAudit">
-        <el-table-column v-for="audit in customAudit" :key="audit"
-                         :sortable="audit === 'createdDate' || audit === 'lastModifiedDate'"
-                         :prop="audit"
-                         :label="$t('common.entity.audit.' + audit)">
-          <template slot-scope="{row}">
-            <span v-if="audit === 'createdDate' ||  audit === 'lastModifiedDate'">
-              {{ row[audit] | moment('HH:mm - DD/MM/YYYY') }}
+        <el-table-column
+          v-for="audit in customAudit"
+          :key="audit"
+          :sortable="audit === 'createdDate' || audit === 'lastModifiedDate'"
+          :prop="audit"
+          :label="$t('common.entity.audit.' + audit)"
+        >
+          <template slot-scope="{ row }">
+            <span
+              v-if="audit === 'createdDate' || audit === 'lastModifiedDate'"
+            >
+              {{ row[audit] | moment("HH:mm - DD/MM/YYYY") }}
             </span>
-            <span v-else>{{row[audit]}}</span>
+            <span v-else>{{ row[audit] }}</span>
           </template>
         </el-table-column>
       </template>
@@ -45,7 +55,12 @@
         <!-- action definitions here -->
       </slot>
     </el-table>
-    <el-row v-if="showPagination" type="flex" justify="end" class="margin-top-10">
+    <el-row
+      v-if="showPagination"
+      type="flex"
+      justify="end"
+      class="margin-top-10"
+    >
       <el-pagination
         background
         @current-change="onPageChange"
@@ -62,108 +77,124 @@
 </template>
 
 <script>
-  export default {
-    name: 'RawDataTable',
-    props: {
-      highlightCurrentRow: Boolean,
-      showIndex: Boolean,
-      showAudit: Boolean,
-      selectable: Boolean,
-      defaultExpandAll: Boolean,
-      selectChange: {
-        type: Function,
-        default: () => {},
-      },
-      customAudit: {
-        type: Array,
-        default: () => {
-          return ['createdBy', 'createdDate', 'lastModifiedBy', 'lastModifiedDate'];
-        },
-      },
-      tableSize: {
-        type: String,
-        default: 'small',
-      },
-      data: Array,
-      filter: Object,
-      filterMethod: Function,
-      defaultSort: {
-        type: Object,
-        default: function() {
-          return {prop: 'createdDate', order: 'ascending'};
-        },
-      },
-      config: Object,
-      showPagination: {
-        type: Boolean,
-        default: true,
-      },
+export default {
+  name: "RawDataTable",
+  props: {
+    highlightCurrentRow: Boolean,
+    showIndex: Boolean,
+    showAudit: Boolean,
+    selectable: Boolean,
+    defaultExpandAll: Boolean,
+    selectChange: {
+      type: Function,
+      default: () => {}
     },
-    created() {
+    customAudit: {
+      type: Array,
+      default: () => {
+        return [
+          "createdBy",
+          "createdDate",
+          "lastModifiedBy",
+          "lastModifiedDate"
+        ];
+      }
+    },
+    tableSize: {
+      type: String,
+      default: "small"
+    },
+    data: {
+      type: Array,
+      required: true
+    },
+    filter: Object,
+    filterMethod: Function,
+    defaultSort: {
+      type: Object,
+      default: function() {
+        return { prop: "createdDate", order: "ascending" };
+      }
+    },
+    config: Object,
+    showPagination: {
+      type: Boolean,
+      default: true
+    }
+  },
+  created() {
+    this.renderTable();
+  },
+  data() {
+    return {
+      isLoading: false,
+      tableData: [],
+      tableConfig: {
+        totalElements: 0,
+        currentPage: 1,
+        pageCount: 4,
+        pageSize:
+          this.config && this.config.pageSize ? this.config.pageSize : 20,
+        pageSizes:
+          this.config && this.config.pageSizes
+            ? this.config.pageSizes
+            : [10, 20, 30, 50, 100],
+        sort: {
+          sortDirection:
+            this.defaultSort.order === "descending" ? "DESC" : "ASC",
+          sortField: this.defaultSort.prop
+        }
+      }
+    };
+  },
+  watch: {
+    data: function(val) {
       this.renderTable();
     },
-    data() {
-      return {
-        isLoading: false,
-        tableData: [],
-        tableConfig: {
-          totalElements: 0,
-          currentPage: 1,
-          pageCount: 4,
-          pageSize: this.config && this.config.pageSize ? this.config.pageSize : 20,
-          pageSizes: this.config && this.config.pageSizes ? this.config.pageSizes : [10, 20, 30, 50, 100],
-          sort: {
-            sortDirection: this.defaultSort.order === 'descending' ? 'DESC' : 'ASC',
-            sortField: this.defaultSort.prop,
-          },
-        },
-      };
+    filter: {
+      deep: true,
+      handler(val) {
+        this.onFilterChange(val);
+      }
+    }
+  },
+  methods: {
+    indexMethod(index) {
+      return (
+        index +
+        1 +
+        (this.tableConfig.currentPage - 1) * this.tableConfig.pageSize
+      );
     },
-    watch: {
-      data: function(val) {
-        this.renderTable();
-      },
-      filter: {
-        deep: true,
-        handler(val) {
-          this.onFilterChange(val);
-        },
-      },
+    onFilterChange(filter) {
+      this.renderTable();
     },
-    methods: {
-      indexMethod(index) {
-        return index + 1 + (this.tableConfig.currentPage - 1) * this.tableConfig.pageSize;
-      },
-      onFilterChange(filter) {
-        this.renderTable();
-      },
-      onSizeChange(size) {
-        this.tableConfig.pageSize = size;
-        this.renderTable();
-      },
-      onPageChange(page) {
-        this.tableConfig.currentPage = page;
-        this.renderTable();
-      },
-      renderTable() {
-        if (!this.data.length) {
-          this.tableData = [];
-          return;
+    onSizeChange(size) {
+      this.tableConfig.pageSize = size;
+      this.renderTable();
+    },
+    onPageChange(page) {
+      this.tableConfig.currentPage = page;
+      this.renderTable();
+    },
+    renderTable() {
+      if (!this.data.length) {
+        this.tableData = [];
+        return;
+      }
+      const startIndex =
+        (this.tableConfig.currentPage - 1) * this.tableConfig.pageSize;
+      const endIndex = this.tableConfig.currentPage * this.tableConfig.pageSize;
+      if (this.data.length - 1 >= startIndex) {
+        let temp = this.data;
+        if (this.filter) {
+          temp = this.filterMethod(temp, this.filter);
         }
-        const startIndex = (this.tableConfig.currentPage - 1) * this.tableConfig.pageSize;
-        const endIndex = this.tableConfig.currentPage * this.tableConfig.pageSize;
-        if (this.data.length - 1 >= startIndex) {
-          let temp = this.data;
-          if (this.filter) {
-            temp = this.filterMethod(temp, this.filter);
-          }
-          this.tableData = temp.slice(startIndex, endIndex);
-        }
-      },
-    },
-  };
+        this.tableData = temp.slice(startIndex, endIndex);
+      }
+    }
+  }
+};
 </script>
 
-<style scoped>
-
-</style>
+<style scoped></style>
