@@ -22,6 +22,17 @@ const PosSaleReportService = {
   getSaleReport(params) {
     return request.post(baseUrl + "/get-report", params);
   },
+
+  /**
+   * Lấy báo cáo của user theo userLogin
+   * @param {String} params.storeGuid
+   * @param {String} params.userLogin
+   * @param {String} params.startDate
+   * @param {String} params.endDate
+   * */
+  getOrderProductReport(params) {
+    return request.post(baseUrl + "/get-order-product-report", params);
+  }
 };
 
 export default PosSaleReportService;
