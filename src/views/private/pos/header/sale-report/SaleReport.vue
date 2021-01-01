@@ -62,14 +62,16 @@
     <el-main>
       <el-row type="flex" align="middle" justify="center" class="padding-10">
         <el-radio-group v-model="activeTab">
-          <el-radio-button label="SUMMARY">Tổng Quan</el-radio-button>
-          <el-radio-button label="ORDER_PRODUCT">Sản Phẩm</el-radio-button>
+          <el-radio-button label="BY_ORDER">Theo Đơn Hàng</el-radio-button>
+          <el-radio-button label="BY_ORDER_PRODUCT"
+            >Theo Sản Phẩm</el-radio-button
+          >
         </el-radio-group>
       </el-row>
-      <sale-summary ref="summary" v-show="activeTab === 'SUMMARY'" />
+      <order-report ref="summary" v-show="activeTab === 'BY_ORDER'" />
       <order-product-report
         ref="orderProduct"
-        v-show="activeTab === 'ORDER_PRODUCT'"
+        v-show="activeTab === 'BY_ORDER_PRODUCT'"
       />
     </el-main>
   </el-container>
@@ -79,12 +81,12 @@
 import PosStoreUserService from "@/service/pos/pos.store-user-service";
 import StoreUserRole from "@/enum/StoreUserRole";
 import ErrorUtils from "@/utils/error.util";
-import SaleSummary from "@/views/private/pos/header/sale-report/SaleSummary";
+import OrderReport from "@/views/private/pos/header/sale-report/OrderReport";
 import OrderProductReport from "@/views/private/pos/header/sale-report/OrderProductReport";
 
 export default {
   name: "SaleReport",
-  components: { OrderProductReport, SaleSummary },
+  components: { OrderProductReport, OrderReport },
   data() {
     const defaultEnd = new Date();
     const defaultStart = new Date();
@@ -170,7 +172,7 @@ export default {
       listStoreUser: [],
       storeUserRoles: StoreUserRole.value,
       currentStoreUserRole: null,
-      activeTab: "SUMMARY"
+      activeTab: "BY_ORDER"
     };
   },
   async created() {

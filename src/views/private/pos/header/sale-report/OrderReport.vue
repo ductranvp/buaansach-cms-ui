@@ -278,7 +278,7 @@ import ErrorUtils from "@/utils/error.util";
 import AppUtils from "@/utils/app.util";
 
 export default {
-  name: "SaleSummary",
+  name: "OrderReport",
   components: { SaleReportDetailDialog },
   data() {
     return {
