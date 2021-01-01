@@ -11,6 +11,7 @@
     "adminVoucherPage": "Voucher",
     "adminSalePage": "Sale",
     "adminBannerPage": "Banner",
-    "adminRecipePage": "Recipe"
+    "adminRecipePage": "Recipe",
+    "adminIngredientPage": "Ingredient"
   }
 }

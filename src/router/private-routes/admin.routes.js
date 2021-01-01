@@ -121,6 +121,15 @@ const AdminRoutes = [
       title: "private.pageTitle.admin.adminRecipePage",
       roles: [Roles.ADMIN]
     }
+  },
+  {
+    path: "ingredient",
+    name: "adminIngredientPage",
+    component: () => import("@/views/private/admin/ingredient/AdminIngredient"),
+    meta: {
+      title: "private.pageTitle.admin.adminIngredientPage",
+      roles: [Roles.ADMIN]
+    }
   }
 ];
 

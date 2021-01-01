@@ -2,7 +2,11 @@
   <el-container class="full-size" direction="vertical">
     <sort-product-dialog @hasChange="hasChange" ref="sortProductDialog" />
     <import-product-dialog @hasChange="hasChange" ref="importProductDialog" />
-    <create-or-update-product-dialog @saved="reloadTableData" ref="productDialog"/>
+    <create-or-update-product-ingredient-dialog ref="productIngredientDialog" />
+    <create-or-update-product-dialog
+      @saved="reloadTableData"
+      ref="productDialog"
+    />
     <div>
       <el-row :gutter="10">
         <el-col :span="10">
@@ -47,77 +51,117 @@
         ref="productTable"
         show-index
         :fetch-data="fetchData"
-        :default-sort="{prop: 'productPosition', order: 'ascending'}"
+        :default-sort="{ prop: 'productPosition', order: 'ascending' }"
         :filter="filter"
       >
         <template slot="expand">
-          <el-table-column type="expand">
-            <template slot-scope="{row}">
+          <el-table-column type="expand" width="30px">
+            <template slot-scope="{ row }">
               <admin-product-row-detail :row="row" />
             </template>
           </el-table-column>
         </template>
 
-        <el-table-column prop="productThumbnailUrl" label="Hình" width="72px">
-          <template slot-scope="{row}">
-            <el-image class="product-thumbnail" :src="getMediaUrl(row.productThumbnailUrl)" :preview-src-list="[getMediaUrl(row.productThumbnailUrl)]">
-              <div slot="error" class="image-error-slot full-size">
-                <i class="el-icon-picture-outline"></i>
-              </div>
-            </el-image>
-          </template>
-        </el-table-column>
+        <!--        <el-table-column prop="productThumbnailUrl" label="Hình" width="72px">-->
+        <!--          <template slot-scope="{row}">-->
+        <!--            <el-image class="product-thumbnail" :src="getMediaUrl(row.productThumbnailUrl)" :preview-src-list="[getMediaUrl(row.productThumbnailUrl)]">-->
+        <!--              <div slot="error" class="image-error-slot full-size">-->
+        <!--                <i class="el-icon-picture-outline"></i>-->
+        <!--              </div>-->
+        <!--            </el-image>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
 
-        <el-table-column prop="productCode" label="Mã SP"></el-table-column>
+        <el-table-column
+          prop="productCode"
+          label="Mã SP"
+          width="80px"
+        ></el-table-column>
 
         <el-table-column prop="productName" label="Tên sản phẩm">
-          <template slot-scope="{row}">
-            <span class="no-break-word">{{row.productName}}</span>
-            <el-divider class="margin-0"></el-divider>
-            <span class="no-break-word">{{row.productNameEng}}</span>
+          <template slot-scope="{ row }">
+            <span class="no-break-word">{{ row.productName }}</span>
+            <!--            <el-divider class="margin-0"></el-divider>-->
+            <!--            <span class="no-break-word">{{ row.productNameEng }}</span>-->
           </template>
         </el-table-column>
 
-        <el-table-column prop="productPrice" label="Giá bán">
-          <template slot-scope="{row}">
-            <span class="no-break-word">{{row.productPrice | priceAppend}}</span>
+        <el-table-column prop="productPrice" label="Giá bán" width="80px">
+          <template slot-scope="{ row }">
+            <span class="no-break-word">{{
+              row.productPrice | priceAppend
+            }}</span>
           </template>
         </el-table-column>
 
-        <el-table-column min-width="100px" prop="productStatus" label="Trạng thái">
-          <template slot-scope="{row}">
-            <el-tag v-if="row.productStatus === 'AVAILABLE'" type="success">Còn hàng</el-tag>
-            <el-tag v-else-if="row.productStatus === 'UNAVAILABLE'" type="warning">Tạm hết hàng</el-tag>
+        <el-table-column width="120px" prop="productStatus" label="Trạng thái">
+          <template slot-scope="{ row }">
+            <el-tag v-if="row.productStatus === 'AVAILABLE'" type="success"
+              >Còn hàng</el-tag
+            >
+            <el-tag
+              v-else-if="row.productStatus === 'UNAVAILABLE'"
+              type="warning"
+              >Tạm hết hàng</el-tag
+            >
             <el-tag v-else type="danger">Ngừng kinh doanh</el-tag>
           </template>
         </el-table-column>
 
-<!--        <el-table-column min-width="100px" prop="productType" label="Loại sản phẩm">-->
-<!--          <template slot-scope="{row}">-->
-<!--            <el-tag v-if="row.productType === 'MAIN_PRODUCT'" type="primary">Sản phẩm chính</el-tag>-->
-<!--            <el-tag v-else type="primary">Sản phẩm phụ</el-tag>-->
-<!--          </template>-->
-<!--        </el-table-column>-->
+        <!--        <el-table-column min-width="100px" prop="productType" label="Loại sản phẩm">-->
+        <!--          <template slot-scope="{row}">-->
+        <!--            <el-tag v-if="row.productType === 'MAIN_PRODUCT'" type="primary">Sản phẩm chính</el-tag>-->
+        <!--            <el-tag v-else type="primary">Sản phẩm phụ</el-tag>-->
+        <!--          </template>-->
+        <!--        </el-table-column>-->
 
-        <el-table-column min-width="100px" prop="productActivated" label="Kích hoạt">
-          <template slot-scope="{row}">
-            <el-button type="success" size="small" v-if="row.productActivated" :loading="row.isLoading" @click="toggleProductActivation(row)">Đã bật</el-button>
-            <el-button type="danger" size="small" v-else :loading="row.isLoading" @click="toggleProductActivation(row)">Đã tắt</el-button>
+        <el-table-column
+          width="100px"
+          prop="productActivated"
+          label="Kích hoạt"
+        >
+          <template slot-scope="{ row }">
+            <el-button
+              type="success"
+              size="small"
+              v-if="row.productActivated"
+              :loading="row.isLoading"
+              @click="toggleProductActivation(row)"
+              >Đã bật</el-button
+            >
+            <el-button
+              type="danger"
+              size="small"
+              v-else
+              :loading="row.isLoading"
+              @click="toggleProductActivation(row)"
+              >Đã tắt</el-button
+            >
           </template>
         </el-table-column>
 
         <el-table-column label="Danh mục">
-          <template slot-scope="{row}">
-            <el-tag v-for="category in row.categories" :key="category.guid">{{category.categoryName}}</el-tag>
+          <template slot-scope="{ row }">
+            <el-tag v-for="category in row.categories" :key="category.guid">{{
+              category.categoryName
+            }}</el-tag>
           </template>
         </el-table-column>
 
         <template slot="action">
           <el-table-column
             :label="$t('common.entity.action.title')"
-            width="155px"
+            width="200px"
           >
             <template slot-scope="{ row }">
+              <el-button
+                size="mini"
+                type="info"
+                plain
+                @click="editProductIngredient(row)"
+              >
+                <span>NL</span>
+              </el-button>
               <el-button
                 size="mini"
                 type="warning"
@@ -143,111 +187,127 @@
 </template>
 
 <script>
-  import DataTable from "@/components/data-table/DataTable";
-  import AdminProductService from "@/service/admin/admin.product.service";
-  import CreateOrUpdateProductDialog from "@/views/private/admin/product/CreateOrUpdateProductDialog";
-  import MessageBoxUtils from "@/utils/message-box.util";
-  import NotificationUtils from "@/utils/notification.util";
-  import AdminCategoryService from "@/service/admin/admin.category.service";
-  import AppUtils from "@/utils/app.util";
-  import SortProductDialog from "@/views/private/admin/product/SortProductDialog";
-  import ImportProductDialog from "@/views/private/admin/product/ImportProductDialog";
-  import AdminProductRowDetail from "@/views/private/admin/product/AdminProductRowDetail";
-  import ErrorUtils from '@/utils/error.util';
+import DataTable from "@/components/data-table/DataTable";
+import AdminProductService from "@/service/admin/admin.product.service";
+import CreateOrUpdateProductDialog from "@/views/private/admin/product/CreateOrUpdateProductDialog";
+import MessageBoxUtils from "@/utils/message-box.util";
+import NotificationUtils from "@/utils/notification.util";
+import AdminCategoryService from "@/service/admin/admin.category.service";
+import AppUtils from "@/utils/app.util";
+import SortProductDialog from "@/views/private/admin/product/SortProductDialog";
+import ImportProductDialog from "@/views/private/admin/product/ImportProductDialog";
+import AdminProductRowDetail from "@/views/private/admin/product/AdminProductRowDetail";
+import ErrorUtils from "@/utils/error.util";
+import CreateOrUpdateIngredientDialog from "@/views/private/admin/ingredient/CreateOrUpdateIngredientDialog";
+import CreateOrUpdateProductIngredientDialog from "@/views/private/admin/product/CreateOrUpdateProductIngredientDialog";
 
-  export default {
-    name: "AdminProductManagement",
-    components: {AdminProductRowDetail, ImportProductDialog, SortProductDialog, CreateOrUpdateProductDialog, DataTable},
-    data() {
-      return {
-        isLoading: false,
-        searchKey: "",
-        filter: {
-          searchKey: "",
-        },
-        categories: {}
-      };
-    },
-    created() {
-      this.getCategory();
-    },
-    methods: {
-      async getCategory() {
-        const vm = this;
-        try {
-          const {data} = await AdminCategoryService.getAllCategory();
-          let temp = {};
-          for (let i = 0; i < data.length; i++) {
-            temp[data[i].guid] = data[i].categoryName;
-          }
-          AppUtils.setAttrs(vm, vm.categories, temp);
-        } catch (error) {
-          NotificationUtils.error(error.message || error.data.message);
+export default {
+  name: "AdminProductManagement",
+  components: {
+    CreateOrUpdateProductIngredientDialog,
+    AdminProductRowDetail,
+    ImportProductDialog,
+    SortProductDialog,
+    CreateOrUpdateProductDialog,
+    DataTable
+  },
+  data() {
+    return {
+      isLoading: false,
+      searchKey: "",
+      filter: {
+        searchKey: ""
+      },
+      categories: {}
+    };
+  },
+  created() {
+    this.getCategory();
+  },
+  methods: {
+    async getCategory() {
+      const vm = this;
+      try {
+        const { data } = await AdminCategoryService.getAllCategory();
+        let temp = {};
+        for (let i = 0; i < data.length; i++) {
+          temp[data[i].guid] = data[i].categoryName;
         }
-      },
-      hasChange(value){
-        if (value){
-          this.reloadTableData();
-        }
-      },
-      onSearch() {
-        this.filter.searchKey = this.searchKey;
-      },
-      reloadTableData() {
-        const vm = this;
-        vm.filter.searchKey = vm.searchKey;
-        vm.isLoading = true;
-        vm.$refs.productTable.reload(whenDone);
+        AppUtils.setAttrs(vm, vm.categories, temp);
+      } catch (error) {
+        NotificationUtils.error(error.message || error.data.message);
+      }
+    },
+    hasChange(value) {
+      if (value) {
+        this.reloadTableData();
+      }
+    },
+    onSearch() {
+      this.filter.searchKey = this.searchKey;
+    },
+    reloadTableData() {
+      const vm = this;
+      vm.filter.searchKey = vm.searchKey;
+      vm.isLoading = true;
+      vm.$refs.productTable.reload(whenDone);
 
-        function whenDone() {
-          vm.isLoading = false;
-        }
-      },
-      fetchData(params) {
-        return AdminProductService.getListProduct(params);
-      },
-      createProduct() {
-        this.$refs.productDialog.create();
-      },
-      editProduct(product) {
-        this.$refs.productDialog.edit(product);
-      },
-      deleteProduct(product) {
-        const vm = this;
-        MessageBoxUtils.confirm(this.$t("common.entity.delete.title"), async function () {
+      function whenDone() {
+        vm.isLoading = false;
+      }
+    },
+    fetchData(params) {
+      return AdminProductService.getListProduct(params);
+    },
+    createProduct() {
+      this.$refs.productDialog.create();
+    },
+    editProduct(product) {
+      this.$refs.productDialog.edit(product);
+    },
+    deleteProduct(product) {
+      const vm = this;
+      MessageBoxUtils.confirm(
+        this.$t("common.entity.delete.title"),
+        async function() {
           try {
             await AdminProductService.deleteProduct(product.guid);
             vm.reloadTableData();
           } catch (error) {
             NotificationUtils.error(error.message || error.data.message);
           }
-        });
-      },
-      showSortDialog(){
-        this.$refs.sortProductDialog.show();
-      },
-      showImportDialog(){
-        this.$refs.importProductDialog.show();
-      },
-      async toggleProductActivation(product){
-        try {
-          this.$set(product, "isLoading", true);
-          await AdminProductService.toggleActivation(product.guid);
-          product.productActivated = !product.productActivated;
-        } catch (error) {
-          ErrorUtils.showErrorMessage(error);
-        } finally {
-          this.$set(product, "isLoading", false);
         }
+      );
+    },
+    showSortDialog() {
+      this.$refs.sortProductDialog.show();
+    },
+    showImportDialog() {
+      this.$refs.importProductDialog.show();
+    },
+    editProductIngredient(row) {
+      console.log(row);
+      this.$refs.productIngredientDialog.create(row.guid);
+    },
+    async toggleProductActivation(product) {
+      try {
+        this.$set(product, "isLoading", true);
+        await AdminProductService.toggleActivation(product.guid);
+        product.productActivated = !product.productActivated;
+      } catch (error) {
+        ErrorUtils.showErrorMessage(error);
+      } finally {
+        this.$set(product, "isLoading", false);
       }
     }
-  };
+  }
+};
 </script>
 
 <style scoped>
-  .product-thumbnail {
-    height: 50px;
-    width: 50px;
-    object-fit: cover;
-  }
+.product-thumbnail {
+  height: 50px;
+  width: 50px;
+  object-fit: cover;
+}
 </style>

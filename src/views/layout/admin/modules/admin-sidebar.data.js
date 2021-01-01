@@ -69,8 +69,15 @@ const mixinSidebarData = {
         {
           routeName: "adminRecipePage",
           meta: {
-            icon: "el-icon-picture",
+            icon: "el-icon-notebook-2",
             title: "layout.adminSidebar.adminRecipePage"
+          }
+        },
+        {
+          routeName: "adminIngredientPage",
+          meta: {
+            icon: "el-icon-document",
+            title: "layout.adminSidebar.adminIngredientPage"
           }
         },
         {
