@@ -15,6 +15,7 @@
             của
             <span class="text-primary">{{ reportForUser.fullName }}</span></span
           >
+          <span> (Chỉ gồm những sản phẩm trên đơn đã thanh toán)</span>
         </div>
       </el-alert>
     </el-row>

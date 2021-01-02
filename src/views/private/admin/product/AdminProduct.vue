@@ -286,7 +286,6 @@ export default {
       this.$refs.importProductDialog.show();
     },
     editProductIngredient(row) {
-      console.log(row);
       this.$refs.productIngredientDialog.create(row.guid);
     },
     async toggleProductActivation(product) {
