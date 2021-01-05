@@ -63,6 +63,7 @@
 <script>
 import AdminRecipeService from "@/service/admin/admin.recipe.service";
 import ErrorUtils from "@/utils/error.util";
+import PosRecipeService from "@/service/pos/pos.recipe.service";
 
 export default {
   name: "PosRecipeDialog",
@@ -78,7 +79,7 @@ export default {
     async getRecipes() {
       try {
         this.isLoading = true;
-        const { data: recipes } = await AdminRecipeService.getRecipes();
+        const { data: recipes } = await PosRecipeService.getRecipes();
         this.recipes = recipes;
       } catch (error) {
         ErrorUtils.showErrorMessage(error);
