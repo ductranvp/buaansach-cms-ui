@@ -68,7 +68,6 @@ export default {
         CANCEL_ORDER_2: "Nhân viên thao tác nhầm",
         CANCEL_ORDER_3: "Khách không có ở bàn",
         CANCEL_ORDER_4: "Khách không gọi món",
-        CANCEL_ORDER_5: "Nhân viên gọi đồ ăn",
         OTHER: "Khác"
       },
       form: {

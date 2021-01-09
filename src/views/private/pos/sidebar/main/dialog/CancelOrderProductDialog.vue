@@ -68,7 +68,6 @@ export default {
         CANCEL_ORDER_PRODUCT_2: "Sản phẩm đã hết hàng",
         CANCEL_ORDER_PRODUCT_3: "Nhân viên thao tác nhầm",
         CANCEL_ORDER_PRODUCT_4: "Khách gọi nhầm",
-        CANCEL_ORDER_PRODUCT_5: "Nhân viên gọi món",
         OTHER: "Khác"
       },
       form: {
